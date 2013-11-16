@@ -1,0 +1,9 @@
+grammar cl.pleiad.ram.Textram with org.eclipse.xtext.common.Terminals
+
+generate textram "http://www.pleiad.cl/ram/Textram"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
