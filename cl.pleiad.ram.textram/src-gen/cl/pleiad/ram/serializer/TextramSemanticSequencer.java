@@ -66,7 +66,7 @@ public class TextramSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Constraint:
-	 *     name=EString
+	 *     (partial?='partial'? abstract?='abstract'? name=EString)
 	 */
 	protected void sequence_Class(EObject context, ca.mcgill.cs.sel.ram.Class semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

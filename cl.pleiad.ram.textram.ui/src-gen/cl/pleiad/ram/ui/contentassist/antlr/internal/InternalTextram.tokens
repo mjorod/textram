@@ -1,6 +1,8 @@
 RULE_ID=5
 RULE_STRING=4
+T__16=16
 T__15=15
+T__17=17
 T__12=12
 T__11=11
 T__14=14
@@ -13,5 +15,7 @@ RULE_ML_COMMENT=7
 'Class'=15
 'StructuralView'=14
 '}'=13
+'abstract'=17
+'partial'=16
 '{'=12
 'Aspect'=11

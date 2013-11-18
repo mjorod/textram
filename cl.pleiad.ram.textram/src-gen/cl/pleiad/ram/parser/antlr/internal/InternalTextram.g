@@ -284,29 +284,67 @@ ruleClass returns [EObject current=null]
             grammarAccess.getClassAccess().getClassAction_0(),
             $current);
     }
-)	otherlv_1='Class' 
+)(
+(
+		lv_partial_1_0=	'partial' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getClassAccess().getClassKeyword_1());
+        newLeafNode(lv_partial_1_0, grammarAccess.getClassAccess().getPartialPartialKeyword_1_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getClassRule());
+	        }
+       		setWithLastConsumed($current, "partial", true, "partial");
+	    }
+
+)
+)?(
+(
+		lv_abstract_2_0=	'abstract' 
+    {
+        newLeafNode(lv_abstract_2_0, grammarAccess.getClassAccess().getAbstractAbstractKeyword_2_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getClassRule());
+	        }
+       		setWithLastConsumed($current, "abstract", true, "abstract");
+	    }
+
+)
+)?	otherlv_3='Class' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getClassAccess().getClassKeyword_3());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getClassAccess().getNameEStringParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getClassAccess().getNameEStringParserRuleCall_4_0()); 
 	    }
-		lv_name_2_0=ruleEString		{
+		lv_name_4_0=ruleEString		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getClassRule());
 	        }
        		set(
        			$current, 
        			"name",
-        		lv_name_2_0, 
+        		lv_name_4_0, 
         		"EString");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))
+)	otherlv_5='{' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getClassAccess().getLeftCurlyBracketKeyword_5());
+    }
+	otherlv_6='}' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getClassAccess().getRightCurlyBracketKeyword_6());
+    }
+)
 ;
 
 

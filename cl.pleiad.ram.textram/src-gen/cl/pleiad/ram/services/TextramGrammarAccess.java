@@ -143,9 +143,15 @@ public class TextramGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Class");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cClassAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cClassKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cNameEStringParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Assignment cPartialAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cPartialPartialKeyword_1_0 = (Keyword)cPartialAssignment_1.eContents().get(0);
+		private final Assignment cAbstractAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cAbstractAbstractKeyword_2_0 = (Keyword)cAbstractAssignment_2.eContents().get(0);
+		private final Keyword cClassKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cNameAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cNameEStringParserRuleCall_4_0 = (RuleCall)cNameAssignment_4.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		////Operation returns Operation:
 		////	(abstract?='abstract')?
@@ -183,12 +189,6 @@ public class TextramGrammarAccess extends AbstractGrammarElementFinder {
 		////        	('navigable' navigable=EBoolean)?
 		////			'assoc' assoc=[Association|EString]
 		////;
-		////	'{'
-		////		(attributes+=Attribute)?
-		//////		(operations+=Operation)?
-		//////		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
-		////		
-		////	'}';
 		////EString returns ecore::EString:
 		////	STRING | ID;
 		////RBoolean returns RBoolean:
@@ -316,29 +316,302 @@ public class TextramGrammarAccess extends AbstractGrammarElementFinder {
 		////EFloat returns ecore::EFloat:
 		////	'-'? INT? '.' INT (('E'|'e') '-'? INT)?
 		////; Class:
-		//	{Class} //	(partial?='partial')?
-		//	//	(abstract?='abstract')?
-		//	"Class" name=EString;
+		//	{Class} partial?="partial"? abstract?="abstract"? "Class" name=EString "{" //		(attributes+=Attribute)?
+		//	//		(operations+=Operation)?
+		//	//		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+		//	"}";
 		public ParserRule getRule() { return rule; }
 
-		//{Class} //	(partial?='partial')?
-		////	(abstract?='abstract')?
-		//"Class" name=EString
+		//{Class} partial?="partial"? abstract?="abstract"? "Class" name=EString "{" //		(attributes+=Attribute)?
+		////		(operations+=Operation)?
+		////		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+		//"}" //EString returns ecore::EString:
+		////	STRING | ID;
+		////RBoolean returns RBoolean:
+		////	'RBoolean'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RInt returns RInt:
+		////	'RInt'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RChar returns RChar:
+		////	'RChar'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RString returns RString:
+		////	'RString'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////REnum returns REnum:
+		////	'REnum'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////		'literals' '{' literals+=REnumLiteral ( "," literals+=REnumLiteral)* '}' 
+		////	'}';
+		////
+		////RSet returns RSet:
+		////	'RSet'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		'type' type=[ObjectType|EString]
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RSequence returns RSequence:
+		////	'RSequence'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		'type' type=[ObjectType|EString]
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////ImplementationClass_Impl returns ImplementationClass:
+		////	'ImplementationClass'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RDouble returns RDouble:
+		////	'RDouble'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RFloat returns RFloat:
+		////	'RFloat'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////EBoolean returns ecore::EBoolean:
+		////	'true' | 'false';
+		////TODO: Qualified names?
+		////Parameter returns Parameter:
+		////	type=[Type|EString] name=EString
+		////;
+		////Attribute returns Attribute:
+		////	static?='static'
+		////	//TODO: observar la meta-data de attribute para verificar si soporta EString
+		////	(type=[PrimitiveType] name=EString (';')?)
+		////;
+		////
+		////EInt returns ecore::EInt:
+		////	'-'? INT;
+		////
+		////ReferenceType returns ReferenceType:
+		////	'*'? / * TODO: implement this rule and an appropriate IValueConverter * /;
+		////
+		////REnumLiteral returns REnumLiteral:
+		////	{REnumLiteral}
+		////	'REnumLiteral'
+		////	name=EString;
+		////
+		////RVoid returns RVoid:
+		////	{RVoid}
+		////	'RVoid'
+		////	name=EString;
+		////
+		////RAny returns RAny:
+		////	{RAny}
+		////	'RAny'
+		////	name=EString;
+		////
+		////
+		////EObject returns ecore::EObject:
+		////	{ecore::EObject}
+		////	'EObject'
+		////;
+		////
+		////EFloat returns ecore::EFloat:
+		////	'-'? INT? '.' INT (('E'|'e') '-'? INT)?
+		////;
 		public Group getGroup() { return cGroup; }
 
 		//{Class}
 		public Action getClassAction_0() { return cClassAction_0; }
 
-		////	(partial?='partial')?
-		////	(abstract?='abstract')?
+		//partial?="partial"?
+		public Assignment getPartialAssignment_1() { return cPartialAssignment_1; }
+
+		//"partial"
+		public Keyword getPartialPartialKeyword_1_0() { return cPartialPartialKeyword_1_0; }
+
+		//abstract?="abstract"?
+		public Assignment getAbstractAssignment_2() { return cAbstractAssignment_2; }
+
+		//"abstract"
+		public Keyword getAbstractAbstractKeyword_2_0() { return cAbstractAbstractKeyword_2_0; }
+
 		//"Class"
-		public Keyword getClassKeyword_1() { return cClassKeyword_1; }
+		public Keyword getClassKeyword_3() { return cClassKeyword_3; }
 
 		//name=EString
-		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+		public Assignment getNameAssignment_4() { return cNameAssignment_4; }
 
 		//EString
-		public RuleCall getNameEStringParserRuleCall_2_0() { return cNameEStringParserRuleCall_2_0; }
+		public RuleCall getNameEStringParserRuleCall_4_0() { return cNameEStringParserRuleCall_4_0; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_5() { return cLeftCurlyBracketKeyword_5; }
+
+		////		(attributes+=Attribute)?
+		////		(operations+=Operation)?
+		////		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+		////EString returns ecore::EString:
+		////	STRING | ID;
+		////RBoolean returns RBoolean:
+		////	'RBoolean'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RInt returns RInt:
+		////	'RInt'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RChar returns RChar:
+		////	'RChar'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RString returns RString:
+		////	'RString'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////REnum returns REnum:
+		////	'REnum'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////		'literals' '{' literals+=REnumLiteral ( "," literals+=REnumLiteral)* '}' 
+		////	'}';
+		////
+		////RSet returns RSet:
+		////	'RSet'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		'type' type=[ObjectType|EString]
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RSequence returns RSequence:
+		////	'RSequence'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		'type' type=[ObjectType|EString]
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////ImplementationClass_Impl returns ImplementationClass:
+		////	'ImplementationClass'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RDouble returns RDouble:
+		////	'RDouble'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RFloat returns RFloat:
+		////	'RFloat'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////EBoolean returns ecore::EBoolean:
+		////	'true' | 'false';
+		////TODO: Qualified names?
+		////Parameter returns Parameter:
+		////	type=[Type|EString] name=EString
+		////;
+		////Attribute returns Attribute:
+		////	static?='static'
+		////	//TODO: observar la meta-data de attribute para verificar si soporta EString
+		////	(type=[PrimitiveType] name=EString (';')?)
+		////;
+		////
+		////EInt returns ecore::EInt:
+		////	'-'? INT;
+		////
+		////ReferenceType returns ReferenceType:
+		////	'*'? / * TODO: implement this rule and an appropriate IValueConverter * /;
+		////
+		////REnumLiteral returns REnumLiteral:
+		////	{REnumLiteral}
+		////	'REnumLiteral'
+		////	name=EString;
+		////
+		////RVoid returns RVoid:
+		////	{RVoid}
+		////	'RVoid'
+		////	name=EString;
+		////
+		////RAny returns RAny:
+		////	{RAny}
+		////	'RAny'
+		////	name=EString;
+		////
+		////
+		////EObject returns ecore::EObject:
+		////	{ecore::EObject}
+		////	'EObject'
+		////;
+		////
+		////EFloat returns ecore::EFloat:
+		////	'-'? INT? '.' INT (('E'|'e') '-'? INT)?
+		////; "}"
+		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
 	}
 	
 	
@@ -469,12 +742,6 @@ public class TextramGrammarAccess extends AbstractGrammarElementFinder {
 	////        	('navigable' navigable=EBoolean)?
 	////			'assoc' assoc=[Association|EString]
 	////;
-	////	'{'
-	////		(attributes+=Attribute)?
-	//////		(operations+=Operation)?
-	//////		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
-	////		
-	////	'}';
 	////EString returns ecore::EString:
 	////	STRING | ID;
 	////RBoolean returns RBoolean:
@@ -602,9 +869,10 @@ public class TextramGrammarAccess extends AbstractGrammarElementFinder {
 	////EFloat returns ecore::EFloat:
 	////	'-'? INT? '.' INT (('E'|'e') '-'? INT)?
 	////; Class:
-	//	{Class} //	(partial?='partial')?
-	//	//	(abstract?='abstract')?
-	//	"Class" name=EString;
+	//	{Class} partial?="partial"? abstract?="abstract"? "Class" name=EString "{" //		(attributes+=Attribute)?
+	//	//		(operations+=Operation)?
+	//	//		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+	//	"}";
 	public ClassElements getClassAccess() {
 		return (pClass != null) ? pClass : (pClass = new ClassElements());
 	}

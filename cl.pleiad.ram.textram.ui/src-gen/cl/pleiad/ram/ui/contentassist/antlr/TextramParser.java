@@ -45,7 +45,9 @@ public class TextramParser extends AbstractContentAssistParser {
 					put(grammarAccess.getAspectAccess().getNameAssignment_1(), "rule__Aspect__NameAssignment_1");
 					put(grammarAccess.getAspectAccess().getStructuralViewAssignment_3(), "rule__Aspect__StructuralViewAssignment_3");
 					put(grammarAccess.getStructuralViewAccess().getClassesAssignment_3(), "rule__StructuralView__ClassesAssignment_3");
-					put(grammarAccess.getClassAccess().getNameAssignment_2(), "rule__Class__NameAssignment_2");
+					put(grammarAccess.getClassAccess().getPartialAssignment_1(), "rule__Class__PartialAssignment_1");
+					put(grammarAccess.getClassAccess().getAbstractAssignment_2(), "rule__Class__AbstractAssignment_2");
+					put(grammarAccess.getClassAccess().getNameAssignment_4(), "rule__Class__NameAssignment_4");
 				}
 			};
 		}

@@ -78,17 +78,17 @@ StructuralView returns StructuralView:
 
 Class returns Class:
 	{Class}
-//	(partial?='partial')?
-//	(abstract?='abstract')?
-	'Class'
+	(partial?='partial')?
+	(abstract?='abstract')?
+	'class'
 	name=EString
-;
-//	'{'
+	'{'
+		
 //		(attributes+=Attribute)?
-////		(operations+=Operation)?
-////		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
-//		
-//	'}';
+//		(operations+=Operation)?
+//		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+		
+	'}';
 //EString returns ecore::EString:
 //	STRING | ID;
 	

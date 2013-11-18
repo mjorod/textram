@@ -22,11 +22,13 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalTextramParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'Aspect'", "'{'", "'}'", "'StructuralView'", "'Class'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'Aspect'", "'{'", "'}'", "'StructuralView'", "'Class'", "'partial'", "'abstract'"
     };
     public static final int RULE_ID=5;
     public static final int RULE_STRING=4;
+    public static final int T__16=16;
     public static final int T__15=15;
+    public static final int T__17=17;
     public static final int T__12=12;
     public static final int T__11=11;
     public static final int T__14=14;
@@ -1220,7 +1222,7 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
             int alt3=2;
             int LA3_0 = input.LA(1);
 
-            if ( (LA3_0==15) ) {
+            if ( ((LA3_0>=15 && LA3_0<=17)) ) {
                 alt3=1;
             }
             switch (alt3) {
@@ -1444,21 +1446,42 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Class__Group__1__Impl"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:589:1: rule__Class__Group__1__Impl : ( 'Class' ) ;
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:589:1: rule__Class__Group__1__Impl : ( ( rule__Class__PartialAssignment_1 )? ) ;
     public final void rule__Class__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:593:1: ( ( 'Class' ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:594:1: ( 'Class' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:593:1: ( ( ( rule__Class__PartialAssignment_1 )? ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:594:1: ( ( rule__Class__PartialAssignment_1 )? )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:594:1: ( 'Class' )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:595:1: 'Class'
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:594:1: ( ( rule__Class__PartialAssignment_1 )? )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:595:1: ( rule__Class__PartialAssignment_1 )?
             {
-             before(grammarAccess.getClassAccess().getClassKeyword_1()); 
-            match(input,15,FOLLOW_15_in_rule__Class__Group__1__Impl1138); 
-             after(grammarAccess.getClassAccess().getClassKeyword_1()); 
+             before(grammarAccess.getClassAccess().getPartialAssignment_1()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:596:1: ( rule__Class__PartialAssignment_1 )?
+            int alt4=2;
+            int LA4_0 = input.LA(1);
+
+            if ( (LA4_0==16) ) {
+                alt4=1;
+            }
+            switch (alt4) {
+                case 1 :
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:596:2: rule__Class__PartialAssignment_1
+                    {
+                    pushFollow(FOLLOW_rule__Class__PartialAssignment_1_in_rule__Class__Group__1__Impl1137);
+                    rule__Class__PartialAssignment_1();
+
+                    state._fsp--;
+
+
+                    }
+                    break;
+
+            }
+
+             after(grammarAccess.getClassAccess().getPartialAssignment_1()); 
 
             }
 
@@ -1481,17 +1504,22 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Class__Group__2"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:608:1: rule__Class__Group__2 : rule__Class__Group__2__Impl ;
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:606:1: rule__Class__Group__2 : rule__Class__Group__2__Impl rule__Class__Group__3 ;
     public final void rule__Class__Group__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:612:1: ( rule__Class__Group__2__Impl )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:613:2: rule__Class__Group__2__Impl
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:610:1: ( rule__Class__Group__2__Impl rule__Class__Group__3 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:611:2: rule__Class__Group__2__Impl rule__Class__Group__3
             {
-            pushFollow(FOLLOW_rule__Class__Group__2__Impl_in_rule__Class__Group__21169);
+            pushFollow(FOLLOW_rule__Class__Group__2__Impl_in_rule__Class__Group__21168);
             rule__Class__Group__2__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Class__Group__3_in_rule__Class__Group__21171);
+            rule__Class__Group__3();
 
             state._fsp--;
 
@@ -1514,31 +1542,42 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Class__Group__2__Impl"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:619:1: rule__Class__Group__2__Impl : ( ( rule__Class__NameAssignment_2 ) ) ;
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:618:1: rule__Class__Group__2__Impl : ( ( rule__Class__AbstractAssignment_2 )? ) ;
     public final void rule__Class__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:623:1: ( ( ( rule__Class__NameAssignment_2 ) ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:624:1: ( ( rule__Class__NameAssignment_2 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:622:1: ( ( ( rule__Class__AbstractAssignment_2 )? ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:623:1: ( ( rule__Class__AbstractAssignment_2 )? )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:624:1: ( ( rule__Class__NameAssignment_2 ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:625:1: ( rule__Class__NameAssignment_2 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:623:1: ( ( rule__Class__AbstractAssignment_2 )? )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:624:1: ( rule__Class__AbstractAssignment_2 )?
             {
-             before(grammarAccess.getClassAccess().getNameAssignment_2()); 
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:626:1: ( rule__Class__NameAssignment_2 )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:626:2: rule__Class__NameAssignment_2
-            {
-            pushFollow(FOLLOW_rule__Class__NameAssignment_2_in_rule__Class__Group__2__Impl1196);
-            rule__Class__NameAssignment_2();
+             before(grammarAccess.getClassAccess().getAbstractAssignment_2()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:625:1: ( rule__Class__AbstractAssignment_2 )?
+            int alt5=2;
+            int LA5_0 = input.LA(1);
 
-            state._fsp--;
+            if ( (LA5_0==17) ) {
+                alt5=1;
+            }
+            switch (alt5) {
+                case 1 :
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:625:2: rule__Class__AbstractAssignment_2
+                    {
+                    pushFollow(FOLLOW_rule__Class__AbstractAssignment_2_in_rule__Class__Group__2__Impl1198);
+                    rule__Class__AbstractAssignment_2();
 
+                    state._fsp--;
+
+
+                    }
+                    break;
 
             }
 
-             after(grammarAccess.getClassAccess().getNameAssignment_2()); 
+             after(grammarAccess.getClassAccess().getAbstractAssignment_2()); 
 
             }
 
@@ -1560,21 +1599,326 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__Class__Group__2__Impl"
 
 
+    // $ANTLR start "rule__Class__Group__3"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:635:1: rule__Class__Group__3 : rule__Class__Group__3__Impl rule__Class__Group__4 ;
+    public final void rule__Class__Group__3() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:639:1: ( rule__Class__Group__3__Impl rule__Class__Group__4 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:640:2: rule__Class__Group__3__Impl rule__Class__Group__4
+            {
+            pushFollow(FOLLOW_rule__Class__Group__3__Impl_in_rule__Class__Group__31229);
+            rule__Class__Group__3__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Class__Group__4_in_rule__Class__Group__31232);
+            rule__Class__Group__4();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__3"
+
+
+    // $ANTLR start "rule__Class__Group__3__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:647:1: rule__Class__Group__3__Impl : ( 'Class' ) ;
+    public final void rule__Class__Group__3__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:651:1: ( ( 'Class' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:652:1: ( 'Class' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:652:1: ( 'Class' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:653:1: 'Class'
+            {
+             before(grammarAccess.getClassAccess().getClassKeyword_3()); 
+            match(input,15,FOLLOW_15_in_rule__Class__Group__3__Impl1260); 
+             after(grammarAccess.getClassAccess().getClassKeyword_3()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__3__Impl"
+
+
+    // $ANTLR start "rule__Class__Group__4"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:666:1: rule__Class__Group__4 : rule__Class__Group__4__Impl rule__Class__Group__5 ;
+    public final void rule__Class__Group__4() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:670:1: ( rule__Class__Group__4__Impl rule__Class__Group__5 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:671:2: rule__Class__Group__4__Impl rule__Class__Group__5
+            {
+            pushFollow(FOLLOW_rule__Class__Group__4__Impl_in_rule__Class__Group__41291);
+            rule__Class__Group__4__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Class__Group__5_in_rule__Class__Group__41294);
+            rule__Class__Group__5();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__4"
+
+
+    // $ANTLR start "rule__Class__Group__4__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:678:1: rule__Class__Group__4__Impl : ( ( rule__Class__NameAssignment_4 ) ) ;
+    public final void rule__Class__Group__4__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:682:1: ( ( ( rule__Class__NameAssignment_4 ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:683:1: ( ( rule__Class__NameAssignment_4 ) )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:683:1: ( ( rule__Class__NameAssignment_4 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:684:1: ( rule__Class__NameAssignment_4 )
+            {
+             before(grammarAccess.getClassAccess().getNameAssignment_4()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:685:1: ( rule__Class__NameAssignment_4 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:685:2: rule__Class__NameAssignment_4
+            {
+            pushFollow(FOLLOW_rule__Class__NameAssignment_4_in_rule__Class__Group__4__Impl1321);
+            rule__Class__NameAssignment_4();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getClassAccess().getNameAssignment_4()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__4__Impl"
+
+
+    // $ANTLR start "rule__Class__Group__5"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:695:1: rule__Class__Group__5 : rule__Class__Group__5__Impl rule__Class__Group__6 ;
+    public final void rule__Class__Group__5() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:699:1: ( rule__Class__Group__5__Impl rule__Class__Group__6 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:700:2: rule__Class__Group__5__Impl rule__Class__Group__6
+            {
+            pushFollow(FOLLOW_rule__Class__Group__5__Impl_in_rule__Class__Group__51351);
+            rule__Class__Group__5__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Class__Group__6_in_rule__Class__Group__51354);
+            rule__Class__Group__6();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__5"
+
+
+    // $ANTLR start "rule__Class__Group__5__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:707:1: rule__Class__Group__5__Impl : ( '{' ) ;
+    public final void rule__Class__Group__5__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:711:1: ( ( '{' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:712:1: ( '{' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:712:1: ( '{' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:713:1: '{'
+            {
+             before(grammarAccess.getClassAccess().getLeftCurlyBracketKeyword_5()); 
+            match(input,12,FOLLOW_12_in_rule__Class__Group__5__Impl1382); 
+             after(grammarAccess.getClassAccess().getLeftCurlyBracketKeyword_5()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__5__Impl"
+
+
+    // $ANTLR start "rule__Class__Group__6"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:726:1: rule__Class__Group__6 : rule__Class__Group__6__Impl ;
+    public final void rule__Class__Group__6() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:730:1: ( rule__Class__Group__6__Impl )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:731:2: rule__Class__Group__6__Impl
+            {
+            pushFollow(FOLLOW_rule__Class__Group__6__Impl_in_rule__Class__Group__61413);
+            rule__Class__Group__6__Impl();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__6"
+
+
+    // $ANTLR start "rule__Class__Group__6__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:737:1: rule__Class__Group__6__Impl : ( '}' ) ;
+    public final void rule__Class__Group__6__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:741:1: ( ( '}' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:742:1: ( '}' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:742:1: ( '}' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:743:1: '}'
+            {
+             before(grammarAccess.getClassAccess().getRightCurlyBracketKeyword_6()); 
+            match(input,13,FOLLOW_13_in_rule__Class__Group__6__Impl1441); 
+             after(grammarAccess.getClassAccess().getRightCurlyBracketKeyword_6()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__6__Impl"
+
+
     // $ANTLR start "rule__RamModel__AspectsAssignment"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:643:1: rule__RamModel__AspectsAssignment : ( ruleAspect ) ;
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:771:1: rule__RamModel__AspectsAssignment : ( ruleAspect ) ;
     public final void rule__RamModel__AspectsAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:647:1: ( ( ruleAspect ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:648:1: ( ruleAspect )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:775:1: ( ( ruleAspect ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:776:1: ( ruleAspect )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:648:1: ( ruleAspect )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:649:1: ruleAspect
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:776:1: ( ruleAspect )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:777:1: ruleAspect
             {
              before(grammarAccess.getRamModelAccess().getAspectsAspectParserRuleCall_0()); 
-            pushFollow(FOLLOW_ruleAspect_in_rule__RamModel__AspectsAssignment1237);
+            pushFollow(FOLLOW_ruleAspect_in_rule__RamModel__AspectsAssignment1491);
             ruleAspect();
 
             state._fsp--;
@@ -1602,20 +1946,20 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Aspect__NameAssignment_1"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:658:1: rule__Aspect__NameAssignment_1 : ( ruleEString ) ;
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:786:1: rule__Aspect__NameAssignment_1 : ( ruleEString ) ;
     public final void rule__Aspect__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:662:1: ( ( ruleEString ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:663:1: ( ruleEString )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:790:1: ( ( ruleEString ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:791:1: ( ruleEString )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:663:1: ( ruleEString )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:664:1: ruleEString
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:791:1: ( ruleEString )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:792:1: ruleEString
             {
              before(grammarAccess.getAspectAccess().getNameEStringParserRuleCall_1_0()); 
-            pushFollow(FOLLOW_ruleEString_in_rule__Aspect__NameAssignment_11268);
+            pushFollow(FOLLOW_ruleEString_in_rule__Aspect__NameAssignment_11522);
             ruleEString();
 
             state._fsp--;
@@ -1643,20 +1987,20 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Aspect__StructuralViewAssignment_3"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:673:1: rule__Aspect__StructuralViewAssignment_3 : ( ruleStructuralView ) ;
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:801:1: rule__Aspect__StructuralViewAssignment_3 : ( ruleStructuralView ) ;
     public final void rule__Aspect__StructuralViewAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:677:1: ( ( ruleStructuralView ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:678:1: ( ruleStructuralView )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:805:1: ( ( ruleStructuralView ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:806:1: ( ruleStructuralView )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:678:1: ( ruleStructuralView )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:679:1: ruleStructuralView
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:806:1: ( ruleStructuralView )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:807:1: ruleStructuralView
             {
              before(grammarAccess.getAspectAccess().getStructuralViewStructuralViewParserRuleCall_3_0()); 
-            pushFollow(FOLLOW_ruleStructuralView_in_rule__Aspect__StructuralViewAssignment_31299);
+            pushFollow(FOLLOW_ruleStructuralView_in_rule__Aspect__StructuralViewAssignment_31553);
             ruleStructuralView();
 
             state._fsp--;
@@ -1684,20 +2028,20 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__StructuralView__ClassesAssignment_3"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:688:1: rule__StructuralView__ClassesAssignment_3 : ( ruleClass ) ;
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:816:1: rule__StructuralView__ClassesAssignment_3 : ( ruleClass ) ;
     public final void rule__StructuralView__ClassesAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:692:1: ( ( ruleClass ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:693:1: ( ruleClass )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:820:1: ( ( ruleClass ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:821:1: ( ruleClass )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:693:1: ( ruleClass )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:694:1: ruleClass
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:821:1: ( ruleClass )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:822:1: ruleClass
             {
              before(grammarAccess.getStructuralViewAccess().getClassesClassParserRuleCall_3_0()); 
-            pushFollow(FOLLOW_ruleClass_in_rule__StructuralView__ClassesAssignment_31330);
+            pushFollow(FOLLOW_ruleClass_in_rule__StructuralView__ClassesAssignment_31584);
             ruleClass();
 
             state._fsp--;
@@ -1724,26 +2068,30 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__StructuralView__ClassesAssignment_3"
 
 
-    // $ANTLR start "rule__Class__NameAssignment_2"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:703:1: rule__Class__NameAssignment_2 : ( ruleEString ) ;
-    public final void rule__Class__NameAssignment_2() throws RecognitionException {
+    // $ANTLR start "rule__Class__PartialAssignment_1"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:831:1: rule__Class__PartialAssignment_1 : ( ( 'partial' ) ) ;
+    public final void rule__Class__PartialAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:707:1: ( ( ruleEString ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:708:1: ( ruleEString )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:835:1: ( ( ( 'partial' ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:836:1: ( ( 'partial' ) )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:708:1: ( ruleEString )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:709:1: ruleEString
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:836:1: ( ( 'partial' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:837:1: ( 'partial' )
             {
-             before(grammarAccess.getClassAccess().getNameEStringParserRuleCall_2_0()); 
-            pushFollow(FOLLOW_ruleEString_in_rule__Class__NameAssignment_21361);
-            ruleEString();
+             before(grammarAccess.getClassAccess().getPartialPartialKeyword_1_0()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:838:1: ( 'partial' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:839:1: 'partial'
+            {
+             before(grammarAccess.getClassAccess().getPartialPartialKeyword_1_0()); 
+            match(input,16,FOLLOW_16_in_rule__Class__PartialAssignment_11620); 
+             after(grammarAccess.getClassAccess().getPartialPartialKeyword_1_0()); 
 
-            state._fsp--;
+            }
 
-             after(grammarAccess.getClassAccess().getNameEStringParserRuleCall_2_0()); 
+             after(grammarAccess.getClassAccess().getPartialPartialKeyword_1_0()); 
 
             }
 
@@ -1762,7 +2110,93 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__Class__NameAssignment_2"
+    // $ANTLR end "rule__Class__PartialAssignment_1"
+
+
+    // $ANTLR start "rule__Class__AbstractAssignment_2"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:854:1: rule__Class__AbstractAssignment_2 : ( ( 'abstract' ) ) ;
+    public final void rule__Class__AbstractAssignment_2() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:858:1: ( ( ( 'abstract' ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:859:1: ( ( 'abstract' ) )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:859:1: ( ( 'abstract' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:860:1: ( 'abstract' )
+            {
+             before(grammarAccess.getClassAccess().getAbstractAbstractKeyword_2_0()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:861:1: ( 'abstract' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:862:1: 'abstract'
+            {
+             before(grammarAccess.getClassAccess().getAbstractAbstractKeyword_2_0()); 
+            match(input,17,FOLLOW_17_in_rule__Class__AbstractAssignment_21664); 
+             after(grammarAccess.getClassAccess().getAbstractAbstractKeyword_2_0()); 
+
+            }
+
+             after(grammarAccess.getClassAccess().getAbstractAbstractKeyword_2_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__AbstractAssignment_2"
+
+
+    // $ANTLR start "rule__Class__NameAssignment_4"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:877:1: rule__Class__NameAssignment_4 : ( ruleEString ) ;
+    public final void rule__Class__NameAssignment_4() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:881:1: ( ( ruleEString ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:882:1: ( ruleEString )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:882:1: ( ruleEString )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:883:1: ruleEString
+            {
+             before(grammarAccess.getClassAccess().getNameEStringParserRuleCall_4_0()); 
+            pushFollow(FOLLOW_ruleEString_in_rule__Class__NameAssignment_41703);
+            ruleEString();
+
+            state._fsp--;
+
+             after(grammarAccess.getClassAccess().getNameEStringParserRuleCall_4_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__NameAssignment_4"
 
     // Delegated rules
 
@@ -1805,25 +2239,39 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_rule__StructuralView__Group__1__Impl_in_rule__StructuralView__Group__1792 = new BitSet(new long[]{0x0000000000001000L});
     public static final BitSet FOLLOW_rule__StructuralView__Group__2_in_rule__StructuralView__Group__1795 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_14_in_rule__StructuralView__Group__1__Impl823 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__StructuralView__Group__2__Impl_in_rule__StructuralView__Group__2854 = new BitSet(new long[]{0x000000000000A000L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__2__Impl_in_rule__StructuralView__Group__2854 = new BitSet(new long[]{0x000000000003A000L});
     public static final BitSet FOLLOW_rule__StructuralView__Group__3_in_rule__StructuralView__Group__2857 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_12_in_rule__StructuralView__Group__2__Impl885 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__StructuralView__Group__3__Impl_in_rule__StructuralView__Group__3916 = new BitSet(new long[]{0x000000000000A000L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__3__Impl_in_rule__StructuralView__Group__3916 = new BitSet(new long[]{0x000000000003A000L});
     public static final BitSet FOLLOW_rule__StructuralView__Group__4_in_rule__StructuralView__Group__3919 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__StructuralView__ClassesAssignment_3_in_rule__StructuralView__Group__3__Impl946 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__StructuralView__Group__4__Impl_in_rule__StructuralView__Group__4977 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_13_in_rule__StructuralView__Group__4__Impl1005 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Class__Group__0__Impl_in_rule__Class__Group__01046 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_rule__Class__Group__0__Impl_in_rule__Class__Group__01046 = new BitSet(new long[]{0x0000000000038000L});
     public static final BitSet FOLLOW_rule__Class__Group__1_in_rule__Class__Group__01049 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Class__Group__1__Impl_in_rule__Class__Group__11107 = new BitSet(new long[]{0x0000000000000030L});
+    public static final BitSet FOLLOW_rule__Class__Group__1__Impl_in_rule__Class__Group__11107 = new BitSet(new long[]{0x0000000000038000L});
     public static final BitSet FOLLOW_rule__Class__Group__2_in_rule__Class__Group__11110 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_15_in_rule__Class__Group__1__Impl1138 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Class__Group__2__Impl_in_rule__Class__Group__21169 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Class__NameAssignment_2_in_rule__Class__Group__2__Impl1196 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleAspect_in_rule__RamModel__AspectsAssignment1237 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleEString_in_rule__Aspect__NameAssignment_11268 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleStructuralView_in_rule__Aspect__StructuralViewAssignment_31299 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleClass_in_rule__StructuralView__ClassesAssignment_31330 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleEString_in_rule__Class__NameAssignment_21361 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__PartialAssignment_1_in_rule__Class__Group__1__Impl1137 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__2__Impl_in_rule__Class__Group__21168 = new BitSet(new long[]{0x0000000000038000L});
+    public static final BitSet FOLLOW_rule__Class__Group__3_in_rule__Class__Group__21171 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__AbstractAssignment_2_in_rule__Class__Group__2__Impl1198 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__3__Impl_in_rule__Class__Group__31229 = new BitSet(new long[]{0x0000000000000030L});
+    public static final BitSet FOLLOW_rule__Class__Group__4_in_rule__Class__Group__31232 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_15_in_rule__Class__Group__3__Impl1260 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__4__Impl_in_rule__Class__Group__41291 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_rule__Class__Group__5_in_rule__Class__Group__41294 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__NameAssignment_4_in_rule__Class__Group__4__Impl1321 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__5__Impl_in_rule__Class__Group__51351 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_rule__Class__Group__6_in_rule__Class__Group__51354 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_12_in_rule__Class__Group__5__Impl1382 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__6__Impl_in_rule__Class__Group__61413 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_13_in_rule__Class__Group__6__Impl1441 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleAspect_in_rule__RamModel__AspectsAssignment1491 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleEString_in_rule__Aspect__NameAssignment_11522 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleStructuralView_in_rule__Aspect__StructuralViewAssignment_31553 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleClass_in_rule__StructuralView__ClassesAssignment_31584 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_16_in_rule__Class__PartialAssignment_11620 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_17_in_rule__Class__AbstractAssignment_21664 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleEString_in_rule__Class__NameAssignment_41703 = new BitSet(new long[]{0x0000000000000002L});
 
 }

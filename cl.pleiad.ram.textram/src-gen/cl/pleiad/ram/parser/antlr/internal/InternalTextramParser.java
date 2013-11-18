@@ -21,11 +21,13 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalTextramParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'Aspect'", "'{'", "'}'", "'StructuralView'", "'Class'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'Aspect'", "'{'", "'}'", "'StructuralView'", "'partial'", "'abstract'", "'Class'"
     };
     public static final int RULE_ID=5;
     public static final int RULE_STRING=4;
+    public static final int T__16=16;
     public static final int T__15=15;
+    public static final int T__17=17;
     public static final int T__12=12;
     public static final int T__11=11;
     public static final int T__14=14;
@@ -535,7 +537,7 @@ public class InternalTextramParser extends AbstractInternalAntlrParser {
             int alt3=2;
             int LA3_0 = input.LA(1);
 
-            if ( (LA3_0==15) ) {
+            if ( ((LA3_0>=15 && LA3_0<=17)) ) {
                 alt3=1;
             }
             switch (alt3) {
@@ -634,22 +636,26 @@ public class InternalTextramParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleClass"
-    // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:277:1: ruleClass returns [EObject current=null] : ( () otherlv_1= 'Class' ( (lv_name_2_0= ruleEString ) ) ) ;
+    // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:277:1: ruleClass returns [EObject current=null] : ( () ( (lv_partial_1_0= 'partial' ) )? ( (lv_abstract_2_0= 'abstract' ) )? otherlv_3= 'Class' ( (lv_name_4_0= ruleEString ) ) otherlv_5= '{' otherlv_6= '}' ) ;
     public final EObject ruleClass() throws RecognitionException {
         EObject current = null;
 
-        Token otherlv_1=null;
-        AntlrDatatypeRuleToken lv_name_2_0 = null;
+        Token lv_partial_1_0=null;
+        Token lv_abstract_2_0=null;
+        Token otherlv_3=null;
+        Token otherlv_5=null;
+        Token otherlv_6=null;
+        AntlrDatatypeRuleToken lv_name_4_0 = null;
 
 
          enterRule(); 
             
         try {
-            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:280:28: ( ( () otherlv_1= 'Class' ( (lv_name_2_0= ruleEString ) ) ) )
-            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:281:1: ( () otherlv_1= 'Class' ( (lv_name_2_0= ruleEString ) ) )
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:280:28: ( ( () ( (lv_partial_1_0= 'partial' ) )? ( (lv_abstract_2_0= 'abstract' ) )? otherlv_3= 'Class' ( (lv_name_4_0= ruleEString ) ) otherlv_5= '{' otherlv_6= '}' ) )
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:281:1: ( () ( (lv_partial_1_0= 'partial' ) )? ( (lv_abstract_2_0= 'abstract' ) )? otherlv_3= 'Class' ( (lv_name_4_0= ruleEString ) ) otherlv_5= '{' otherlv_6= '}' )
             {
-            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:281:1: ( () otherlv_1= 'Class' ( (lv_name_2_0= ruleEString ) ) )
-            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:281:2: () otherlv_1= 'Class' ( (lv_name_2_0= ruleEString ) )
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:281:1: ( () ( (lv_partial_1_0= 'partial' ) )? ( (lv_abstract_2_0= 'abstract' ) )? otherlv_3= 'Class' ( (lv_name_4_0= ruleEString ) ) otherlv_5= '{' otherlv_6= '}' )
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:281:2: () ( (lv_partial_1_0= 'partial' ) )? ( (lv_abstract_2_0= 'abstract' ) )? otherlv_3= 'Class' ( (lv_name_4_0= ruleEString ) ) otherlv_5= '{' otherlv_6= '}'
             {
             // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:281:2: ()
             // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:282:5: 
@@ -662,21 +668,87 @@ public class InternalTextramParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,15,FOLLOW_15_in_ruleClass632); 
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:287:2: ( (lv_partial_1_0= 'partial' ) )?
+            int alt4=2;
+            int LA4_0 = input.LA(1);
 
-                	newLeafNode(otherlv_1, grammarAccess.getClassAccess().getClassKeyword_1());
+            if ( (LA4_0==15) ) {
+                alt4=1;
+            }
+            switch (alt4) {
+                case 1 :
+                    // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:288:1: (lv_partial_1_0= 'partial' )
+                    {
+                    // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:288:1: (lv_partial_1_0= 'partial' )
+                    // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:289:3: lv_partial_1_0= 'partial'
+                    {
+                    lv_partial_1_0=(Token)match(input,15,FOLLOW_15_in_ruleClass638); 
+
+                            newLeafNode(lv_partial_1_0, grammarAccess.getClassAccess().getPartialPartialKeyword_1_0());
+                        
+
+                    	        if (current==null) {
+                    	            current = createModelElement(grammarAccess.getClassRule());
+                    	        }
+                           		setWithLastConsumed(current, "partial", true, "partial");
+                    	    
+
+                    }
+
+
+                    }
+                    break;
+
+            }
+
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:302:3: ( (lv_abstract_2_0= 'abstract' ) )?
+            int alt5=2;
+            int LA5_0 = input.LA(1);
+
+            if ( (LA5_0==16) ) {
+                alt5=1;
+            }
+            switch (alt5) {
+                case 1 :
+                    // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:303:1: (lv_abstract_2_0= 'abstract' )
+                    {
+                    // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:303:1: (lv_abstract_2_0= 'abstract' )
+                    // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:304:3: lv_abstract_2_0= 'abstract'
+                    {
+                    lv_abstract_2_0=(Token)match(input,16,FOLLOW_16_in_ruleClass670); 
+
+                            newLeafNode(lv_abstract_2_0, grammarAccess.getClassAccess().getAbstractAbstractKeyword_2_0());
+                        
+
+                    	        if (current==null) {
+                    	            current = createModelElement(grammarAccess.getClassRule());
+                    	        }
+                           		setWithLastConsumed(current, "abstract", true, "abstract");
+                    	    
+
+                    }
+
+
+                    }
+                    break;
+
+            }
+
+            otherlv_3=(Token)match(input,17,FOLLOW_17_in_ruleClass696); 
+
+                	newLeafNode(otherlv_3, grammarAccess.getClassAccess().getClassKeyword_3());
                 
-            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:291:1: ( (lv_name_2_0= ruleEString ) )
-            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:292:1: (lv_name_2_0= ruleEString )
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:321:1: ( (lv_name_4_0= ruleEString ) )
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:322:1: (lv_name_4_0= ruleEString )
             {
-            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:292:1: (lv_name_2_0= ruleEString )
-            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:293:3: lv_name_2_0= ruleEString
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:322:1: (lv_name_4_0= ruleEString )
+            // ../cl.pleiad.ram.textram/src-gen/cl/pleiad/ram/parser/antlr/internal/InternalTextram.g:323:3: lv_name_4_0= ruleEString
             {
              
-            	        newCompositeNode(grammarAccess.getClassAccess().getNameEStringParserRuleCall_2_0()); 
+            	        newCompositeNode(grammarAccess.getClassAccess().getNameEStringParserRuleCall_4_0()); 
             	    
-            pushFollow(FOLLOW_ruleEString_in_ruleClass653);
-            lv_name_2_0=ruleEString();
+            pushFollow(FOLLOW_ruleEString_in_ruleClass717);
+            lv_name_4_0=ruleEString();
 
             state._fsp--;
 
@@ -687,7 +759,7 @@ public class InternalTextramParser extends AbstractInternalAntlrParser {
                    		set(
                    			current, 
                    			"name",
-                    		lv_name_2_0, 
+                    		lv_name_4_0, 
                     		"EString");
             	        afterParserOrEnumRuleCall();
             	    
@@ -697,6 +769,14 @@ public class InternalTextramParser extends AbstractInternalAntlrParser {
 
             }
 
+            otherlv_5=(Token)match(input,12,FOLLOW_12_in_ruleClass729); 
+
+                	newLeafNode(otherlv_5, grammarAccess.getClassAccess().getLeftCurlyBracketKeyword_5());
+                
+            otherlv_6=(Token)match(input,13,FOLLOW_13_in_ruleClass741); 
+
+                	newLeafNode(otherlv_6, grammarAccess.getClassAccess().getRightCurlyBracketKeyword_6());
+                
 
             }
 
@@ -738,12 +818,16 @@ public class InternalTextramParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_ruleStructuralView_in_entryRuleStructuralView438 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleStructuralView448 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_14_in_ruleStructuralView494 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_ruleStructuralView506 = new BitSet(new long[]{0x000000000000A000L});
+    public static final BitSet FOLLOW_12_in_ruleStructuralView506 = new BitSet(new long[]{0x000000000003A000L});
     public static final BitSet FOLLOW_ruleClass_in_ruleStructuralView527 = new BitSet(new long[]{0x0000000000002000L});
     public static final BitSet FOLLOW_13_in_ruleStructuralView540 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleClass_in_entryRuleClass576 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleClass586 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_15_in_ruleClass632 = new BitSet(new long[]{0x0000000000000030L});
-    public static final BitSet FOLLOW_ruleEString_in_ruleClass653 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_15_in_ruleClass638 = new BitSet(new long[]{0x0000000000030000L});
+    public static final BitSet FOLLOW_16_in_ruleClass670 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_17_in_ruleClass696 = new BitSet(new long[]{0x0000000000000030L});
+    public static final BitSet FOLLOW_ruleEString_in_ruleClass717 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_ruleClass729 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_ruleClass741 = new BitSet(new long[]{0x0000000000000002L});
 
 }
