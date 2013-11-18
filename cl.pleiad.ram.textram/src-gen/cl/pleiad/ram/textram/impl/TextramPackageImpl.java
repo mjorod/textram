@@ -2,12 +2,12 @@
  */
 package cl.pleiad.ram.textram.impl;
 
-import cl.pleiad.ram.textram.Greeting;
-import cl.pleiad.ram.textram.Model;
+import ca.mcgill.cs.sel.ram.RamPackage;
+
+import cl.pleiad.ram.textram.RamModel;
 import cl.pleiad.ram.textram.TextramFactory;
 import cl.pleiad.ram.textram.TextramPackage;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -27,14 +27,7 @@ public class TextramPackageImpl extends EPackageImpl implements TextramPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass modelEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass greetingEClass = null;
+  private EClass ramModelEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -84,6 +77,9 @@ public class TextramPackageImpl extends EPackageImpl implements TextramPackage
 
     isInited = true;
 
+    // Initialize simple dependencies
+    RamPackage.eINSTANCE.eClass();
+
     // Create package meta-data objects
     theTextramPackage.createPackageContents();
 
@@ -104,9 +100,9 @@ public class TextramPackageImpl extends EPackageImpl implements TextramPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getModel()
+  public EClass getRamModel()
   {
-    return modelEClass;
+    return ramModelEClass;
   }
 
   /**
@@ -114,29 +110,9 @@ public class TextramPackageImpl extends EPackageImpl implements TextramPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getModel_Greetings()
+  public EReference getRamModel_Aspects()
   {
-    return (EReference)modelEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getGreeting()
-  {
-    return greetingEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getGreeting_Name()
-  {
-    return (EAttribute)greetingEClass.getEStructuralFeatures().get(0);
+    return (EReference)ramModelEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -169,11 +145,8 @@ public class TextramPackageImpl extends EPackageImpl implements TextramPackage
     isCreated = true;
 
     // Create classes and their features
-    modelEClass = createEClass(MODEL);
-    createEReference(modelEClass, MODEL__GREETINGS);
-
-    greetingEClass = createEClass(GREETING);
-    createEAttribute(greetingEClass, GREETING__NAME);
+    ramModelEClass = createEClass(RAM_MODEL);
+    createEReference(ramModelEClass, RAM_MODEL__ASPECTS);
   }
 
   /**
@@ -200,6 +173,9 @@ public class TextramPackageImpl extends EPackageImpl implements TextramPackage
     setNsPrefix(eNS_PREFIX);
     setNsURI(eNS_URI);
 
+    // Obtain other dependent packages
+    RamPackage theRamPackage = (RamPackage)EPackage.Registry.INSTANCE.getEPackage(RamPackage.eNS_URI);
+
     // Create type parameters
 
     // Set bounds for type parameters
@@ -207,11 +183,8 @@ public class TextramPackageImpl extends EPackageImpl implements TextramPackage
     // Add supertypes to classes
 
     // Initialize classes and features; add operations and parameters
-    initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getModel_Greetings(), this.getGreeting(), null, "greetings", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(greetingEClass, Greeting.class, "Greeting", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getGreeting_Name(), ecorePackage.getEString(), "name", null, 0, 1, Greeting.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(ramModelEClass, RamModel.class, "RamModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRamModel_Aspects(), theRamPackage.getAspect(), null, "aspects", null, 0, -1, RamModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

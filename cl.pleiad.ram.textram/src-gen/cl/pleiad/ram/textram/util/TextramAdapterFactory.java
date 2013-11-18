@@ -75,14 +75,9 @@ public class TextramAdapterFactory extends AdapterFactoryImpl
     new TextramSwitch<Adapter>()
     {
       @Override
-      public Adapter caseModel(Model object)
+      public Adapter caseRamModel(RamModel object)
       {
-        return createModelAdapter();
-      }
-      @Override
-      public Adapter caseGreeting(Greeting object)
-      {
-        return createGreetingAdapter();
+        return createRamModelAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -107,31 +102,16 @@ public class TextramAdapterFactory extends AdapterFactoryImpl
 
 
   /**
-   * Creates a new adapter for an object of class '{@link cl.pleiad.ram.textram.Model <em>Model</em>}'.
+   * Creates a new adapter for an object of class '{@link cl.pleiad.ram.textram.RamModel <em>Ram Model</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see cl.pleiad.ram.textram.Model
+   * @see cl.pleiad.ram.textram.RamModel
    * @generated
    */
-  public Adapter createModelAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link cl.pleiad.ram.textram.Greeting <em>Greeting</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see cl.pleiad.ram.textram.Greeting
-   * @generated
-   */
-  public Adapter createGreetingAdapter()
+  public Adapter createRamModelAdapter()
   {
     return null;
   }

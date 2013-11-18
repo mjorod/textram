@@ -37,9 +37,15 @@ public class TextramParser extends AbstractContentAssistParser {
 			nameMappings = new HashMap<AbstractElement, String>() {
 				private static final long serialVersionUID = 1L;
 				{
-					put(grammarAccess.getGreetingAccess().getGroup(), "rule__Greeting__Group__0");
-					put(grammarAccess.getModelAccess().getGreetingsAssignment(), "rule__Model__GreetingsAssignment");
-					put(grammarAccess.getGreetingAccess().getNameAssignment_1(), "rule__Greeting__NameAssignment_1");
+					put(grammarAccess.getEStringAccess().getAlternatives(), "rule__EString__Alternatives");
+					put(grammarAccess.getAspectAccess().getGroup(), "rule__Aspect__Group__0");
+					put(grammarAccess.getStructuralViewAccess().getGroup(), "rule__StructuralView__Group__0");
+					put(grammarAccess.getClassAccess().getGroup(), "rule__Class__Group__0");
+					put(grammarAccess.getRamModelAccess().getAspectsAssignment(), "rule__RamModel__AspectsAssignment");
+					put(grammarAccess.getAspectAccess().getNameAssignment_1(), "rule__Aspect__NameAssignment_1");
+					put(grammarAccess.getAspectAccess().getStructuralViewAssignment_3(), "rule__Aspect__StructuralViewAssignment_3");
+					put(grammarAccess.getStructuralViewAccess().getClassesAssignment_3(), "rule__StructuralView__ClassesAssignment_3");
+					put(grammarAccess.getClassAccess().getNameAssignment_2(), "rule__Class__NameAssignment_2");
 				}
 			};
 		}
@@ -50,7 +56,7 @@ public class TextramParser extends AbstractContentAssistParser {
 	protected Collection<FollowElement> getFollowElements(AbstractInternalContentAssistParser parser) {
 		try {
 			cl.pleiad.ram.ui.contentassist.antlr.internal.InternalTextramParser typedParser = (cl.pleiad.ram.ui.contentassist.antlr.internal.InternalTextramParser) parser;
-			typedParser.entryRuleModel();
+			typedParser.entryRuleRamModel();
 			return typedParser.getFollowElements();
 		} catch(RecognitionException ex) {
 			throw new RuntimeException(ex);

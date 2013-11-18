@@ -4,14 +4,11 @@
     editorDirectory="/cl.pleiad.ram.textram.editor/src" modelPluginID="cl.pleiad.ram.textram"
     forceOverwrite="true" modelName="Textram" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="5.0" copyrightFields="false" editPluginID="cl.pleiad.ram.textram.edit"
-    editorPluginID="cl.pleiad.ram.textram.editor" runtimeVersion="2.9">
+    editorPluginID="cl.pleiad.ram.textram.editor" runtimeVersion="2.9" usedGenPackages="../../../ca.mcgill.sel.ram/model/RAM.genmodel#//ram">
   <genPackages prefix="Textram" basePackage="cl.pleiad.ram" disposableProviderFactory="true"
       fileExtensions="xram" ecorePackage="Textram.ecore#/">
-    <genClasses ecoreClass="Textram.ecore#//Model">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Textram.ecore#//Model/greetings"/>
-    </genClasses>
-    <genClasses ecoreClass="Textram.ecore#//Greeting">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Textram.ecore#//Greeting/name"/>
+    <genClasses ecoreClass="Textram.ecore#//RamModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Textram.ecore#//RamModel/aspects"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

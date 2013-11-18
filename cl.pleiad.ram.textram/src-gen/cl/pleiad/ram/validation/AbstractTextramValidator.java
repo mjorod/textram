@@ -13,6 +13,7 @@ public class AbstractTextramValidator extends org.eclipse.xtext.validation.Abstr
 	protected List<EPackage> getEPackages() {
 	    List<EPackage> result = new ArrayList<EPackage>();
 	    result.add(cl.pleiad.ram.textram.TextramPackage.eINSTANCE);
+	    result.add(EPackage.Registry.INSTANCE.getEPackage("http://cs.mcgill.ca/sel/ram/2.1"));
 		return result;
 	}
 }

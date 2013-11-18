@@ -64,8 +64,7 @@ public class TextramFactoryImpl extends EFactoryImpl implements TextramFactory
   {
     switch (eClass.getClassifierID())
     {
-      case TextramPackage.MODEL: return createModel();
-      case TextramPackage.GREETING: return createGreeting();
+      case TextramPackage.RAM_MODEL: return createRamModel();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -76,21 +75,10 @@ public class TextramFactoryImpl extends EFactoryImpl implements TextramFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Model createModel()
+  public RamModel createRamModel()
   {
-    ModelImpl model = new ModelImpl();
-    return model;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Greeting createGreeting()
-  {
-    GreetingImpl greeting = new GreetingImpl();
-    return greeting;
+    RamModelImpl ramModel = new RamModelImpl();
+    return ramModel;
   }
 
   /**

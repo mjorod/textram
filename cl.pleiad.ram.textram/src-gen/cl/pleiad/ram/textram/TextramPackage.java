@@ -2,7 +2,6 @@
  */
 package cl.pleiad.ram.textram;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -57,103 +56,54 @@ public interface TextramPackage extends EPackage
   TextramPackage eINSTANCE = cl.pleiad.ram.textram.impl.TextramPackageImpl.init();
 
   /**
-   * The meta object id for the '{@link cl.pleiad.ram.textram.impl.ModelImpl <em>Model</em>}' class.
+   * The meta object id for the '{@link cl.pleiad.ram.textram.impl.RamModelImpl <em>Ram Model</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see cl.pleiad.ram.textram.impl.ModelImpl
-   * @see cl.pleiad.ram.textram.impl.TextramPackageImpl#getModel()
+   * @see cl.pleiad.ram.textram.impl.RamModelImpl
+   * @see cl.pleiad.ram.textram.impl.TextramPackageImpl#getRamModel()
    * @generated
    */
-  int MODEL = 0;
+  int RAM_MODEL = 0;
 
   /**
-   * The feature id for the '<em><b>Greetings</b></em>' containment reference list.
+   * The feature id for the '<em><b>Aspects</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MODEL__GREETINGS = 0;
+  int RAM_MODEL__ASPECTS = 0;
 
   /**
-   * The number of structural features of the '<em>Model</em>' class.
+   * The number of structural features of the '<em>Ram Model</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MODEL_FEATURE_COUNT = 1;
-
-  /**
-   * The meta object id for the '{@link cl.pleiad.ram.textram.impl.GreetingImpl <em>Greeting</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see cl.pleiad.ram.textram.impl.GreetingImpl
-   * @see cl.pleiad.ram.textram.impl.TextramPackageImpl#getGreeting()
-   * @generated
-   */
-  int GREETING = 1;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int GREETING__NAME = 0;
-
-  /**
-   * The number of structural features of the '<em>Greeting</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int GREETING_FEATURE_COUNT = 1;
+  int RAM_MODEL_FEATURE_COUNT = 1;
 
 
   /**
-   * Returns the meta object for class '{@link cl.pleiad.ram.textram.Model <em>Model</em>}'.
+   * Returns the meta object for class '{@link cl.pleiad.ram.textram.RamModel <em>Ram Model</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Model</em>'.
-   * @see cl.pleiad.ram.textram.Model
+   * @return the meta object for class '<em>Ram Model</em>'.
+   * @see cl.pleiad.ram.textram.RamModel
    * @generated
    */
-  EClass getModel();
+  EClass getRamModel();
 
   /**
-   * Returns the meta object for the containment reference list '{@link cl.pleiad.ram.textram.Model#getGreetings <em>Greetings</em>}'.
+   * Returns the meta object for the containment reference list '{@link cl.pleiad.ram.textram.RamModel#getAspects <em>Aspects</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Greetings</em>'.
-   * @see cl.pleiad.ram.textram.Model#getGreetings()
-   * @see #getModel()
+   * @return the meta object for the containment reference list '<em>Aspects</em>'.
+   * @see cl.pleiad.ram.textram.RamModel#getAspects()
+   * @see #getRamModel()
    * @generated
    */
-  EReference getModel_Greetings();
-
-  /**
-   * Returns the meta object for class '{@link cl.pleiad.ram.textram.Greeting <em>Greeting</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Greeting</em>'.
-   * @see cl.pleiad.ram.textram.Greeting
-   * @generated
-   */
-  EClass getGreeting();
-
-  /**
-   * Returns the meta object for the attribute '{@link cl.pleiad.ram.textram.Greeting#getName <em>Name</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see cl.pleiad.ram.textram.Greeting#getName()
-   * @see #getGreeting()
-   * @generated
-   */
-  EAttribute getGreeting_Name();
+  EReference getRamModel_Aspects();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -179,40 +129,22 @@ public interface TextramPackage extends EPackage
   interface Literals
   {
     /**
-     * The meta object literal for the '{@link cl.pleiad.ram.textram.impl.ModelImpl <em>Model</em>}' class.
+     * The meta object literal for the '{@link cl.pleiad.ram.textram.impl.RamModelImpl <em>Ram Model</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see cl.pleiad.ram.textram.impl.ModelImpl
-     * @see cl.pleiad.ram.textram.impl.TextramPackageImpl#getModel()
+     * @see cl.pleiad.ram.textram.impl.RamModelImpl
+     * @see cl.pleiad.ram.textram.impl.TextramPackageImpl#getRamModel()
      * @generated
      */
-    EClass MODEL = eINSTANCE.getModel();
+    EClass RAM_MODEL = eINSTANCE.getRamModel();
 
     /**
-     * The meta object literal for the '<em><b>Greetings</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Aspects</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MODEL__GREETINGS = eINSTANCE.getModel_Greetings();
-
-    /**
-     * The meta object literal for the '{@link cl.pleiad.ram.textram.impl.GreetingImpl <em>Greeting</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see cl.pleiad.ram.textram.impl.GreetingImpl
-     * @see cl.pleiad.ram.textram.impl.TextramPackageImpl#getGreeting()
-     * @generated
-     */
-    EClass GREETING = eINSTANCE.getGreeting();
-
-    /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute GREETING__NAME = eINSTANCE.getGreeting_Name();
+    EReference RAM_MODEL__ASPECTS = eINSTANCE.getRamModel_Aspects();
 
   }
 

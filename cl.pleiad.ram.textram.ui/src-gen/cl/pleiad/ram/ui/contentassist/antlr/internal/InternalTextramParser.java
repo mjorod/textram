@@ -22,14 +22,17 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalTextramParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_INT", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'Hello'", "'!'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'Aspect'", "'{'", "'}'", "'StructuralView'", "'Class'"
     };
-    public static final int RULE_ID=4;
-    public static final int RULE_STRING=6;
+    public static final int RULE_ID=5;
+    public static final int RULE_STRING=4;
+    public static final int T__15=15;
     public static final int T__12=12;
     public static final int T__11=11;
+    public static final int T__14=14;
+    public static final int T__13=13;
     public static final int RULE_ANY_OTHER=10;
-    public static final int RULE_INT=5;
+    public static final int RULE_INT=6;
     public static final int RULE_WS=9;
     public static final int RULE_SL_COMMENT=8;
     public static final int EOF=-1;
@@ -72,21 +75,21 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
 
 
 
-    // $ANTLR start "entryRuleModel"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:60:1: entryRuleModel : ruleModel EOF ;
-    public final void entryRuleModel() throws RecognitionException {
+    // $ANTLR start "entryRuleRamModel"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:60:1: entryRuleRamModel : ruleRamModel EOF ;
+    public final void entryRuleRamModel() throws RecognitionException {
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:61:1: ( ruleModel EOF )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:62:1: ruleModel EOF
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:61:1: ( ruleRamModel EOF )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:62:1: ruleRamModel EOF
             {
-             before(grammarAccess.getModelRule()); 
-            pushFollow(FOLLOW_ruleModel_in_entryRuleModel61);
-            ruleModel();
+             before(grammarAccess.getRamModelRule()); 
+            pushFollow(FOLLOW_ruleRamModel_in_entryRuleRamModel61);
+            ruleRamModel();
 
             state._fsp--;
 
-             after(grammarAccess.getModelRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleModel68); 
+             after(grammarAccess.getRamModelRule()); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleRamModel68); 
 
             }
 
@@ -99,24 +102,24 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "entryRuleModel"
+    // $ANTLR end "entryRuleRamModel"
 
 
-    // $ANTLR start "ruleModel"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:69:1: ruleModel : ( ( rule__Model__GreetingsAssignment )* ) ;
-    public final void ruleModel() throws RecognitionException {
+    // $ANTLR start "ruleRamModel"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:69:1: ruleRamModel : ( ( rule__RamModel__AspectsAssignment )* ) ;
+    public final void ruleRamModel() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:73:2: ( ( ( rule__Model__GreetingsAssignment )* ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:74:1: ( ( rule__Model__GreetingsAssignment )* )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:73:2: ( ( ( rule__RamModel__AspectsAssignment )* ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:74:1: ( ( rule__RamModel__AspectsAssignment )* )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:74:1: ( ( rule__Model__GreetingsAssignment )* )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:75:1: ( rule__Model__GreetingsAssignment )*
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:74:1: ( ( rule__RamModel__AspectsAssignment )* )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:75:1: ( rule__RamModel__AspectsAssignment )*
             {
-             before(grammarAccess.getModelAccess().getGreetingsAssignment()); 
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:76:1: ( rule__Model__GreetingsAssignment )*
+             before(grammarAccess.getRamModelAccess().getAspectsAssignment()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:76:1: ( rule__RamModel__AspectsAssignment )*
             loop1:
             do {
                 int alt1=2;
@@ -129,10 +132,10 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
 
                 switch (alt1) {
             	case 1 :
-            	    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:76:2: rule__Model__GreetingsAssignment
+            	    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:76:2: rule__RamModel__AspectsAssignment
             	    {
-            	    pushFollow(FOLLOW_rule__Model__GreetingsAssignment_in_ruleModel94);
-            	    rule__Model__GreetingsAssignment();
+            	    pushFollow(FOLLOW_rule__RamModel__AspectsAssignment_in_ruleRamModel94);
+            	    rule__RamModel__AspectsAssignment();
 
             	    state._fsp--;
 
@@ -145,7 +148,7 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
                 }
             } while (true);
 
-             after(grammarAccess.getModelAccess().getGreetingsAssignment()); 
+             after(grammarAccess.getRamModelAccess().getAspectsAssignment()); 
 
             }
 
@@ -164,24 +167,24 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "ruleModel"
+    // $ANTLR end "ruleRamModel"
 
 
-    // $ANTLR start "entryRuleGreeting"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:88:1: entryRuleGreeting : ruleGreeting EOF ;
-    public final void entryRuleGreeting() throws RecognitionException {
+    // $ANTLR start "entryRuleAspect"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:88:1: entryRuleAspect : ruleAspect EOF ;
+    public final void entryRuleAspect() throws RecognitionException {
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:89:1: ( ruleGreeting EOF )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:90:1: ruleGreeting EOF
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:89:1: ( ruleAspect EOF )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:90:1: ruleAspect EOF
             {
-             before(grammarAccess.getGreetingRule()); 
-            pushFollow(FOLLOW_ruleGreeting_in_entryRuleGreeting122);
-            ruleGreeting();
+             before(grammarAccess.getAspectRule()); 
+            pushFollow(FOLLOW_ruleAspect_in_entryRuleAspect122);
+            ruleAspect();
 
             state._fsp--;
 
-             after(grammarAccess.getGreetingRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleGreeting129); 
+             after(grammarAccess.getAspectRule()); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleAspect129); 
 
             }
 
@@ -194,110 +197,35 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "entryRuleGreeting"
+    // $ANTLR end "entryRuleAspect"
 
 
-    // $ANTLR start "ruleGreeting"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:97:1: ruleGreeting : ( ( rule__Greeting__Group__0 ) ) ;
-    public final void ruleGreeting() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:101:2: ( ( ( rule__Greeting__Group__0 ) ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:102:1: ( ( rule__Greeting__Group__0 ) )
-            {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:102:1: ( ( rule__Greeting__Group__0 ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:103:1: ( rule__Greeting__Group__0 )
-            {
-             before(grammarAccess.getGreetingAccess().getGroup()); 
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:104:1: ( rule__Greeting__Group__0 )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:104:2: rule__Greeting__Group__0
-            {
-            pushFollow(FOLLOW_rule__Greeting__Group__0_in_ruleGreeting155);
-            rule__Greeting__Group__0();
-
-            state._fsp--;
-
-
-            }
-
-             after(grammarAccess.getGreetingAccess().getGroup()); 
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "ruleGreeting"
-
-
-    // $ANTLR start "rule__Greeting__Group__0"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:118:1: rule__Greeting__Group__0 : rule__Greeting__Group__0__Impl rule__Greeting__Group__1 ;
-    public final void rule__Greeting__Group__0() throws RecognitionException {
+    // $ANTLR start "ruleAspect"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:97:1: ruleAspect : ( ( rule__Aspect__Group__0 ) ) ;
+    public final void ruleAspect() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:122:1: ( rule__Greeting__Group__0__Impl rule__Greeting__Group__1 )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:123:2: rule__Greeting__Group__0__Impl rule__Greeting__Group__1
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:101:2: ( ( ( rule__Aspect__Group__0 ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:102:1: ( ( rule__Aspect__Group__0 ) )
             {
-            pushFollow(FOLLOW_rule__Greeting__Group__0__Impl_in_rule__Greeting__Group__0189);
-            rule__Greeting__Group__0__Impl();
-
-            state._fsp--;
-
-            pushFollow(FOLLOW_rule__Greeting__Group__1_in_rule__Greeting__Group__0192);
-            rule__Greeting__Group__1();
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:102:1: ( ( rule__Aspect__Group__0 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:103:1: ( rule__Aspect__Group__0 )
+            {
+             before(grammarAccess.getAspectAccess().getGroup()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:104:1: ( rule__Aspect__Group__0 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:104:2: rule__Aspect__Group__0
+            {
+            pushFollow(FOLLOW_rule__Aspect__Group__0_in_ruleAspect155);
+            rule__Aspect__Group__0();
 
             state._fsp--;
 
 
             }
 
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__Greeting__Group__0"
-
-
-    // $ANTLR start "rule__Greeting__Group__0__Impl"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:130:1: rule__Greeting__Group__0__Impl : ( 'Hello' ) ;
-    public final void rule__Greeting__Group__0__Impl() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:134:1: ( ( 'Hello' ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:135:1: ( 'Hello' )
-            {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:135:1: ( 'Hello' )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:136:1: 'Hello'
-            {
-             before(grammarAccess.getGreetingAccess().getHelloKeyword_0()); 
-            match(input,11,FOLLOW_11_in_rule__Greeting__Group__0__Impl220); 
-             after(grammarAccess.getGreetingAccess().getHelloKeyword_0()); 
+             after(grammarAccess.getAspectAccess().getGroup()); 
 
             }
 
@@ -316,29 +244,24 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__Greeting__Group__0__Impl"
+    // $ANTLR end "ruleAspect"
 
 
-    // $ANTLR start "rule__Greeting__Group__1"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:149:1: rule__Greeting__Group__1 : rule__Greeting__Group__1__Impl rule__Greeting__Group__2 ;
-    public final void rule__Greeting__Group__1() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
+    // $ANTLR start "entryRuleEString"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:116:1: entryRuleEString : ruleEString EOF ;
+    public final void entryRuleEString() throws RecognitionException {
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:153:1: ( rule__Greeting__Group__1__Impl rule__Greeting__Group__2 )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:154:2: rule__Greeting__Group__1__Impl rule__Greeting__Group__2
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:117:1: ( ruleEString EOF )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:118:1: ruleEString EOF
             {
-            pushFollow(FOLLOW_rule__Greeting__Group__1__Impl_in_rule__Greeting__Group__1251);
-            rule__Greeting__Group__1__Impl();
+             before(grammarAccess.getEStringRule()); 
+            pushFollow(FOLLOW_ruleEString_in_entryRuleEString182);
+            ruleEString();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Greeting__Group__2_in_rule__Greeting__Group__1254);
-            rule__Greeting__Group__2();
-
-            state._fsp--;
-
+             after(grammarAccess.getEStringRule()); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleEString189); 
 
             }
 
@@ -348,41 +271,38 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
             recover(input,re);
         }
         finally {
-
-            	restoreStackSize(stackSize);
-
         }
         return ;
     }
-    // $ANTLR end "rule__Greeting__Group__1"
+    // $ANTLR end "entryRuleEString"
 
 
-    // $ANTLR start "rule__Greeting__Group__1__Impl"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:161:1: rule__Greeting__Group__1__Impl : ( ( rule__Greeting__NameAssignment_1 ) ) ;
-    public final void rule__Greeting__Group__1__Impl() throws RecognitionException {
+    // $ANTLR start "ruleEString"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:125:1: ruleEString : ( ( rule__EString__Alternatives ) ) ;
+    public final void ruleEString() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:165:1: ( ( ( rule__Greeting__NameAssignment_1 ) ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:166:1: ( ( rule__Greeting__NameAssignment_1 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:129:2: ( ( ( rule__EString__Alternatives ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:130:1: ( ( rule__EString__Alternatives ) )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:166:1: ( ( rule__Greeting__NameAssignment_1 ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:167:1: ( rule__Greeting__NameAssignment_1 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:130:1: ( ( rule__EString__Alternatives ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:131:1: ( rule__EString__Alternatives )
             {
-             before(grammarAccess.getGreetingAccess().getNameAssignment_1()); 
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:168:1: ( rule__Greeting__NameAssignment_1 )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:168:2: rule__Greeting__NameAssignment_1
+             before(grammarAccess.getEStringAccess().getAlternatives()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:132:1: ( rule__EString__Alternatives )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:132:2: rule__EString__Alternatives
             {
-            pushFollow(FOLLOW_rule__Greeting__NameAssignment_1_in_rule__Greeting__Group__1__Impl281);
-            rule__Greeting__NameAssignment_1();
+            pushFollow(FOLLOW_rule__EString__Alternatives_in_ruleEString215);
+            rule__EString__Alternatives();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getGreetingAccess().getNameAssignment_1()); 
+             after(grammarAccess.getEStringAccess().getAlternatives()); 
 
             }
 
@@ -401,21 +321,251 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__Greeting__Group__1__Impl"
+    // $ANTLR end "ruleEString"
 
 
-    // $ANTLR start "rule__Greeting__Group__2"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:178:1: rule__Greeting__Group__2 : rule__Greeting__Group__2__Impl ;
-    public final void rule__Greeting__Group__2() throws RecognitionException {
+    // $ANTLR start "entryRuleStructuralView"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:144:1: entryRuleStructuralView : ruleStructuralView EOF ;
+    public final void entryRuleStructuralView() throws RecognitionException {
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:145:1: ( ruleStructuralView EOF )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:146:1: ruleStructuralView EOF
+            {
+             before(grammarAccess.getStructuralViewRule()); 
+            pushFollow(FOLLOW_ruleStructuralView_in_entryRuleStructuralView242);
+            ruleStructuralView();
+
+            state._fsp--;
+
+             after(grammarAccess.getStructuralViewRule()); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleStructuralView249); 
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "entryRuleStructuralView"
+
+
+    // $ANTLR start "ruleStructuralView"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:153:1: ruleStructuralView : ( ( rule__StructuralView__Group__0 ) ) ;
+    public final void ruleStructuralView() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:182:1: ( rule__Greeting__Group__2__Impl )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:183:2: rule__Greeting__Group__2__Impl
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:157:2: ( ( ( rule__StructuralView__Group__0 ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:158:1: ( ( rule__StructuralView__Group__0 ) )
             {
-            pushFollow(FOLLOW_rule__Greeting__Group__2__Impl_in_rule__Greeting__Group__2311);
-            rule__Greeting__Group__2__Impl();
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:158:1: ( ( rule__StructuralView__Group__0 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:159:1: ( rule__StructuralView__Group__0 )
+            {
+             before(grammarAccess.getStructuralViewAccess().getGroup()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:160:1: ( rule__StructuralView__Group__0 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:160:2: rule__StructuralView__Group__0
+            {
+            pushFollow(FOLLOW_rule__StructuralView__Group__0_in_ruleStructuralView275);
+            rule__StructuralView__Group__0();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getStructuralViewAccess().getGroup()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "ruleStructuralView"
+
+
+    // $ANTLR start "entryRuleClass"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:172:1: entryRuleClass : ruleClass EOF ;
+    public final void entryRuleClass() throws RecognitionException {
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:173:1: ( ruleClass EOF )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:174:1: ruleClass EOF
+            {
+             before(grammarAccess.getClassRule()); 
+            pushFollow(FOLLOW_ruleClass_in_entryRuleClass302);
+            ruleClass();
+
+            state._fsp--;
+
+             after(grammarAccess.getClassRule()); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleClass309); 
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "entryRuleClass"
+
+
+    // $ANTLR start "ruleClass"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:181:1: ruleClass : ( ( rule__Class__Group__0 ) ) ;
+    public final void ruleClass() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:185:2: ( ( ( rule__Class__Group__0 ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:186:1: ( ( rule__Class__Group__0 ) )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:186:1: ( ( rule__Class__Group__0 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:187:1: ( rule__Class__Group__0 )
+            {
+             before(grammarAccess.getClassAccess().getGroup()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:188:1: ( rule__Class__Group__0 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:188:2: rule__Class__Group__0
+            {
+            pushFollow(FOLLOW_rule__Class__Group__0_in_ruleClass335);
+            rule__Class__Group__0();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getClassAccess().getGroup()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "ruleClass"
+
+
+    // $ANTLR start "rule__EString__Alternatives"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:200:1: rule__EString__Alternatives : ( ( RULE_STRING ) | ( RULE_ID ) );
+    public final void rule__EString__Alternatives() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:204:1: ( ( RULE_STRING ) | ( RULE_ID ) )
+            int alt2=2;
+            int LA2_0 = input.LA(1);
+
+            if ( (LA2_0==RULE_STRING) ) {
+                alt2=1;
+            }
+            else if ( (LA2_0==RULE_ID) ) {
+                alt2=2;
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 2, 0, input);
+
+                throw nvae;
+            }
+            switch (alt2) {
+                case 1 :
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:205:1: ( RULE_STRING )
+                    {
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:205:1: ( RULE_STRING )
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:206:1: RULE_STRING
+                    {
+                     before(grammarAccess.getEStringAccess().getSTRINGTerminalRuleCall_0()); 
+                    match(input,RULE_STRING,FOLLOW_RULE_STRING_in_rule__EString__Alternatives371); 
+                     after(grammarAccess.getEStringAccess().getSTRINGTerminalRuleCall_0()); 
+
+                    }
+
+
+                    }
+                    break;
+                case 2 :
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:211:6: ( RULE_ID )
+                    {
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:211:6: ( RULE_ID )
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:212:1: RULE_ID
+                    {
+                     before(grammarAccess.getEStringAccess().getIDTerminalRuleCall_1()); 
+                    match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__EString__Alternatives388); 
+                     after(grammarAccess.getEStringAccess().getIDTerminalRuleCall_1()); 
+
+                    }
+
+
+                    }
+                    break;
+
+            }
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__EString__Alternatives"
+
+
+    // $ANTLR start "rule__Aspect__Group__0"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:224:1: rule__Aspect__Group__0 : rule__Aspect__Group__0__Impl rule__Aspect__Group__1 ;
+    public final void rule__Aspect__Group__0() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:228:1: ( rule__Aspect__Group__0__Impl rule__Aspect__Group__1 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:229:2: rule__Aspect__Group__0__Impl rule__Aspect__Group__1
+            {
+            pushFollow(FOLLOW_rule__Aspect__Group__0__Impl_in_rule__Aspect__Group__0418);
+            rule__Aspect__Group__0__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Aspect__Group__1_in_rule__Aspect__Group__0421);
+            rule__Aspect__Group__1();
 
             state._fsp--;
 
@@ -434,25 +584,25 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__Greeting__Group__2"
+    // $ANTLR end "rule__Aspect__Group__0"
 
 
-    // $ANTLR start "rule__Greeting__Group__2__Impl"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:189:1: rule__Greeting__Group__2__Impl : ( '!' ) ;
-    public final void rule__Greeting__Group__2__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Aspect__Group__0__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:236:1: rule__Aspect__Group__0__Impl : ( 'Aspect' ) ;
+    public final void rule__Aspect__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:193:1: ( ( '!' ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:194:1: ( '!' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:240:1: ( ( 'Aspect' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:241:1: ( 'Aspect' )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:194:1: ( '!' )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:195:1: '!'
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:241:1: ( 'Aspect' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:242:1: 'Aspect'
             {
-             before(grammarAccess.getGreetingAccess().getExclamationMarkKeyword_2()); 
-            match(input,12,FOLLOW_12_in_rule__Greeting__Group__2__Impl339); 
-             after(grammarAccess.getGreetingAccess().getExclamationMarkKeyword_2()); 
+             before(grammarAccess.getAspectAccess().getAspectKeyword_0()); 
+            match(input,11,FOLLOW_11_in_rule__Aspect__Group__0__Impl449); 
+             after(grammarAccess.getAspectAccess().getAspectKeyword_0()); 
 
             }
 
@@ -471,31 +621,28 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__Greeting__Group__2__Impl"
+    // $ANTLR end "rule__Aspect__Group__0__Impl"
 
 
-    // $ANTLR start "rule__Model__GreetingsAssignment"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:215:1: rule__Model__GreetingsAssignment : ( ruleGreeting ) ;
-    public final void rule__Model__GreetingsAssignment() throws RecognitionException {
+    // $ANTLR start "rule__Aspect__Group__1"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:255:1: rule__Aspect__Group__1 : rule__Aspect__Group__1__Impl rule__Aspect__Group__2 ;
+    public final void rule__Aspect__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:219:1: ( ( ruleGreeting ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:220:1: ( ruleGreeting )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:259:1: ( rule__Aspect__Group__1__Impl rule__Aspect__Group__2 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:260:2: rule__Aspect__Group__1__Impl rule__Aspect__Group__2
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:220:1: ( ruleGreeting )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:221:1: ruleGreeting
-            {
-             before(grammarAccess.getModelAccess().getGreetingsGreetingParserRuleCall_0()); 
-            pushFollow(FOLLOW_ruleGreeting_in_rule__Model__GreetingsAssignment381);
-            ruleGreeting();
+            pushFollow(FOLLOW_rule__Aspect__Group__1__Impl_in_rule__Aspect__Group__1480);
+            rule__Aspect__Group__1__Impl();
 
             state._fsp--;
 
-             after(grammarAccess.getModelAccess().getGreetingsGreetingParserRuleCall_0()); 
+            pushFollow(FOLLOW_rule__Aspect__Group__2_in_rule__Aspect__Group__1483);
+            rule__Aspect__Group__2();
 
-            }
+            state._fsp--;
 
 
             }
@@ -512,25 +659,35 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__Model__GreetingsAssignment"
+    // $ANTLR end "rule__Aspect__Group__1"
 
 
-    // $ANTLR start "rule__Greeting__NameAssignment_1"
-    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:230:1: rule__Greeting__NameAssignment_1 : ( RULE_ID ) ;
-    public final void rule__Greeting__NameAssignment_1() throws RecognitionException {
+    // $ANTLR start "rule__Aspect__Group__1__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:267:1: rule__Aspect__Group__1__Impl : ( ( rule__Aspect__NameAssignment_1 ) ) ;
+    public final void rule__Aspect__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:234:1: ( ( RULE_ID ) )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:235:1: ( RULE_ID )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:271:1: ( ( ( rule__Aspect__NameAssignment_1 ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:272:1: ( ( rule__Aspect__NameAssignment_1 ) )
             {
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:235:1: ( RULE_ID )
-            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:236:1: RULE_ID
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:272:1: ( ( rule__Aspect__NameAssignment_1 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:273:1: ( rule__Aspect__NameAssignment_1 )
             {
-             before(grammarAccess.getGreetingAccess().getNameIDTerminalRuleCall_1_0()); 
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Greeting__NameAssignment_1412); 
-             after(grammarAccess.getGreetingAccess().getNameIDTerminalRuleCall_1_0()); 
+             before(grammarAccess.getAspectAccess().getNameAssignment_1()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:274:1: ( rule__Aspect__NameAssignment_1 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:274:2: rule__Aspect__NameAssignment_1
+            {
+            pushFollow(FOLLOW_rule__Aspect__NameAssignment_1_in_rule__Aspect__Group__1__Impl510);
+            rule__Aspect__NameAssignment_1();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getAspectAccess().getNameAssignment_1()); 
 
             }
 
@@ -549,28 +706,1124 @@ public class InternalTextramParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__Greeting__NameAssignment_1"
+    // $ANTLR end "rule__Aspect__Group__1__Impl"
+
+
+    // $ANTLR start "rule__Aspect__Group__2"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:284:1: rule__Aspect__Group__2 : rule__Aspect__Group__2__Impl rule__Aspect__Group__3 ;
+    public final void rule__Aspect__Group__2() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:288:1: ( rule__Aspect__Group__2__Impl rule__Aspect__Group__3 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:289:2: rule__Aspect__Group__2__Impl rule__Aspect__Group__3
+            {
+            pushFollow(FOLLOW_rule__Aspect__Group__2__Impl_in_rule__Aspect__Group__2540);
+            rule__Aspect__Group__2__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Aspect__Group__3_in_rule__Aspect__Group__2543);
+            rule__Aspect__Group__3();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Aspect__Group__2"
+
+
+    // $ANTLR start "rule__Aspect__Group__2__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:296:1: rule__Aspect__Group__2__Impl : ( '{' ) ;
+    public final void rule__Aspect__Group__2__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:300:1: ( ( '{' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:301:1: ( '{' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:301:1: ( '{' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:302:1: '{'
+            {
+             before(grammarAccess.getAspectAccess().getLeftCurlyBracketKeyword_2()); 
+            match(input,12,FOLLOW_12_in_rule__Aspect__Group__2__Impl571); 
+             after(grammarAccess.getAspectAccess().getLeftCurlyBracketKeyword_2()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Aspect__Group__2__Impl"
+
+
+    // $ANTLR start "rule__Aspect__Group__3"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:315:1: rule__Aspect__Group__3 : rule__Aspect__Group__3__Impl rule__Aspect__Group__4 ;
+    public final void rule__Aspect__Group__3() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:319:1: ( rule__Aspect__Group__3__Impl rule__Aspect__Group__4 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:320:2: rule__Aspect__Group__3__Impl rule__Aspect__Group__4
+            {
+            pushFollow(FOLLOW_rule__Aspect__Group__3__Impl_in_rule__Aspect__Group__3602);
+            rule__Aspect__Group__3__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Aspect__Group__4_in_rule__Aspect__Group__3605);
+            rule__Aspect__Group__4();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Aspect__Group__3"
+
+
+    // $ANTLR start "rule__Aspect__Group__3__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:327:1: rule__Aspect__Group__3__Impl : ( ( rule__Aspect__StructuralViewAssignment_3 ) ) ;
+    public final void rule__Aspect__Group__3__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:331:1: ( ( ( rule__Aspect__StructuralViewAssignment_3 ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:332:1: ( ( rule__Aspect__StructuralViewAssignment_3 ) )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:332:1: ( ( rule__Aspect__StructuralViewAssignment_3 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:333:1: ( rule__Aspect__StructuralViewAssignment_3 )
+            {
+             before(grammarAccess.getAspectAccess().getStructuralViewAssignment_3()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:334:1: ( rule__Aspect__StructuralViewAssignment_3 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:334:2: rule__Aspect__StructuralViewAssignment_3
+            {
+            pushFollow(FOLLOW_rule__Aspect__StructuralViewAssignment_3_in_rule__Aspect__Group__3__Impl632);
+            rule__Aspect__StructuralViewAssignment_3();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getAspectAccess().getStructuralViewAssignment_3()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Aspect__Group__3__Impl"
+
+
+    // $ANTLR start "rule__Aspect__Group__4"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:344:1: rule__Aspect__Group__4 : rule__Aspect__Group__4__Impl ;
+    public final void rule__Aspect__Group__4() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:348:1: ( rule__Aspect__Group__4__Impl )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:349:2: rule__Aspect__Group__4__Impl
+            {
+            pushFollow(FOLLOW_rule__Aspect__Group__4__Impl_in_rule__Aspect__Group__4662);
+            rule__Aspect__Group__4__Impl();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Aspect__Group__4"
+
+
+    // $ANTLR start "rule__Aspect__Group__4__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:355:1: rule__Aspect__Group__4__Impl : ( '}' ) ;
+    public final void rule__Aspect__Group__4__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:359:1: ( ( '}' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:360:1: ( '}' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:360:1: ( '}' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:361:1: '}'
+            {
+             before(grammarAccess.getAspectAccess().getRightCurlyBracketKeyword_4()); 
+            match(input,13,FOLLOW_13_in_rule__Aspect__Group__4__Impl690); 
+             after(grammarAccess.getAspectAccess().getRightCurlyBracketKeyword_4()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Aspect__Group__4__Impl"
+
+
+    // $ANTLR start "rule__StructuralView__Group__0"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:384:1: rule__StructuralView__Group__0 : rule__StructuralView__Group__0__Impl rule__StructuralView__Group__1 ;
+    public final void rule__StructuralView__Group__0() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:388:1: ( rule__StructuralView__Group__0__Impl rule__StructuralView__Group__1 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:389:2: rule__StructuralView__Group__0__Impl rule__StructuralView__Group__1
+            {
+            pushFollow(FOLLOW_rule__StructuralView__Group__0__Impl_in_rule__StructuralView__Group__0731);
+            rule__StructuralView__Group__0__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__StructuralView__Group__1_in_rule__StructuralView__Group__0734);
+            rule__StructuralView__Group__1();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__0"
+
+
+    // $ANTLR start "rule__StructuralView__Group__0__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:396:1: rule__StructuralView__Group__0__Impl : ( () ) ;
+    public final void rule__StructuralView__Group__0__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:400:1: ( ( () ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:401:1: ( () )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:401:1: ( () )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:402:1: ()
+            {
+             before(grammarAccess.getStructuralViewAccess().getStructuralViewAction_0()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:403:1: ()
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:405:1: 
+            {
+            }
+
+             after(grammarAccess.getStructuralViewAccess().getStructuralViewAction_0()); 
+
+            }
+
+
+            }
+
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__0__Impl"
+
+
+    // $ANTLR start "rule__StructuralView__Group__1"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:415:1: rule__StructuralView__Group__1 : rule__StructuralView__Group__1__Impl rule__StructuralView__Group__2 ;
+    public final void rule__StructuralView__Group__1() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:419:1: ( rule__StructuralView__Group__1__Impl rule__StructuralView__Group__2 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:420:2: rule__StructuralView__Group__1__Impl rule__StructuralView__Group__2
+            {
+            pushFollow(FOLLOW_rule__StructuralView__Group__1__Impl_in_rule__StructuralView__Group__1792);
+            rule__StructuralView__Group__1__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__StructuralView__Group__2_in_rule__StructuralView__Group__1795);
+            rule__StructuralView__Group__2();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__1"
+
+
+    // $ANTLR start "rule__StructuralView__Group__1__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:427:1: rule__StructuralView__Group__1__Impl : ( 'StructuralView' ) ;
+    public final void rule__StructuralView__Group__1__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:431:1: ( ( 'StructuralView' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:432:1: ( 'StructuralView' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:432:1: ( 'StructuralView' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:433:1: 'StructuralView'
+            {
+             before(grammarAccess.getStructuralViewAccess().getStructuralViewKeyword_1()); 
+            match(input,14,FOLLOW_14_in_rule__StructuralView__Group__1__Impl823); 
+             after(grammarAccess.getStructuralViewAccess().getStructuralViewKeyword_1()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__1__Impl"
+
+
+    // $ANTLR start "rule__StructuralView__Group__2"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:446:1: rule__StructuralView__Group__2 : rule__StructuralView__Group__2__Impl rule__StructuralView__Group__3 ;
+    public final void rule__StructuralView__Group__2() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:450:1: ( rule__StructuralView__Group__2__Impl rule__StructuralView__Group__3 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:451:2: rule__StructuralView__Group__2__Impl rule__StructuralView__Group__3
+            {
+            pushFollow(FOLLOW_rule__StructuralView__Group__2__Impl_in_rule__StructuralView__Group__2854);
+            rule__StructuralView__Group__2__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__StructuralView__Group__3_in_rule__StructuralView__Group__2857);
+            rule__StructuralView__Group__3();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__2"
+
+
+    // $ANTLR start "rule__StructuralView__Group__2__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:458:1: rule__StructuralView__Group__2__Impl : ( '{' ) ;
+    public final void rule__StructuralView__Group__2__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:462:1: ( ( '{' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:463:1: ( '{' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:463:1: ( '{' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:464:1: '{'
+            {
+             before(grammarAccess.getStructuralViewAccess().getLeftCurlyBracketKeyword_2()); 
+            match(input,12,FOLLOW_12_in_rule__StructuralView__Group__2__Impl885); 
+             after(grammarAccess.getStructuralViewAccess().getLeftCurlyBracketKeyword_2()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__2__Impl"
+
+
+    // $ANTLR start "rule__StructuralView__Group__3"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:477:1: rule__StructuralView__Group__3 : rule__StructuralView__Group__3__Impl rule__StructuralView__Group__4 ;
+    public final void rule__StructuralView__Group__3() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:481:1: ( rule__StructuralView__Group__3__Impl rule__StructuralView__Group__4 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:482:2: rule__StructuralView__Group__3__Impl rule__StructuralView__Group__4
+            {
+            pushFollow(FOLLOW_rule__StructuralView__Group__3__Impl_in_rule__StructuralView__Group__3916);
+            rule__StructuralView__Group__3__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__StructuralView__Group__4_in_rule__StructuralView__Group__3919);
+            rule__StructuralView__Group__4();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__3"
+
+
+    // $ANTLR start "rule__StructuralView__Group__3__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:489:1: rule__StructuralView__Group__3__Impl : ( ( rule__StructuralView__ClassesAssignment_3 )? ) ;
+    public final void rule__StructuralView__Group__3__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:493:1: ( ( ( rule__StructuralView__ClassesAssignment_3 )? ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:494:1: ( ( rule__StructuralView__ClassesAssignment_3 )? )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:494:1: ( ( rule__StructuralView__ClassesAssignment_3 )? )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:495:1: ( rule__StructuralView__ClassesAssignment_3 )?
+            {
+             before(grammarAccess.getStructuralViewAccess().getClassesAssignment_3()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:496:1: ( rule__StructuralView__ClassesAssignment_3 )?
+            int alt3=2;
+            int LA3_0 = input.LA(1);
+
+            if ( (LA3_0==15) ) {
+                alt3=1;
+            }
+            switch (alt3) {
+                case 1 :
+                    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:496:2: rule__StructuralView__ClassesAssignment_3
+                    {
+                    pushFollow(FOLLOW_rule__StructuralView__ClassesAssignment_3_in_rule__StructuralView__Group__3__Impl946);
+                    rule__StructuralView__ClassesAssignment_3();
+
+                    state._fsp--;
+
+
+                    }
+                    break;
+
+            }
+
+             after(grammarAccess.getStructuralViewAccess().getClassesAssignment_3()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__3__Impl"
+
+
+    // $ANTLR start "rule__StructuralView__Group__4"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:506:1: rule__StructuralView__Group__4 : rule__StructuralView__Group__4__Impl ;
+    public final void rule__StructuralView__Group__4() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:510:1: ( rule__StructuralView__Group__4__Impl )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:511:2: rule__StructuralView__Group__4__Impl
+            {
+            pushFollow(FOLLOW_rule__StructuralView__Group__4__Impl_in_rule__StructuralView__Group__4977);
+            rule__StructuralView__Group__4__Impl();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__4"
+
+
+    // $ANTLR start "rule__StructuralView__Group__4__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:517:1: rule__StructuralView__Group__4__Impl : ( '}' ) ;
+    public final void rule__StructuralView__Group__4__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:521:1: ( ( '}' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:522:1: ( '}' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:522:1: ( '}' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:523:1: '}'
+            {
+             before(grammarAccess.getStructuralViewAccess().getRightCurlyBracketKeyword_4()); 
+            match(input,13,FOLLOW_13_in_rule__StructuralView__Group__4__Impl1005); 
+             after(grammarAccess.getStructuralViewAccess().getRightCurlyBracketKeyword_4()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__Group__4__Impl"
+
+
+    // $ANTLR start "rule__Class__Group__0"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:546:1: rule__Class__Group__0 : rule__Class__Group__0__Impl rule__Class__Group__1 ;
+    public final void rule__Class__Group__0() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:550:1: ( rule__Class__Group__0__Impl rule__Class__Group__1 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:551:2: rule__Class__Group__0__Impl rule__Class__Group__1
+            {
+            pushFollow(FOLLOW_rule__Class__Group__0__Impl_in_rule__Class__Group__01046);
+            rule__Class__Group__0__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Class__Group__1_in_rule__Class__Group__01049);
+            rule__Class__Group__1();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__0"
+
+
+    // $ANTLR start "rule__Class__Group__0__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:558:1: rule__Class__Group__0__Impl : ( () ) ;
+    public final void rule__Class__Group__0__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:562:1: ( ( () ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:563:1: ( () )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:563:1: ( () )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:564:1: ()
+            {
+             before(grammarAccess.getClassAccess().getClassAction_0()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:565:1: ()
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:567:1: 
+            {
+            }
+
+             after(grammarAccess.getClassAccess().getClassAction_0()); 
+
+            }
+
+
+            }
+
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__0__Impl"
+
+
+    // $ANTLR start "rule__Class__Group__1"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:577:1: rule__Class__Group__1 : rule__Class__Group__1__Impl rule__Class__Group__2 ;
+    public final void rule__Class__Group__1() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:581:1: ( rule__Class__Group__1__Impl rule__Class__Group__2 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:582:2: rule__Class__Group__1__Impl rule__Class__Group__2
+            {
+            pushFollow(FOLLOW_rule__Class__Group__1__Impl_in_rule__Class__Group__11107);
+            rule__Class__Group__1__Impl();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_rule__Class__Group__2_in_rule__Class__Group__11110);
+            rule__Class__Group__2();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__1"
+
+
+    // $ANTLR start "rule__Class__Group__1__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:589:1: rule__Class__Group__1__Impl : ( 'Class' ) ;
+    public final void rule__Class__Group__1__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:593:1: ( ( 'Class' ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:594:1: ( 'Class' )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:594:1: ( 'Class' )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:595:1: 'Class'
+            {
+             before(grammarAccess.getClassAccess().getClassKeyword_1()); 
+            match(input,15,FOLLOW_15_in_rule__Class__Group__1__Impl1138); 
+             after(grammarAccess.getClassAccess().getClassKeyword_1()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__1__Impl"
+
+
+    // $ANTLR start "rule__Class__Group__2"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:608:1: rule__Class__Group__2 : rule__Class__Group__2__Impl ;
+    public final void rule__Class__Group__2() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:612:1: ( rule__Class__Group__2__Impl )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:613:2: rule__Class__Group__2__Impl
+            {
+            pushFollow(FOLLOW_rule__Class__Group__2__Impl_in_rule__Class__Group__21169);
+            rule__Class__Group__2__Impl();
+
+            state._fsp--;
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__2"
+
+
+    // $ANTLR start "rule__Class__Group__2__Impl"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:619:1: rule__Class__Group__2__Impl : ( ( rule__Class__NameAssignment_2 ) ) ;
+    public final void rule__Class__Group__2__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:623:1: ( ( ( rule__Class__NameAssignment_2 ) ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:624:1: ( ( rule__Class__NameAssignment_2 ) )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:624:1: ( ( rule__Class__NameAssignment_2 ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:625:1: ( rule__Class__NameAssignment_2 )
+            {
+             before(grammarAccess.getClassAccess().getNameAssignment_2()); 
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:626:1: ( rule__Class__NameAssignment_2 )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:626:2: rule__Class__NameAssignment_2
+            {
+            pushFollow(FOLLOW_rule__Class__NameAssignment_2_in_rule__Class__Group__2__Impl1196);
+            rule__Class__NameAssignment_2();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getClassAccess().getNameAssignment_2()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__Group__2__Impl"
+
+
+    // $ANTLR start "rule__RamModel__AspectsAssignment"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:643:1: rule__RamModel__AspectsAssignment : ( ruleAspect ) ;
+    public final void rule__RamModel__AspectsAssignment() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:647:1: ( ( ruleAspect ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:648:1: ( ruleAspect )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:648:1: ( ruleAspect )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:649:1: ruleAspect
+            {
+             before(grammarAccess.getRamModelAccess().getAspectsAspectParserRuleCall_0()); 
+            pushFollow(FOLLOW_ruleAspect_in_rule__RamModel__AspectsAssignment1237);
+            ruleAspect();
+
+            state._fsp--;
+
+             after(grammarAccess.getRamModelAccess().getAspectsAspectParserRuleCall_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__RamModel__AspectsAssignment"
+
+
+    // $ANTLR start "rule__Aspect__NameAssignment_1"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:658:1: rule__Aspect__NameAssignment_1 : ( ruleEString ) ;
+    public final void rule__Aspect__NameAssignment_1() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:662:1: ( ( ruleEString ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:663:1: ( ruleEString )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:663:1: ( ruleEString )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:664:1: ruleEString
+            {
+             before(grammarAccess.getAspectAccess().getNameEStringParserRuleCall_1_0()); 
+            pushFollow(FOLLOW_ruleEString_in_rule__Aspect__NameAssignment_11268);
+            ruleEString();
+
+            state._fsp--;
+
+             after(grammarAccess.getAspectAccess().getNameEStringParserRuleCall_1_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Aspect__NameAssignment_1"
+
+
+    // $ANTLR start "rule__Aspect__StructuralViewAssignment_3"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:673:1: rule__Aspect__StructuralViewAssignment_3 : ( ruleStructuralView ) ;
+    public final void rule__Aspect__StructuralViewAssignment_3() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:677:1: ( ( ruleStructuralView ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:678:1: ( ruleStructuralView )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:678:1: ( ruleStructuralView )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:679:1: ruleStructuralView
+            {
+             before(grammarAccess.getAspectAccess().getStructuralViewStructuralViewParserRuleCall_3_0()); 
+            pushFollow(FOLLOW_ruleStructuralView_in_rule__Aspect__StructuralViewAssignment_31299);
+            ruleStructuralView();
+
+            state._fsp--;
+
+             after(grammarAccess.getAspectAccess().getStructuralViewStructuralViewParserRuleCall_3_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Aspect__StructuralViewAssignment_3"
+
+
+    // $ANTLR start "rule__StructuralView__ClassesAssignment_3"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:688:1: rule__StructuralView__ClassesAssignment_3 : ( ruleClass ) ;
+    public final void rule__StructuralView__ClassesAssignment_3() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:692:1: ( ( ruleClass ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:693:1: ( ruleClass )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:693:1: ( ruleClass )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:694:1: ruleClass
+            {
+             before(grammarAccess.getStructuralViewAccess().getClassesClassParserRuleCall_3_0()); 
+            pushFollow(FOLLOW_ruleClass_in_rule__StructuralView__ClassesAssignment_31330);
+            ruleClass();
+
+            state._fsp--;
+
+             after(grammarAccess.getStructuralViewAccess().getClassesClassParserRuleCall_3_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__StructuralView__ClassesAssignment_3"
+
+
+    // $ANTLR start "rule__Class__NameAssignment_2"
+    // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:703:1: rule__Class__NameAssignment_2 : ( ruleEString ) ;
+    public final void rule__Class__NameAssignment_2() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+            
+        try {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:707:1: ( ( ruleEString ) )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:708:1: ( ruleEString )
+            {
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:708:1: ( ruleEString )
+            // ../cl.pleiad.ram.textram.ui/src-gen/cl/pleiad/ram/ui/contentassist/antlr/internal/InternalTextram.g:709:1: ruleEString
+            {
+             before(grammarAccess.getClassAccess().getNameEStringParserRuleCall_2_0()); 
+            pushFollow(FOLLOW_ruleEString_in_rule__Class__NameAssignment_21361);
+            ruleEString();
+
+            state._fsp--;
+
+             after(grammarAccess.getClassAccess().getNameEStringParserRuleCall_2_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__Class__NameAssignment_2"
 
     // Delegated rules
 
 
  
 
-    public static final BitSet FOLLOW_ruleModel_in_entryRuleModel61 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleModel68 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Model__GreetingsAssignment_in_ruleModel94 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_ruleGreeting_in_entryRuleGreeting122 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleGreeting129 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Greeting__Group__0_in_ruleGreeting155 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Greeting__Group__0__Impl_in_rule__Greeting__Group__0189 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_rule__Greeting__Group__1_in_rule__Greeting__Group__0192 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_11_in_rule__Greeting__Group__0__Impl220 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Greeting__Group__1__Impl_in_rule__Greeting__Group__1251 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_rule__Greeting__Group__2_in_rule__Greeting__Group__1254 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Greeting__NameAssignment_1_in_rule__Greeting__Group__1__Impl281 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Greeting__Group__2__Impl_in_rule__Greeting__Group__2311 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_12_in_rule__Greeting__Group__2__Impl339 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleGreeting_in_rule__Model__GreetingsAssignment381 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__Greeting__NameAssignment_1412 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleRamModel_in_entryRuleRamModel61 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleRamModel68 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__RamModel__AspectsAssignment_in_ruleRamModel94 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_ruleAspect_in_entryRuleAspect122 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleAspect129 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__0_in_ruleAspect155 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleEString_in_entryRuleEString182 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleEString189 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__EString__Alternatives_in_ruleEString215 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleStructuralView_in_entryRuleStructuralView242 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleStructuralView249 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__0_in_ruleStructuralView275 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleClass_in_entryRuleClass302 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleClass309 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__0_in_ruleClass335 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_STRING_in_rule__EString__Alternatives371 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_ID_in_rule__EString__Alternatives388 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__0__Impl_in_rule__Aspect__Group__0418 = new BitSet(new long[]{0x0000000000000030L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__1_in_rule__Aspect__Group__0421 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_11_in_rule__Aspect__Group__0__Impl449 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__1__Impl_in_rule__Aspect__Group__1480 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__2_in_rule__Aspect__Group__1483 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Aspect__NameAssignment_1_in_rule__Aspect__Group__1__Impl510 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__2__Impl_in_rule__Aspect__Group__2540 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__3_in_rule__Aspect__Group__2543 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_12_in_rule__Aspect__Group__2__Impl571 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__3__Impl_in_rule__Aspect__Group__3602 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__4_in_rule__Aspect__Group__3605 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Aspect__StructuralViewAssignment_3_in_rule__Aspect__Group__3__Impl632 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Aspect__Group__4__Impl_in_rule__Aspect__Group__4662 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_13_in_rule__Aspect__Group__4__Impl690 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__0__Impl_in_rule__StructuralView__Group__0731 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__1_in_rule__StructuralView__Group__0734 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__1__Impl_in_rule__StructuralView__Group__1792 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__2_in_rule__StructuralView__Group__1795 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_14_in_rule__StructuralView__Group__1__Impl823 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__2__Impl_in_rule__StructuralView__Group__2854 = new BitSet(new long[]{0x000000000000A000L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__3_in_rule__StructuralView__Group__2857 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_12_in_rule__StructuralView__Group__2__Impl885 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__3__Impl_in_rule__StructuralView__Group__3916 = new BitSet(new long[]{0x000000000000A000L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__4_in_rule__StructuralView__Group__3919 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__StructuralView__ClassesAssignment_3_in_rule__StructuralView__Group__3__Impl946 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__StructuralView__Group__4__Impl_in_rule__StructuralView__Group__4977 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_13_in_rule__StructuralView__Group__4__Impl1005 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__0__Impl_in_rule__Class__Group__01046 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_rule__Class__Group__1_in_rule__Class__Group__01049 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__1__Impl_in_rule__Class__Group__11107 = new BitSet(new long[]{0x0000000000000030L});
+    public static final BitSet FOLLOW_rule__Class__Group__2_in_rule__Class__Group__11110 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_15_in_rule__Class__Group__1__Impl1138 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__Group__2__Impl_in_rule__Class__Group__21169 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Class__NameAssignment_2_in_rule__Class__Group__2__Impl1196 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleAspect_in_rule__RamModel__AspectsAssignment1237 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleEString_in_rule__Aspect__NameAssignment_11268 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleStructuralView_in_rule__Aspect__StructuralViewAssignment_31299 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleClass_in_rule__StructuralView__ClassesAssignment_31330 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleEString_in_rule__Class__NameAssignment_21361 = new BitSet(new long[]{0x0000000000000002L});
 
 }

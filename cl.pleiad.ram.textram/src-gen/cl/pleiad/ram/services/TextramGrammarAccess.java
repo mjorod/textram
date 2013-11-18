@@ -18,53 +18,335 @@ import org.eclipse.xtext.common.services.TerminalsGrammarAccess;
 public class TextramGrammarAccess extends AbstractGrammarElementFinder {
 	
 	
-	public class ModelElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Model");
-		private final Assignment cGreetingsAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cGreetingsGreetingParserRuleCall_0 = (RuleCall)cGreetingsAssignment.eContents().get(0);
+	public class RamModelElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RamModel");
+		private final Assignment cAspectsAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cAspectsAspectParserRuleCall_0 = (RuleCall)cAspectsAssignment.eContents().get(0);
 		
-		//Model:
-		//	greetings+=Greeting*;
+		//RamModel:
+		//	aspects+=Aspect*;
 		public ParserRule getRule() { return rule; }
 
-		//greetings+=Greeting*
-		public Assignment getGreetingsAssignment() { return cGreetingsAssignment; }
+		//aspects+=Aspect*
+		public Assignment getAspectsAssignment() { return cAspectsAssignment; }
 
-		//Greeting
-		public RuleCall getGreetingsGreetingParserRuleCall_0() { return cGreetingsGreetingParserRuleCall_0; }
+		//Aspect
+		public RuleCall getAspectsAspectParserRuleCall_0() { return cAspectsAspectParserRuleCall_0; }
 	}
 
-	public class GreetingElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Greeting");
+	public class AspectElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Aspect");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cHelloKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cAspectKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cExclamationMarkKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final RuleCall cNameEStringParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cStructuralViewAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cStructuralViewStructuralViewParserRuleCall_3_0 = (RuleCall)cStructuralViewAssignment_3.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//Greeting:
-		//	"Hello" name=ID "!";
+		//Aspect:
+		//	"Aspect" name=EString "{" structuralView=StructuralView "}";
 		public ParserRule getRule() { return rule; }
 
-		//"Hello" name=ID "!"
+		//"Aspect" name=EString "{" structuralView=StructuralView "}"
 		public Group getGroup() { return cGroup; }
 
-		//"Hello"
-		public Keyword getHelloKeyword_0() { return cHelloKeyword_0; }
+		//"Aspect"
+		public Keyword getAspectKeyword_0() { return cAspectKeyword_0; }
 
-		//name=ID
+		//name=EString
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
 
-		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		//EString
+		public RuleCall getNameEStringParserRuleCall_1_0() { return cNameEStringParserRuleCall_1_0; }
 
-		//"!"
-		public Keyword getExclamationMarkKeyword_2() { return cExclamationMarkKeyword_2; }
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+
+		//structuralView=StructuralView
+		public Assignment getStructuralViewAssignment_3() { return cStructuralViewAssignment_3; }
+
+		//StructuralView
+		public RuleCall getStructuralViewStructuralViewParserRuleCall_3_0() { return cStructuralViewStructuralViewParserRuleCall_3_0; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
+	}
+
+	public class EStringElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "EString");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cSTRINGTerminalRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cIDTerminalRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		////Classifier returns Classifier:
+		////        Class | RBoolean | RInt | RChar | RString | REnum | RSet | RSequence | ImplementationClass_Impl | RDouble | RFloat;
+		////
+		////
+		////PrimitiveType returns PrimitiveType:
+		////	RBoolean | RInt | RChar | RString | REnum | RDouble | RFloat;
+		//EString returns ecore::EString:
+		//	STRING | ID;
+		public ParserRule getRule() { return rule; }
+
+		//STRING | ID
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//STRING
+		public RuleCall getSTRINGTerminalRuleCall_0() { return cSTRINGTerminalRuleCall_0; }
+
+		//ID
+		public RuleCall getIDTerminalRuleCall_1() { return cIDTerminalRuleCall_1; }
+	}
+
+	public class StructuralViewElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "StructuralView");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cStructuralViewAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cStructuralViewKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cClassesAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cClassesClassParserRuleCall_3_0 = (RuleCall)cClassesAssignment_3.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//StructuralView:
+		//	{StructuralView} "StructuralView" "{" classes+=Class? //		(associations+=Association)?
+		//	"}";
+		public ParserRule getRule() { return rule; }
+
+		//{StructuralView} "StructuralView" "{" classes+=Class? //		(associations+=Association)?
+		//"}"
+		public Group getGroup() { return cGroup; }
+
+		//{StructuralView}
+		public Action getStructuralViewAction_0() { return cStructuralViewAction_0; }
+
+		//"StructuralView"
+		public Keyword getStructuralViewKeyword_1() { return cStructuralViewKeyword_1; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+
+		//classes+=Class?
+		public Assignment getClassesAssignment_3() { return cClassesAssignment_3; }
+
+		//Class
+		public RuleCall getClassesClassParserRuleCall_3_0() { return cClassesClassParserRuleCall_3_0; }
+
+		////		(associations+=Association)?
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
+	}
+
+	public class ClassElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Class");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cClassAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cClassKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameEStringParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		
+		////Operation returns Operation:
+		////	(abstract?='abstract')?
+		////	(static?='static')?
+		////	(partial?='partial')?
+		////	(visibility=Visibility)?
+		////	returnType=[Type] //TODO: verificar bien el asunto de los tipos y templates.
+		////	name=EString 
+		////	'('
+		////		(parameters+=Parameter (',' parameters+=Parameter)*)?
+		////	')' (';')?;
+		////
+		////Visibility returns Visibility:
+		////	"~"
+		////?;
+		////Association returns Association:
+		////        'Association'
+		////        name=EString
+		////        '{'
+		////                'ends' '(' ends+=[AssociationEnd|EString] ( "," ends+=[AssociationEnd|EString])* ')'
+		////        '}';
+		////Association returns Association:
+		////	'associations'
+		////	name=EString?
+		////	'{'
+		////		ends+=[AssociationEnd] ( ","? ends+=[AssociationEnd])* ')'
+		////	'}';
+		////
+		////
+		////AssociationEnd returns AssociationEnd:
+		////	static?='static'
+		////       // #cardinalidad #nombre de clase -> #cardinalidad #nombre de clase
+		////       lowerBound=EInt '..'? upperBound=EInt  referenceType=ReferenceType '->'
+		////        
+		////        	('navigable' navigable=EBoolean)?
+		////			'assoc' assoc=[Association|EString]
+		////;
+		////	'{'
+		////		(attributes+=Attribute)?
+		//////		(operations+=Operation)?
+		//////		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+		////		
+		////	'}';
+		////EString returns ecore::EString:
+		////	STRING | ID;
+		////RBoolean returns RBoolean:
+		////	'RBoolean'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RInt returns RInt:
+		////	'RInt'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RChar returns RChar:
+		////	'RChar'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RString returns RString:
+		////	'RString'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////REnum returns REnum:
+		////	'REnum'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////		'literals' '{' literals+=REnumLiteral ( "," literals+=REnumLiteral)* '}' 
+		////	'}';
+		////
+		////RSet returns RSet:
+		////	'RSet'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		'type' type=[ObjectType|EString]
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RSequence returns RSequence:
+		////	'RSequence'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		'type' type=[ObjectType|EString]
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////ImplementationClass_Impl returns ImplementationClass:
+		////	'ImplementationClass'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RDouble returns RDouble:
+		////	'RDouble'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////RFloat returns RFloat:
+		////	'RFloat'
+		////	name=EString
+		////	'{'
+		////		'instanceClassName' instanceClassName=EString
+		////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////	'}';
+		////
+		////EBoolean returns ecore::EBoolean:
+		////	'true' | 'false';
+		////TODO: Qualified names?
+		////Parameter returns Parameter:
+		////	type=[Type|EString] name=EString
+		////;
+		////Attribute returns Attribute:
+		////	static?='static'
+		////	//TODO: observar la meta-data de attribute para verificar si soporta EString
+		////	(type=[PrimitiveType] name=EString (';')?)
+		////;
+		////
+		////EInt returns ecore::EInt:
+		////	'-'? INT;
+		////
+		////ReferenceType returns ReferenceType:
+		////	'*'? / * TODO: implement this rule and an appropriate IValueConverter * /;
+		////
+		////REnumLiteral returns REnumLiteral:
+		////	{REnumLiteral}
+		////	'REnumLiteral'
+		////	name=EString;
+		////
+		////RVoid returns RVoid:
+		////	{RVoid}
+		////	'RVoid'
+		////	name=EString;
+		////
+		////RAny returns RAny:
+		////	{RAny}
+		////	'RAny'
+		////	name=EString;
+		////
+		////
+		////EObject returns ecore::EObject:
+		////	{ecore::EObject}
+		////	'EObject'
+		////;
+		////
+		////EFloat returns ecore::EFloat:
+		////	'-'? INT? '.' INT (('E'|'e') '-'? INT)?
+		////; Class:
+		//	{Class} //	(partial?='partial')?
+		//	//	(abstract?='abstract')?
+		//	"Class" name=EString;
+		public ParserRule getRule() { return rule; }
+
+		//{Class} //	(partial?='partial')?
+		////	(abstract?='abstract')?
+		//"Class" name=EString
+		public Group getGroup() { return cGroup; }
+
+		//{Class}
+		public Action getClassAction_0() { return cClassAction_0; }
+
+		////	(partial?='partial')?
+		////	(abstract?='abstract')?
+		//"Class"
+		public Keyword getClassKeyword_1() { return cClassKeyword_1; }
+
+		//name=EString
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+
+		//EString
+		public RuleCall getNameEStringParserRuleCall_2_0() { return cNameEStringParserRuleCall_2_0; }
 	}
 	
 	
-	private ModelElements pModel;
-	private GreetingElements pGreeting;
+	private RamModelElements pRamModel;
+	private AspectElements pAspect;
+	private EStringElements pEString;
+	private StructuralViewElements pStructuralView;
+	private ClassElements pClass;
 	
 	private final Grammar grammar;
 
@@ -104,24 +386,231 @@ public class TextramGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	
-	//Model:
-	//	greetings+=Greeting*;
-	public ModelElements getModelAccess() {
-		return (pModel != null) ? pModel : (pModel = new ModelElements());
+	//RamModel:
+	//	aspects+=Aspect*;
+	public RamModelElements getRamModelAccess() {
+		return (pRamModel != null) ? pRamModel : (pRamModel = new RamModelElements());
 	}
 	
-	public ParserRule getModelRule() {
-		return getModelAccess().getRule();
+	public ParserRule getRamModelRule() {
+		return getRamModelAccess().getRule();
 	}
 
-	//Greeting:
-	//	"Hello" name=ID "!";
-	public GreetingElements getGreetingAccess() {
-		return (pGreeting != null) ? pGreeting : (pGreeting = new GreetingElements());
+	//Aspect:
+	//	"Aspect" name=EString "{" structuralView=StructuralView "}";
+	public AspectElements getAspectAccess() {
+		return (pAspect != null) ? pAspect : (pAspect = new AspectElements());
 	}
 	
-	public ParserRule getGreetingRule() {
-		return getGreetingAccess().getRule();
+	public ParserRule getAspectRule() {
+		return getAspectAccess().getRule();
+	}
+
+	////Classifier returns Classifier:
+	////        Class | RBoolean | RInt | RChar | RString | REnum | RSet | RSequence | ImplementationClass_Impl | RDouble | RFloat;
+	////
+	////
+	////PrimitiveType returns PrimitiveType:
+	////	RBoolean | RInt | RChar | RString | REnum | RDouble | RFloat;
+	//EString returns ecore::EString:
+	//	STRING | ID;
+	public EStringElements getEStringAccess() {
+		return (pEString != null) ? pEString : (pEString = new EStringElements());
+	}
+	
+	public ParserRule getEStringRule() {
+		return getEStringAccess().getRule();
+	}
+
+	//StructuralView:
+	//	{StructuralView} "StructuralView" "{" classes+=Class? //		(associations+=Association)?
+	//	"}";
+	public StructuralViewElements getStructuralViewAccess() {
+		return (pStructuralView != null) ? pStructuralView : (pStructuralView = new StructuralViewElements());
+	}
+	
+	public ParserRule getStructuralViewRule() {
+		return getStructuralViewAccess().getRule();
+	}
+
+	////Operation returns Operation:
+	////	(abstract?='abstract')?
+	////	(static?='static')?
+	////	(partial?='partial')?
+	////	(visibility=Visibility)?
+	////	returnType=[Type] //TODO: verificar bien el asunto de los tipos y templates.
+	////	name=EString 
+	////	'('
+	////		(parameters+=Parameter (',' parameters+=Parameter)*)?
+	////	')' (';')?;
+	////
+	////Visibility returns Visibility:
+	////	"~"
+	////?;
+	////Association returns Association:
+	////        'Association'
+	////        name=EString
+	////        '{'
+	////                'ends' '(' ends+=[AssociationEnd|EString] ( "," ends+=[AssociationEnd|EString])* ')'
+	////        '}';
+	////Association returns Association:
+	////	'associations'
+	////	name=EString?
+	////	'{'
+	////		ends+=[AssociationEnd] ( ","? ends+=[AssociationEnd])* ')'
+	////	'}';
+	////
+	////
+	////AssociationEnd returns AssociationEnd:
+	////	static?='static'
+	////       // #cardinalidad #nombre de clase -> #cardinalidad #nombre de clase
+	////       lowerBound=EInt '..'? upperBound=EInt  referenceType=ReferenceType '->'
+	////        
+	////        	('navigable' navigable=EBoolean)?
+	////			'assoc' assoc=[Association|EString]
+	////;
+	////	'{'
+	////		(attributes+=Attribute)?
+	//////		(operations+=Operation)?
+	//////		('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+	////		
+	////	'}';
+	////EString returns ecore::EString:
+	////	STRING | ID;
+	////RBoolean returns RBoolean:
+	////	'RBoolean'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////RInt returns RInt:
+	////	'RInt'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////RChar returns RChar:
+	////	'RChar'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////RString returns RString:
+	////	'RString'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////REnum returns REnum:
+	////	'REnum'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////		'literals' '{' literals+=REnumLiteral ( "," literals+=REnumLiteral)* '}' 
+	////	'}';
+	////
+	////RSet returns RSet:
+	////	'RSet'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		'type' type=[ObjectType|EString]
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////RSequence returns RSequence:
+	////	'RSequence'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		'type' type=[ObjectType|EString]
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////ImplementationClass_Impl returns ImplementationClass:
+	////	'ImplementationClass'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////RDouble returns RDouble:
+	////	'RDouble'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////RFloat returns RFloat:
+	////	'RFloat'
+	////	name=EString
+	////	'{'
+	////		'instanceClassName' instanceClassName=EString
+	////		('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	////	'}';
+	////
+	////EBoolean returns ecore::EBoolean:
+	////	'true' | 'false';
+	////TODO: Qualified names?
+	////Parameter returns Parameter:
+	////	type=[Type|EString] name=EString
+	////;
+	////Attribute returns Attribute:
+	////	static?='static'
+	////	//TODO: observar la meta-data de attribute para verificar si soporta EString
+	////	(type=[PrimitiveType] name=EString (';')?)
+	////;
+	////
+	////EInt returns ecore::EInt:
+	////	'-'? INT;
+	////
+	////ReferenceType returns ReferenceType:
+	////	'*'? / * TODO: implement this rule and an appropriate IValueConverter * /;
+	////
+	////REnumLiteral returns REnumLiteral:
+	////	{REnumLiteral}
+	////	'REnumLiteral'
+	////	name=EString;
+	////
+	////RVoid returns RVoid:
+	////	{RVoid}
+	////	'RVoid'
+	////	name=EString;
+	////
+	////RAny returns RAny:
+	////	{RAny}
+	////	'RAny'
+	////	name=EString;
+	////
+	////
+	////EObject returns ecore::EObject:
+	////	{ecore::EObject}
+	////	'EObject'
+	////;
+	////
+	////EFloat returns ecore::EFloat:
+	////	'-'? INT? '.' INT (('E'|'e') '-'? INT)?
+	////; Class:
+	//	{Class} //	(partial?='partial')?
+	//	//	(abstract?='abstract')?
+	//	"Class" name=EString;
+	public ClassElements getClassAccess() {
+		return (pClass != null) ? pClass : (pClass = new ClassElements());
+	}
+	
+	public ParserRule getClassRule() {
+		return getClassAccess().getRule();
 	}
 
 	//terminal ID:

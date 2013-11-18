@@ -25,7 +25,7 @@ public class TextramParser extends org.eclipse.xtext.parser.antlr.AbstractAntlrP
 	
 	@Override 
 	protected String getDefaultRuleName() {
-		return "Model";
+		return "RamModel";
 	}
 	
 	public TextramGrammarAccess getGrammarAccess() {

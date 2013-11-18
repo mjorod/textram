@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.emf.common,
  org.antlr.runtime,
  org.eclipse.xtext.common.types
-Import-Package: org.apache.log4j,
+Import-Package: ca.mcgill.cs.sel.ram,
+ org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: cl.pleiad.ram,
@@ -25,10 +26,10 @@ Export-Package: cl.pleiad.ram,
  cl.pleiad.ram.textram,
  cl.pleiad.ram.textram.impl,
  cl.pleiad.ram.textram.util,
- cl.pleiad.ram.serializer,
  cl.pleiad.ram.parser.antlr,
  cl.pleiad.ram.parser.antlr.internal,
  cl.pleiad.ram.validation,
  cl.pleiad.ram.scoping,
  cl.pleiad.ram.generator,
- cl.pleiad.ram.formatting
+ cl.pleiad.ram.formatting,
+ cl.pleiad.ram.serializer

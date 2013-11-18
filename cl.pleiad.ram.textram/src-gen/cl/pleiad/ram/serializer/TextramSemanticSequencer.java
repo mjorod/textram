@@ -1,22 +1,21 @@
 package cl.pleiad.ram.serializer;
 
+import ca.mcgill.cs.sel.ram.Aspect;
+import ca.mcgill.cs.sel.ram.RamPackage;
+import ca.mcgill.cs.sel.ram.StructuralView;
 import cl.pleiad.ram.services.TextramGrammarAccess;
-import cl.pleiad.ram.textram.Greeting;
-import cl.pleiad.ram.textram.Model;
+import cl.pleiad.ram.textram.RamModel;
 import cl.pleiad.ram.textram.TextramPackage;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.serializer.acceptor.ISemanticSequenceAcceptor;
-import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.diagnostic.ISemanticSequencerDiagnosticProvider;
 import org.eclipse.xtext.serializer.diagnostic.ISerializationDiagnostic.Acceptor;
 import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.GenericSequencer;
-import org.eclipse.xtext.serializer.sequencer.ISemanticNodeProvider.INodesForEObjectProvider;
 import org.eclipse.xtext.serializer.sequencer.ISemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService;
-import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 
 @SuppressWarnings("all")
 public class TextramSemanticSequencer extends AbstractDelegatingSemanticSequencer {
@@ -25,16 +24,30 @@ public class TextramSemanticSequencer extends AbstractDelegatingSemanticSequence
 	private TextramGrammarAccess grammarAccess;
 	
 	public void createSequence(EObject context, EObject semanticObject) {
-		if(semanticObject.eClass().getEPackage() == TextramPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
-			case TextramPackage.GREETING:
-				if(context == grammarAccess.getGreetingRule()) {
-					sequence_Greeting(context, (Greeting) semanticObject); 
+		if(semanticObject.eClass().getEPackage() == RamPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
+			case RamPackage.ASPECT:
+				if(context == grammarAccess.getAspectRule()) {
+					sequence_Aspect(context, (Aspect) semanticObject); 
 					return; 
 				}
 				else break;
-			case TextramPackage.MODEL:
-				if(context == grammarAccess.getModelRule()) {
-					sequence_Model(context, (Model) semanticObject); 
+			case RamPackage.CLASS:
+				if(context == grammarAccess.getClassRule()) {
+					sequence_Class(context, (ca.mcgill.cs.sel.ram.Class) semanticObject); 
+					return; 
+				}
+				else break;
+			case RamPackage.STRUCTURAL_VIEW:
+				if(context == grammarAccess.getStructuralViewRule()) {
+					sequence_StructuralView(context, (StructuralView) semanticObject); 
+					return; 
+				}
+				else break;
+			}
+		else if(semanticObject.eClass().getEPackage() == TextramPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
+			case TextramPackage.RAM_MODEL:
+				if(context == grammarAccess.getRamModelRule()) {
+					sequence_RamModel(context, (RamModel) semanticObject); 
 					return; 
 				}
 				else break;
@@ -44,25 +57,36 @@ public class TextramSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Constraint:
-	 *     name=ID
+	 *     (name=EString structuralView=StructuralView)
 	 */
-	protected void sequence_Greeting(EObject context, Greeting semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, TextramPackage.Literals.GREETING__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextramPackage.Literals.GREETING__NAME));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getGreetingAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.finish();
+	protected void sequence_Aspect(EObject context, Aspect semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Constraint:
-	 *     greetings+=Greeting*
+	 *     name=EString
 	 */
-	protected void sequence_Model(EObject context, Model semanticObject) {
+	protected void sequence_Class(EObject context, ca.mcgill.cs.sel.ram.Class semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     aspects+=Aspect*
+	 */
+	protected void sequence_RamModel(EObject context, RamModel semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (classes+=Class?)
+	 */
+	protected void sequence_StructuralView(EObject context, StructuralView semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 }
