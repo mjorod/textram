@@ -7,7 +7,7 @@ El "AspectModel" ZeroToManyAssociation es una preocupación que ocurre frecuente
 
 En UML está situación se puede resolver con una asociación standard que tiene la multiplicidad 0..*; por lo general se implementa por medio de (list or array) contenido en la clase A. Para asociar un objeto b con un objeto a, b es insertado dento del set contenido en a.
 
-![Aspecto ZeroToManyAssociations](../img/ZeroToManyAssociation_Fig1.png "Aspecto ZeroToManyAssociations")
+![Aspecto ZeroToManyAssociations](img/ZeroToManyAssociation_Fig1.png "Aspecto ZeroToManyAssociations")
 
 ###Vista estructural
 El diagrama de clases que representa el diseño de la estructura de ZeroToManyAssociation es presentada en la vista estructural de la figura 1. Se definen tres clases: |Data, |Associated y la clase plantilla Set.
