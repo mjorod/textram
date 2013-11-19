@@ -6,12 +6,14 @@
 
 Ver figura 1.
 
-Propuesta 1 (basado en [Umple](http://cruise.eecs.uottawa.ca/umple/StateMachineActionsandDoActivities.html)
+Propuesta 1 (basado en [Umple](http://cruise.eecs.uottawa.ca/umple/StateMachineActionsandDoActivities.html))
 
-!["Vista de estado |Data extraído del aspecto ZeroToManyAssociation"](img/drafts/ZeroToManyAssociation_Data_StateView.png "Vista de estado |Data extraído del aspecto ZeroToManyAssociation")
+!["Vista de estado |Data extraído del aspecto ZeroToManyAssociation"](img/ZeroToManyAssociation_Data_StateView.png "Vista de estado |Data extraído del aspecto ZeroToManyAssociation")
 
 
 `
+
+
     stateView |Data {
       pointcut {
         state AddAllowed
