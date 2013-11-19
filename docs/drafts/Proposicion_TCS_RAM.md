@@ -4,7 +4,7 @@
 
 Para ejemplificar la vista estructural se hará uso del aspecto ZeroToManyAssociation
 
-`
+<code>
     aspect ZeroToManyAssociation {
       structure {
         partial class |Data {
@@ -47,4 +47,4 @@ Para ejemplificar la vista estructural se hará uso del aspecto ZeroToManyAssoci
         }
       }
     }
-`
+</code>
