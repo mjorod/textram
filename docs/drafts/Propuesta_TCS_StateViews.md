@@ -4,14 +4,13 @@
 
 ###Ejemplo de vista de estados para el aspecto ZeroToManyAssociation
 
-Ver figura 1.
+!["Vista de estado |Data extraído del aspecto ZeroToManyAssociation"](img/ZeroToManyAssociation_Data_StateView.png "Vista de estado |Data extraído del aspecto ZeroToManyAssociation")
+Figura 1 (Vista del estado |Data extraído del aspecto ZeroToManyAssociation)
+
+Todas las propuestas que aparecen a continuación, están basadas en la Figura 1.
 
 Propuesta 1 (basado en [Umple](http://cruise.eecs.uottawa.ca/umple/StateMachineActionsandDoActivities.html))
 
-!["Vista de estado |Data extraído del aspecto ZeroToManyAssociation"](img/ZeroToManyAssociation_Data_StateView.png "Vista de estado |Data extraído del aspecto ZeroToManyAssociation")
-
-
-`
 
 
     stateView |Data {
@@ -43,11 +42,13 @@ Propuesta 1 (basado en [Umple](http://cruise.eecs.uottawa.ca/umple/StateMachineA
 						 delete -> [*]
 		}
     }
-`
+
 
 Propuesta 2 (basado en [PlantUML](http://plantuml.sourceforge.net/state.html)
 
-`
+
+
+
     state |Data {
       pointcut {
         AddAllowed,
@@ -74,5 +75,4 @@ Propuesta 2 (basado en [PlantUML](http://plantuml.sourceforge.net/state.html)
 		Existing -> Existing : add/size++
 		Existing -> Existing : remove[size>0]/size--
 		Existing -> [*] : delete			
-    }
-`
+    }`
