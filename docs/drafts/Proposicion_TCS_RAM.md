@@ -48,5 +48,4 @@ aspect ZeroToManyAssociation {
       }
     }
   }
-
 `
