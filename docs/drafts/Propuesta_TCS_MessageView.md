@@ -4,11 +4,11 @@
 
 A continuación se presentan dos ejemplos de vistas de mensajes, que serviran como propuesta de la sintaxis concreta textual de TextRam
 
-La Figura 1, visualize la vista de mensajes del aspecto *ZeroToManyAssociation*
+La Figura 1, visualiza la vista de mensajes del aspecto *ZeroToManyAssociation*
 
 !["Figura 1 Vista de mensajes del aspecto Observer"](img/Observer_MessageNotification.png "Vista de mensajes del aspecto ZeroToManyAssociation")
 
-Figura 1
+Figura 1 (vista de mensajes del aspecto ZeroToManyAssociation)
 
 
 
@@ -77,11 +77,11 @@ Figura 1
 
 
 
-La Figura 2, muestra la vista de mensajes del aspecto *Observer*, lo destacable de este ejemplo es la visualización de la representación de un *loop*.
+La Figura 2, muestra la vista de mensajes del aspecto *Observer*, lo destacable de este ejemplo es la visualización de la representación de un *loop*; además se introduce la clausula affectedBy (ver la definición del mensaje *notification*).
 
 !["Figura 2 Vista de mensajes del aspecto Observer"](img/Observer_MessageNotification.png "Vista de mensajes del aspecto Observer")
 
-Figura 2
+Figura 2 (Vista de mensajes del aspecto Observer)
 
 
 
