@@ -10,7 +10,7 @@ La Figura 1, visualize la vista de mensajes del aspecto *ZeroToManyAssociation*
 
 Figura 1
 
-`
+
 
 
 
@@ -75,7 +75,7 @@ Figura 1
          }
        }
 
-`
+
 
 La Figura 2, muestra la vista de mensajes del aspecto *Observer*, lo destacable de este ejemplo es la visualización de la representación de un *loop*.
 
@@ -83,7 +83,7 @@ La Figura 2, muestra la vista de mensajes del aspecto *Observer*, lo destacable 
 
 Figura 2
 
-`
+
 
 
 
@@ -110,4 +110,4 @@ Figura 2
        }
 	   
 
-`
+
