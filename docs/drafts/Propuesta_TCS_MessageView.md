@@ -7,9 +7,13 @@ A continuación se presentan dos ejemplos de vistas de mensajes, que serviran co
 La Figura 1, visualize la vista de mensajes del aspecto *ZeroToManyAssociation*
 
 !["Figura 1 Vista de mensajes del aspecto Observer"](img/Observer_MessageNotification.png "Vista de mensajes del aspecto ZeroToManyAssociation")
+
 Figura 1
 
 `
+
+
+
        message initializeInstatiation {
 	     pointcut {
 		   caller:Caller -> new:|Data [new := create(..)]
@@ -33,7 +37,7 @@ Figura 1
          }
 		 advice {
 		   caller:Caller -> target:|Data           [add(|Associated a)]
-		   target:|Data  -> mySet:Set<|Associated> [insert(a)]
+		   Target:|Data  -> Myset:Set<|Associated> [insert(a)]
          }
 
          instantiation {
@@ -53,7 +57,7 @@ Figura 1
 		   target:|Data  -> mySet:Set<|Associated> [remove(a)]
          }
 
-         instantiation {
+         Instantiation {
 		   caller -> *,
 		   Caller -> *,
 		   target -> *
@@ -76,9 +80,14 @@ Figura 1
 La Figura 2, muestra la vista de mensajes del aspecto *Observer*, lo destacable de este ejemplo es la visualización de la representación de un *loop*.
 
 !["Figura 2 Vista de mensajes del aspecto Observer"](img/Observer_MessageNotification.png "Vista de mensajes del aspecto Observer")
+
 Figura 2
 
 `
+
+
+
+
        message notification affectedBy getAssociated {
          pointcut {
            caller:Caller -> target:|Subject [|m(..)]
