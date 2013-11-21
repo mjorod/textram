@@ -5,7 +5,13 @@
 Para ejemplificar la vista estructural se hará uso del aspecto ZeroToManyAssociation
 
 <code>
-    aspect ZeroToManyAssociation {
+
+
+
+
+
+
+     aspect ZeroToManyAssociation {
       structure {
         partial class |Data {
           +add(|Associated a) // el nombre del parámetro es opcional
