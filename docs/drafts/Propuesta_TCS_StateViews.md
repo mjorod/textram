@@ -44,7 +44,7 @@ Propuesta 1 (basado en [Umple](http://cruise.eecs.uottawa.ca/umple/StateMachineA
     }
 
 
-Propuesta 2 (basado en [PlantUML](http://plantuml.sourceforge.net/state.html)
+Propuesta 2 (basado en [PlantUML](http://plantuml.sourceforge.net/state.html))
 
 
 
@@ -71,8 +71,8 @@ Propuesta 2 (basado en [PlantUML](http://plantuml.sourceforge.net/state.html)
     }
 
     state Set<|Associated> {
-	    [*] -> Existing : create/size:=0
-		Existing -> Existing : add/size++
-		Existing -> Existing : remove[size>0]/size--
-		Existing -> [*] : delete			
-    }`
+	  [*] -> Existing : create/size:=0
+	  Existing -> Existing : add/size++
+	  Existing -> Existing : remove[size>0]/size--
+	  Existing -> [*] : delete			
+    }
