@@ -2,7 +2,7 @@
 
 !["Aspecto Game"](img/Game.png "Aspecto Game")
 
-`
+
 
 
           aspect Game dependsOn ZeroToMany-Ordered, Random {
@@ -85,4 +85,3 @@
 
 
 
-`
