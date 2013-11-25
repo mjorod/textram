@@ -1,10 +1,14 @@
 #Aspecto Demo
 
-!["Aspecto Demo"](img/demo.png "Aspecto Demo")
+!["Aspecto Demo"](img/Demo.png "Aspecto Demo")
 
 Observaciones: ver *** dentro de la línea del pointcut del mensaje: determineNextOutcome
 
 `
+
+
+
+
 
 
           aspect Demo extending Betting {
