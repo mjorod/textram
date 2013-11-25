@@ -1,13 +1,13 @@
 #Aspect-Oriented Multi-View Modeling
 
 ##Introducción
-El modelamiento multi-vista permite describir el software desde distintias perspectivas y con la ayuda de diferentes notaciones de modelado. El modelado multi-vista enfreta dos retos: *escalabilidad* y *consistencia*. En aplicaciones complejas, los modelos tienden a crecer en tamaño, a un punto tal que incluso las vistas individuales son díficiles de entender.
+El modelamiento multi-vista permite describir el software desde distintas perspectivas, con la ayuda de diferentes notaciones de modelado. El modelado multi-vista enfreta dos retos: *escalabilidad* y *consistencia*. En aplicaciones complejas, los modelos tienden a crecer en tamaño, a un punto tal que incluso las vistas individuales son díficiles de entender.
 
-Las técnicas de orientación a aspectos, ha resuelto el problema de identificación y de modularización de preocupaciones transversales, lo que permite al desarrollador razonar sobre una preocupación individual. Por tanto, estás técnicas tienen el potencial para resolver los problemas de escalabilidad y consistencia, inherentes al modelado multi-vista.
+Las técnicas de orientación a aspectos, han resuelto el problema de identificación y de modularización de preocupaciones transversales, lo que permite al desarrollador razonar sobre una preocupación individual. Por tanto, estas técnicas tienen el potencial para resolver los problemas de escalabilidad y consistencia, inherentes al modelado multi-vista.
 
-Los enfoques existentes de modelado orientado a aspectos (AOM), se han convertido en una estrategia existosa para separar y componer modelos. En el contexto del modelado multi-vista, AOM puede ser aplicado sobre vistas individuales resolver el problema de la escalabilidad. Pero, esto tiene una consecuencia: la dificultad de asegurar la consistencia entre modelos. **Reusabilidad**
+Los enfoques existentes de modelado orientado a aspectos (AOM), se han convertido en una estrategia existosa para separar y componer modelos. En el contexto del modelado multi-vista, AOM puede ser aplicado sobre vistas individuales resolver el problema de la escalabilidad. Sin embargo, esto tiene una consecuencia: la dificultad de asegurar la consistencia entre modelos.
 
-*"Reusable Aspect Models (RAM)"* es un enfoque de modelamiento orientado a aspectos que permite el modelamiento escalable y consistente de múltiples vistas. RAM permite expresar la estructura y el comportamiento de sistemas complejos por medio de diagramas de clase, estado y secuencia en un paquete UML especial llamado "aspect models". En el enfoque de RAM, cualquier preocupación o funcionalidad reutilizable, es modelado como aspecto. No importa si el aspecto se utiliza solo una vez dentro de una misma aplicación, dicho aspecto puede ser reutilizado de nuevo en otras aplicaciones. RAM recomienda modelar aspectos simples y pequeños.
+*"Reusable Aspect Models"* (RAM) es un enfoque de modelamiento orientado a aspectos que permite crear modelos en forma escalable y consistente entre múltiples vistas. RAM permite expresar la estructura y el comportamiento de sistemas complejos, por medio de diagramas de clase, estado y secuencia en un paquete UML especial llamado "aspect model". En el enfoque de RAM, cualquier preocupación o funcionalidad reutilizable, es modelado como aspecto. No importa si el aspecto se utiliza solo una vez dentro de una misma aplicación, dicho aspecto puede ser reutilizado de nuevo en otras aplicaciones. RAM recomienda modelar aspectos simples y pequeños.
 
 Las características de RAM son:
  
@@ -17,7 +17,7 @@ Las características de RAM son:
 4. Ejecuta revisiones de consistencia para verificar la correcta composición de aspectos y su reutilización.
 5. Define un detallado algoritmo de “weaving” que resuelve la dependencia de aspectos para generar “aspect models” independientes que son aplicados en el modelo final.
 
-##Composición de los diagramas de estado y *"weaving"* de los diagramas de estado y de secuencia
+##Antecedentes del modelamiento orientado a aspectos
 
 ###Composición de los diagramas de clases
 
@@ -39,7 +39,7 @@ La Figura 1, es un ejemplo de composición de diagramas de clase.
 El ejemplo presenta un diagrama de clases base, en donde hay una entidad que produce salidas (clase *"Writer"*) a un dispositivo de salida (clase *"FileStream"*). El objetivo es desacoplar la producción de salida de sus dispositivos, por medio de un *"Buffer"*; esto se logra gracias a la definición de un modelo de aspecto que incluye la clase *"Buffer"* y a la unión de dicho aspecto con el diagrama de clases base. El ejemplo muestra el resultado final de esta composición de clases.
 
 
-###*"Weaving"* de los diagrams de estado y de secuencia.
+###"Weaving" de los diagramas de estado y secuencia.
 
 
 Para *tejer* los diagramas de estados de aspectos, se deben especificar dos tipos de diagramas:
