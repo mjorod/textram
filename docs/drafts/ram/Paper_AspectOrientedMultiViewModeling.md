@@ -34,13 +34,12 @@ Pareo de elemenos ("element matching"), es el proceso de identificar elementos d
 
 !["Figura 1. Uniendo diagramas de clase"](img/MergingClassDiagrams.png "Figura 1. Uniendo diagramas de clase")
 
-Figura 1, ejemplo de composición de diagramas de clase.
+Figura 1. Ejemplo de composición de diagramas de clase.
 
 En la Figura 1, se visualiza un diagrama de clases base, en donde hay una entidad que produce salidas (clase *"Writer"*) a un dispositivo de salida (clase *"FileStream"*). El objetivo es desacoplar la producción de salida de sus dispositivos, por medio de un *"Buffer"*; esto es posible, gracias al modelamiento de un aspecto que incluye la clase *"Buffer"* y a la unión de dicho aspecto con el diagrama de clases base. El ejemplo muestra el resultado final de esta composición de clases.
 
 
 ###"Weaving" de los diagramas de estado y secuencia.
-
 
 Para *tejer* los diagramas de estados de aspectos, se deben especificar dos tipos de diagramas:
 
@@ -49,18 +48,20 @@ Para *tejer* los diagramas de estados de aspectos, se deben especificar dos tipo
 
 El resultado de este enfoque es la extensión del comportamiento con uno nuevo o la eliminación de este.
 
+Al igual que *AspectJ*, un comportamiento puede ser insertado alrededor (*"around"*), antes ("*before*") o después ("*after*") de un "*join point*", por tanto el comportamiento original se puede sustituir, extender o remover. Un ejemplo de esto se visualiza en la Figura 2, por medio de un diagrama de secuencia. 
 
 !["Ejemplo del "weaving" de un diagrama de secuencia"](img/SequenceDiagramWeavingExample.png "Ejemplo del "weaving" de un diagrama de secuencia")
 
+Figura 2. Ejemplo del "weaving" de un diagrama de secuencia.
 
-Este enfoque puede extender 
+Los diagrama de secuencia base y destino muestran una interacción entre el usuario y el servidor:
 
-En *AspectJ* el comportamiento de los aspectos puede ser insertado alredeor (*"around"*), antes ("*before*") o después ("*after*") de un "*join point*"
+1. El usuario envia un mensaje de "*login*" al servidor.
+2. El servidor responde con *tryAgain*
+3. El usuario realiza un nuevo intento.
+4. El diagrama de secuencia muestra un escenario alternativo ("alt") que describe que mensajes son enviados después, dependiendo si el "*login*" es aceptado o rechazado.
 
-Si se desea *tejer* un diagrama de estados de aspectos en un diagrama de estados destino, el diagrama de estado de aspectos es compuesto por un  par de diagramas de estado:
-
-1. Uno para el pointuct (especificación del comportamiento a detectar)
-2. Otro diagrama de estado para el Advice, representado el comportamiento esperado en cada *"join point"*. Igualmente que en *AspectJ* en donde el comportamiento de aspectos puede ser insertado *"around"*, "*before*" o "*after*" de un *"join point"*, un aspecto puede extender el comportamiento matcheado, remplezando con un nuevo comportamiento o removiendolo completamente.
+El aspecto especificado en la Figura 2, consiste en un "*pointcut*" y un "*advice*". El "*pointcut*" intercepta cualquier interacción en el usuario y el servidor, empezando por método `login`. En la especificación del "*pointcut*" es posible utilizar expresiones regulares en el nombre de los mensajes ("\*" significa interesarse en cualquier mensaje desde el servidor al usuario). El "*advice*" indica que el mensaje `notify` y el mensaje `update` de un objeto de tipo `Display` son adicionados después del retorno del mensaje desde el servidor. El resultado se puede visualizar en el diagrama de la izquierda de la Figura 2.
 
 
 En RAM una preocupación tiene 3 tipos diferentes de vistas: vista estructural, vista de estados y vista de mensajes; dichas vistas son agrupados en un paquete UML especial llamado *"aspect model"*
