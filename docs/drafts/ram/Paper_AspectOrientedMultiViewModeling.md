@@ -1,21 +1,21 @@
-#Aspect-Oriente Multi-View Modeling
+#Aspect-Oriented Multi-View Modeling
 
-*"Reusable Aspect Models (RAM)"* es un enfoque de modelamiento orientado a aspecto multi-vista, que:
+##Introducción
+El modelamiento multi-vista permite describir el software desde distintias perspectivas y con la ayuda de diferentes notaciones de modelado. El modelado multi-vista enfreta dos retos: *escalabilidad* y *consistencia*. En aplicaciones complejas, los modelos tienden a crecer en tamaño, a un punto tal que incluso las vistas individuales son díficiles de entender.
+
+Las técnicas de orientación a aspectos, ha resuelto el problema de identificación y de modularización de preocupaciones transversales, lo que permite al desarrollador razonar sobre una preocupación individual. Por tanto, estás técnicas tienen el potencial para resolver los problemas de escalabilidad y consistencia, inherentes al modelado multi-vista.
+
+Los enfoques existentes de modelado orientado a aspectos (AOM), se han convertido en una estrategia existosa para separar y componer modelos. En el contexto del modelado multi-vista, AOM puede ser aplicado sobre vistas individuales resolver el problema de la escalabilidad. Pero, esto tiene una consecuencia: la dificultad de asegurar la consistencia entre modelos. **Reusabilidad**
+
+*"Reusable Aspect Models (RAM)"* es un enfoque de modelamiento orientado a aspectos que permite el modelamiento escalable y consistente de múltiples vistas. RAM permite expresar la estructura y el comportamiento de sistemas complejos por medio de diagramas de clase, estado y secuencia en un paquete UML especial llamado "aspect models". En el enfoque de RAM, cualquier preocupación o funcionalidad reutilizable, es modelado como aspecto. No importa si el aspecto se utiliza solo una vez dentro de una misma aplicación, dicho aspecto puede ser reutilizado de nuevo en otras aplicaciones. RAM recomienda modelar aspectos simples y pequeños.
+
+Las características de RAM son:
  
 1. Integración de diagramas de clase, estado y de secuencia por medio de las técnicas de modelado orientado a aspectos.
 2. Reutilización de “aspect models” en forma segura y flexible.
 3. Soporta la creación de complejas cadenas de dependencia. Esto permite modelar aspectos de funcionalidad compleja, descomponiéndolos en aspectos que proveen una funcionalidad simple.
 4. Ejecuta revisiones de consistencia para verificar la correcta composición de aspectos y su reutilización.
 5. Define un detallado algoritmo de “weaving” que resuelve la dependencia de aspectos para generar “aspect models” independientes que son aplicados en el modelo final.
-
-
-A continuación se describen los conceptos básicos de RAM,
-
-Para iniciar ser dará la definición de aspecto según RAM:
-
->Cualquier funcionalidad o preocupación que puede der reutilizable es modelado como un aspecto.
-
-Aunque el aspecto se utilice solo una vez en la misma aplicación, dicho aspecto puede ser reutilizable en otras aplicación.
 
 ##Composición de los diagramas de estado y *"weaving"* de los diagramas de estado y de secuencia
 
@@ -126,15 +126,18 @@ En ocasiones especiales, el "*pointcut*" puede representar comportamientos más 
 ###Dependencia de aspectos, reutilización, enlaces e instanciación.
 Uno de los objetivos de RAM, es proveer escalabilidad por medio del modelamiento multi-vista. Para mantener los "*aspect models*" relativamente pequeños, los aspectos que proveen una funcionalidad compleja deben tener la capacidad de reutilizar funcionalidad simple proveida por otros aspectos.
 
-Si un aspecto `A` reutilzia modelos provídos por un aspecto `B`, entonces `A` *depende* de `B`. Las dependencias deben ser mostrads en el encabezado del paquete de aspectos.
+Si un aspecto `A` reutilizar modelos proporcionado por un aspecto `B`, entonces `A` *depende* de `B`. Las dependencias deben ser mostradas en el encabezado del paquete de aspectos. Ejemplo: `aspect A depends on B`.
 
 ####Instanciación
-Para ejemplificar la instanciación, vamos a suponer que tenemos dos "*aspect models*": `A` y `B`. `A` tiene una clase parcial `|X` y `B` tiene una clase parcial `|Y`.
+Para ejemplificar la instanciación, vamos a suponer que tenemos dos "*aspect models*": `A` y `B`. `A` tiene una clase parcial `|X` y `B` tiene una clase parcial `|Y`. A continuación se detallará como se debe realizar la instanciación en las diferentes vistas del *aspect model*; para ellos hay que considerar de que `A` depende de `B`.
 
-Si `A` depende de `B`, `A` *explícitamente* indica que reutiliza la funcionalidad proporcionada por `B`, para esto `A` debe *instanciar* `B` una o más veces.
+**Vista estructural**. `A` debe proporcionar al menos una *directiva de instanciación* que corresponda a los *parámetros de instanciación obligatoria* de la vista estructural de `B`. Clases en `B` que no son *parámetros de instanciación obligatoria* pueden ser instanciados en forma opcional.
+
+**Vista de estados**. La vista de estados de `A` debe corresponder todos los parámetros de instanciación obligatorios, definidos en la vista de estados de `B`; dicha instanciación se hace mapeando los estados incompletos de `B` con los estados de `A` en la directiva de instanciación de la vista de estados de `A`.
+
+**Vista de mensajes** Sucede lo mismo en la vista de mensajes, si `A` desea reutilizar `B`; todos los parámetros de instanciación obligatoria de `B` deben ser correspondidos en la directiva de instanciación de la vista de mensajes de `A`.
+
+####Enlazamiento (Binding)
 
 
-Si `A` depende de `B`. `A` *explícitamente* indica que reutiliza la funcionalidad proveída por `B`, *instanciando* `B` una o más veces si es necesario. Dentro de la vista estructural, `A` debe proveer al menos una *directiva de instanciación* que corresponda al menos a un *parámetro de instanciación obligatoria* de la vista estructural de `B` a entidad de la vista estrucural de `A`.
-
-Clases en `B` que nos son *parámetros de instanciación obligatoria* pueden ser instanciados en forma opcional. Para cada clase parcial  `|Y` en `B` que es combinada con una clase parcial `X` de la clase `A`, `A` debe además mapear todas las plantillas obligatorias que se indican en la vista de estados de `Y`  
 
