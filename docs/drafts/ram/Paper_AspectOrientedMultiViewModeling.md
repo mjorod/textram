@@ -21,14 +21,14 @@ Las características de RAM son:
 
 ###Composición de los diagramas de clases
 
-La técnica de composición de modelos que utiliza RAM, es basada en el enfoque propuesto por France en [77,77], dicho enfoque compone modelos que presentan diferentes vistas del mismo concepto. Para que esto sea posible, se deben cumplir dos requisitos:
+La técnica de composición de modelos que utiliza RAM, es basada en el enfoque propuesto por France en [77,77], dicho enfoque compone modelos que representan diferentes vistas del mismo concepto. El resultado esperado es un modelo compuesto a partir de un modelo origen y un modelo destino. Para que esto sea posible, se deben cumplir dos requisitos:
 
 1. Los elementos del modelo a componer deben ser del mismo tipo sintáctico.
 2. Los elementos del modelo a componer deben ser instancias de la misma clase del *meta-modelo*.
 
-En ocasiones, una vista de aspecto describe elementos que no están presentes en el modelos destino y viceversa, en estos casos, dichos elementos son incluidos en modelo final compuesto.
+Si existe un elemento que no está presente en el modelo destino (y viceversa), dicho elemento es incluido en el modelo final compuesto.
 
-*"Element matching"* se llama al proceso de identificar elementos del modelo a componer. Para soportar en forma automática el "*element matching*", cada tipo de elemento, es asociado con una firma que determina su unicidad dentro del espacio de tipos: dos elementos con firmas equivalentes representan el mismo concepto, por tanto son compuestos.
+Pareo de elemenos ("element matching"), es el proceso de identificar elementos del modelo a componer. Para soportar en forma automática el pareo de elementos, cada tipo de elemento es asociado con una firma que determina su unicidad dentro del estapacio de tipos: **dos elementos con firmas equivalentes representan el mismo concepto**, por tanto dichos elementos incluidos en la composición.
 
 ####Ejemplo
 
