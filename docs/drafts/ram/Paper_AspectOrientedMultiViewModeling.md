@@ -28,15 +28,15 @@ La técnica de composición de modelos que utiliza RAM, es basada en el enfoque 
 
 Si existe un elemento que no está presente en el modelo destino (y viceversa), dicho elemento es incluido en el modelo final compuesto.
 
-Pareo de elemenos ("element matching"), es el proceso de identificar elementos del modelo a componer. Para soportar en forma automática el pareo de elementos, cada tipo de elemento es asociado con una firma que determina su unicidad dentro del estapacio de tipos: **dos elementos con firmas equivalentes representan el mismo concepto**, por tanto dichos elementos incluidos en la composición.
+Pareo de elemenos ("element matching"), es el proceso de identificar elementos del modelo a componer. Para soportar en forma automática el pareo de elementos, cada tipo de elemento es asociado con una firma que determina su unicidad dentro del espacio de tipos: **dos elementos con firmas equivalentes representan el mismo concepto**, por tanto dichos elementos incluidos son en la composición.
 
 ####Ejemplo
 
 !["Figura 1. Uniendo diagramas de clase"](img/MergingClassDiagrams.png "Figura 1. Uniendo diagramas de clase")
 
-La Figura 1, es un ejemplo de composición de diagramas de clase.
+Figura 1, ejemplo de composición de diagramas de clase.
 
-El ejemplo presenta un diagrama de clases base, en donde hay una entidad que produce salidas (clase *"Writer"*) a un dispositivo de salida (clase *"FileStream"*). El objetivo es desacoplar la producción de salida de sus dispositivos, por medio de un *"Buffer"*; esto se logra gracias a la definición de un modelo de aspecto que incluye la clase *"Buffer"* y a la unión de dicho aspecto con el diagrama de clases base. El ejemplo muestra el resultado final de esta composición de clases.
+En la Figura 1, se visualiza un diagrama de clases base, en donde hay una entidad que produce salidas (clase *"Writer"*) a un dispositivo de salida (clase *"FileStream"*). El objetivo es desacoplar la producción de salida de sus dispositivos, por medio de un *"Buffer"*; esto es posible, gracias al modelamiento de un aspecto que incluye la clase *"Buffer"* y a la unión de dicho aspecto con el diagrama de clases base. El ejemplo muestra el resultado final de esta composición de clases.
 
 
 ###"Weaving" de los diagramas de estado y secuencia.
