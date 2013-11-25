@@ -7,7 +7,7 @@ Las técnicas de orientación a aspectos, han resuelto el problema de identifica
 
 Los enfoques existentes de modelado orientado a aspectos (AOM), se han convertido en una estrategia existosa para separar y componer modelos. En el contexto del modelado multi-vista, AOM puede ser aplicado sobre vistas individuales resolver el problema de la escalabilidad. Sin embargo, esto tiene una consecuencia: la dificultad de asegurar la consistencia entre modelos.
 
-*"Reusable Aspect Models"* (RAM) es un enfoque de modelamiento orientado a aspectos que permite crear modelos en forma escalable y consistente entre múltiples vistas. RAM permite expresar la estructura y el comportamiento de sistemas complejos, por medio de diagramas de clase, estado y secuencia en un paquete UML especial llamado "aspect model". En el enfoque de RAM, cualquier preocupación o funcionalidad reutilizable, es modelado como aspecto. No importa si el aspecto se utiliza solo una vez dentro de una misma aplicación, dicho aspecto puede ser reutilizado de nuevo en otras aplicaciones. RAM recomienda modelar aspectos simples y pequeños.
+*"Reusable Aspect Models"* (RAM) es un enfoque de modelamiento orientado a aspectos que permite crear modelos en forma escalable y consistente entre múltiples vistas. RAM permite expresar la estructura y el comportamiento de sistemas complejos, por medio de diagramas de clase, estado y secuencia en un paquete UML especial llamado "aspect model".
 
 Las características de RAM son:
  
@@ -56,15 +56,18 @@ Figura 2. Ejemplo del "weaving" de un diagrama de secuencia.
 
 Los diagrama de secuencia base y destino muestran una interacción entre el usuario y el servidor:
 
-1. El usuario envia un mensaje de "*login*" al servidor.
-2. El servidor responde con *tryAgain*
+1. El usuario envia un mensaje de `login` al servidor.
+2. El servidor responde con `tryAgain`
 3. El usuario realiza un nuevo intento.
-4. El diagrama de secuencia muestra un escenario alternativo ("alt") que describe que mensajes son enviados después, dependiendo si el "*login*" es aceptado o rechazado.
+4. El diagrama de secuencia muestra un escenario alternativo (`alt`) que describe que mensajes son enviados después, dependiendo si el `login` es aceptado o rechazado.
 
-El aspecto especificado en la Figura 2, consiste en un "*pointcut*" y un "*advice*". El "*pointcut*" intercepta cualquier interacción en el usuario y el servidor, empezando por método `login`. En la especificación del "*pointcut*" es posible utilizar expresiones regulares en el nombre de los mensajes ("\*" significa interesarse en cualquier mensaje desde el servidor al usuario). El "*advice*" indica que el mensaje `notify` y el mensaje `update` de un objeto de tipo `Display` son adicionados después del retorno del mensaje desde el servidor. El resultado se puede visualizar en el diagrama de la izquierda de la Figura 2.
+El aspecto especificado en la Figura 2, consiste en un "*pointcut*" y un "*advice*". El "*pointcut*" intercepta cualquier interacción entre el usuario y el servidor, empezando por método `login`. En la especificación del "*pointcut*", es posible utilizar expresiones regulares en el nombre de los mensajes (`*` captura cualquier mensaje desde el servidor al usuario). El "*advice*" indica que el mensaje `notify` y el mensaje `update` de un objeto de tipo `Display` son adicionados después del retorno del mensaje desde el servidor. El resultado se puede visualizar en el diagrama de la izquierda de la Figura 2.
 
+##Conceptos básicos de RAM
 
-En RAM una preocupación tiene 3 tipos diferentes de vistas: vista estructural, vista de estados y vista de mensajes; dichas vistas son agrupados en un paquete UML especial llamado *"aspect model"*
+Una preocupación en RAM, tiene 3 tipos diferentes de vistas: vista estructural, vista de estados y vista de mensajes; dichas vistas son agrupados en un paquete UML especial llamado *"aspect model"*.
+
+En el enfoque de RAM, cualquier preocupación o funcionalidad reutilizable, es modelado como aspecto. No importa si el aspecto se utiliza solo una vez dentro de una misma aplicación, dicho aspecto puede ser reutilizado de nuevo en otras aplicaciones. RAM recomienda modelar aspectos simples y pequeños.
 
 ###Vista estructural
 
