@@ -65,17 +65,17 @@ El aspecto especificado en la Figura 2, consiste en un "*pointcut*" y un "*advic
 
 ##Conceptos básicos de RAM
 
-Una preocupación en RAM, tiene 3 tipos diferentes de vistas: vista estructural, vista de estados y vista de mensajes; dichas vistas son agrupados en un paquete UML especial llamado *"aspect model"*.
+Una preocupación en RAM, tiene 3 tipos diferentes de vistas: vista estructural, vista de estados y vista de mensajes; dichas vistas son agrupadas en un paquete UML especial llamado *"aspect model"*.
 
 En el enfoque de RAM, cualquier preocupación o funcionalidad reutilizable, es modelado como aspecto. No importa si el aspecto se utiliza solo una vez dentro de una misma aplicación, dicho aspecto puede ser reutilizado de nuevo en otras aplicaciones. RAM recomienda modelar aspectos simples y pequeños.
 
 ###Vista estructural
 
-Es el primer compartimento de un *"aspect model"*. Se expresa por medio de diagramas de clase, por tanto define atributos, métodos y asociaciones. Los miembros de clase pueden tener tres tipos de visibilidad:
+Es el primer compartimento de un *"aspect model"*. La vista estructural se expresa por medio de diagramas de clase; por tanto define atributos, métodos y asociaciones. Los miembros de clase pueden tener tres tipos de visibilidad:
 
 1. Miembros privados: los métodos solo son visibles dentro de la clases en donde fueron definidos. Estos métodos se anotan con el carácter `-`
 2. Miembros públicos: representan la interfaz pública de los aspectos de RAM y son visibles al exterior del paquete de aspectos. Estos métodos se anotan con el carácter `+`
-3. Miembros inter-aspectos: únicamente pueden ser llamados desde otros objetos que son parte del aspecto. La anotación de deasdfdas es por medio del caracter `~`.
+3. Miembros intra-aspectos: únicamente pueden ser llamados desde otros objetos que son parte del aspecto. La anotación de los miembros intra-aspectos es por medio del caracter `~`.
 
 ####Completitud de la clases
 Las clases dentro de la vista estructual no necesitan estar completas. Dichas clases solo necesitan especificar los miembros que son relevantes dentro de la preocupación modelada. La clases incompletas reciben el nombre de clases parciales.
