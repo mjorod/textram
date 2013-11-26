@@ -78,7 +78,7 @@ Es el primer compartimento de un *"aspect model"*. La vista estructural se expre
 3. Miembros intra-aspectos: únicamente pueden ser llamados desde otros objetos que son parte del aspecto. La anotación de los miembros intra-aspectos es por medio del caracter `~`.
 
 ####Completitud de la clases
-Las clases dentro de la vista estructual no necesitan estar completas. Dichas clases solo necesitan especificar los miembros que son relevantes dentro de la preocupación modelada. La clases incompletas reciben el nombre de clases parciales.
+Las clases dentro de la vista estructual no necesitan estar completas. Dichas clases solo necesitan especificar los miembros que son relevantes dentro de la preocupación modelada. La clases incompletas reciben el nombre de **clases parciales**.
 
 Las clases parciales, necesitan ser completadas antes de ser usadas dentro de la aplicación. Las clases parciales no definen contructores o destructores, por tanto sería imposible crear instancias de dichas clases. Todas las clases parciales de un aspecto son exportadas como *parámetros de instanciación obligatoria*; dichos parámetros son representados en la esquina superior derecha del paquete de aspectos. Para poder usar el aspecto y tejerlo con el modelo destino, los parámetros de instanciación obligatoria deben ser mapeados a los elementos del modelo del diagrama de clases destino.
 
@@ -128,18 +128,22 @@ Por lo general, el "*pointcut*" muestra un llamador ("*caller*"), que invoca la 
 En ocasiones especiales, el "*pointcut*" puede representar comportamientos más complejos: mensajes de secuencia entre distintos objetos. En estos casos, el "*advice*" muestra como los mensajes adicionales son adicionados dentro del comportamiento especificacdo en el "*pointcut*" o inclusive como los mensajes "*matchados*" son reemplazados.
 
 ###Dependencia de aspectos, reutilización, enlaces e instanciación.
-Uno de los objetivos de RAM, es proveer escalabilidad por medio del modelamiento multi-vista. Para mantener los "*aspect models*" relativamente pequeños, los aspectos que proveen una funcionalidad compleja deben tener la capacidad de reutilizar funcionalidad simple proveida por otros aspectos.
+Uno de los objetivos de RAM, es proveer escalabilidad por medio del modelamiento multi-vista. Para mantener los "*aspect models*" relativamente pequeños, los aspectos que necesitan representar una funcionalidad compleja, deben tener la capacidad de reutilizar la funcionalidad de otros aspectos.
 
-Si un aspecto `A` reutilizar modelos proporcionado por un aspecto `B`, entonces `A` *depende* de `B`. Las dependencias deben ser mostradas en el encabezado del paquete de aspectos. Ejemplo: `aspect A depends on B`.
+Si un aspecto `A` reutiliza modelos proporcionados por un aspecto `B`, entonces `A` *depende* de `B`. Las dependencias deben ser mostradas en el encabezado del paquete de aspectos. Ejemplo: `aspect A depends on B`.
 
 ####Instanciación
-Para ejemplificar la instanciación, vamos a suponer que tenemos dos "*aspect models*": `A` y `B`. `A` tiene una clase parcial `|X` y `B` tiene una clase parcial `|Y`. A continuación se detallará como se debe realizar la instanciación en las diferentes vistas del *aspect model*; para ellos hay que considerar de que `A` depende de `B`.
+En RAM, si `A` depende de `B`, `A` debe indicar explícitamente que reutiliza la funcionalidad de `B` *instanciando* `B`. Cada una de las vistas (estructural, estados y mensajes) pueden indicar parámetros de instanciación obligatoria, por medio de clases parciales definidas en la esquina superior derecha de cada vistas.
 
-**Vista estructural**. `A` debe proporcionar al menos una *directiva de instanciación* que corresponda a los *parámetros de instanciación obligatoria* de la vista estructural de `B`. Clases en `B` que no son *parámetros de instanciación obligatoria* pueden ser instanciados en forma opcional.
+Si `A` desea reutilizar `B`,`A` debe proporcionar al menos una *directiva de instanciación* que corresponda a los *parámetros de instanciación obligatoria* de la vista de `B` (estructural, estado o mensajes). Clases en `B` que no son *parámetros de instanciación obligatoria* pueden ser instanciados en forma opcional.
 
-**Vista de estados**. La vista de estados de `A` debe corresponder todos los parámetros de instanciación obligatorios, definidos en la vista de estados de `B`; dicha instanciación se hace mapeando los estados incompletos de `B` con los estados de `A` en la directiva de instanciación de la vista de estados de `A`.
+El formato de instanciación es el siguiente: `AspectoOrigen.ClaseParcial -> Entidad`.
 
-**Vista de mensajes** Sucede lo mismo en la vista de mensajes, si `A` desea reutilizar `B`; todos los parámetros de instanciación obligatoria de `B` deben ser correspondidos en la directiva de instanciación de la vista de mensajes de `A`.
+La Figura 4, es un ejemplo de instanciación.
+
+!["Figura 4. El aspecto Checkpointable depende del aspecto Copyable"](img/Figura_4 "Figura 4. El aspecto Checkpointable depende del aspecto Copyable")
+
+Figura 4. El aspecto Checkpointable depende del aspecto Copyable.
 
 ####Enlazamiento (Binding)
 
