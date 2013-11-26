@@ -80,17 +80,9 @@ Es el primer compartimento de un *"aspect model"*. La vista estructural se expre
 ####Completitud de la clases
 Las clases dentro de la vista estructual no necesitan estar completas. Dichas clases solo necesitan especificar los miembros que son relevantes dentro de la preocupación modelada. La clases incompletas reciben el nombre de **clases parciales**.
 
-Las clases parciales, necesitan ser completadas antes de ser usadas dentro de la aplicación. Las clases parciales no definen contructores o destructores, por tanto sería imposible crear instancias de dichas clases. Todas las clases parciales de un aspecto son exportadas como *parámetros de instanciación obligatoria*; dichos parámetros son representados en la esquina superior derecha del paquete de aspectos. Para poder usar el aspecto y tejerlo con el modelo destino, los parámetros de instanciación obligatoria deben ser mapeados a los elementos del modelo del diagrama de clases destino.
-
-Las clases pueden luego se compuestas por el "*weaver*" con otras clases cuando el aspecto es instanciado o enlazado a un modelo base, para terminar con una clase completa.
-
-Las clases parciales, necesitan ser completadas antes de ser usadas dentro de la aplicación. Las clases parciales, no definen constructores y destructores, por tanto será imposible crear instancias de dichas clases. Todas las clases parciales de un aspecto, son por tanto exportadas como *parámetros de instanciación obligatorios* del aspecto, y son mostrados como parámetros de plantilla UML en la esquina superior izquierda del aspecto. Para poder usar el aspecto y tejerlo con el modelo destino, los parámetros de instanfdf7ciación deben ser mapeados a los elementos del modelo desde el modelo destino.
+Las clases parciales, necesitan ser completadas antes de ser usadas dentro de la aplicación. Las clases parciales no definen constructores o destructores, por tanto sería imposible crear instancias de dichas clases. Todas las clases parciales de un aspecto son exportadas como *parámetros de instanciación obligatoria*; dichos parámetros son representados en la esquina superior derecha del paquete de aspectos. Para poder usar el aspecto y tejerlo con el modelo destino, los parámetros de instanciación obligatoria deben ser mapeados a los elementos del modelo del diagrama de clases destino.
 
 Después se puede realizar una composición de clases por medio del uso del *"weaver"* enlazando o instanciando el modelo de aspectos con el modelo de clases base 
-
-La vista estructural es el primer compartimiento de un *"aspect model"*. Se expresa por medio de los diagramas de clase y por lo tanto contiene clases con atributos, métodos y asociaciones. Los métodos públicos pueden ser usados al exterior del paquete de aspectos, y es anotado con el carácter `+`. Las clases dentro de la vista estructural no necesitan estar completas, ellas solo necesitan especificar los atributos, métodos y asociaciones que son relevantes dentro de la preocupación que es modelada. Las clases pueden después ser compuesta por el *"weaver"* con otras clases cuando el aspecto es instanciado o enlazado con el modelo base para completar un clase.
-
-Clases incompletas, son entidades que nos están directamente o indirectamente enlazadas con elementos del modelo de otro modelo de aspectos, y métodos cuyos nombres y firmas son aun determinadas
 
 ###Vista de estados
 Los mensajes que son aceptados dentro del estado de un objeto, son representados en RAM por medio de la vista de estados. La vista de estados es la segunda sección dentro de un "*aspect model*". Los estados representan el estado interno de una entidad relevante dentro de la preocupación a modelar. La relevancia de un estado se define por los mensajes que la entidad es capaz de procesar.
@@ -106,9 +98,8 @@ Los mensajes que son aceptados dentro del estado de un objeto, son representados
 
 Dependiendo de la completitud de las entidades en la vista estructual, una vista de estado se puede representar de dos formas:
 
-1. Si la clase es completa: la vista de estado toma la forma de un diagrama de estados estandar para definir el protocolo de la entidad.
-2. Para clases incompleta:, se debe definir un *diagrama de estados de aspectos* que consiste en un "*pointcut*" y un "*advice*". El "*pointcut*" define los estados y transiciones que deben existir en el diagrama de estados destino. El "*advice*" define (o redefine) el diagrama de estados que reemplazará las ocurrencias del "*pointcut*" en el diagrama de estados destino. Al igual que en la vista estrucutal, los estados que no están enlazados directamente o indirectamente son llamados *parámetros de instanciación obligatoria* (también son colocados en la esquina superior derecha y representados con el carácter `|` como prefijo.
-
+1. Si la clase es completa: la vista de estado toma la forma de un diagrama de estados estándar para definir el protocolo de la entidad.
+2. Para clases incompleta: se debe definir un *diagrama de estados de aspectos* que consiste en un "*pointcut*" y un "*advice*". El "*pointcut*" define los estados y transiciones que deben existir en el diagrama de estados destino. El "*advice*" define (o redefine) el diagrama de estados que reemplazará las ocurrencias del "*pointcut*" en el diagrama de estados destino. Al igual que en la vista estrucutal, los estados que no están enlazados directamente o indirectamente son llamados *parámetros de instanciación obligatoria* (también son colocados en la esquina superior derecha y representados con el carácter `|` como prefijo.
 
 ###Vista de mensajes
 La última sección del "*aspect model*" es la vista de mensajes. Para proveer la funcionalidad relacionada a un preocupación, los elementos del modelo dentro del aspecto deben colaborar en "*run-time*". En RAM, la colaboración entre objetos es representada por medio de la vista de mensajes.
@@ -117,15 +108,15 @@ La última sección del "*aspect model*" es la vista de mensajes. Para proveer l
 
 1. La notación utilizada para describir la vista de mensajes son los diagramas de secuencia de UML.
 2. Se debe definir una vista de mensajes para cada operación pública que involucra intercambio de mensajes entre objetos en la vista estructural.
-3. Los mensajes que se deben incluir son aquellos que muestra un intercambio de mensajes entre entidades cuando proveen la funcianalidad de cada método público. Los mensajes que no se incluyen son aquellos que solo representan una computación interna de la entidad y no un intercambio de mensajes entre entiades.
+3. Los mensajes que se deben incluir son aquellos que muestra un intercambio de mensajes entre entidades cuando exponen la funcionalidad de cada método público. Los mensajes que no se incluyen son aquellos que solo representan una computación interna de la entidad y no un intercambio de mensajes entre entidades.
 
 ####Representación de la vista de mensajes
 
-la vista de mensajes contiene un *diagrama de secuencia de estados* que consiste en un "*point cut*" y un "*advice*" El "*pointcut*" define, la entidades y el intercambio de mensajes que deben de existir en el diagrama de secuencia destino. El "*advice*" especifica el diagrama de secuencia que reemplazará la ocurrencia del "*pointcut*" en el diagrama destino.
+la vista de mensajes contiene un *diagrama de secuencia de estados* que consiste en un "*pointcut*" y un "*advice*" El "*pointcut*" define, la entidades y el intercambio de mensajes que deben de existir en el diagrama de secuencia destino. El "*advice*" especifica el diagrama de secuencia que reemplazará la ocurrencia del "*pointcut*" en el diagrama destino.
 
 Por lo general, el "*pointcut*" muestra un llamador ("*caller*"), que invoca la operación de la instancia de la entidad que define el método. El "*advice*" entonces, muestra los detalles de ejecución de dicho método. 
 
-En ocasiones especiales, el "*pointcut*" puede representar comportamientos más complejos: mensajes de secuencia entre distintos objetos. En estos casos, el "*advice*" muestra como los mensajes adicionales son adicionados dentro del comportamiento especificacdo en el "*pointcut*" o inclusive como los mensajes "*matchados*" son reemplazados.
+En ocasiones especiales, el "*pointcut*" puede representar comportamientos más complejos: mensajes de secuencia entre distintos objetos. En estos casos, el "*advice*" muestra como los mensajes adicionales son adicionados dentro del comportamiento especificado en el "*pointcut*" o inclusive como los mensajes "*matchados*" son reemplazados.
 
 ###Dependencia de aspectos, reutilización, enlaces e instanciación.
 Uno de los objetivos de RAM, es proveer escalabilidad por medio del modelamiento multi-vista. Para mantener los "*aspect models*" relativamente pequeños, los aspectos que necesitan representar una funcionalidad compleja, deben tener la capacidad de reutilizar la funcionalidad de otros aspectos.
@@ -170,7 +161,5 @@ Para que la reutilización sea posible, se deben seguir las siguientes reglas:
 1. Si un aspecto `A` expone una funcionalidad, cuyo diseño necesita la funcionalidad del aspecto `B`, entonces `A` depende de `B`; solo en este caso `A` puede instanciar vistas de `B`, o enlazar elementos de `A` con elementos de `B`.
 
 2. Las dependencias circulares, son prohibidas.
-
-
 
 
