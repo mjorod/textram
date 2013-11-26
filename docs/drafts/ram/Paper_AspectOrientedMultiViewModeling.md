@@ -141,7 +141,7 @@ El formato de instanciación es el siguiente: `AspectoOrigen.ClaseParcial -> Ent
 
 La Figura 4, es un ejemplo de instanciación.
 
-!["Figura 4. El aspecto Checkpointable depende del aspecto Copyable"](img/Figura_4 "Figura 4. El aspecto Checkpointable depende del aspecto Copyable")
+!["Figura 4. El aspecto Checkpointable depende del aspecto Copyable"](img/Figura_4.png "Figura 4. El aspecto Checkpointable depende del aspecto Copyable")
 
 Figura 4. El aspecto Checkpointable depende del aspecto Copyable.
 
