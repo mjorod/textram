@@ -145,6 +145,16 @@ La Figura 4, es un ejemplo de instanciación.
 
 Figura 4. El aspecto Checkpointable depende del aspecto Copyable.
 
+En la Figura 4, se ejemplifica como el aspecto `Checkpointable` reutiliza el aspecto `Copyable`:
+
+1. El encabezado del aspecto, indica que `Checkpointable` reutiliza `Copyable`: `aspect Checkpointable depends on Copyable`.
+
+2. La vista estructural de `Copyable` se instancia en la vista estructural de `Checkpointable`, pareando la clase incompleta `|Copyable` con la clase incompleta `|Checkpointable`. El significado de la instanciación es el siguiente: todas las instancias de `|Checkpointable` además de exponer los métodos `establish, restore, discard`, también define los métodos, atributos y asociaciones definidas en `|Copyable`.
+
+3. La vista de estados de `|Checkpointable` especifica que una instancia de la clase incompleta `|Checkpointable` acepta cualquier número de llamadas de `establishing`, seguido de por lo menos, el mismo número de llamadas de `restore` y `discard`. La instanciación que parea `|CloneAllowed` a `Establishing` se asegura de que el método `clone` solo puede ser llamado después de una llamada de `establish`. De igual forma, `replaceStateWith` puede ser llamado solamente después de una llamada de `restore` o `discard`.
+
+4. La vista de mensaje de `establish`, tiene una directiva de instanciación que especifica como se reutiliza la vista de mensajes `clone`, en el punto en que el objeto `|target` se invoca a sí mismo.
+
 ####Enlazamiento (Binding)
 
 
