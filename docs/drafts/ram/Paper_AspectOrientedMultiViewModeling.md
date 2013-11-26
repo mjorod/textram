@@ -137,7 +137,7 @@ En RAM, si `A` depende de `B`, `A` debe indicar explícitamente que reutiliza la
 
 Si `A` desea reutilizar `B`,`A` debe proporcionar al menos una *directiva de instanciación* que corresponda a los *parámetros de instanciación obligatoria* de la vista de `B` (estructural, estado o mensajes). Clases en `B` que no son *parámetros de instanciación obligatoria* pueden ser instanciados en forma opcional.
 
-El formato de instanciación es el siguiente: `AspectoOrigen.ClaseParcial -> Entidad`.
+El formato de instanciación es el siguiente: `AspectoOrigen.ClaseParcial -> NombreEntidad`.
 
 La Figura 4, es un ejemplo de instanciación.
 
@@ -156,6 +156,21 @@ En la Figura 4, se ejemplifica como el aspecto `Checkpointable` reutiliza el asp
 4. La vista de mensaje de `establish`, tiene una directiva de instanciación que especifica como se reutiliza la vista de mensajes `clone`, en el punto en que el objeto `|target` se invoca a sí mismo.
 
 ####Enlazamiento (Binding)
+En el escenario  de que un aspecto `A` depende de un aspecto `B`, puede pasar que una clase imparcial `|X` en la vista estructural de `A`, necesite ser compuesta para completar la clase `Y` definida en `B` (o en uno de los aspectos de los cuales depende `B`). En este caso la vista de estados `X` en `A` también necesite refinar la vista de estados `Y` para tomar en cuenta la funcionalidad de `A`. De igual forma, `A` puede necesitar, refinar o sobre-escribir los mensajes de secuencia específicados en la vista de mensajes definidos en `Y` para tomar en cuenta la funcionalidad proporcionada por `A`. En este caso `A` debe definir una directiva de enlazamiento ("*binding directive*") que paree las entidades incompletas de la vista estructural, estado y de mensajes de `A` en la vista estructural, estado y de mensaje definidos en `Y`. La sintaxis para la directiva de enlazamiento es el siguiente: `NombreEntidadIncompleta -> Destino.NombreEntidad`
+
+Si una vista contiene una directiva de enlazamiento, los elementos enlazados no pueden aparecer al mismo tiempo como parámetros de instanciación obligatorios en la directiva de instanciación de dicha vista.
+
+Las directivas de instanciación y enlazamiento pueden ser de uno-a-muchos o de muchos-a-uno si es necesario. En este caso, se pueden utilizar "*wildcards*" para instruir al "*weaver*" que realice "*pattern matching*" en el modelo, para determinar el conjunto de elementos que van a ser usados en la directiva.
+
+####Reutilización
+Uno de los principales objetivos de RAM, es permitir el diseño de modelos de aspectos altamente reutilizables. La idea es evitar la disperción de modelos por medio de la definición de funcionalidades relacionads y evitar el entrelazamiento de elementos, a través de diferentes funcionalidades.
+
+Para que la reutilización sea posible, se deben seguir las siguientes reglas:
+
+1. Si un aspecto `A` expone una funcionalidad, cuyo diseño necesita la funcionalidad del aspecto `B`, entonces `A` depende de `B`; solo en este caso `A` puede instanciar vistas de `B`, o enlazar elementos de `A` con elementos de `B`.
+
+2. Las dependencias circulares, son prohibidas.
+
 
 
 
