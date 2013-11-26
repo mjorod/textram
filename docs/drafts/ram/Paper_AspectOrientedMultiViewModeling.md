@@ -1,7 +1,7 @@
 #Aspect-Oriented Multi-View Modeling
 
 ##Introducción
-El modelamiento multi-vista permite describir el software desde distintas perspectivas, con la ayuda de diferentes notaciones de modelado. El modelado multi-vista enfreta dos retos: *escalabilidad* y *consistencia*. En aplicaciones complejas, los modelos tienden a crecer en tamaño, a un punto tal que incluso las vistas individuales son díficiles de entender.
+El modelamiento multi-vista permite describir el software desde distintas perspectivas, con la ayuda de diferentes notaciones de modelado. El modelado multi-vista enfreta dos retos: *escalabilidad* y *consistencia*. En aplicaciones complejas, los modelos tienden a crecer en tamaño, a un punto tal que incluso las vistas individuales son díficiles de entender [1].
 
 Las técnicas de orientación a aspectos, han resuelto el problema de identificación y de modularización de preocupaciones transversales, lo que permite al desarrollador razonar sobre una preocupación individual. Por tanto, estas técnicas tienen el potencial para resolver los problemas de escalabilidad y consistencia, inherentes al modelado multi-vista.
 
@@ -21,7 +21,7 @@ Las características de RAM son:
 
 ###Composición de los diagramas de clases
 
-La técnica de composición de modelos que utiliza RAM, es basada en el enfoque propuesto por France en [77,77], dicho enfoque compone modelos que representan diferentes vistas del mismo concepto. El resultado esperado es un modelo compuesto a partir de un modelo origen y un modelo destino. Para que esto sea posible, se deben cumplir dos requisitos:
+La técnica de composición de modelos que utiliza RAM, es basada en el enfoque propuesto por France en [3,4], dicho enfoque compone modelos que representan diferentes vistas del mismo concepto. El resultado esperado es un modelo compuesto a partir de un modelo origen y un modelo destino. Para que esto sea posible, se deben cumplir dos requisitos:
 
 1. Los elementos del modelo a componer deben ser del mismo tipo sintáctico.
 2. Los elementos del modelo a componer deben ser instancias de la misma clase del *meta-modelo*.
@@ -80,7 +80,7 @@ Es el primer compartimento de un *"aspect model"*. La vista estructural se expre
 ####Completitud de la clases
 Las clases dentro de la vista estructual no necesitan estar completas. Dichas clases solo necesitan especificar los miembros que son relevantes dentro de la preocupación modelada. La clases incompletas reciben el nombre de **clases parciales**.
 
-Las clases parciales, necesitan ser completadas antes de ser usadas dentro de la aplicación. Las clases parciales no definen constructores o destructores, por tanto sería imposible crear instancias de dichas clases. Todas las clases parciales de un aspecto son exportadas como *parámetros de instanciación obligatoria*; dichos parámetros son representados en la esquina superior derecha del paquete de aspectos. Para poder usar el aspecto y tejerlo con el modelo destino, los parámetros de instanciación obligatoria deben ser mapeados a los elementos del modelo del diagrama de clases destino.
+Las clases parciales, necesitan ser completadas antes de ser usadas dentro de la aplicación. Las clases parciales no definen constructores o destructores, por tanto sería imposible crear instancias de dichas clases [2]. Todas las clases parciales de un aspecto son exportadas como *parámetros de instanciación obligatoria*; dichos parámetros son representados en la esquina superior derecha del paquete de aspectos. Para poder usar el aspecto y tejerlo con el modelo destino, los parámetros de instanciación obligatoria deben ser mapeados a los elementos del modelo del diagrama de clases destino.
 
 Después se puede realizar una composición de clases por medio del uso del *"weaver"* enlazando o instanciando el modelo de aspectos con el modelo de clases base 
 
@@ -162,4 +162,13 @@ Para que la reutilización sea posible, se deben seguir las siguientes reglas:
 
 2. Las dependencias circulares, son prohibidas.
 
+##Referencias
 
+1. KIENZLE J., AL ABDE W., KLEIN. J, Aspect-Oriented Multi-View Modeling. In:
+Proceedings of the 8th ACM international conference on Aspect-oriented software development – AOSD 2009, Pages 87-98 ACM Press, New York(2009)
+
+2. KIENZLE, J., ABED, W.A., FLEUREY, F., JÉZÉQUEL, J.-M., KLEIN, J.: Aspect-oriented design with reusable aspect models. In: Transactions on Aspect Oriented Software Development 7. vol. 6210, pp. 272–320 (2010)
+
+3. FRANCE., RAY, I., GEORG, G., and GHOSH, S. Aspect-oriented approach to early design modelling. IEE Proceedings Software (August 2004), 173–185.
+
+4. REDDY, R., GHOSH, S., FRANCE, R. B., STRAW, G., BIEMAN, J. M., SONG, E., AND GEORG, G. Directives for composing aspect-oriented design class models. TAOSD LNCS 3880 (2006), 75–105.
