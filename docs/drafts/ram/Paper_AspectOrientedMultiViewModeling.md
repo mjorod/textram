@@ -162,6 +162,18 @@ Para que la reutilización sea posible, se deben seguir las siguientes reglas:
 
 2. Las dependencias circulares, son prohibidas.
 
+##Conclusiones
+
+Las principales contribuciones de RAM son:
+
+1. RAM es el primer enfoque AOM, que integra diagramas de clase, estado y de secuencia en técnicas de orientación a aspectos. Como resultado los *aspect models* pueden describir la estructura y el comportamiento de una preocupación en particular.
+
+2. La reutilización de *aspect models* en RAM es simple y flexible. La flexibilidad se alcanza, permitiendo que cada elemento del modelo sea opcionalmente compuesto o extendido a través de "*bindings*".
+
+3. El *weaver* obliga, que todos los parámetros de instanciación obligatorio sean definidos cuando un aspecto es instanciado.
+
+4. Un enlazamiento definido en un aspecto superior, debe ser compatibles con con los enlazamientos del aspecto a reutilizar.
+
 ##Referencias
 
 1. KIENZLE J., AL ABDE W., KLEIN. J, Aspect-Oriented Multi-View Modeling. In:
