@@ -38,9 +38,30 @@ Existen dos formas para definir abstracciones. Las abstracciones pueden ser cons
 
 2.
 
-`    int[] arr = ...                                        
+`    int[] arr = ...
      OrderedList<int> l = ...
      for (int i=0; i<arr.size(); i++) {
         l.add( arr[i] );
      }
 `
+
+El ciclo del primer ejemplo puede paralelizarse, debido a que orden en que se procesan los elementos del arreglo es irrelevante. El seguno fragmento de código, no se puede paralelizar debido a que el orden de los elementos en la clase OrderedList es relevante. Un motor de transformación que traduzca y optimicec este tipo de programas debe ejecutar un análisis sofisticado del programa para determinar que el segundo ciclo en realidad si puede ser paralelizado. La expresión de la siguiente alternativa, del mismo comportamiento usa un abstracción linguistica más adecuada, debido a que es claro sin necesidad de análiis que el primer ciclo puede paralelizarse y el segundo no.
+
+<table border="0">
+  <tr>
+	<td>
+	  <code>
+	    for (int i in arr) {
+		  sum += i;
+		}
+	  </code>
+	</td>
+	  <code>
+	    seqfor (int i in arr) {
+		  l.add( arr[i] );
+		}
+	  </code>	
+	<td>
+	</td>
+  </td>
+</table>
