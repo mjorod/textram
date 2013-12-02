@@ -28,11 +28,19 @@ Existen dos formas para definir abstracciones. Las abstracciones pueden ser cons
 
 **Abtracción linguistica** Un concepto de dominio específico puede ser modelado con la ayuda de una abstracción existente, o puede introducirse una nueva abstracción para dicho concepto. No se requiere de relevancia semántica o patrones para expresar los programas dentro de un dominio en particular.
 
-`
-    int[] arr = ...                                             int[] arr = ...
-	for (int i = 0; i<arr.size(); i++) {               OrderedList<int> l = ...
-	  sum += arr[i];                                        for (int i=0; i<arr.size(); i++) {
-	}                                                                 l.add( arr[i] );
-	                                                                }
+1. 
 
+`    int[] arr = ...                                           
+  	  for (int i = 0; i<arr.size(); i++) {             
+	    sum += arr[i];                                       
+	  }                                                              
+`	                                                               
+
+2.
+
+`    int[] arr = ...                                        
+     OrderedList<int> l = ...
+     for (int i=0; i<arr.size(); i++) {
+        l.add( arr[i] );
+     }
 `
