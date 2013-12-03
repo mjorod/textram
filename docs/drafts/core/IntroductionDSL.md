@@ -41,7 +41,7 @@ De la definición anterior, se pueden destacar 4 elementos:
 
 ##Lenguajes de programación general vs lenguajes de especificación de dominio
 
-Todos los GPSs, están conformes con las especificaciones de Turing;
+Todos los GPLs, están conformes con las especificaciones de Turing;
 por tanto, pueden ser utilizados para implementar cualquier
 artefacto compatible con un máquina de Turing.
 
@@ -53,12 +53,12 @@ interpretes).
 
 Las características que ofrecen cada uno de los lenguajes, están
 optimizadas para las tareas que son relevantes a sus respectivos
-dominios. En *C* se puede manipular la memoria (aspecto importante
-para comunicarse con dispositivos de bajo nivel). Por otro lado, en *Ruby*
-se pueden utilizar "*closures*" para posponer la implementación de un
-comportamiento. La meta-programación de *Ruby*, permite definir DSLs
-que son adecuados para el desarrollo de aplicaciones Web (El framework
-*Rails* por ejemplo).
+dominios. Por ejemplo, en *C* se puede manipular la memoria (aspecto
+importante para comunicarse con dispositivos de bajo nivel). Por otro
+lado, en *Ruby* se pueden utilizar "*closures*" para posponer la
+implementación de un comportamiento. La meta-programación de *Ruby*,
+permite definir DSLs que son adecuados para el desarrollo de
+aplicaciones Web (El "framework *Rails*" por ejemplo).
 
 Incluso en el campo de los GPLs, existen diferentes
 lenguajes, cada uno exponiendo diferentes funcionalidades, ajustadas
@@ -108,12 +108,12 @@ A continuación se presenta una tabla comparativa entre DSLs y GPLs:
   </tr>
   <tr>
     <td>Tiempo de vida</td>
-    <td>Años/decádas</td> 
+    <td>Años/décadas</td> 
     <td>Meses/años (dependiendo del contexto)</td>
   </tr> 
   <tr>
     <td>Diseñado por</td>
-    <td>Guru or comité</td> 
+    <td>Guru o comité</td> 
     <td>Pocos ingenieros y expertos del dominio</td>
   </tr>
   <tr>
@@ -128,7 +128,7 @@ A continuación se presenta una tabla comparativa entre DSLs y GPLs:
   </tr>
 </table>
 
-Tabla 1. Comparación entre GPLs y DSLs.
+*Tabla 1. Comparación entre GPLs y DSLs.*
 
 ##Ingredientes de un lenguaje de programación
 
@@ -138,50 +138,52 @@ Un DSL y un GPL, deben tener los siguientes ingredientes principales [3]:
 
 2. *Sintaxis abstracta*, es la estructura de datos que persiste la semántica de la información relevante expresada por un programa. Por lo general es un árbol o un gráfico. No debe contener detalles de notación.
 
-3. *Semántica*  describe el significado de los elementos definidos en el lenguaje y el significado de combinar dichos elementos.
+3. *Semántica*,  describe el significado de los elementos definidos en el lenguaje y el significado de combinar dichos elementos.
 
 La Figura 1, muestra la relación entre los tres ingredientes: la semántica define el significado de la sintaxis abstracta e indirectamente el de la sintaxis concreta; la sintaxis concreta representa la sintaxis abstracta.
 
 !["Figura 1. Ingredientes principales de un lenguaje"](img/IngredientesLenguajeModelado.png "Figura 1. Ingredientes principales de un lenguaje")
 
-##Clasificación de los DSLs:
+##Clasificación de los DSLs
 
 Los DSLs se pueden clasificar en dos categorías:
 
-1. *DSL externo*, es un lenguaje de programación que se construye, desde cero y tiene una infraestructura independiente para el análisis léxico, técnicas de parseo, interpretación y generación de código. [DSL in Action] (dichos conceptos son abordados en ???) .
+1. *DSL externo*, es un lenguaje de programación que se construye,
+   desde cero y tiene una infraestructura independiente para el
+   análisis léxico, técnicas de parseo, interpretación y generación de
+   código. [6].
 
 2. *DSL interno*, es un lenguaje que utiliza la infraestructura de un
    lenguaje de programación existente; para construir la semántica de
-   especificación de dominio encima de él. [DSL in Action]. (ejemplo:
-   "Rails en Ruby"). Están embebidos dentro de un lenguaje de
-   programación general. Usualmente, el lenguaje "*host*" es de tipos
-   dinámicos y la implementación del DSL es basada en
-   meta-programación. En clásicas implementaciones de los DSLs
-   internos el entorno integrado de desarrollo (IDE) no está al tanto
-   de la gramática, restricciones y otras propiedades del DSL.
+   especificación de dominio encima de él. (ejemplo:
+   "Rails en Ruby"). Los DSL internos, están embebidos dentro de un
+   lenguaje de programación general. Usualmente, el lenguaje "*host*"
+   es de tipos dinámicos y la implementación del DSL es basada en
+   meta-programación.
+   
 
-La construcción de **TextRam**, será basada en un DSL externo. Los
-motivos son los siguientes:
+**TextRam** será construido por medio de un DSL externo. Los motivos
+son los siguientes:
 
 1. La construcción de un DSL externo, ofrece libertad sintáctica,
    por tanto el creador del lenguaje puede utilizar la sintaxis que
    más estime conveniente.
 
-2. Los DSLs interns, a veces se apoyan en trucos obscuros del lenguaje
-   "host" para producir una sintaxis fluída (Fowler en [2]).
+2. Los DSLs internos, a veces se apoyan en trucos obscuros del lenguaje
+   "host" para producir una sintaxis fluida (Fowler en [2]).
 
 2. En clásicas implementaciones de los DSLs internos, el entorno
-   integrado de desarrollo (IDE), no esta al tanto de la gramática y
-   otras restricciones propias de un DSL. Por tanto, en caso de error, no puede dar una
-   retroalimentación útil al usuario.
+   integrado de desarrollo (IDE), no estan al tanto de la gramática y
+   otras restricciones propias de un DSL. Por tanto, en caso de error,
+   no puede dar una  retroalimentación útil al usuario.
 
-3. Uno de los objetivos de mi tesis es convertir la representación
-   textual de **TextRam** a dos representaciones: representación
-   visual con la ayuda de Graphiz [4] y a la representación de los
-   meta-modelos de RAM (Ecore).
+3. **TextRam**, tiene como objetivo transformar la representación
+   textual a dos representaciones: representación visual con
+   Graphiz [4] y a la representación de modelos en RAM (Ecore). Dichas
+   transformaciones, son más fáciles de realizar con la ayuda de un DSL externo.
+
 
 ##Ingeniería de Software Orientada a Modelos (MDSE)
-
 MDSE es un marco de trabajo conceptual unificado en donde todo el
 ciclo de vida del software es visto como un proceso de producción,
 refinamiento e integración de modelos [5]. MDSE es una metodología
@@ -196,83 +198,60 @@ modelos y las transformaciones. El proceso dirigido por modelos define
 que tipos de modelos (orden de los mismos y su nivel de abstracción)
 son necesarios de acuerdo a un determinado tipo de software.
 
-La definición y el uso de DSLs es un sabor de MDSE: se crean
-representaciones formales, procesables por herramientas y específicas
-a un aspecto de un sistema de software. Los DSLs, permiten la
-definición de una representación concreta de un modelo conceptual.
+La definición y el uso de DSLs es un sabor del MDSE, que se aplica por
+medio de la creación de representaciones formales, que son específicas
+a un aspecto particular de un sistema de software y son procesables
+con la ayuda de herramientas. 
 
 MDSE proporciona una visión exhaustiva para el desarrollo de
-sistemas. La Figura 2, muestra una vistazo de los principales aspectos
-considerados en MDSE y resume como los diferentes problemas son
-resueltos en el ámbito del MDSE, de acuerdo a las siguientes
-dimensiones ortogonáles: conceptulización (columnas) e
+sistemas. La Figura 2, es un vistazo general de los principales aspectos
+considerados en MDSE, y resume como los diferentes problemas son
+resueltos de acuerdo a las siguientes
+dimensiones ortogonales: conceptualización (columnas) e
 implementación (filas).
 
 !["Figura 2. Visión general de la metodología MDSE"](img/VistazoMDSE.png
  "Figura 2. Visión general de la metodología MDSE")
 
 El problema de *implementación* se resuelve con el pareo de modelos a
-un existente o futuro sistema en ejecución. Por tanto, consiste en la
+un sistema de software existente o por definir. Consiste en la
 definición de tres conceptos:
 
-1. El nivel de modelamiento: lugar de definición de modelos.
-2. El nivel de realización: lugar de implementación de soluciones, a
-   través de artefactos que son usados dentro de sistemas en ejecución
-   (código en caso de software)
-3. Nivel de automatización: resultado del "mapeo" entre los niveles de
-   modelamiento y realización.
+1. El nivel de modelamiento: define los modelos.
+2. El nivel de realización: implementa soluciones, a través de
+   artefactos que son usados dentro de sistemas en ejecución (código
+   en caso de software)
+3. Nivel de automatización: resultado de la correspondencia entre los niveles de modelamiento y realización.
 
 Los problemas de *conceptualización*, están orientados a definir
-modelos conpctuales para describir la realidad. Esto puede ser
-aplicado a varios niveles:
+modelos conceptuales para describir la realidad. Esto puede ser
+aplicado en varios niveles:
 
-1. Nivel de aplicación: lugar en donde los modelos de las aplicaciones
-   son definas, las reglas de transformación son aplicadas, y los
-   componentes del sistema en ejecución son generados.
+1. Nivel de aplicación: lugar en donde se definen los modelos de las aplicaciones, las reglas de transformación son aplicadas, y los componentes del sistema en ejecución son generados.
 2. Nivel del dominio de aplicación: define el lenguaje de
-   modelamiento, trasformaciones, y plataformas de implementación para
+   modelamiento, transformaciones, y plataformas de implementación para
    un dominio específico.
 3. Nivel meta: la conceptualización de los modelos y transformaciones
    son definidos.
 
-El flujo principal del MDSE, es desde los modelos de aplicación hasta
-ejecutar la realización, a través de transformaciones del modelo. Esto
-permite, la reutilización de modelos y ejecución de sistemas en
-diferentes plataformas. Por tanto, en el nivel de realzación el
-software en ejecución se apota de una plataforma específica (definida
-para un dominio de aplicación específico) para su ejecución.
+El flujo principal del MDSE, parte con los modelos de aplicación hasta
+la realización, a través de transformaciones subsecuentes del
+modelo. Esto permite la reutilización de modelos y ejecución de
+sistemas en diferentes plataformas.
 
-Para que esto sea posible, los modelos son especificados de acuerdo a
-un lenguaje de modelado, a su vez definido de acuerdo de un lenguaje
-de meta-modelado. Las ejecuciones de transformación sond definidas
-basdas en un conjunto de reglas de transformación, definidsa isando un
-lenguaje espcífico de transformación.
+Esto es posible, gracias a la especificación de modelos, de acuerdo a
+un lenguaje de modeldo, a su vez definido conforme a un lenguaje de meta-modelado.
 
-Los modelos juegan un papel importante en MDSE, una consecuencia de
-esto que para definir un modelo, los modelos se pueden representar asi
-mismos como instancia de de modelos más abstractos. Por tanto, de la
-mosma forma que se define un modelo como una abstarcción de un
-fenomeno de la vida real, se puede definir un *meta-modelo* (otra
-abstracción), resaltando propiedades del modelo en cuestión. Los
-meta-modelos, constituyen la definición de un lenguaje de modelado,
-debido a que proveen una forma de describir toda una clase de modelos
-que pueden ser representados por el lengueje.
-
-Por tanto, se pueden definir modelos de la realidad, y luego modelos
-que describen modelos (meta-modelos) y modelos recursivos que
-describen los meta-modelos (llamados meta-meta-modelos). En teoría, se
-pueden definir instancias infinitas de nivelos de meta-modelos, pero
-en la práctica, se ha demostrado que los meta-modelos se pueden
-definir asi mismos, y por tanto usualmentr no tiene sentido ir más
-alla de ese nivel de abstracción. En cualquier nivel, se considera que
-el meta-modelado, se puede decir que un modelos está conforme a su
-meta-modelo en la forma que un progama de coputación está conforme con
-la gramática del lenguaje de programación del cual fue escrito.
-
+Es posible definir modelos de la realidad y luego modelos que
+describen modelos (meta-modelos), después modelos recursivos que
+describen meta-modelos (llamados meta-meta-modelos). En teoría, se
+pueden definir instancias infinitas para los niveles de los
+meta-modelos, pero en la práctica, se ha demostrado que los
+meta-meta-modelos se pueden definir así mismos.
 La figura 3, muestra un ejemplo completo de meta-modelado.
 
-!["Modelado, metamodelos y meta-meta-modelos"](img/Modelos_MetaModelos.png
- "Modelado, metamodelos y meta-meta-modelos")
+!["Figura 3. Modelado, metamodelos y meta-meta-modelos"](img/Modelos_MetaModelos.png
+ "Figura 3. Modelado, metamodelos y meta-meta-modelos")
 
 Los meta-modelos pueden ser útiles para:
 
@@ -280,7 +259,7 @@ Los meta-modelos pueden ser útiles para:
 2. Definir nuevos lenguajes de modelado para intercambiar y almacenar
    información.
 3. Definir nuevas propiedades y funcionalidades que pueden ser
-   asociadas a información existente (meta-data)-
+   asociadas a información existente (meta data)
 
 #Referencias
 
@@ -294,4 +273,7 @@ Los meta-modelos pueden ser útiles para:
 
 4. http://www.graphviz.org/
 
-5. SCHMIDT, D.C.: Model-driven engineering. IEEE Computer 39, 41–47 (2006) 
+5. SCHMIDT, D.C.: Model-driven engineering. IEEE Computer 39, 41–47
+   (2006)
+
+6. DEBASISH GHOSH: DSL in Action, Manning Publications, 2010.
