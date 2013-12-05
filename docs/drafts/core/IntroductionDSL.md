@@ -82,7 +82,7 @@ A continuación se presenta una tabla comparativa entre DSLs y GPLs:
     <td>DSLs</td>
   </tr>
   <tr>
-    <td>Domain</td>
+    <td>Dominio</td>
     <td>largo y complejo</td> 
     <td>pequeño y bien definido</td>
   </tr> 
@@ -113,12 +113,12 @@ A continuación se presenta una tabla comparativa entre DSLs y GPLs:
   </tr> 
   <tr>
     <td>Diseñado por</td>
-    <td>Guru o comité</td> 
+    <td>Gurú o comité</td> 
     <td>Pocos ingenieros y expertos del dominio</td>
   </tr>
   <tr>
     <td>Evolución</td>
-    <td>Lenta y estándard</td> 
+    <td>Lenta y estándar</td> 
     <td>Rápida</td>
   </tr>
   <tr>
