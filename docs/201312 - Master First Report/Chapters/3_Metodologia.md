@@ -1,4 +1,8 @@
-###3.6.1 Sintaxis Concreta y Abstracta
+#Metodología {#Chapter3}
+
+##Implementación de las nociones semánticas {#Implementacion_Nociones_Semanticas}
+
+###Sintaxis concreta y abstracta {#SintaxisConcretaAbstracta}
 
 La sintaxis concreta (CS) de un lenguaje, es la interfaz con que interactúan los usuarios para crear programas.
 
@@ -18,7 +22,7 @@ Construcción de programas, por medio de *parsers*: en este enfoque, el AST es c
 
 Construcción de programas, por medio de "**proyecciones**": en este enfoque, el AST es contruído en forma directa por las acciones del editor, y la sintaxis concreta se representa por medio de las reglas de proyección de AST.
 
-####3.6.1.1 "Parsers"
+####"Parsers" {#Parsers}
 En compiladores tradiconales e IDEs, los "parsers" se escriben manualmente, por medio de grandes programas monolíticos que leen un flujo de caracteres y utilizan recursión para crear la estructura del árbol (AST).
 
 Por otro lado, los "parsers" se pueden generar automáticamente con la ayuda de una definición formal llamada gramática. Este es el enfoque que utilizan la mayoría de los compiladores actuales y los "languages workbenches".
@@ -34,11 +38,11 @@ Al momento de elegir entre la generación manual o automática de los "parsers",
 
 Xtext se apoya en ANTLR [14] para generar el "parser". ANTLR (pronunciado: "Antler, ANother Tool for Language Recognition") pertence al mundo de Java y permite al modelador especificar la gramática del lenguaje en un simple archivo y después genera en forma automática el "parser" en Java.
 
-####3.6.1.2 Gramática
+####Gramática {#Gramatica}
 La gramática, es la definición formal de una sintaxis concreta textual.
 Consiste en la producción de reglas que definen como debe verse una entrada válida de texto. 
 
-####3.6.1.3 Modelo semántico
+####Modelo semántico {#ModeloSemantico}
 Fowler, menciona el concepto de los **modelos semánticos**: modelos de objetos en memoria que un DSL debe popular (ver Figura 1). Dichos modelos deben tener la misma semántica del DSL. En este contexto los AST y los modelos semánticos son términos equivalentes.
 
 !["Figura 1. Modelo Semántico. Copiado de [7]"](img/SemanticModel.png "Figura 1. Modelo Semántico. Copiado de [7]")
