@@ -16,18 +16,27 @@ Existen dos estrategias para desarrollar un lenguaje por medio de la CS y la AS:
 
 **Primero se define la AS**, la sintaxis concreta es definida, en base a las especificaciones de la sintaxis abstracta. El meta-modelo de RAM ya existe y es basado en Ecore, por tanto TextRAM utilizará este enfoque.
 
+###Estrategias para generar el parser {-}
+
 A partir de la definición de la CS y la AS, se pueden crear programas mediante el uso de "parsers" o proyecciones.
 
-Construcción de programas, por medio de *parsers*: en este enfoque, el AST es construido a partir de la CS. Un "*parser*" instancia y llena el AS, basado en la información textual del programa. (la definición del formato del CS es llamada *gramática*).
+"Parser"
 
-Construcción de programas, por medio de "**proyecciones**": en este enfoque, el AST es contruído en forma directa por las acciones del editor, y la sintaxis concreta se representa por medio de las reglas de proyección de AST.
+:    En este enfoque, el AST es construído a partir de la sintaxis concreta. El "parser" instancia y popula el AS, basado en la gramática (definición formal de la CS).
 
-####"Parsers" {#Parsers}
-En compiladores tradiconales e IDEs, los "parsers" se escriben manualmente, por medio de grandes programas monolíticos que leen un flujo de caracteres y utilizan recursión para crear la estructura del árbol (AST).
+Proyecciones
 
-Por otro lado, los "parsers" se pueden generar automáticamente con la ayuda de una definición formal llamada gramática. Este es el enfoque que utilizan la mayoría de los compiladores actuales y los "languages workbenches".
+:    Trabajan sin gramática y "parsers"; en este enfoque la AS se crea a partir de acciones realizadas desde el editor; la herramienta de proyección deriva la CS a partir del AS generado.
 
-La definición textual formal de la sintaxis concreta de un DSL, se realiza mediante la especifición de una **gramática**.
+
+En compiladores tradicionales, los "parsers" se desarrollan en forma manual, dando como resultado programas grandes y monolíticos; el AST es creado por medio de recursiones y la lectura de un flujo de caracteres.
+
+Para crear DSLs, Fowler en [7], menciona una técnica llamada "Parser Generators", dicha técnica genera en forma automática el parser, en base a una especificación formal llamada gramática. Este es el enfoque que utilizan la mayoría de los compiladores actuales.
+
+La siguiente tabla muestra, las diferencias entre ambos enfoques:
+
+
+
 
 Al momento de elegir entre la generación manual o automática de los "parsers", se debe considerar lo siguiente:
 
@@ -38,32 +47,23 @@ Al momento de elegir entre la generación manual o automática de los "parsers",
 
 Xtext se apoya en ANTLR [14] para generar el "parser". ANTLR (pronunciado: "Antler, ANother Tool for Language Recognition") pertence al mundo de Java y permite al modelador especificar la gramática del lenguaje en un simple archivo y después genera en forma automática el "parser" en Java.
 
-####Gramática {#Gramatica}
-La gramática, es la definición formal de una sintaxis concreta textual.
-Consiste en la producción de reglas que definen como debe verse una entrada válida de texto. 
+###Xtext {#xtext}
+
+####Introducción a Xtext
 
 ####Modelo semántico {#ModeloSemantico}
+
 Fowler, menciona el concepto de los **modelos semánticos**: modelos de objetos en memoria que un DSL debe popular (ver Figura 1). Dichos modelos deben tener la misma semántica del DSL. En este contexto los AST y los modelos semánticos son términos equivalentes.
 
 !["Figura 1. Modelo Semántico. Copiado de [7]"](img/SemanticModel.png "Figura 1. Modelo Semántico. Copiado de [7]")
 
 El AST es utilizado como un formalismo para representar árboles o grafos. Los modelos semánticos pueden ser utilizados como AST. Por lo general, los modelos semánticos son meta-circulares en el sentido de que pueden describirse a sí mismos.
 
-####Gramática en Xtext
-La gramática es la piedra angular de Xtext. La idea principal es describir la sintaxis concreta e indicar como es mapeada a una representación en memoria. El modelo es producido por el "parser" sobre la marcha cuando consume una entrada de archivo.
+Xtext utiliza EMF Ecore, para representar el resultado del "parser" y para persistir los objetos en memoria.
 
-#####Sintaxis
-**Declaración del lenguaje**: la gramática de Xtext inicia con un encabezado que define algunas propiedades de la gramática.
+####EMF Ecore {#ecore}
 
-`grammar cl.pleiad.ram.Textram
-with org.eclipse.xtext.common.Terminals`
-
-La primera declara el nombre del lenguaje (Textram), también se indica que se reutilizará una gramática existente (Terminals) ????
-
-Los "parsers" de Xtext, crean grafos de objetos en memoria mientras consumen texto. Dichos grafos de objetos son instancias de modelos de EMF Ecore. Xtext deriva el AS como una instancia de Ecore.
-
-####EMF Ecore
-"Eclipse Modeling Framework" (EMF) [13], es el corazón de las herramientas de modelado de Eclipse. Expone una amplia variedad de servicios y herramientas para persistir, editar y procesar modelos, también define reglas para la definición de la AS.
+"Eclipse Modeling Framework" (EMF) [13], es el corazón de las herramientas de modelado de Eclipse. Expone una amplia variedad de servicios y herramientas para persistir, editar y procesar modelos; también define reglas para la definición de la AS.
 
 Los conceptos centrales de Ecore son:
 1. *EClass*, representación de los elementos del AS o conceptos del lenguaje.
@@ -79,14 +79,33 @@ Voelter, resume el modelo de Ecore en la Figura 2.
 
 !["Figura 2. Meta-modelo de Ecore visualizado como un UML"](img/Ecore_MetaModel.png "Figura 2.  Meta-modelo de Ecore visualizado como un UML")
 
-###Reglas
+####Sintaxis y Gramática {#sintaxis_gramatica}
+
+La gramática es la piedra angular de Xtext. La gramática, es la definición formal de una sintaxis concreta textual. Consiste en la producción de reglas que definen como debe verse una entrada válida de texto. 
+
+La idea principal es describir la sintaxis concreta e indicar como es mapeada a una representación en memoria. El modelo es producido por el "parser" sobre la marcha cuando consume una entrada de archivo.
+
+####Declaración del lenguaje {-}
+
+La gramática de Xtext inicia con un encabezado que define algunas propiedades de la gramática.
+
+    grammar cl.pleiad.ram.Textram
+	   with org.eclipse.xtext.common.Terminals
+
+La primera declara el nombre del lenguaje (Textram), también se indica que se reutilizará una gramática existente (Terminals) ????
+
+Los "parsers" de Xtext, crean grafos de objetos en memoria mientras consumen texto. Dichos grafos de objetos son instancias de modelos de EMF Ecore. Xtext deriva el AS como una instancia de Ecore.
+
+####Reglas  {#reglas_gramatica}
+
 El proceso del "parser" puede ser separado en las siguientes etapas:
 1. "Lexing"
 2. "Parsing"
 3. "Linking"
 4. Validación
 
-**Reglas "Terminal"**
+#####Regla "Terminal" {-}
+
 En la primera etapa llamada "*lexing*", una secuencia de caracteres (entrada de texto) es transformada en una secuencia llamada "tokens". Los "tokens" consisten de un o más caracteres y corresponden a una regla "terminal" o "keyword" y por tanto representan un símbolo atómico. Por ejemplo, `ID` es una regla "Terminal" definida en `org.eclipse.xtext.common.Terminals`, su implementación es la siguiente:
 
     terminal ID:
@@ -94,13 +113,145 @@ En la primera etapa llamada "*lexing*", una secuencia de caracteres (entrada de 
 
 El orden de las reglas "terminal" es importante para la gramática, ya que se sobre-escriben unas a otras.
 
-**Tipos de retorno**
+#####Tipos de retorno {-}
+
 Cada regla "terminal" retorna un valor atómico: un EDataType de Ecore que por defecto es una instancia de ecore::EString. A continuación se presenta un ejemplo que retorna una regla llamada *INT*:
 
     terminal INT returns ecore::EInt:
 	  ('0'..'9')+`
 
-**Expresiones Backus-Naur extendendidas**
+#####Expresiones Backus-Naur extendendidas {-}
+
+Las reglas terminales son descritas por medio de expresiones "Extended Backus-Naur Form" (EBNF).
+
+Cada una de las expresiones definidas por EBNF, posee cuatro posibles cardinalidades:
+
+1. exactamente uno (sin operador, configurado por defecto)
+2. uno o más (operador `?`)
+3. cualquiera (cero o más, operador `*`)
+4. uno o muchos (operador `+`)
+
+#####Rango de caracteres {-}
+
+Un rango de caracteres puede ser declarado con el operador `..`:
+
+    terminal INT returns ecore::EInt: ('0'..'9')+;
+
+En este caso INT retorna un o más caracteres en '0' y '9'
+
+#####"Wildcards" {-}
+
+Para permitir cualquier caracter, se puede utilizar el "wildcard" `.` (punto):
+
+    terminal FOO: 'f' . 'o';
+
+Está regla permite las siguientes expresiones: *foo, f0o, f_o*.
+
+#####"Until Token" {-}
+
+Indica que todo debe ser consumido hasta la aparición del "token":
+
+    terminal ML_COMMENT: '/*' -> '*/';
+
+El ejemplo anterior es un comentario regular de Java.
+
+#####"Negated Token" {-}
+
+Todos los "tokens" pueden ser negados con el uso del signo de admiración:
+
+    terminal BETWEEN_HASHES: '#' (!'#') * '#';
+
+#####Llamada de reglas{-}
+
+Las reglas pueden hacer referencia a otras reglas. Las llamadas a reglas en reglas de "Terminal", solo pueden apuntar a otras reglas de "Terminal":
+
+    terminal WS : (’ ’|’\t’|’\r’|’\n’)+;
+
+#####Alternativas {-}
+
+Permiten definir una lista de opciones válidas. Por ejemplo el la regla del espacio en blanco utiliza una alternativa de la siguiente forma:
+
+    terminal WS : (’ ’|’\t’|’\r’|’\n’)+;
+    
+#####Grupos{-}
+
+Se llama grupo a la secuencia de "tokens" que se definen uno detrás de otro:
+
+    terminal ASCII : ’0x’ (’0’..’7’) (’0’..’9’|’A’..’F’);
+
+El ejemplo anterior, representa 2 digitos hexadecimales de caracteres ASCII.
+
+#####Fragmentos terminales{-}
+
+Debido a que las reglas terminales son usadas en un contexto sin estado, no es fácil reutilizar partes de su definición. Los fragmentos resuelven este problema.
+
+Los fragmentos permiten los mismos elementos EBNF como reglas terminales, pero no son consumidas por el "lexer". En su lugar son definidas para ser usadas por otras reglas terminales:
+
+    terminal fragment ESCAPED_CHAR : ’\\’ (’n’|’t’|’r’|’\\’);
+	terminal STRING :
+	  ’"’ ( ESCAPED_CHAR | !(’\\’|’"’) )* ’"’ |
+	  "’" ( ESCAPED_CHAR | !(’\\’|"’") )* "’"
+    ;
+
+
+#####Fin de archivo (EOF)
+
+El "token" fin de archivo, puede ser usado para describir que el final del flujo de entrada es valido en un cierto punto de una regla terminal:
+
+    terminal UNCLOSED STRING : ’”’ (!’”’)* EOF;
+
+####"Parser"  {#parser}
+
+El "parser" es alimentado por una secuencia de terminales y camina a través de las reglas del "parser". Por tanto, las reglas del "parser", a diferencia de las reglas terminales, no producen una terminal atómica, si no que un árbol de "tokens" terminales y no terminales.
+
+Las reglas del "parser" son vistas como un plan para la creación de EObjects que forman el modelo semántico.
+
+Los elementos que están diponibles en las reglas del "parser" así como también en las reglas terminales son:
+
+1. Grupos
+2. Alternativas
+3. Palabras claves.
+4. Reglas de llamada.
+
+A continuación se indica como algunas expresiones indican como construyen directamente el AST:
+
+#####Asignaciones {-}
+
+Las asignaciones son usadas para asignar la información consumida a un aspecto del objeto actual producido. El tipo del objeto actual, es EClass y es específicado por el tipo de retorno de la regla de "parseo". Si no es indicado, es implícito que el nombre del tipo es igual a la regla de asignación. El tipo del aspecto asignado es inferido desde el lado derecho de la asignación.
+
+	Aspect:
+		'aspect'
+		name=ID
+		'{'
+			structure=Structure
+		'}';
+
+La declaración sintáctica para el aspecto indica que inicia con la palabra clave "aspect" seguido de la asignación `name=ID`
+
+El lado izquierdo se refiere a una característica `name` del objeto actual (que tiene la clase `Aspect` en este caso).
+
+El lado derecho indica que puede ser una regla de llamada, una palabra clave, una referencia cruzada o una alternativa comprometida por la anterior. El tipo de la característica debe ser compatible con el tipo de la expresión de la derecha. Debido a que `ID` retorna un EString, el nombre de la caracterísitica debe ser una EString.
+
+**Operadores de asignación**
+
+1. El signo `=`, es usada para los elementos que toman solo un elemeno.
+2. El signo `+=`, espera una lista con múltiples valores y adiciona el valor a dicha lista.
+3. El signo `?=` espera un elemento de tipo EBoolean y asigna `true` si el elemento del lado derecho fue consumido.
+
+#####Referencias cruzadas {-}
+Xtext permite la definición de referencias cruzadas dentro de la gramática. Ejemplo:
+
+	Instantiation:
+		'instantiation' '{'
+			
+		'}'
+
+instantiations {
+            Named     { |Named → NormalError }
+            Singleton { |Singleton<|getInstance> → Machine<getMachine> }
+          }
+
+target:Machine -> target:Machine         { ri := getMyRI }
 
 
 ###3.6.2 Determinación de alcance y enlazamiento
@@ -158,3 +309,25 @@ Las obligaciones de un sistema de tipos son:
 3. *Calcular tipos comunes*: muchos de los sistemas de tipo, tienen alguna especie de jerarquía de tipos. En el ejemplo, `IntType` es un sub-tipo de `DoubleType` (por tanto, `IntType` puede ser usado, siempre que `DoubleType` sea esperado). El sistema de tipos debe soportar la especificación de relación de subtipos.
 
 4. *Verificaciones de tipo*: finalmente, un sistema de tipo debe verificar los errores de tipo y reportarlos al usuario. Para cumplir este objetivo, el lenguaje específica verificaciones del lenguaje, que son revisadas en tiempo de edición por el sistema de tipos, basado en los tipos calculados. En el ejemplo, un error de tipo puede ocurrir si algo con `DoubleType` fuera asignado a una variable `IntType`.
+
+
+###Inferencia del modelo de Ecore {#inferenciaEcore}
+
+Como se mencionó en [??] el AST de Xtext es Ecore. Los elementos de Ecore son inferidos a partir de las reglas definidas en la gramática de Xtext. La [tabla](#tablaInferenciaEcore) es un resumen de la inferencia hecha por Xtext a los modelos de Ecore.
+
++------------+-------------+----------+
+| Tipo de regla     | Tipo de retorno | Descripción  |
++==========+==========+==========+
+| Parser                | EPackage           | Creado después de la directiva `generate`. El nombre del paquete se forma a partir de sus parámetros y de su `nsUri`, opcionalmente se puede utilizar un alias. |
++------------+-------------+----------+--------+
+| Enum                | Enum                 | se crea por reglas que utilizan enumeración | 
++------------+-------------+----------+--------+
+| Tipo de datos   | EDataType (por defecto es EString) | se crea a partir del tipo de dato de cada regla terminal o de una regla de tipo de dato | 
++------------+-------------+----------+--------+
+| Parser               | EAttribute           | Es `EBoolean` si se utiliza el operador `?=` si se utilizan los operadores `=` o `+=` en las reglas terminales, se crea un atributo con un tipo igual al tipo de retorno de la clase llamada |
++----------- +-------------+----------+--------+
+| Parser              | EReference         | se crea un `EReference` si hay una regla que llama a otra regla, también se crea una `EReference` por cada asignación de una acción; en ambos casos el tipo será igual al tipo de retorno de la regla llamada. |
++-----------+-------------+----------+--------+
+
+*Tabla inferencia del modelo Ecore* {#tablaInferenciaEcore}
+
