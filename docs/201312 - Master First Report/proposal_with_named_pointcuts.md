@@ -34,18 +34,18 @@
         }
 		 
         def messageView {
-            caller    = caller : Caller
+            caller   = caller : Caller
 		    target   = target: |Observer
 		    subject = |Subject
 		}
 
         message startObserving {
-            caller  => target   { startObserving( subject ) }
+            caller => target   { startObserving( subject ) }
 			target => subject { add( target ) }
         }
 			 
 		message stopObserving {
-            caller  => target        { stopObserving( s ) }
+            caller => target        { stopObserving( s ) }
 			target => mySubject { remove( target ) }
 	    }
 
@@ -54,13 +54,11 @@
 		message notification {
 				 
             pointcut modifyOperations()  {
-			    caller  => target { |modify( .. )  } *
+			    caller => target { |modify( .. )  } *
             }
 
             // before, after, around?
 			around() : modifyOperations()  {
-			    // ya no se repite: caller  => target { |modify( .. )  } *				
-
                 target => target { observers := getObservers() }
 				
 				loop [ o within observers ] {
