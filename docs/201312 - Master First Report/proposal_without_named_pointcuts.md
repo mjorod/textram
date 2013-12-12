@@ -32,20 +32,20 @@
 				getAssociated -> getObservers
             }
         }
-		 
+		
         def messageView {
-            caller    = caller : Caller
-		    target   = target: |Observer
+            caller  = caller : Caller
+		    target  = target: |Observer
 		    subject = |Subject
 		}
-
+		 
         message startObserving {
-            caller  => target   { startObserving( subject ) }
+            caller => target  { startObserving( subject ) }
 			target => subject { add( target ) }
         }
 			 
 		message stopObserving {
-            caller  => target        { stopObserving( s ) }
+            caller => target    { stopObserving( s ) }
 			target => mySubject { remove( target ) }
 	    }
 
@@ -54,12 +54,12 @@
 		message notification {
 				 
             pointcut {
-			    caller  => target { |modify( .. )  } *
+			    caller => target { |modify( .. )  } *
 				target => caller  { return }
             }
 				 
 			advice {
-		        caller  => target { |modify( .. )  } *
+		        caller => target { |modify( .. )  } *
 				target => target { observers := getObservers() }
 				
 				loop [ o within observers ] {
