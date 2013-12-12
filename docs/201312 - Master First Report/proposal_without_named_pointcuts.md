@@ -26,16 +26,16 @@
 			    |Observer -> 0..1 |Subject { mySubject }
 			}
 			 
-            instantiation ZeroToMany{
-			    |Data               -> Subject
-				|Associated     -> |Observer
+            instantiation ZeroToMany {
+			    |Data        -> Subject
+				|Associated  -> |Observer
 				getAssociated -> getObservers
             }
         }
 		
         def messageView {
-            caller  = caller : Caller
-		    target  = target: |Observer
+            caller  = caller:Caller
+		    target  = target:|Observer
 		    subject = |Subject
 		}
 		 
