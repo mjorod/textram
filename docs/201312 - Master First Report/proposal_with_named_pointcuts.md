@@ -40,12 +40,12 @@
 		}
 
         message startObserving {
-            caller => target   { startObserving( subject ) }
+            caller => target  { startObserving( subject ) }
 			target => subject { add( target ) }
         }
 			 
 		message stopObserving {
-            caller => target        { stopObserving( s ) }
+            caller => target    { stopObserving( s ) }
 			target => mySubject { remove( target ) }
 	    }
 
