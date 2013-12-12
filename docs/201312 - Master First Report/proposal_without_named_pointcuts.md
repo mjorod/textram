@@ -27,8 +27,8 @@
 			}
 			 
             instantiation ZeroToMany {
-			    |Data        -> Subject
-				|Associated  -> |Observer
+			    |Data         -> Subject
+				|Associated   -> |Observer
 				getAssociated -> getObservers
             }
         }
