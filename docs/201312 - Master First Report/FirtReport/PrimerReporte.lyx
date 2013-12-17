@@ -1,0 +1,4154 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass report
+\use_default_options true
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize letterpaper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+Introducción
+\end_layout
+
+\begin_layout Standard
+Dependiendo del lenguaje de programación, existen muchas alternativas para
+ implementar una solución orientada a aspectos (por ejemplo: AspectJ, AspectC,
+ JBoss AOP, PHANtom, etc).
+ Pero, ¿qué pasa con el diseño de aspectos?, ¿cómo se puede entregar un
+ modelo (por ejemplo UML) que exprese preocupaciones transversales a un
+ equipo de desarrollo?.
+ Las técnicas de modelado orientadas a aspectos resuelven este problema,
+ ofreciendo varios niveles de abstracción y diversas perspectivas para represent
+ar el software.
+\end_layout
+
+\begin_layout Standard
+Uno de los enfoques para diseñar aspectos es 
+\begin_inset Quotes eld
+\end_inset
+
+Reusable Aspect Models
+\begin_inset Quotes erd
+\end_inset
+
+ (RAM) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kienzle2009"
+
+\end_inset
+
+, que es una técnica de modelamiento multi-vista, orientado a aspectos que
+ integra los diagramas de clase, estado y secuencia en un modelo completo.
+ El objetivo de RAM es la reutilización de 
+\begin_inset Quotes eld
+\end_inset
+
+aspect models
+\begin_inset Quotes erd
+\end_inset
+
+, para evitar la dispersión y entremezclado de modelos.
+\end_layout
+
+\begin_layout Standard
+TouchRAM 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "AbedBSYAK2012"
+
+\end_inset
+
+, es un lenguaje de especificación de dominio gráfico desarollado por el
+ equipo de trabajo del Prof.
+ Dr.
+ Jörg Kienzle de la universidad McGill, que modela aspectos por medio de
+ una notación gráfica y una interfaz táctil; actualmente es la principal
+ alternativa para diseñar modelos basados en RAM.
+ Voelter 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Voelter2013"
+
+\end_inset
+
+ hace una comparación entre las notaciones gráficas y textuales: “el formato
+ textual es por lo general más usado, escala mejor y construirlo requiere
+ mucho menos esfuerzo”.
+ 
+\end_layout
+
+\begin_layout Standard
+El objetivo de mi tesis es desarrollar TextRAM, un lenguaje de especificación
+ de dominio textual, para el desarrollo de modelos en RAM.
+ El desarrollo de TextRAM exige el domino básico de los siguientes temas:
+ 
+\end_layout
+
+\begin_layout Itemize
+Lenguajes de especificación de dominio textuales.
+\end_layout
+
+\begin_layout Itemize
+Desarrollo de software orientado a modelos.
+\end_layout
+
+\begin_layout Itemize
+Marco teórico de RAM.
+\end_layout
+
+\begin_layout Itemize
+Herramientas de modelado de Eclipse (EMF)
+\end_layout
+
+\begin_layout Itemize
+Xtext, para la generación de 
+\begin_inset Quotes eld
+\end_inset
+
+parsers
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+El lenguaje de programación Xtend para la validación de semántica y la definició
+n de pruebas unitarias.
+\end_layout
+
+\begin_layout Standard
+El documento que se presenta a continuación, es un vistazo a cada uno de
+ los temas mencionado arriba y servirá como base, para la redacción definitiva
+ de la memoria para optar al grado de Magíster en TI de la Universidad de
+ Chile.
+\end_layout
+
+\begin_layout Chapter
+Marco Teórico
+\end_layout
+
+\begin_layout Section
+Introducción a los Lenguajes de Dominio Específico (DSL)
+\end_layout
+
+\begin_layout Standard
+En todas las ramas de la ciencia y la ingeniería, se pueden distinguir dos
+ enfoques: genéricos y específicos.
+ Los enfoques genéricos proporcionan una solución general para los problemas
+ de un área en particular, pero su solución puede no ser óptima.
+ Un enfoque específico, puede proporcionar una mejor solución para un conjunto
+ pequeño de problemas.
+ En las ciencias de la computación, esta dicotomía también existe, con los
+ lenguajes de programación general (GPLs) y los lenguajes de especificación
+ de dominio (DSLs).
+ Un lenguaje de dominio especifico (DSL) es un lenguaje de programación
+ o un lenguaje de especificación ejecutable que ofrece, a partir de notaciones
+ y abstracciones adecuadas, un poder de expresividad enfocado y por lo general
+ restringido a un problema de dominio en particular 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "vanDeursen2000"
+
+\end_inset
+
+.
+ De la definición anterior, se pueden destacar 4 elementos:
+\end_layout
+
+\begin_layout Enumerate
+Lenguaje de programación de computadoras: Un DSL es usado por humanos para
+ instruir a la computadora que realice cierta acción.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Naturaleza del lenguaje: Un DSL es un lenguaje de programación, y como tal,
+ debe tener una sensación de fluidez, en donde la expresividad, debe originarse
+ no solo de expresiones individuales, si no que también de la forma en que
+ la mismas pueden ser compuestas como un conjunto.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Expresividad limitada: Un lenguaje de programación general proporciona muchas
+ capacidades: soporte de variables, control y abstracción de estructuras.
+ Todo esto es útil, pero es más difícil de aprender y usar.
+ Un DSL soporta, un conjunto mínimo de funcionalidades para soportar un
+ dominio.
+ Por medio de un DSL no se puede construir software que no este enmarcado
+ dentro del dominio del problema.
+\end_layout
+
+\begin_layout Enumerate
+Enfoque en el dominio: Un lenguaje limitado, es solamente útil si tiene
+ un enfoque claro en un dominio pequeño.
+ El enfoque al dominio, es lo que convierte a un lenguaje limitado en algo
+ de real valor.
+\end_layout
+
+\begin_layout Subsection
+Lenguajes de programación general vs lenguajes de especificación de dominio
+\end_layout
+
+\begin_layout Standard
+Los GPLs están típicamente conformes con las especificaciones de Turing;
+ por tanto, pueden ser utilizados para implementar cualquier artefacto compatibl
+e con una máquina de Turing.
+ Entonces, ¿Por qué existen diversos GPLs? todo depende de la estrategia
+ de ejecución.
+ Por ejemplo, el código C es compilado a un código nativo eficiente.
+ Mientras que Ruby es ejecutado por una máquina virtual (una combinación
+ entre compiladores e interpretes).
+ Las características que ofrecen cada uno de los lenguajes, están optimizadas
+ para las tareas que son relevantes a sus respectivos dominios.
+ Por ejemplo, en C se puede manipular la memoria (aspecto importante para
+ comunicarse con dispositivos de bajo nivel).
+ Por otro lado, en Ruby no se puede manipular memoria pero gracias al recolector
+ de basura el programador no tiene que preocuparse de alocar y liberar memoria
+ manualmente.
+\end_layout
+
+\begin_layout Standard
+Incluso en el campo de los GPLs, existen diferentes lenguajes, cada uno
+ exponiendo diferentes funcionalidades, ajustadas a una tarea específica.
+ Entre más específica se vuelve una tarea, es más adecuado el uso de lenguajes
+ especializados.
+ Un DSL, simplemente es un lenguaje que está optimizado para una clase de
+ problemas en particular, llamados dominios.
+ Los lenguajes de especificación de dominio, sacrifican cierta flexibilidad
+ para expresar cualquier tipo de programa, en favor de la productividad
+ y precisión de programas relevantes en un dominio en particular.
+ Por tanto, los DSL son restringidos a la creación de programas correctos.
+ 
+\end_layout
+
+\begin_layout Subsection
+Ingredientes de un lenguaje de programación
+\end_layout
+
+\begin_layout Standard
+Un DSL y un GPL, deben tener los siguientes ingredientes principales 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brambilla2012"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Enumerate
+Sintaxis concreta, define la notación que usarán los usuarios para definir
+ los programas.
+ Es la representación específica del lenguaje a modelar.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Sintaxis abstracta, es la estructura de datos que persiste la semántica
+ de la información relevante expresada por un programa.
+ Por lo general es un árbol o un gráfico.
+ No debe contener detalles de notación.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Semántica describe el significado de los elementos definidos en el lenguaje
+ y el significado de combinar dichos elementos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/IngredientesLenguajeModelado.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Ingredientes-principales-de"
+
+\end_inset
+
+Ingredientes principales de un lenguaje
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Ingredientes-principales-de"
+
+\end_inset
+
+, muestra la relación entre los tres ingredientes: la semántica define el
+ significado de la sintaxis abstracta e indirectamente el de la sintaxis
+ concreta; la sintaxis concreta representa la sintaxis abstracta.
+\end_layout
+
+\begin_layout Subsection
+Clasificación de los DSLs
+\end_layout
+
+\begin_layout Standard
+Los DSLs se pueden clasificar en dos categorías: 
+\end_layout
+
+\begin_layout Enumerate
+DSL externo, es un lenguaje de programación que se construye, desde cero
+ y tiene una infraestructura independiente para el análisis léxico, técnicas
+ de parseo, interpretación y generación de código 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Ghosh2010"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+DSL interno, es un lenguaje que utiliza la infraestructura de un lenguaje
+ de programación existente; para construir la semántica de especificación
+ de dominio encima de él.
+ (ejemplo: 
+\begin_inset Quotes eld
+\end_inset
+
+Rails en Ruby
+\begin_inset Quotes erd
+\end_inset
+
+).
+ Por ende, los DSL internos están embebidos dentro de un lenguaje de programació
+n general.
+ Usualmente, el lenguaje 
+\begin_inset Quotes eld
+\end_inset
+
+host
+\begin_inset Quotes erd
+\end_inset
+
+ es de tipos dinámicos y la implementación del DSL es basada en meta-programació
+n.
+\end_layout
+
+\begin_layout Section
+Ingeniería de Software Orientada a Modelos (MDSE)
+\end_layout
+
+\begin_layout Standard
+MDSE es un marco de trabajo conceptual unificado en donde todo el ciclo
+ de vida del software es visto como un proceso de producción, refinamiento
+ e integración de modelos [5].
+ MDSE es una metodología para aplicar las ventajas del modelado a las actividade
+s de ingeniería de software.
+ En el contexto del MDSE, el software se obtiene como resultado de la siguiente
+ ecuación: 
+\family typewriter
+Modelos
+\lang english
+ + 
+\lang spanish
+Transformaciones
+\lang english
+ = Software
+\family default
+\lang spanish
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brambilla2012"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+El lenguaje de modelado es la notación por la cual se expresan los modelos
+ y las transformaciones.
+ El proceso dirigido por modelos define que tipos de modelos (orden de los
+ mismos y su nivel de abstracción) son necesarios de acuerdo a un determinado
+ tipo de software.
+ La definición y el uso de DSLs es un sabor del MDSE, que se aplica por
+ medio de la creación de representaciones formales, que son específicas
+ a un aspecto particular de un sistema de software y son procesables con
+ la ayuda de herramientas.
+ MDSE proporciona una visión exhaustiva para el desarrollo de sistemas.
+ La Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Visión-general-de"
+
+\end_inset
+
+, es un vistazo general de los principales aspectos considerados en MDSE,
+ y resume como los diferentes problemas son resueltos de acuerdo a las siguiente
+s dimensiones ortogonales: conceptualización (columnas) e implementación
+ (filas).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/VistazoMDSE.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Visión-general-de"
+
+\end_inset
+
+Visión general de la metodología MDSE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El problema de implementación se resuelve con el pareo de modelos a un sistema
+ de software existente o por definir.
+ Consiste en la definición de tres conceptos: 
+\end_layout
+
+\begin_layout Enumerate
+El nivel de modelamiento: define los modelos.
+ 
+\end_layout
+
+\begin_layout Enumerate
+El nivel de realización: implementa soluciones, a través de artefactos que
+ son usados dentro de sistemas en ejecución (código en caso de software)
+ 
+\end_layout
+
+\begin_layout Enumerate
+Nivel de automatización: resultado de la correspondencia entre los niveles
+ de modelamiento y realización.
+ 
+\end_layout
+
+\begin_layout Standard
+Los problemas de conceptualización, están orientados a definir modelos conceptua
+les para describir la realidad.
+ Esto puede ser aplicado a varios niveles:
+\end_layout
+
+\begin_layout Enumerate
+Nivel de aplicación: lugar en donde se definen los modelos de las aplicaciones,
+ las reglas de transformación son aplicadas, y los componentes del sistema
+ en ejecución son generados.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Nivel del dominio de aplicación: define el lenguaje de modelamiento, transformac
+iones, y plataformas de implementación para un dominio específico.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Nivel meta: la conceptualización de los modelos y transformaciones son definidos.
+ 
+\end_layout
+
+\begin_layout Standard
+El flujo principal del MDSE parte con los modelos de aplicación hasta la
+ realización, a través de transformaciones subsecuentes del modelo.
+ Esto permite la reutilización de modelos y ejecución de sistemas en diferentes
+ plataformas.
+ Estos transformaciones son posibles gracias a la especificación de modelos,
+ de acuerdo al un lenguaje de modelado que define la semántica de los elementos
+ de los modelos.
+ Es posible definir modelos de la realidad y luego modelos que describen
+ modelos (meta-modelos), después modelos recursivos que describen meta-modelos
+ (llamados meta-meta-modelos).
+ En teoría, se pueden definir instancias infinitas para los niveles de los
+ meta-modelos, pero en la práctica, se ha demostrado que los meta-meta-modelos
+ se pueden definir así mismos.
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Modelado,-metamodelos-y"
+
+\end_inset
+
+, muestra un ejemplo completo de meta-modelado.
+\end_layout
+
+\begin_layout Standard
+Los meta-modelos pueden ser útiles para: 
+\end_layout
+
+\begin_layout Enumerate
+Definir nuevos lenguajes para el modelado o programación.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Definir nuevos lenguajes de modelado para intercambiar y almacenar información.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Definir nuevas propiedades y funcionalidades que pueden ser asociadas a
+ información existente (meta data)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/Modelos_MetaModelos.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelado,-metamodelos-y"
+
+\end_inset
+
+Modelado, metamodelos y meta-meta-modelos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Modelamiento de aspectos reutilizables (RAM)
+\end_layout
+
+\begin_layout Standard
+El modelamiento multi-vista permite describir el software desde distintas
+ perspectivas, con la ayuda de diferentes notaciones de modelado.
+ El modelado multi-vista enfrenta dos retos: escalabilidad y consistencia
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kienzle2009"
+
+\end_inset
+
+.
+ En aplicaciones complejas, los modelos tienden a crecer en tamaño, a un
+ punto tal que incluso las vistas individuales son difíciles de entender.
+\end_layout
+
+\begin_layout Standard
+Las técnicas de orientación a aspectos, vistos en la sección 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Antecedentes-del-modelamiento"
+
+\end_inset
+
+ han resuelto el problema de identificación y de modularización de preocupacione
+s transversales, lo que permite al desarrollador razonar sobre una preocupación
+ individual.
+ Por tanto, estas técnicas tienen el potencial para resolver los problemas
+ de escalabilidad y consistencia, inherentes al modelado multi-vista.
+\end_layout
+
+\begin_layout Standard
+Los enfoques existentes del modelado orientado a aspectos (AOM), se han
+ convertido en una estrategia exitosa para separar y componer modelos.
+ En el contexto del modelado multi-vista, AOM puede ser aplicado sobre vistas
+ individuales para resolver el problema de la escalabilidad.
+ Sin embargo, esto tiene una consecuencia: la dificultad de asegurar la
+ consistencia entre modelos.
+\end_layout
+
+\begin_layout Standard
+"Reusable Aspect Models" (RAM) es un enfoque de modelamiento orientado a
+ aspectos que permite crear modelos en forma escalable y consistente entre
+ múltiples vistas.
+ RAM posibilita expresar la estructura y el comportamiento de sistemas complejos
+, por medio de diagramas de clase, estado y secuencia en un paquete UML
+ especial llamado "aspect model".
+ Las características de RAM son:
+\end_layout
+
+\begin_layout Enumerate
+Integración de diagramas de clase, estado y de secuencia por medio de las
+ técnicas de modelado orientado a aspectos.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Reutilización de “aspect models” en forma segura y flexible.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Soporta la creación de complejas cadenas de dependencia.
+ Esto permite modelar aspectos de funcionalidad compleja, descomponiéndola
+ en aspectos que proveen una funcionalidad simple.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Ejecuta revisiones de consistencia para verificar la correcta composición
+ de aspectos y su reutilización.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Define un detallado algoritmo de “weaving” que resuelve la dependencia de
+ aspectos para generar “aspect models” independientes que son aplicados
+ en el modelo final.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Antecedentes-del-modelamiento"
+
+\end_inset
+
+Antecedentes del modelamiento orientado a aspectos
+\end_layout
+
+\begin_layout Subsection*
+Composición de los diagramas de clases
+\end_layout
+
+\begin_layout Standard
+RAM compone modelos que representan diferentes vistas del mismo concepto.
+ El resultado esperado es un modelo compuesto a partir de un modelo origen
+ y un modelo destino.
+ Para que esto sea posible, se deben cumplir dos requisitos:
+\end_layout
+
+\begin_layout Enumerate
+Los elementos del modelo a componer deben ser del mismo tipo sintáctico.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Los elementos del modelo a componer deben ser instancias de la misma clase
+ del meta-modelo.
+ 
+\end_layout
+
+\begin_layout Standard
+Si existe un elemento que no está presente en el modelo destino (y viceversa),
+ dicho elemento es incluido en el modelo final compuesto.
+ Pareo de elementos ("element matching"), es el proceso de identificar elementos
+ del modelo a componer.
+ En el pareo automático de elementos, cada tipo de elemento es asociado
+ con una firma que determina su unicidad dentro del espacio de tipos: dos
+ elementos con firmas equivalentes representan el mismo concepto, por tanto
+ dichos elementos son incluidos son en la composición.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/MergingClassDiagrams.png
+	scale 60
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Ejemplo-de-composición"
+
+\end_inset
+
+Ejemplo de composición de diagramas de clase; copiado de 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kienzle2009"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Ejemplo-de-composición"
+
+\end_inset
+
+, se visualiza un diagrama de clases base, en donde hay una entidad que
+ produce salidas (clase 
+\begin_inset Quotes eld
+\end_inset
+
+Writer
+\begin_inset Quotes erd
+\end_inset
+
+) a un dispositivo de salida (clase 
+\begin_inset Quotes eld
+\end_inset
+
+FileStream
+\begin_inset Quotes erd
+\end_inset
+
+).
+ El objetivo es desacoplar la producción de salida de sus dispositivos,
+ por medio de un 
+\begin_inset Quotes eld
+\end_inset
+
+Buffer
+\begin_inset Quotes erd
+\end_inset
+
+; esto es posible, gracias al modelamiento de un aspecto que incluye la
+ clase 
+\begin_inset Quotes eld
+\end_inset
+
+Buffer
+\begin_inset Quotes erd
+\end_inset
+
+ y a la unión de dicho aspecto con el diagrama de clases base.
+ El ejemplo muestra el resultado final de esta composición de clases.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Quotes eld
+\end_inset
+
+Weaving
+\begin_inset Quotes erd
+\end_inset
+
+ de los diagramas de estado y secuencia
+\end_layout
+
+\begin_layout Standard
+Para tejer los diagramas de estados de aspectos, se deben especificar dos
+ tipos de diagramas:
+\end_layout
+
+\begin_layout Enumerate
+Un diagrama de estados para el 
+\begin_inset Quotes eld
+\end_inset
+
+pointcut
+\begin_inset Quotes erd
+\end_inset
+
+ (especificación del comportamiento a detectar) 
+\end_layout
+
+\begin_layout Enumerate
+Un diagrama de estados para el 
+\begin_inset Quotes eld
+\end_inset
+
+advice
+\begin_inset Quotes erd
+\end_inset
+
+ (comportamiento esperado para cada 
+\begin_inset Quotes eld
+\end_inset
+
+join point
+\begin_inset Quotes erd
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+El resultado de este enfoque es la extensión del comportamiento con uno
+ nuevo o la eliminación de este.
+ Al igual que AspectJ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Laddad2009"
+
+\end_inset
+
+, un comportamiento puede ser insertado alrededor 
+\begin_inset Quotes eld
+\end_inset
+
+around
+\begin_inset Quotes erd
+\end_inset
+
+, antes 
+\begin_inset Quotes eld
+\end_inset
+
+before
+\begin_inset Quotes erd
+\end_inset
+
+ o después 
+\begin_inset Quotes eld
+\end_inset
+
+after
+\begin_inset Quotes erd
+\end_inset
+
+ de un 
+\begin_inset Quotes eld
+\end_inset
+
+join point
+\begin_inset Quotes erd
+\end_inset
+
+, por tanto el comportamiento original se puede sustituir, extender o remover.
+ Un ejemplo de esto se visualiza en la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Weaving-de-un"
+
+\end_inset
+
+, por medio de un diagrama de secuencia.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/SequenceDiagramWeavingExample.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Weaving-de-un"
+
+\end_inset
+
+
+\begin_inset Quotes eld
+\end_inset
+
+Weaving
+\begin_inset Quotes erd
+\end_inset
+
+ de un diagrama de secuencia; copiado de 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kienzle2009"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En el ejemplo de la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Weaving-de-un"
+
+\end_inset
+
+, los diagrama de secuencia base y destino muestran una interacción entre
+ el usuario y el servidor:
+\end_layout
+
+\begin_layout Enumerate
+El usuario envía un mensaje de 
+\family typewriter
+\lang english
+login
+\family default
+\lang spanish
+ al servidor.
+ 
+\end_layout
+
+\begin_layout Enumerate
+El servidor responde con 
+\family typewriter
+\lang english
+tryAgain
+\family default
+\lang spanish
+ 
+\end_layout
+
+\begin_layout Enumerate
+El usuario realiza un nuevo intento.
+ 
+\end_layout
+
+\begin_layout Enumerate
+El diagrama de secuencia muestra un escenario alternativo (
+\family typewriter
+\lang english
+alt
+\family default
+\lang spanish
+) que describe que mensajes son enviados después, dependiendo si el 
+\family typewriter
+\lang english
+login
+\family default
+\lang spanish
+ es aceptado o rechazado.
+ 
+\end_layout
+
+\begin_layout Standard
+El aspecto especificado en la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Weaving-de-un"
+
+\end_inset
+
+, consiste en un 
+\begin_inset Quotes eld
+\end_inset
+
+pointcut
+\begin_inset Quotes erd
+\end_inset
+
+ y un 
+\begin_inset Quotes eld
+\end_inset
+
+advice
+\begin_inset Quotes erd
+\end_inset
+
+.
+ El 
+\begin_inset Quotes eld
+\end_inset
+
+pointcut
+\begin_inset Quotes erd
+\end_inset
+
+ intercepta cualquier interacción entre el usuario y el servidor, empezando
+ por método 
+\family typewriter
+\lang english
+login
+\family default
+\lang spanish
+.
+ En la especificación del 
+\begin_inset Quotes eld
+\end_inset
+
+pointcut
+\begin_inset Quotes erd
+\end_inset
+
+, es posible utilizar expresiones regulares en el nombre de los mensajes.
+ El asterisco 
+\family typewriter
+\lang english
+(*)
+\family default
+\lang spanish
+ captura cualquier mensaje desde el servidor al usuario.
+ El 
+\begin_inset Quotes eld
+\end_inset
+
+advice
+\begin_inset Quotes erd
+\end_inset
+
+ indica que el mensaje 
+\family typewriter
+\lang english
+notify
+\family default
+\lang spanish
+ y el mensaje 
+\family typewriter
+\lang english
+update
+\family default
+\lang spanish
+ de un objeto de tipo 
+\family typewriter
+\lang english
+Display
+\family default
+\lang spanish
+ son adicionados después del retorno del mensaje desde el servidor.
+ El resultado se puede visualizar en el diagrama de la izquierda de la figura
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Weaving-de-un"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Conceptos básicos de RAM
+\end_layout
+
+\begin_layout Standard
+Una preocupación en RAM, tiene 3 tipos diferentes de vistas: vista estructural,
+ vista de estados y vista de mensajes; dichas vistas son agrupadas en un
+ paquete UML especial llamado 
+\begin_inset Quotes eld
+\end_inset
+
+aspect model
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En el enfoque de RAM, cualquier preocupación o funcionalidad reutilizable,
+ es modelado como aspecto.
+ No importa si el aspecto se utiliza solo una vez dentro de una misma aplicación
+, dicho aspecto puede ser reutilizado de nuevo en otras aplicaciones.
+ (La naturaleza aspectual del modelo se exhibe en que el aspecto es transversal
+ a través de varias aplicaciones.) Para lograr mayor reusabilidad de los
+ modelos, RAM recomienda modelar aspectos simples y pequeños.
+\end_layout
+
+\begin_layout Subsection*
+Vista estructural
+\end_layout
+
+\begin_layout Standard
+Es el primer compartimento de un 
+\begin_inset Quotes eld
+\end_inset
+
+aspect model
+\begin_inset Quotes erd
+\end_inset
+
+.
+ La vista estructural se expresa por medio de diagramas de clase; por tanto
+ define atributos, métodos y asociaciones.
+ Los miembros de clase pueden tener tres tipos de visibilidad:
+\end_layout
+
+\begin_layout Standard
+1.
+ Miembros privados: los métodos solo son visibles dentro de la clases en
+ donde fueron definidos.
+ Estos métodos se anotan con el carácter guión 
+\family typewriter
+\lang english
+(-)
+\family default
+\lang spanish
+ 
+\end_layout
+
+\begin_layout Standard
+2.
+ Miembros públicos: representan la interfaz pública de los aspectos de RAM
+ y son visibles al exterior del paquete de aspectos.
+ Estos métodos se anotan con el carácter más 
+\family typewriter
+\lang english
+(+)
+\end_layout
+
+\begin_layout Standard
+3.
+ Miembros intra-aspectos: únicamente pueden ser llamados desde otros objetos
+ que son parte del aspecto.
+ La anotación de los miembros intra-aspectos es por medio del carácter virgulill
+a 
+\family typewriter
+\lang english
+(~)
+\family default
+\lang spanish
+.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Completitud de la clases
+\end_layout
+
+\begin_layout Standard
+Las clases dentro de la vista estructural no necesitan estar completas.
+ Dichas clases solo necesitan especificar los miembros que son relevantes
+ dentro de la preocupación modelada.
+ La clases incompletas reciben el nombre de clases parciales y se anota
+ mediante el carácter de barra vertical 
+\family typewriter
+\lang english
+|
+\family default
+\lang spanish
+.
+\end_layout
+
+\begin_layout Standard
+Las clases parciales, necesitan ser completadas antes de ser usadas dentro
+ de la aplicación.
+ Las clases parciales no definen constructores o destructores, por tanto
+ sería imposible crear instancias de dichas clases.
+ Todas las clases parciales de un aspecto son exportadas como
+\series bold
+ parámetros de instanciación obligatoria
+\series default
+; dichos parámetros son representados en la esquina superior derecha del
+ paquete de aspectos.
+ Para poder usar el aspecto y tejerlo con el modelo destino, los parámetros
+ de instanciación obligatoria deben ser mapeados a los elementos del modelo
+ del diagrama de clases destino.
+\end_layout
+
+\begin_layout Standard
+Después, se puede realizar una composición de clases a través del 
+\begin_inset Quotes eld
+\end_inset
+
+weaver
+\begin_inset Quotes erd
+\end_inset
+
+ enlazando o instanciando el modelo de aspectos con el modelo de clases
+ base.
+\end_layout
+
+\begin_layout Subsection*
+Vista de mensajes
+\end_layout
+
+\begin_layout Standard
+La última sección del 
+\begin_inset Quotes eld
+\end_inset
+
+aspect model
+\begin_inset Quotes erd
+\end_inset
+
+ es la vista de mensajes.
+ Para proveer la funcionalidad relacionada a una preocupación, los elementos
+ del modelo dentro del aspecto deben colaborar en 
+\begin_inset Quotes eld
+\end_inset
+
+run-time
+\begin_inset Quotes erd
+\end_inset
+
+.
+ En RAM, la colaboración entre objetos es representada por medio de la vista
+ de mensajes.
+ Las reglas para definir las reglas de mensaje, son las siguientes:
+\end_layout
+
+\begin_layout Enumerate
+La notación utilizada para describir la vista de mensajes son los diagramas
+ de secuencia de UML.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Se debe definir una vista de mensajes para cada operación pública que involucra
+ intercambio de mensajes entre objetos en la vista estructural.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Deben incluirse los mensajes que muestran un intercambio de información
+ entre entidades.
+\end_layout
+
+\begin_layout Standard
+La vista de mensajes, contiene un diagrama de secuencia de estados que consiste
+ en un 
+\begin_inset Quotes eld
+\end_inset
+
+pointcut
+\begin_inset Quotes erd
+\end_inset
+
+ y un 
+\begin_inset Quotes eld
+\end_inset
+
+advice
+\begin_inset Quotes erd
+\end_inset
+
+.
+ El 
+\begin_inset Quotes eld
+\end_inset
+
+pointcut
+\begin_inset Quotes erd
+\end_inset
+
+ define, la entidades y el intercambio de mensajes que deben de existir
+ en el diagrama de secuencia destino.
+ Por lo general, el 
+\begin_inset Quotes eld
+\end_inset
+
+pointcut
+\begin_inset Quotes erd
+\end_inset
+
+ muestra un llamador (
+\begin_inset Quotes eld
+\end_inset
+
+caller
+\begin_inset Quotes erd
+\end_inset
+
+), que invoca la operación de la instancia de la entidad que define el método.
+ El 
+\begin_inset Quotes eld
+\end_inset
+
+advice
+\begin_inset Quotes erd
+\end_inset
+
+ entonces, muestra los detalles de ejecución de dicho método.
+ En ciertas ocasiones, el "pointcut" puede representar comportamientos más
+ complejos: mensajes de secuencia entre distintos objetos.
+ En estos casos, el 
+\begin_inset Quotes eld
+\end_inset
+
+advice
+\begin_inset Quotes erd
+\end_inset
+
+ muestra como los mensajes adicionales son adicionados dentro del comportamiento
+ especificado en el 
+\begin_inset Quotes eld
+\end_inset
+
+pointcut
+\begin_inset Quotes erd
+\end_inset
+
+ o inclusive como los mensajes interceptados son reemplazados.
+ 
+\end_layout
+
+\begin_layout Standard
+La figura  muestra un ejemplo de una clase parcial, la clase |Checkpointable
+ que es una clase parcial que debe ser instanciada para la reutilización
+ del 
+\begin_inset Quotes eld
+\end_inset
+
+aspect model
+\begin_inset Quotes erd
+\end_inset
+
+ Checkpointable.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/Game.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Aspect-Model-Game"
+
+\end_inset
+
+Aspect Model Game
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Aspect-Model-Game"
+
+\end_inset
+
+ muestra el 
+\begin_inset Quotes eld
+\end_inset
+
+aspect model Game
+\begin_inset Quotes erd
+\end_inset
+
+ extraído del caso de estudio Slot Machines 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Zambrano2010"
+
+\end_inset
+
+; dicho 
+\begin_inset Quotes eld
+\end_inset
+
+aspect model
+\begin_inset Quotes erd
+\end_inset
+
+ contiene 5 vistas de mensaje (
+\family typewriter
+\lang english
+Display, initialize, play, getCurrentSymbol, getCurrentPosition, setCurrentPosit
+ion
+\family default
+\lang spanish
+).
+ El primer comportamiento presentado es la inicialización de la máquina,
+ el carrete de azar y la configuración del carrete.
+ El comportamiento de la vista de mensajes 
+\begin_inset Quotes eld
+\end_inset
+
+play
+\begin_inset Quotes erd
+\end_inset
+
+ indica el resultado del juego, después del giro de los carretes.
+\end_layout
+
+\begin_layout Subsection*
+Vista de estados
+\end_layout
+
+\begin_layout Standard
+La vista de estados es opcional dentro de un "aspect model".
+ Los principales usos de la vista de estados son:
+\end_layout
+
+\begin_layout Enumerate
+Documentación.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Verificación de consistencia en la invocación de operaciones.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Establecer el orden de las llamadas de las operaciones (cualidad que no
+ puede ser definida en la vista de mensajes).
+\end_layout
+
+\begin_layout Standard
+La vista de estados está basada en modelado de protocolos (PM) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Ayed2013"
+
+\end_inset
+
+, que permite reutilizar componentes de comportamiento y que puede además
+ ignorar, aceptar o reutilizar eventos.
+ Las máquinas de estado son utilizadas para representar los protocolos reutiliza
+bles que componen el modelo.
+ Los estados representan el estado lógico del objeto.
+ Las transiciones conectan dos estados (estado inicial y final); una transición
+ corresponde a una operación de una clase en la vista estructural.
+ Las transiciones pueden tener hasta un 
+\begin_inset Quotes eld
+\end_inset
+
+guard condition
+\begin_inset Quotes erd
+\end_inset
+
+ que tiene que evaluarse como verdadero para que el protocolo acepte la
+ llamada a la operación de la transición.
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:|Checkpoitable:-ejemplo-de"
+
+\end_inset
+
+, muestra la vista de estado llamada 
+\begin_inset Quotes eld
+\end_inset
+
+Checkpoint
+\begin_inset Quotes erd
+\end_inset
+
+ con dos estados: 
+\family typewriter
+\lang english
+Empty
+\family default
+\lang spanish
+ y 
+\family typewriter
+\lang english
+CheckpointExist
+\family default
+\lang spanish
+; dicha vista de estados define una verificación que no puede ser expresada
+ en la vista de mensajes: no se puede restaurar un Checkpoint (
+\family typewriter
+\lang english
+restoreCheckpoint
+\family default
+\lang spanish
+), si el mismo está en estado 
+\family typewriter
+\lang english
+Empty
+\family default
+\lang spanish
+.
+\end_layout
+
+\begin_layout Subsection
+Dependencia de aspectos, reutilización, enlaces e instanciación
+\end_layout
+
+\begin_layout Standard
+Uno de los objetivos de RAM, es proveer escalabilidad por medio del modelamiento
+ multi-vista.
+ Para mantener los 
+\begin_inset Quotes eld
+\end_inset
+
+aspect models
+\begin_inset Quotes erd
+\end_inset
+
+ relativamente pequeños, los aspectos que necesitan representar una funcionalida
+d compleja, deben tener la capacidad de reutilizar la funcionalidad de otros
+ aspectos.
+ Si un aspecto 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ reutiliza modelos proporcionados por un aspecto 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+, entonces 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ depende de 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+.
+ Las dependencias deben ser mostradas en el encabezado del paquete de aspectos.
+ Ejemplo: 
+\family typewriter
+\lang english
+aspect A depends on B
+\family default
+\lang spanish
+.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Instanciación
+\end_layout
+
+\begin_layout Standard
+En RAM, si 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ depende de 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+, 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ debe indicar explícitamente que reutiliza la funcionalidad de 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+ instanciando 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+.
+ Cada una de las vistas (estructural, estados y mensajes) pueden indicar
+ parámetros de instanciación obligatoria, por medio de clases parciales
+ definidas en la esquina superior derecha de cada vistas.
+ Si 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ desea reutilizar B, 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ debe proporcionar al menos una directiva de instanciación que corresponda
+ a los parámetros de instanciación obligatoria de la vista de 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+ (estructural, estado o mensajes).
+ Clases en 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+ que no son parámetros de instanciación obligatoria pueden ser instanciados
+ en forma opcional.
+ 
+\end_layout
+
+\begin_layout Standard
+El formato de instanciación es el siguiente: 
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\lang english
+AspectoOrigina.ClaseParcial -> NombreEntidad
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/Checkpointable.png
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:|Checkpoitable:-ejemplo-de"
+
+\end_inset
+
+|Checkpoitable: ejemplo de una clase parcial
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:|Checkpoitable:-ejemplo-de"
+
+\end_inset
+
+, se ejemplifica como el aspecto 
+\family typewriter
+\lang english
+Checkpointablet
+\family default
+\lang spanish
+ reutiliza el aspecto 
+\family typewriter
+\lang english
+Copyable
+\family default
+\lang spanish
+:
+\end_layout
+
+\begin_layout Enumerate
+El encabezado del aspecto, indica que 
+\family typewriter
+\lang english
+Checkpointable
+\family default
+\lang spanish
+ reutiliza 
+\family typewriter
+\lang english
+Copyable
+\family default
+\lang spanish
+: 
+\family typewriter
+\lang english
+aspect Checkpointable depends on Copyable
+\family default
+\lang spanish
+.
+\end_layout
+
+\begin_layout Enumerate
+La vista estructural de 
+\family typewriter
+\lang english
+Copyable
+\family default
+\lang spanish
+ se instancia en la vista estructural de 
+\family typewriter
+\lang english
+Checkpointable
+\family default
+\lang spanish
+, pareando la clase incompleta 
+\family typewriter
+\lang english
+|Copyable
+\family default
+\lang spanish
+ con la clase incompleta 
+\family typewriter
+\lang english
+|Checkpointable
+\family default
+\lang spanish
+.
+ El significado de la instanciación es el siguiente: todas las instancias
+ de 
+\family typewriter
+\lang english
+|Checkpointable
+\family default
+\lang spanish
+ además de exponer los métodos 
+\family typewriter
+\lang english
+establish, restore, discard
+\family default
+\lang spanish
+, también define los métodos, atributos y asociaciones definidas en 
+\family typewriter
+\lang english
+|Copyable
+\family default
+\lang spanish
+.
+\end_layout
+
+\begin_layout Enumerate
+La vista de estados de 
+\family typewriter
+\lang english
+|Checkpointable
+\family default
+\lang spanish
+ especifica que una instancia de la clase incompleta 
+\family typewriter
+\lang english
+|Checkpointable
+\family default
+\lang spanish
+ acepta cualquier número de llamadas de 
+\family typewriter
+\lang english
+estabishing
+\family default
+\lang spanish
+, seguido de por lo menos, el mismo número de llamadas de 
+\family typewriter
+\lang english
+restore
+\family default
+\lang spanish
+ y 
+\family typewriter
+\lang english
+discard
+\family default
+\lang spanish
+.
+ La instanciación que parea 
+\family typewriter
+\lang english
+|ClonedAllowed
+\family default
+\lang spanish
+ a 
+\family typewriter
+\lang english
+Establishing
+\family default
+\lang spanish
+ se asegura de que el método 
+\family typewriter
+\lang english
+clone
+\family default
+\lang spanish
+ solo puede ser llamado después de una llamada de 
+\family typewriter
+\lang english
+establish
+\family default
+\lang spanish
+.
+ De igual forma, 
+\family typewriter
+\lang english
+replaceWith
+\family default
+\lang spanish
+ puede ser llamado solamente después de una llamada de 
+\family typewriter
+\lang english
+restore
+\family default
+\lang spanish
+ o 
+\family typewriter
+\lang english
+discard
+\family default
+\lang spanish
+.
+\end_layout
+
+\begin_layout Enumerate
+La vista de mensaje de 
+\family typewriter
+\lang english
+establish
+\family default
+\lang spanish
+, tiene una directiva de instanciación que especifica como se reutiliza
+ la vista de mensajes 
+\family typewriter
+\lang english
+clone
+\family default
+\lang spanish
+, en el punto en que el objeto 
+\family typewriter
+\lang english
+|target
+\family default
+\lang spanish
+ se invoca a sí mismo.
+\end_layout
+
+\begin_layout Subsubsection*
+Enlazamiento (
+\begin_inset Quotes eld
+\end_inset
+
+Binding
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+En el escenario de que un aspecto 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ depende de un aspecto 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+, puede pasar que una clase imparcial 
+\family typewriter
+\lang english
+|X
+\family default
+\lang spanish
+ en la vista estructural de 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+, necesite ser compuesta para completar la clase 
+\family typewriter
+\lang english
+Y
+\family default
+\lang spanish
+ definida en 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+ (o en uno de los aspectos de los cuales depende 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+).
+ En este caso la vista de estados 
+\family typewriter
+\lang english
+X
+\family default
+\lang spanish
+ en 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ también necesite refinar la vista de estados 
+\family typewriter
+\lang english
+Y
+\family default
+\lang spanish
+ para tomar en cuenta la funcionalidad de 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+.
+ De igual forma, 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ puede necesitar, refinar o sobre-escribir los mensajes de secuencia especificad
+os en la vista de mensajes definidos en 
+\family typewriter
+\lang english
+Y
+\family default
+\lang spanish
+ para tomar en cuenta la funcionalidad proporcionada por 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+.
+ En este caso A debe definir una directiva de enlazamiento 
+\begin_inset Quotes eld
+\end_inset
+
+binding directive
+\begin_inset Quotes erd
+\end_inset
+
+ que paree las entidades incompletas de la vista estructural, estado y de
+ mensajes de 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ en la vista estructural, estado y de mensaje definidos en 
+\family typewriter
+\lang english
+Y
+\family default
+\lang spanish
+.
+ La sintaxis para la directiva de enlazamiento es el siguiente: 
+\family typewriter
+\lang english
+NombreEntidadIncompleta -> Destino.NombreEntidad
+\family default
+\lang spanish
+.
+\end_layout
+
+\begin_layout Standard
+Si una vista contiene una directiva de enlazamiento, los elementos enlazados
+ no pueden aparecer al mismo tiempo como parámetros de instanciación obligatorio
+s en la directiva de instanciación de dicha vista.
+ Las directivas de instanciación y enlazamiento pueden ser de uno-a-muchos
+ o de muchos-a-uno si es necesario.
+ En este caso, se pueden utilizar 
+\begin_inset Quotes eld
+\end_inset
+
+wildcards
+\begin_inset Quotes erd
+\end_inset
+
+ para instruir al 
+\begin_inset Quotes eld
+\end_inset
+
+weaver
+\begin_inset Quotes erd
+\end_inset
+
+ que realice 
+\begin_inset Quotes eld
+\end_inset
+
+pattern matching
+\begin_inset Quotes erd
+\end_inset
+
+ en el modelo, para determinar el conjunto de elementos que van a ser usados
+ en la directiva.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Reutilización
+\end_layout
+
+\begin_layout Standard
+Uno de los principales objetivos de RAM, es permitir el diseño de modelos
+ de aspectos altamente reutilizables.
+ La idea es evitar la dispersión de modelos por medio de la definición de
+ funcionalidades relacionadas y evitar el entrelazamiento de elementos,
+ a través de diferentes funcionalidades.
+\end_layout
+
+\begin_layout Standard
+Para que la reutilización sea posible, se deben seguir las siguientes reglas:
+\end_layout
+
+\begin_layout Enumerate
+Si un aspecto 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ expone una funcionalidad, cuyo diseño necesita la funcionalidad del aspecto
+ 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+, entonces 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ depende de 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+; solo en este caso 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ puede instanciar vistas de 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+, o enlazar elementos de 
+\family typewriter
+\lang english
+A
+\family default
+\lang spanish
+ con elementos de 
+\family typewriter
+\lang english
+B
+\family default
+\lang spanish
+.
+\end_layout
+
+\begin_layout Enumerate
+Las dependencias circulares están prohibidas.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Conclusiones de RAM
+\end_layout
+
+\begin_layout Standard
+Las principales contribuciones de RAM son:
+\end_layout
+
+\begin_layout Enumerate
+RAM es el primer enfoque AOM, que integra diagramas de clase, estado y de
+ secuencia en técnicas de orientación a aspectos.
+ Como resultado los 
+\begin_inset Quotes eld
+\end_inset
+
+aspect models
+\begin_inset Quotes erd
+\end_inset
+
+ pueden describir la estructura y el comportamiento de una preocupación
+ en particular.
+\end_layout
+
+\begin_layout Enumerate
+La reutilización de 
+\begin_inset Quotes eld
+\end_inset
+
+aspect models
+\begin_inset Quotes erd
+\end_inset
+
+ en RAM es simple y flexible.
+ La flexibilidad se alcanza, permitiendo que cada elemento del modelo sea
+ opcionalmente compuesto o extendido a través de 
+\begin_inset Quotes eld
+\end_inset
+
+bindings
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+El 
+\begin_inset Quotes eld
+\end_inset
+
+weaver
+\begin_inset Quotes erd
+\end_inset
+
+ obliga, que todos los parámetros de instanciación obligatorio sean definidos
+ cuando un aspecto es instanciado.
+\end_layout
+
+\begin_layout Enumerate
+Un enlazamiento definido en un aspecto superior, debe ser compatibles con
+ los enlazamientos del aspecto a reutilizar.
+\end_layout
+
+\begin_layout Chapter
+Estrategia de implementación
+\end_layout
+
+\begin_layout Section
+Herramientas de implementación
+\end_layout
+
+\begin_layout Subsection
+Sintaxis concreta y abstracta
+\end_layout
+
+\begin_layout Standard
+La sintaxis concreta de un lenguaje, es la interfaz que utilizan los usuarios
+ para crear programas; la sintaxis abstracta es la representación semántica
+ de dicho lenguaje.
+ La sintaxis abstracta, es una estructura de datos o modelo, que actúa como
+ una API para aplicar herramientas de validación, transformación y generación
+ de código.
+ Existen dos estrategias para el desarrollo de las sintaxis concretas y
+ abstractas:
+\end_layout
+
+\begin_layout Itemize
+Iniciar por la definición de la sintaxis concreta: la sintaxis abstracta
+ es derivada a partir de la sintaxis concreta, ya sea de forma automática
+ o con la ayuda de 
+\begin_inset Quotes eld
+\end_inset
+
+hints
+\begin_inset Quotes erd
+\end_inset
+
+ en la especificación de la sintaxis concreta.
+ 
+\end_layout
+
+\begin_layout Itemize
+Iniciar por la definición de la sintaxis abstracta: la sintaxis concreta
+ se define a partir de las especificaciones de la sintaxis abstracta.
+ 
+\end_layout
+
+\begin_layout Standard
+Para la creación de la sintaxis abstracta, existen dos técnicas: 
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Quotes eld
+\end_inset
+
+Parsers
+\begin_inset Quotes erd
+\end_inset
+
+: utilizan una definición formal llamada gramática, para poder derivar la
+ sintaxis abstracta a partir de la sintaxis concreta.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Proyección: la sintaxis abstracta es generada a partir de acciones realizadas
+ por el usuario en un editor.
+ La sintaxis concreta es dinámica y es generada a partir de los cambios
+ ocurridos en la sintaxis abstracta.
+ La proyección no utiliza gramática.
+ 
+\end_layout
+
+\begin_layout Standard
+Los compiladores tradicionales utilizan 
+\begin_inset Quotes eld
+\end_inset
+
+parsers
+\begin_inset Quotes erd
+\end_inset
+
+ creados en forma manual, la consecuencia de esto son programas grandes
+ y monolíticos.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Parser Generator
+\begin_inset Quotes erd
+\end_inset
+
+ es una técnica mencionada por Fowler en 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fowler2010"
+
+\end_inset
+
+ que indica como el 
+\begin_inset Quotes eld
+\end_inset
+
+parser es generado en forma automática en base a la especificación de una
+ gramática.
+ Este es el enfoque que utilizan la mayoría de los compiladores actuales.
+ La ventaja de los generadores de 
+\begin_inset Quotes eld
+\end_inset
+
+parsers
+\begin_inset Quotes erd
+\end_inset
+
+ es que el modelador no debe ser un experto en la definición del lenguaje
+ (a diferencia de un 
+\begin_inset Quotes eld
+\end_inset
+
+parser
+\begin_inset Quotes erd
+\end_inset
+
+ construido en forma manual), sin embargo los 
+\begin_inset Quotes eld
+\end_inset
+
+parser
+\begin_inset Quotes erd
+\end_inset
+
+ hechos a la medida ofrecen un mejor rendimiento.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Xtext"
+
+\end_inset
+
+Xtext
+\end_layout
+
+\begin_layout Standard
+Xtext es una herramienta que sirve para implementar lenguajes de programación
+ (DSLs o GPLs), dentro del marco de trabajo de Eclipse.
+ Xtext es un generador de 
+\begin_inset Quotes eld
+\end_inset
+
+parsers
+\begin_inset Quotes erd
+\end_inset
+
+ y ofrece toda la infraestructura para definir restricciones, manejo de
+ tipos, 
+\begin_inset Quotes eld
+\end_inset
+
+scoping
+\begin_inset Quotes erd
+\end_inset
+
+, generación de código, interpretes, 
+\begin_inset Quotes eld
+\end_inset
+
+quickfixes
+\begin_inset Quotes erd
+\end_inset
+
+ y todas las características de un lenguaje de programación moderno.
+ Para la generación del 
+\begin_inset Quotes eld
+\end_inset
+
+parser
+\begin_inset Quotes erd
+\end_inset
+
+, Xtext se apoya en ANTLR 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Antlr"
+
+\end_inset
+
+ (pronunciado: 
+\begin_inset Quotes eld
+\end_inset
+
+Antler, ANother Tool for Language Recognition
+\begin_inset Quotes erd
+\end_inset
+
+).
+ La definición de la gramática en ANTLR se realiza en un solo archivo.
+ Un modelos semánticos 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fowler2010"
+
+\end_inset
+
+ es un modelo de objetos en memoria, que un DSL debe popular.
+ El modelo semántico y la sintaxis abstracta son términos equivalentes.
+ Xtext se apoya en EMF Ecore para persistir el modelo semántico en memoria.
+\end_layout
+
+\begin_layout Subsubsection
+
+\lang english
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:EMF-Ecore"
+
+\end_inset
+
+
+\lang spanish
+EMF Ecore
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Eclipse Modeling Framework
+\begin_inset Quotes erd
+\end_inset
+
+ (EMF) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Steinberg2009"
+
+\end_inset
+
+, es el corazón de las herramientas de modelado de Eclipse.
+ EMF expone una amplia variedad de servicios y herramientas para persistir,
+ editar y transformar modelos.
+ Para la definición de meta-modelos, el EMF utiliza Ecore.
+ Las principales características de Ecore son: 
+\end_layout
+
+\begin_layout Itemize
+Diversas representaciones (código Java, XML, UML) del meta-modelo.
+ 
+\end_layout
+
+\begin_layout Itemize
+Mecanismos automáticos de transformación entre las diferentes representaciones.
+ 
+\end_layout
+
+\begin_layout Itemize
+Clases generadas por EMF.Edit que sirven como punto de partida para la implementa
+ción de código y el desarrollo de una aplicación.
+ 
+\end_layout
+
+\begin_layout Itemize
+Un editor genérico para la creación, visualización y edición de modelos.
+ 
+\end_layout
+
+\begin_layout Itemize
+Una API de consultas para la obtención de la estructura del meta-modelo.
+ 
+\end_layout
+
+\begin_layout Itemize
+Mecanismos de reflexión para la manipulación de instancias del meta-modelo.
+\end_layout
+
+\begin_layout Standard
+Los modelos básicos de Ecore son:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+EClass
+\emph default
+: representa los modelos del lenguaje (elementos de la sintaxis abstracta).
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+EAtrribute
+\emph default
+: describe el estado de un EClass.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+EDataType
+\emph default
+: indica el tipo de un atributo.
+ Un tipo de dato puede ser primitivo o un tipo de objetos como ser 
+\family typewriter
+\lang english
+java.util.Date
+\family default
+\lang spanish
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+EReference
+\emph default
+: representa asociaciones entre EClases.
+ En forma opcional los EReferences pueden tener semántica de contenedores.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+EObject
+\emph default
+: representa instancias de EClasses (por ejemplo nodos AST).
+ Cada EObject puede ser contenido de al menos una instancia de EReference.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+EPackage
+\emph default
+: agrupa clases y tipos de datos relacionados.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/EcoreBasicMetamodel.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Meta-modelo-básico-de"
+
+\end_inset
+
+Meta-modelo básico de Ecore
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Sintaxis y Gramática 
+\end_layout
+
+\begin_layout Standard
+La gramática (piedra angular de Xtext) es la definición formal de la sintaxis
+ concreta.
+ El objetivo de la gramática es indicar como se mapea la sintaxis concreta
+ con la sintaxis abstracta representada en memoria.
+ El modelo es construido dinámicamente por el "parser" cuando se consume
+ una entrada válida de texto.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Declaración del lenguaje
+\end_layout
+
+\begin_layout Standard
+\noindent
+El lenguaje se declara en el encabezado de la gramática.
+ Ejemplo:
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+java grammar cl.pleiad.ram.Textram with org.eclipse.xtext.common.Terminals
+\end_layout
+
+\begin_layout Standard
+\noindent
+En el encabezado también se indica la reutilización de otras gramáticas,
+ por ejemplo: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+org.eclipse.xtext.common.Terminals
+\end_layout
+
+\begin_layout Subsubsection*
+Reglas Terminales
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Quotes eld
+\end_inset
+
+Lexing
+\begin_inset Quotes erd
+\end_inset
+
+ es el proceso de creación de 
+\begin_inset Quotes eld
+\end_inset
+
+tokens
+\begin_inset Quotes erd
+\end_inset
+
+ mediante el consumo de una secuencia de caracteres de entrada.
+ Los 
+\begin_inset Quotes eld
+\end_inset
+
+tokens
+\begin_inset Quotes erd
+\end_inset
+
+ son uno o más caracteres que corresponden a una regla terminal o 
+\begin_inset Quotes eld
+\end_inset
+
+keyword
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Por ejemplo ID es una regla terminal, definida en org.eclipse.xtext.common.Terminal
+s, su implementación es la siguiente: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal ID: ('^')?('a'..'z'|'A'..'Z'|' ')('a'..'z'|'A'..'Z'|'0'..'9')*;
+\end_layout
+
+\begin_layout Standard
+\noindent
+El orden de las reglas 
+\begin_inset Quotes eld
+\end_inset
+
+terminal
+\begin_inset Quotes erd
+\end_inset
+
+ es importante para la gramática, debido a que se sobre-escriben unas a
+ otras.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Tipos de retorno
+\end_layout
+
+\begin_layout Standard
+\noindent
+Cada regla terminal, retorna un EDataType de Ecore (por defecto ecore::EString).
+ A continuación se presenta la definición de una regla llamada INT que retorna
+ ecore::EInt: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal INT: returns ecore::EInt:(''..'9')
+\family default
++ 
+\end_layout
+
+\begin_layout Subsubsection*
+\noindent
+Expresiones Backus-Naur extendendidas 
+\end_layout
+
+\begin_layout Standard
+\noindent
+Las reglas terminales son descritas por medio de expresiones 
+\begin_inset Quotes eld
+\end_inset
+
+Extended Backus-Naur Form
+\begin_inset Quotes erd
+\end_inset
+
+ (EBNF).
+ Las cardinalidades de EBNF son:
+\end_layout
+
+\begin_layout Enumerate
+\noindent
+Exactamente uno (sin operador, configurado por defecto) 
+\end_layout
+
+\begin_layout Enumerate
+\noindent
+Uno o más (operador ?) 
+\end_layout
+
+\begin_layout Enumerate
+\noindent
+Cualquiera (cero o más, operador *) 
+\end_layout
+
+\begin_layout Enumerate
+\noindent
+Uno o muchos (operador +) 
+\end_layout
+
+\begin_layout Subsubsection*
+Rango de caracteres 
+\end_layout
+
+\begin_layout Standard
+Un rango de caracteres puede ser declarado con el operador 
+\family typewriter
+..
+\family default
+, ejemplo:
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal INT returns ecore::EInt:('0'..'9')
+\family default
++ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+En este caso INT retorna uno o más caracteres en '0' y '9' 
+\begin_inset Quotes eld
+\end_inset
+
+Wildcards
+\begin_inset Quotes erd
+\end_inset
+
+ La gramática de Xtext, soporta el uso de 
+\begin_inset Quotes eld
+\end_inset
+
+wildcards
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Por ejemplo el .
+ (punto), permite el uso de cualquier carácter: terminal FOO: 'f' .
+ 'o'; esta regla permite las siguientes expresiones: 
+\emph on
+foo, f0o, f_o
+\emph default
+.
+\end_layout
+
+\begin_layout Subsubsection*
+"Until Token" 
+\end_layout
+
+\begin_layout Standard
+\noindent
+Indica que todo debe ser consumido hasta la aparición de un 
+\begin_inset Quotes eld
+\end_inset
+
+token
+\begin_inset Quotes erd
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal ML_COMMENT:'/*' -> '*/';
+\end_layout
+
+\begin_layout Standard
+\noindent
+El ejemplo anterior es un comentario regular de Java.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+\noindent
+\begin_inset Quotes eld
+\end_inset
+
+Negated Token
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+Todos los 
+\begin_inset Quotes eld
+\end_inset
+
+tokens
+\begin_inset Quotes erd
+\end_inset
+
+ pueden ser negados, mediante el uso del signo de admiración: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal BETWEEN_HASHES: '#'(!'#') * '#'
+\family default
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+\noindent
+Llamada de reglas 
+\end_layout
+
+\begin_layout Standard
+\noindent
+Las reglas pueden referenciar otras reglas: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal DOUBLE : INT '.'
+\family default
+ INT; 
+\end_layout
+
+\begin_layout Standard
+\noindent
+En este caso la regla DOUBLE está llamando a la regla INT.
+\end_layout
+
+\begin_layout Subsubsection*
+\noindent
+Alternativas
+\end_layout
+
+\begin_layout Standard
+\noindent
+Permiten definir una lista de opciones válidas.
+ Por ejemplo el la regla del espacio en blanco, utiliza una alternativa
+ de la siguiente forma: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal WS: (' '|'
+\backslash
+t'|'
+\backslash
+r'|'
+\backslash
+n')+;
+\family default
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+\noindent
+Grupos 
+\end_layout
+
+\begin_layout Standard
+\noindent
+Se llama grupo a la secuencia de 
+\begin_inset Quotes eld
+\end_inset
+
+tokens
+\begin_inset Quotes erd
+\end_inset
+
+ que se definen uno detrás de otro: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal ASCII '0x'('0'..'7')('0'..'9'|'A'..'F');
+\family default
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+El ejemplo anterior, representa 2 dígitos hexadecimales de caracteres ASCII.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+\noindent
+Fragmentos terminales 
+\end_layout
+
+\begin_layout Standard
+\noindent
+Debido a que las reglas terminales son usadas en un contexto sin estado,
+ no es fácil reutilizar partes de su definición; para resolver este problema
+ se utilizan los fragmentos.
+ Los fragmentos permiten los mismos elementos EBNF como reglas terminales,
+ pero no son consumidas por el 
+\begin_inset Quotes eld
+\end_inset
+
+lexer
+\begin_inset Quotes erd
+\end_inset
+
+.
+ En su lugar son definidas para ser usadas por otras reglas terminales:
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+terminal fragment ESCAPED_CHAR : ’
+\backslash
+
+\backslash
+’ (’n’|’t’|’r’|’
+\backslash
+
+\backslash
+’); terminal STRING : ’"’ ( ESCAPED_CHAR | !(’
+\backslash
+
+\backslash
+’|’"’) )* ’"’ | "’" ( ESCAPED_CHAR | !(’
+\backslash
+
+\backslash
+’|"’") )* "’" ; 
+\end_layout
+
+\begin_layout Subsubsection*
+\noindent
+Fin de archivo (EOF) 
+\end_layout
+
+\begin_layout Standard
+\noindent
+El 
+\begin_inset Quotes eld
+\end_inset
+
+token
+\begin_inset Quotes erd
+\end_inset
+
+ fin de archivo, puede ser usado para describir que el final del flujo de
+ entrada es valido en un cierto punto de una regla terminal: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\family typewriter
+terminal UNCLOSED_STRING: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+(!
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+)* EOF;
+\end_layout
+
+\begin_layout Subsubsection*
+\begin_inset Quotes eld
+\end_inset
+
+Parser
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Las reglas del 
+\begin_inset Quotes eld
+\end_inset
+
+parser
+\begin_inset Quotes erd
+\end_inset
+
+ son vistas como un plan para la creación de EObjects que forman el modelo
+ semántico.
+ Los elementos que están diponibles en las reglas del 
+\begin_inset Quotes eld
+\end_inset
+
+parser
+\begin_inset Quotes erd
+\end_inset
+
+ son: 
+\end_layout
+
+\begin_layout Enumerate
+Grupos 
+\end_layout
+
+\begin_layout Enumerate
+Alternativas 
+\end_layout
+
+\begin_layout Enumerate
+Palabras claves.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Reglas de llamada.
+ 
+\end_layout
+
+\begin_layout Standard
+A continuación, se describe como algunas expresiones proporcionan 
+\begin_inset Quotes eld
+\end_inset
+
+hints
+\begin_inset Quotes erd
+\end_inset
+
+ para la construcción directa del AST: 
+\end_layout
+
+\begin_layout Subsubsection*
+Asignaciones 
+\end_layout
+
+\begin_layout Standard
+La creación de instancias se realiza en las asignaciones.
+ El tipo de la entidad asignada es un EClass inferido desde el lado derecho
+ de la asignación.
+ El nombre del EClass puede ser definido explícitamente o implícitamente
+ utilizando el nombre de la regla.
+ A continuación se presenta una regla que retorna un EClass llamado Aspect:
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+Aspect: 'aspect' name=ID '{' structure=Structure '}';
+\end_layout
+
+\begin_layout Standard
+La declaración sintáctica de Aspect inicia con la palabra clave 
+\begin_inset Quotes eld
+\end_inset
+
+aspect
+\begin_inset Quotes erd
+\end_inset
+
+ seguido de la asignación name=ID; el lado derecho de dicha asignación puede
+ ser una llamada a otra regla, una palabra clave, una referencia cruzada
+ o una alternativa.
+ Los tipos involucrados en la asignación deben ser compatibles.
+\end_layout
+
+\begin_layout Subsubsection*
+Operadores de asignación
+\end_layout
+
+\begin_layout Enumerate
+El carácter = es usado cuando se espera un solo elemento.
+ 
+\end_layout
+
+\begin_layout Enumerate
+El carácter += espera una lista con múltiples valores y adiciona el valor
+ a dicha lista.
+ 
+\end_layout
+
+\begin_layout Enumerate
+El carácter ?= espera un elemento de tipo EBoolean y asigna 
+\begin_inset Quotes eld
+\end_inset
+
+true
+\begin_inset Quotes erd
+\end_inset
+
+ si el elemento del lado derecho fue consumido.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Referencias cruzadas
+\end_layout
+
+\begin_layout Standard
+Xtext permite la definición de referencias cruzadas dentro de la gramática.
+ Ejemplo:
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+Transition : event=[Event] '=>' state=[State];
+\end_layout
+
+\begin_layout Standard
+La regla 
+\begin_inset Quotes eld
+\end_inset
+
+Transition
+\begin_inset Quotes erd
+\end_inset
+
+ está formada por dos referencias cruzadas, una apuntanto a 
+\begin_inset Quotes eld
+\end_inset
+
+event
+\begin_inset Quotes erd
+\end_inset
+
+ y otra a 
+\begin_inset Quotes eld
+\end_inset
+
+state
+\begin_inset Quotes erd
+\end_inset
+
+.
+ El texto entre corchetes no se refiere a otra regla, se refiere a un EClass.
+ En Ecore, la clase EReference tiene una propiedad que indica si la referencia
+ es contenedora o no.
+ Una referencia contenedora es un apuntador a un objeto.
+ Un objeto puede tener un solo contenedor.
+ Las referencias cruzadas son referencias no contenedoras.
+ La determinación de alcance (
+\begin_inset Quotes eld
+\end_inset
+
+scoping
+\begin_inset Quotes erd
+\end_inset
+
+) se encarga de resolver este tipo de referencia mediante el uso de un identific
+ador único (
+\begin_inset Quotes eld
+\end_inset
+
+index
+\begin_inset Quotes erd
+\end_inset
+
+) que almacena toda la información del objeto.
+ La resolución de las referencias cruzadas se hace en una etapa llamada
+ enlazamiento 
+\begin_inset Quotes eld
+\end_inset
+
+linking
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Determinación de alcance y enlazamiento 
+\end_layout
+
+\begin_layout Standard
+El enlazamiento resuelve las referencias de los símbolos de un lenguaje
+ basado en 
+\begin_inset Quotes eld
+\end_inset
+
+parser
+\begin_inset Quotes erd
+\end_inset
+
+.
+ La resolución de referencias es por medio de la convención de nombres.
+ La determinación de alcance, es el mecanismo principal detrás de la visibilidad
+ y la resolución de referencias cruzadas.
+ Desde el momento en que el DSL necesita estructurar el código, se necesita
+ una implementación de la definición de alcance.
+ 
+\end_layout
+
+\begin_layout Standard
+Por lo general, le determinación de alcance de una referencia cruzada, depende
+ de: 
+\end_layout
+
+\begin_layout Enumerate
+El espacio de nombres en donde viven los elementos.
+ 
+\end_layout
+
+\begin_layout Enumerate
+La ubicación dentro de la estructura del sitio que contiene la referencia
+ cruzada.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Algún aspecto, que no necesariamente es estructural por naturaleza.
+ 
+\end_layout
+
+\begin_layout Standard
+La determinación de alcance, también puede ser de ayuda para: 
+\end_layout
+
+\begin_layout Enumerate
+Popular el menú del "code-completion" del IDE cuando el usuario presiona
+ Ctrl-Space en el sitio referenciado.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Validar una referencia existente.
+ 
+\end_layout
+
+\begin_layout Standard
+Xtext proporciona una API de Java para implementar la determinación de alcance.
+ Con dicha API un desarrollador puede definir varios niveles de alcance:
+ 
+\end_layout
+
+\begin_layout Enumerate
+Alcance simple y local.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Alcance anidado.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Alcance global.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Restricciones 
+\end_layout
+
+\begin_layout Standard
+No todos los programas que están conformes con el meta-modelo son válidos.
+ La definición de un lenguaje incluye restricciones que no pueden ser expresadas
+ solamente por el meta-modelo.
+ Las restricciones son condiciones "Boolean" que deben ser evaluadas como
+ verdaderas, para poder indicar la validez de un modelo.
+ Un mensaje de error debe ser reportado si la expresión a evaluar es falsa.
+ Se pueden distinguir dos tipos de restricciones: 
+\end_layout
+
+\begin_layout Enumerate
+Restricciones que exigen que los elementos estén bien formados.
+ Ejemplo: unicidad de los nombres en una lista de elementos.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Sistema de tipos: las reglas de los sistemas de tipos, son diferentes porque
+ verifican la correcta definición de los tipos dentro de un programa.
+ Por ejemplo, el sistema de tipos se asegura que no se pueda asignar un
+ float a un int.
+ 
+\end_layout
+
+\begin_layout Standard
+Las restricciones pueden ser implementadas por cualquier lenguaje o "framework"
+ que pueda consultar un modelo y reportar errores al usuario.
+ La definición eficiente de restricciones, debe contemplar: 
+\end_layout
+
+\begin_layout Enumerate
+Instrucciones para navegar y filtrar el modelo.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Soporte a "higher-order-functions", para la escritura de algoritmos genéricos
+ y estrategias transversales.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Definición declarativa de las restricciones, con asociación a los conceptos
+ del lenguaje (o patrones estructurales).
+\end_layout
+
+\begin_layout Subsubsection*
+Sistema de tipos 
+\end_layout
+
+\begin_layout Standard
+Los sistemas de tipos, implementan cálculo de tipos y verificación de tipos.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Conceptos básico del sistema de tipos
+\end_layout
+
+\begin_layout Standard
+Para introducir los conceptos básicos del sistema de tipos, se hará uso
+ del AST de la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:AST-de-un"
+
+\end_inset
+
+.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/TypeSystemBasics.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:AST-de-un"
+
+\end_inset
+
+AST de un fragmento de código; copiado de 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Voelter2013"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El AST de la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:AST-de-un"
+
+\end_inset
+
+, contiene cajas que representan instancias de los conceptos del lenguaje,
+ las líneas sólidas representan contenedores y las líneas punteadas representan
+ referencias-cruzadas.
+ Un sistema de tipos, debe contemplar:
+\end_layout
+
+\begin_layout Enumerate
+Declaración de tipos fijos: algunos elementos de los programas tienen tipos
+ fijos.
+ Los mismos no deben ser derivados o calculados.
+ Por lo general permanecen igual y son definidos con anticipación.
+ Algunos ejemplos son: la constante entera IntConst (cuyo tipo es IntType),
+ el concepto de raíz cuadrada sqrt (cuyo tipo es double), así como las declaraci
+ones de tipos por si mismas (el tipo de IntType es IntType, el tipo de DoubleTyp
+e es Double-Type).
+ 
+\end_layout
+
+\begin_layout Enumerate
+Derivación de tipos: para algunos elementos del programa, el tipo debe ser
+ derivado a partir de los tipos de otros elementos.
+ Por ejemplo, el tipo VarRef (variable de referencia) es del tipo de la
+ variable referenciada.
+ El tipo de la variable es del tipo de su tipo declarado.
+ Por ejemplo, el tipo de x y de la referencia a x es IntType.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Cálculo de tipos comunes: muchos de los sistemas de tipo, tienen alguna
+ especie de jerarquía de tipos.
+ En el ejemplo, IntType es un sub-tipo de DoubleType (por tanto, IntType
+ puede ser usado, siempre que DoubleType sea esperado).
+ El sistema de tipos debe soportar la especificación de relación de subtipos.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Verificación de tipos: finalmente, un sistema de tipo debe verificar los
+ errores de tipo y reportarlos al usuario.
+ Ejemplo: un error de tipo ocurre si una variable DoubleType es asignada
+ a una variable IntType.
+\end_layout
+
+\begin_layout Subsubsection*
+Inferencia del modelo de Ecore 
+\end_layout
+
+\begin_layout Standard
+Como se mencionó en 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EMF-Ecore"
+
+\end_inset
+
+, el AST de Xtext es Ecore.
+ Los elementos de Ecore son inferidos a partir de las reglas definidas en
+ la gramática de Xtext.
+ 
+\end_layout
+
+\begin_layout Itemize
+EPackage: es creado después de la directiva generate.
+ El nombre del paquete se forma a partir de sus parámetros y de su nsUri,
+ opcionalmente se puede utilizar un alias
+\end_layout
+
+\begin_layout Itemize
+Enum: se crea por reglas que utilizan enumeración.
+\end_layout
+
+\begin_layout Itemize
+EDataType: por defecto es EString, se crea a partir del tipo de dato de
+ cada regla terminal o de una regla de tipo de dato.
+\end_layout
+
+\begin_layout Itemize
+EAttribute: es EBoolean si se utiliza el operador ?= si se utilizan los
+ operadores = o += en las reglas terminales, se crea un atributo con un
+ tipo igual al tipo de retorno de la clase llamada.
+\end_layout
+
+\begin_layout Itemize
+EReference: se crea un EReference si hay una regla que llama a otra regla,
+ también se crea una EReference por cada asignación de una acción; en ambos
+ casos el tipo será igual al tipo de retorno de la regla llamada.
+\end_layout
+
+\begin_layout Subsection
+Transformaciones
+\end_layout
+
+\begin_layout Standard
+La transformación se refiere a la creación de un artefacto a partir de un
+ modelo semántico.
+ Puede ser de dos tipos: 
+\end_layout
+
+\begin_layout Enumerate
+Modelo a texto (M2T): los modelos son convertidos a texto (usualmente código
+ fuente, XML, archivos de configuración, etc).
+ 
+\end_layout
+
+\begin_layout Enumerate
+Modelo a modelo (M2M): los modelos son transformados en otros modelos (conversió
+n de un modelo semántico a otro equivalente).
+ 
+\end_layout
+
+\begin_layout Standard
+Xtend es un lenguaje de programación inspirado en Java, pero que remueve
+ su ruido sintáctico.
+ Xtend puede ser usado como una alternativa de la transformación M2T.
+ Las principales características de Xtext son: 
+\end_layout
+
+\begin_layout Itemize
+Métodos de extensión.
+ 
+\end_layout
+
+\begin_layout Itemize
+Inferencia de tipos.
+ 
+\end_layout
+
+\begin_layout Itemize
+Expresiones lambda.
+ 
+\end_layout
+
+\begin_layout Itemize
+Múltiples "dispatch" para invocación polimorfa de métodos.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Closures
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+Expresiones de plantillas (usado para la generación de código).
+ 
+\end_layout
+
+\begin_layout Itemize
+Facilidad para navegar y consultar modelos, gracias a abstracciones funcionales
+ ("high-order functions").
+ 
+\end_layout
+
+\begin_layout Itemize
+Todo es una expresión y no una sentencia (ejemplo: dentro de una función,
+ la última expresión es la expresión de retorno, por tanto es opcional explicita
+r la palabra clave 
+\begin_inset Quotes eld
+\end_inset
+
+return
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Para la construcción de TextRAM, se analizaron dos herramientas: Xtext y
+ Rascal.
+ Las principales características de Xtext ya fueron abarcadas en 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Xtext"
+
+\end_inset
+
+.
+ A continuación se presentan las características generales de Rascal.
+\end_layout
+
+\begin_layout Section
+Evaluación de Herramientas
+\end_layout
+
+\begin_layout Subsection
+Rascal 
+\end_layout
+
+\begin_layout Standard
+Rascal es un lenguaje de meta-programación extensible que proporciona mecanismos
+ de análisis de código fuente y transformación
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Rascal2011"
+
+\end_inset
+
+.
+ El código fuente es la objeto primario de manipulación de Rascal.
+ 
+\end_layout
+
+\begin_layout Standard
+Rascal proporciona una interfaz simple de programación para extender el
+ IDE de eclipse.
+ Actualmente Rascal es utilizado como vehículo de investigación para analizar
+ código existente e implementar DSLs.
+ EASY (Extracción, análisis y síntesis) es el paradigma que propone Rascal,
+ ver figura
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Paradigma-EASY"
+
+\end_inset
+
+.
+ EASY se puede resumir en los siguientes pasos : 
+\end_layout
+
+\begin_layout Itemize
+Extracción: los meta-programas extraen información (
+\begin_inset Quotes eld
+\end_inset
+
+facts
+\begin_inset Quotes erd
+\end_inset
+
+) desde un programa de entrada.
+ 
+\end_layout
+
+\begin_layout Itemize
+Análisis: los 
+\begin_inset Quotes eld
+\end_inset
+
+facts
+\begin_inset Quotes erd
+\end_inset
+
+ derivados son computados y la información es enriquecida.
+\end_layout
+
+\begin_layout Itemize
+Síntesis: finalmente, el meta-programa producirá un tipo de resultado.
+ Ejemplos: transformación de un código fuente (eliminación de código muerto),
+ reportes (estadística del número públicas sin utilizar), visualización.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/EasyParadigm.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Paradigma-EASY"
+
+\end_inset
+
+Paradigma EASY
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Un DSL puede ser implementado con RASCAL aplicando el paradigma EASY: 
+\end_layout
+
+\begin_layout Itemize
+Extracción: La información de entrada es el código fuente del DSL.
+ El AST puede ser derivado a partir la sintaxis concreta.
+ 
+\end_layout
+
+\begin_layout Itemize
+Análisis: el producto de la extracción es el AST.
+ En la etapa de análisis se pueden realizar las validaciones, restricciones,
+ verificaciones de tipo y restricciones de alcance (
+\begin_inset Quotes eld
+\end_inset
+
+scoping
+\begin_inset Quotes erd
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Itemize
+Síntesis: cubre las tareas de visualización, generación de código y optimización.
+ 
+\end_layout
+
+\begin_layout Standard
+Las principales cualidades de Rascal son: 
+\end_layout
+
+\begin_layout Itemize
+Sintaxis familiar y flujo de control: la sintaxis de Rascal es parecida
+ a C, Java, Javascript o C#.
+ Las estructuras de control obedecen las mismas reglas sintácticas de un
+ GPL basado en llaves.
+ 
+\end_layout
+
+\begin_layout Itemize
+Datos inmutables: El cambio de un valor, siempre tendrá como resultado otro
+ valor.
+ 
+\end_layout
+
+\begin_layout Itemize
+Tipos de datos integrados y 
+\begin_inset Quotes eld
+\end_inset
+
+pattern matching
+\begin_inset Quotes erd
+\end_inset
+
+: Rascal integra una colección de tipos integrados (integer, boolean, string,
+ real, tuple, list, set, relation,map, parse trees, source locations, date-time).
+ Adicionalmente soporta 
+\begin_inset Quotes eld
+\end_inset
+
+Abstract Data Types
+\begin_inset Quotes erd
+\end_inset
+
+ (ADTs).
+ Todos los tipos de datos tiene una representación literal, por tanto se
+ puede utilizar 
+\begin_inset Quotes eld
+\end_inset
+
+pattern matching
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+Construcciones específicas de dominio: un ejemplo es la sentencia 
+\family typewriter
+visit
+\family default
+ que emula el funcionamiento del patrón de diseño Visitor.
+ 
+\family typewriter
+visit
+\family default
+ puede ser utilizado el análisis y transformación de código fuente.
+ 
+\end_layout
+
+\begin_layout Itemize
+Gramática arbitraria libre de contexto: gracias a esto, Rascal genera en
+ forma automática 
+\begin_inset Quotes eld
+\end_inset
+
+parsers
+\begin_inset Quotes erd
+\end_inset
+
+ a partir de la gramática.
+ 
+\end_layout
+
+\begin_layout Itemize
+Plantillas de cadenas: utilizadas para la generación de código.
+ 
+\end_layout
+
+\begin_layout Itemize
+Integración con Java: algunas tareas requieren de cualidades que Rascal
+ no proporciona.
+ Para resolver este problema es posible utiliza código Java por medio de
+ anotaciones en los encabezados de las funciones de Rascal.
+ 
+\end_layout
+
+\begin_layout Itemize
+Integración del IDE con Eclipse: Rascal puede ser instalado en un IDE basado
+ en Eclipse, dando como resultado el soporte a 
+\begin_inset Quotes eld
+\end_inset
+
+syntax highlighting, outling, interactive visualization
+\begin_inset Quotes erd
+\end_inset
+
+ y también tiene un REPL (
+\begin_inset Quotes eld
+\end_inset
+
+Read-Eval-Print-Loop
+\begin_inset Quotes erd
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Subsection
+Diferencias entre Xtext y Rascal 
+\end_layout
+
+\begin_layout Standard
+Xtext y Rascal tienen la denominación de un 
+\begin_inset Quotes eld
+\end_inset
+
+Language workbench
+\begin_inset Quotes erd
+\end_inset
+
+, (herramienta que proporciona mecanismos de alto nivel para la implementación
+ de lenguajes específicos a dominio) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Erdweg2013"
+
+\end_inset
+
+.
+ Diversos 
+\begin_inset Quotes eld
+\end_inset
+
+languages workbenches
+\begin_inset Quotes erd
+\end_inset
+
+ son estudiados y comparados en una competición anual llamada 
+\begin_inset Quotes eld
+\end_inset
+
+Language Workbench Challenge
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "LWC2013"
+
+\end_inset
+
+.
+ La Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Modelado,-metamodelos-y"
+
+\end_inset
+
+ muestra la base de competición de un 
+\begin_inset Quotes eld
+\end_inset
+
+language workbench
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/moliva/textram/docs/201312 - Master First Report/img/LWModel.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-de-un"
+
+\end_inset
+
+Modelo de un Language Workbench.
+ Copiado de 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "LWC2013"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Rascal y Xtext comparten las mismas cualidades descritas en la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Modelo-de-un"
+
+\end_inset
+
+.
+ TextRAM será desarrollado en Xtext debido a que dicha herramienta está
+ íntimamente ligada a Ecore que es el lenguaje de meta-modelado utilizado
+ por RAM (ver: 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:EMF-Ecore"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "biblio"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
