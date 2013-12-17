@@ -15,11 +15,14 @@ Workflow {
 		scanClassPath  = true
 		platformUri = "${runtimeProject}/.."
 		registerGeneratedEPackage = "ca.mcgill.cs.sel.ram.RamPackage"
+		registerGenModelFile = "platform:/resource/ca.mcgill.sel.ram/model/RAM.genmodel"
+		
+		// issue #1
 		registerGeneratedEPackage = "org.eclipse.emf.ecore.EcorePackage"
 		registerGeneratedEPackage = "org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage"
 		registerGenModelFile = "platform:/resource/org.eclipse.emf.ecore/model/Ecore.genmodel"
         registerGenModelFile = "platform:/resource/org.eclipse.emf.codegen.ecore/model/GenModel.genmodel"
-		registerGenModelFile = "platform:/resource/ca.mcgill.sel.ram/model/RAM.genmodel"
+		
 	}
 
 	component = DirectoryCleaner {
