@@ -69,14 +69,41 @@ LatexCommand tableofcontents
 
 \end_layout
 
-\begin_layout Chapter*
+\begin_layout Chapter
 Introducción
 \end_layout
 
 \begin_layout Standard
 Dependiendo del lenguaje de programación, existen muchas alternativas para
- implementar una solución orientada a aspectos (por ejemplo: AspectJ, AspectC,
- JBoss AOP, PHANtom, etc).
+ implementar una solución orientada a aspectos (por ejemplo: AspectJ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Laddad2009"
+
+\end_inset
+
+, AspectC 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "AspectC"
+
+\end_inset
+
+, JBoss AOP 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "JBossAOP"
+
+\end_inset
+
+, PHANtom 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PHANtom"
+
+\end_inset
+
+, etc).
  Pero, ¿qué pasa con el diseño de aspectos?, ¿cómo se puede entregar un
  modelo (por ejemplo UML) que exprese preocupaciones transversales a un
  equipo de desarrollo?.
@@ -122,22 +149,21 @@ key "AbedBSYAK2012"
 
 \end_inset
 
-, es un lenguaje de especificación de dominio gráfico desarollado por el
- equipo de trabajo del Prof.
+, es una herramienta desarollado por el equipo de trabajo del Prof.
  Dr.
  Jörg Kienzle de la universidad McGill, que modela aspectos por medio de
- una notación gráfica y una interfaz táctil; actualmente es la principal
+ la notación gráfica de RAM y una interfaz táctil; actualmente es la principal
  alternativa para diseñar modelos basados en RAM.
- Voelter 
+ En contraste con es, Voelter hace una comparación entre las notaciones
+ gráficas y textuales, donde afirma: “el formato textual es por lo general
+ más usado, escala mejor y construirlo requiere mucho menos esfuerzo” 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Voelter2013"
 
 \end_inset
 
- hace una comparación entre las notaciones gráficas y textuales: “el formato
- textual es por lo general más usado, escala mejor y construirlo requiere
- mucho menos esfuerzo”.
+.
  
 \end_layout
 
