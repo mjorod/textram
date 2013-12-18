@@ -219,6 +219,273 @@ Marco Teórico
 \end_layout
 
 \begin_layout Section
+Introducción a la programación orientada a aspectos (AOP)
+\end_layout
+
+\begin_layout Standard
+La modularización es la propiedad de un sistema que ha sido descompuesto
+ en un conjunto de módulos cohesivos y con baja acoplación.
+ La conexión entre dichos módulos, se realiza en base a los supuestos que
+ los módulos hacen entre sí.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Booch1993"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Los lenguajes de programación, que componen módulos en base a la invocación
+ de procedimientos (lenguajes orientados a objetos, lenguajes funcionales
+ y lenguajes procedurales), en ocasiones rompen los principios de modularización
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kiczales97"
+
+\end_inset
+
+.
+ Además existen preocupaciones que atraviesan varios módulos, causando problemas
+ de dispersión y entrelazamiento de código.
+ Algunos ejemplos de preocupaciones transversales son: código para el manejo
+ de transacciones, técnicas de monitores (
+\begin_inset Quotes eld
+\end_inset
+
+loggin, tracing, profiling
+\begin_inset Quotes erd
+\end_inset
+
+), optimizaciones (
+\begin_inset Quotes eld
+\end_inset
+
+pooling, caching
+\begin_inset Quotes erd
+\end_inset
+
+), patrones de diseño (observer), autenticación y autorización, concurrencia,
+ manejo de excepciones.
+\end_layout
+
+\begin_layout Standard
+Las consecuencias de la dispersión y entrelazamiento de código son:
+\end_layout
+
+\begin_layout Itemize
+Dificultad para la evolución y mantenimiento del código
+\end_layout
+
+\begin_layout Itemize
+La detección y resolución de errores es difícil.
+\end_layout
+
+\begin_layout Itemize
+Las preocupaciones transversales no se pueden reutilizar.
+\end_layout
+
+\begin_layout Itemize
+El razonamiento local de una preocupación transversal es difícil.
+\end_layout
+
+\begin_layout Standard
+La programación orientada a aspectos resuelve los problemas inherentes a
+ la dispersión y entrelazamiento de código, ofreciendo al programador mecanismos
+ para separar preocupaciones transversales en forma limpia y concisa.
+ Un 
+\emph on
+aspecto
+\emph default
+ es la definición modular de una preocupación transversal.
+ Código base, es toda preocupación que no es transversal.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Weaving
+\begin_inset Quotes erd
+\end_inset
+
+ es el mecanismo que combina el código base con las preocupaciones transversales
+ para formar el sistema final.
+\end_layout
+
+\begin_layout Standard
+Para implementar una preocupación transversal, un sistema de AOP puede incluir
+ muchos de los siguientes conceptos:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Join points
+\begin_inset Quotes erd
+\end_inset
+
+: son puntos de ejecución identificables dentro del sistema (por ejemplo:
+ ejecución de métodos, creación de objetos, ejecución de excepciones, etc).
+ Los 
+\begin_inset Quotes eld
+\end_inset
+
+join points
+\begin_inset Quotes erd
+\end_inset
+
+ están presentes en todos los sistemas, incluso en aquellos que no utilizan
+ técnicas de AOP.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Point cuts
+\begin_inset Quotes erd
+\end_inset
+
+: son mecanismos para la selección de 
+\begin_inset Quotes eld
+\end_inset
+
+join points
+\begin_inset Quotes erd
+\end_inset
+
+.
+ La definición de los 
+\begin_inset Quotes eld
+\end_inset
+
+point cuts
+\begin_inset Quotes erd
+\end_inset
+
+ incluye criterios que deben ser satisfechos para la selección de un conjunto
+ determinado de 
+\begin_inset Quotes eld
+\end_inset
+
+join points
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Un 
+\begin_inset Quotes eld
+\end_inset
+
+point cut
+\begin_inset Quotes erd
+\end_inset
+
+ puede utilizar otro 
+\begin_inset Quotes eld
+\end_inset
+
+point cut
+\begin_inset Quotes erd
+\end_inset
+
+ para formar una selección compuesta.
+ Los 
+\begin_inset Quotes eld
+\end_inset
+
+point cuts
+\begin_inset Quotes erd
+\end_inset
+
+ también recolectan contexto en base a los 
+\begin_inset Quotes eld
+\end_inset
+
+join points
+\begin_inset Quotes erd
+\end_inset
+
+ seleccionados (argumentos de un método, objeto llamador, etc).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Join point model
+\begin_inset Quotes erd
+\end_inset
+
+: es la definición de los tipos de 
+\begin_inset Quotes eld
+\end_inset
+
+join points
+\begin_inset Quotes erd
+\end_inset
+
+ disponibles y la descripción de cómo son utilizados.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Advice
+\begin_inset Quotes erd
+\end_inset
+
+: es el mecanismo para alterar el comportamiento del programa.
+ Un 
+\begin_inset Quotes eld
+\end_inset
+
+advice
+\begin_inset Quotes erd
+\end_inset
+
+ pueden modificar el comportamiento antes, después o alrededor de los 
+\begin_inset Quotes eld
+\end_inset
+
+join points
+\begin_inset Quotes erd
+\end_inset
+
+ seleccionados.
+ El 
+\begin_inset Quotes eld
+\end_inset
+
+advice
+\begin_inset Quotes erd
+\end_inset
+
+ es una forma de una transversalidad dinámica porqué afecta la ejecución
+ del sistema.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Inter-type declarations
+\begin_inset Quotes erd
+\end_inset
+
+: modifican la estructura estática de un sistema (modificación de la estructura
+ de una clase, cambios en la jerarquía de clases, etc).
+ 
+\end_layout
+
+\begin_layout Itemize
+Aspectos: son módulos para expresar los mecanismos anteriores.
+\end_layout
+
+\begin_layout Section
 Introducción a los Lenguajes de Dominio Específico (DSL)
 \end_layout
 
@@ -285,11 +552,11 @@ Lenguajes de programación general vs lenguajes de especificación de dominio
 Los GPLs están típicamente conformes con las especificaciones de Turing;
  por tanto, pueden ser utilizados para implementar cualquier artefacto compatibl
 e con una máquina de Turing.
- Entonces, ¿Por qué existen diversos GPLs? todo depende de la estrategia
+ Entonces, ¿Por qué existen diversos GPLs? mucho depende de la estrategia
  de ejecución.
  Por ejemplo, el código C es compilado a un código nativo eficiente.
- Mientras que Ruby es ejecutado por una máquina virtual (una combinación
- entre compiladores e interpretes).
+ Mientras que Ruby en general es ejecutado por una máquina virtual (una
+ combinación entre compiladores e interpretes).
  Las características que ofrecen cada uno de los lenguajes, están optimizadas
  para las tareas que son relevantes a sus respectivos dominios.
  Por ejemplo, en C se puede manipular la memoria (aspecto importante para
@@ -305,7 +572,7 @@ Incluso en el campo de los GPLs, existen diferentes lenguajes, cada uno
  Entre más específica se vuelve una tarea, es más adecuado el uso de lenguajes
  especializados.
  Un DSL, simplemente es un lenguaje que está optimizado para una clase de
- problemas en particular, llamados dominios.
+ problemas o un dominio en particular.
  Los lenguajes de especificación de dominio, sacrifican cierta flexibilidad
  para expresar cualquier tipo de programa, en favor de la productividad
  y precisión de programas relevantes en un dominio en particular.
@@ -459,7 +726,11 @@ MDSE es un marco de trabajo conceptual unificado en donde todo el ciclo
  MDSE es una metodología para aplicar las ventajas del modelado a las actividade
 s de ingeniería de software.
  En el contexto del MDSE, el software se obtiene como resultado de la siguiente
- ecuación: 
+ ecuación:
+\begin_inset Newline newline
+\end_inset
+
+
 \family typewriter
 Modelos
 \lang english
