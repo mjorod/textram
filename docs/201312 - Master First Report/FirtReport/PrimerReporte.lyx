@@ -219,6 +219,12 @@ Marco Teórico
 \end_layout
 
 \begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Intro-AOP"
+
+\end_inset
+
 Introducción a la programación orientada a aspectos (AOP)
 \end_layout
 
@@ -315,7 +321,14 @@ Weaving
 
 \begin_layout Standard
 Para implementar una preocupación transversal, un sistema de AOP puede incluir
- muchos de los siguientes conceptos:
+ muchos de los siguientes conceptos 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Laddad2009"
+
+\end_inset
+
+:
 \end_layout
 
 \begin_layout Itemize
@@ -486,469 +499,6 @@ Aspectos: son módulos para expresar los mecanismos anteriores.
 \end_layout
 
 \begin_layout Section
-Introducción a los Lenguajes de Dominio Específico (DSL)
-\end_layout
-
-\begin_layout Standard
-En todas las ramas de la ciencia y la ingeniería, se pueden distinguir dos
- enfoques: genéricos y específicos.
- Los enfoques genéricos proporcionan una solución general para los problemas
- de un área en particular, pero su solución puede no ser óptima.
- Un enfoque específico, puede proporcionar una mejor solución para un conjunto
- pequeño de problemas.
- En las ciencias de la computación, esta dicotomía también existe, con los
- lenguajes de programación general (GPLs) y los lenguajes de especificación
- de dominio (DSLs).
- Un lenguaje de dominio especifico (DSL) es un lenguaje de programación
- o un lenguaje de especificación ejecutable que ofrece, a partir de notaciones
- y abstracciones adecuadas, un poder de expresividad enfocado y por lo general
- restringido a un problema de dominio en particular 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "vanDeursen2000"
-
-\end_inset
-
-.
- De la definición anterior, se pueden destacar 4 elementos:
-\end_layout
-
-\begin_layout Enumerate
-Lenguaje de programación de computadoras: Un DSL es usado por humanos para
- instruir a la computadora que realice cierta acción.
- 
-\end_layout
-
-\begin_layout Enumerate
-Naturaleza del lenguaje: Un DSL es un lenguaje de programación, y como tal,
- debe tener una sensación de fluidez, en donde la expresividad, debe originarse
- no solo de expresiones individuales, si no que también de la forma en que
- la mismas pueden ser compuestas como un conjunto.
- 
-\end_layout
-
-\begin_layout Enumerate
-Expresividad limitada: Un lenguaje de programación general proporciona muchas
- capacidades: soporte de variables, control y abstracción de estructuras.
- Todo esto es útil, pero es más difícil de aprender y usar.
- Un DSL soporta, un conjunto mínimo de funcionalidades para soportar un
- dominio.
- Por medio de un DSL no se puede construir software que no este enmarcado
- dentro del dominio del problema.
-\end_layout
-
-\begin_layout Enumerate
-Enfoque en el dominio: Un lenguaje limitado, es solamente útil si tiene
- un enfoque claro en un dominio pequeño.
- El enfoque al dominio, es lo que convierte a un lenguaje limitado en algo
- de real valor.
-\end_layout
-
-\begin_layout Subsection
-Lenguajes de programación general vs lenguajes de especificación de dominio
-\end_layout
-
-\begin_layout Standard
-Los GPLs están típicamente conformes con las especificaciones de Turing;
- por tanto, pueden ser utilizados para implementar cualquier artefacto compatibl
-e con una máquina de Turing.
- Entonces, ¿Por qué existen diversos GPLs? mucho depende de la estrategia
- de ejecución.
- Por ejemplo, el código C es compilado a un código nativo eficiente.
- Mientras que Ruby en general es ejecutado por una máquina virtual (una
- combinación entre compiladores e interpretes).
- Las características que ofrecen cada uno de los lenguajes, están optimizadas
- para las tareas que son relevantes a sus respectivos dominios.
- Por ejemplo, en C se puede manipular la memoria (aspecto importante para
- comunicarse con dispositivos de bajo nivel).
- Por otro lado, en Ruby no se puede manipular memoria pero gracias al recolector
- de basura el programador no tiene que preocuparse de alocar y liberar memoria
- manualmente.
-\end_layout
-
-\begin_layout Standard
-Incluso en el campo de los GPLs, existen diferentes lenguajes, cada uno
- exponiendo diferentes funcionalidades, ajustadas a una tarea específica.
- Entre más específica se vuelve una tarea, es más adecuado el uso de lenguajes
- especializados.
- Un DSL, simplemente es un lenguaje que está optimizado para una clase de
- problemas o un dominio en particular.
- Los lenguajes de especificación de dominio, sacrifican cierta flexibilidad
- para expresar cualquier tipo de programa, en favor de la productividad
- y precisión de programas relevantes en un dominio en particular.
- Por tanto, los DSL son restringidos a la creación de programas correctos.
- 
-\end_layout
-
-\begin_layout Subsection
-Ingredientes de un lenguaje de programación
-\end_layout
-
-\begin_layout Standard
-Un DSL y un GPL, deben tener los siguientes ingredientes principales 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Brambilla2012"
-
-\end_inset
-
-: 
-\end_layout
-
-\begin_layout Enumerate
-Sintaxis concreta, define la notación que usarán los usuarios para definir
- los programas.
- Es la representación específica del lenguaje a modelar.
- 
-\end_layout
-
-\begin_layout Enumerate
-Sintaxis abstracta, es la estructura de datos que persiste la semántica
- de la información relevante expresada por un programa.
- Por lo general es un árbol o un gráfico.
- No debe contener detalles de notación.
- 
-\end_layout
-
-\begin_layout Enumerate
-Semántica describe el significado de los elementos definidos en el lenguaje
- y el significado de combinar dichos elementos.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename img/IngredientesLenguajeModelado.png
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Ingredientes-principales-de"
-
-\end_inset
-
-Ingredientes principales de un lenguaje
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-La Figura 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Ingredientes-principales-de"
-
-\end_inset
-
-, muestra la relación entre los tres ingredientes: la semántica define el
- significado de la sintaxis abstracta e indirectamente el de la sintaxis
- concreta; la sintaxis concreta representa la sintaxis abstracta.
-\end_layout
-
-\begin_layout Subsection
-Clasificación de los DSLs
-\end_layout
-
-\begin_layout Standard
-Los DSLs se pueden clasificar en dos categorías: 
-\end_layout
-
-\begin_layout Enumerate
-DSL externo, es un lenguaje de programación que se construye, desde cero
- y tiene una infraestructura independiente para el análisis léxico, técnicas
- de parseo, interpretación y generación de código 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Ghosh2010"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Enumerate
-DSL interno, es un lenguaje que utiliza la infraestructura de un lenguaje
- de programación existente; para construir la semántica de especificación
- de dominio encima de él.
- (ejemplo: 
-\begin_inset Quotes eld
-\end_inset
-
-Rails en Ruby
-\begin_inset Quotes erd
-\end_inset
-
-).
- Por ende, los DSL internos están embebidos dentro de un lenguaje de programació
-n general.
- Usualmente, el lenguaje 
-\begin_inset Quotes eld
-\end_inset
-
-host
-\begin_inset Quotes erd
-\end_inset
-
- es de tipos dinámicos y la implementación del DSL es basada en meta-programació
-n.
-\end_layout
-
-\begin_layout Section
-Ingeniería de Software Orientada a Modelos (MDSE)
-\end_layout
-
-\begin_layout Standard
-MDSE es un marco de trabajo conceptual unificado en donde todo el ciclo
- de vida del software es visto como un proceso de producción, refinamiento
- e integración de modelos [5].
- MDSE es una metodología para aplicar las ventajas del modelado a las actividade
-s de ingeniería de software.
- En el contexto del MDSE, el software se obtiene como resultado de la siguiente
- ecuación:
-\begin_inset Newline newline
-\end_inset
-
-
-\family typewriter
-Modelos
-\lang english
- + 
-\lang spanish
-Transformaciones
-\lang english
- = Software
-\family default
-\lang spanish
- 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Brambilla2012"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-El lenguaje de modelado es la notación por la cual se expresan los modelos
- y las transformaciones.
- El proceso dirigido por modelos define que tipos de modelos (orden de los
- mismos y su nivel de abstracción) son necesarios de acuerdo a un determinado
- tipo de software.
- La definición y el uso de DSLs es un sabor del MDSE, que se aplica por
- medio de la creación de representaciones formales, que son específicas
- a un aspecto particular de un sistema de software y son procesables con
- la ayuda de herramientas.
- MDSE proporciona una visión exhaustiva para el desarrollo de sistemas.
- La Figura 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Visión-general-de"
-
-\end_inset
-
-, es un vistazo general de los principales aspectos considerados en MDSE,
- y resume como los diferentes problemas son resueltos de acuerdo a las siguiente
-s dimensiones ortogonales: conceptualización (columnas) e implementación
- (filas).
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename img/VistazoMDSE.png
-	scale 60
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Visión-general-de"
-
-\end_inset
-
-Visión general de la metodología MDSE
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-El problema de implementación se resuelve con el pareo de modelos a un sistema
- de software existente o por definir.
- Consiste en la definición de tres conceptos: 
-\end_layout
-
-\begin_layout Enumerate
-El nivel de modelamiento: define los modelos.
- 
-\end_layout
-
-\begin_layout Enumerate
-El nivel de realización: implementa soluciones, a través de artefactos que
- son usados dentro de sistemas en ejecución (código en caso de software)
- 
-\end_layout
-
-\begin_layout Enumerate
-Nivel de automatización: resultado de la correspondencia entre los niveles
- de modelamiento y realización.
- 
-\end_layout
-
-\begin_layout Standard
-Los problemas de conceptualización, están orientados a definir modelos conceptua
-les para describir la realidad.
- Esto puede ser aplicado a varios niveles:
-\end_layout
-
-\begin_layout Enumerate
-Nivel de aplicación: lugar en donde se definen los modelos de las aplicaciones,
- las reglas de transformación son aplicadas, y los componentes del sistema
- en ejecución son generados.
- 
-\end_layout
-
-\begin_layout Enumerate
-Nivel del dominio de aplicación: define el lenguaje de modelamiento, transformac
-iones, y plataformas de implementación para un dominio específico.
- 
-\end_layout
-
-\begin_layout Enumerate
-Nivel meta: la conceptualización de los modelos y transformaciones son definidos.
- 
-\end_layout
-
-\begin_layout Standard
-El flujo principal del MDSE parte con los modelos de aplicación hasta la
- realización, a través de transformaciones subsecuentes del modelo.
- Esto permite la reutilización de modelos y ejecución de sistemas en diferentes
- plataformas.
- Estos transformaciones son posibles gracias a la especificación de modelos,
- de acuerdo al un lenguaje de modelado que define la semántica de los elementos
- de los modelos.
- Es posible definir modelos de la realidad y luego modelos que describen
- modelos (meta-modelos), después modelos recursivos que describen meta-modelos
- (llamados meta-meta-modelos).
- En teoría, se pueden definir instancias infinitas para los niveles de los
- meta-modelos, pero en la práctica, se ha demostrado que los meta-meta-modelos
- se pueden definir así mismos.
- La figura 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Modelado,-metamodelos-y"
-
-\end_inset
-
-, muestra un ejemplo completo de meta-modelado.
-\end_layout
-
-\begin_layout Standard
-Los meta-modelos pueden ser útiles para: 
-\end_layout
-
-\begin_layout Enumerate
-Definir nuevos lenguajes para el modelado o programación.
- 
-\end_layout
-
-\begin_layout Enumerate
-Definir nuevos lenguajes de modelado para intercambiar y almacenar información.
- 
-\end_layout
-
-\begin_layout Enumerate
-Definir nuevas propiedades y funcionalidades que pueden ser asociadas a
- información existente (meta data)
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename img/Modelos_MetaModelos.png
-	scale 60
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Modelado,-metamodelos-y"
-
-\end_inset
-
-Modelado, metamodelos y meta-meta-modelos
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
 Modelamiento de aspectos reutilizables (RAM)
 \end_layout
 
@@ -971,8 +521,8 @@ key "Kienzle2009"
 \begin_layout Standard
 Las técnicas de orientación a aspectos, vistos en la sección 
 \begin_inset CommandInset ref
-LatexCommand vref
-reference "sub:Antecedentes-del-modelamiento"
+LatexCommand ref
+reference "sec:Intro-AOP"
 
 \end_inset
 
@@ -1222,14 +772,7 @@ join point
 \begin_layout Standard
 El resultado de este enfoque es la extensión del comportamiento con uno
  nuevo o la eliminación de este.
- Al igual que AspectJ 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Laddad2009"
-
-\end_inset
-
-, un comportamiento puede ser insertado alrededor 
+ Al igual que AspectJ, un comportamiento puede ser insertado alrededor 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2095,7 +1638,7 @@ name "fig:|Checkpoitable:-ejemplo-de"
 
 \end_inset
 
-|Checkpoitable: ejemplo de una clase parcial
+|Checkpointable: ejemplo de una clase parcial
 \end_layout
 
 \end_inset
@@ -2606,12 +2149,234 @@ Un enlazamiento definido en un aspecto superior, debe ser compatibles con
  los enlazamientos del aspecto a reutilizar.
 \end_layout
 
-\begin_layout Chapter
-Estrategia de implementación
+\begin_layout Section
+Introducción a los Lenguajes de Dominio Específico (DSL)
 \end_layout
 
-\begin_layout Section
-Herramientas de implementación
+\begin_layout Standard
+En todas las ramas de la ciencia y la ingeniería, se pueden distinguir dos
+ enfoques: genéricos y específicos.
+ Los enfoques genéricos proporcionan una solución general para los problemas
+ de un área en particular, pero su solución puede no ser óptima.
+ Un enfoque específico, puede proporcionar una mejor solución para un conjunto
+ pequeño de problemas.
+ En las ciencias de la computación, esta dicotomía también existe, con los
+ lenguajes de programación general (GPLs) y los lenguajes de especificación
+ de dominio (DSLs).
+ Un lenguaje de dominio especifico (DSL) es un lenguaje de programación
+ o un lenguaje de especificación ejecutable que ofrece, a partir de notaciones
+ y abstracciones adecuadas, un poder de expresividad enfocado y por lo general
+ restringido a un problema de dominio en particular 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "vanDeursen2000"
+
+\end_inset
+
+.
+ De la definición anterior, se pueden destacar 4 elementos:
+\end_layout
+
+\begin_layout Enumerate
+Lenguaje de programación de computadoras: Un DSL es usado por humanos para
+ instruir a la computadora que realice cierta acción.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Naturaleza del lenguaje: Un DSL es un lenguaje de programación, y como tal,
+ debe tener una sensación de fluidez, en donde la expresividad, debe originarse
+ no solo de expresiones individuales, si no que también de la forma en que
+ la mismas pueden ser compuestas como un conjunto.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Expresividad limitada: Un lenguaje de programación general proporciona muchas
+ capacidades: soporte de variables, control y abstracción de estructuras.
+ Todo esto es útil, pero es más difícil de aprender y usar.
+ Un DSL soporta, un conjunto mínimo de funcionalidades para soportar un
+ dominio.
+ Por medio de un DSL no se puede construir software que no este enmarcado
+ dentro del dominio del problema.
+\end_layout
+
+\begin_layout Enumerate
+Enfoque en el dominio: Un lenguaje limitado, es solamente útil si tiene
+ un enfoque claro en un dominio pequeño.
+ El enfoque al dominio, es lo que convierte a un lenguaje limitado en algo
+ de real valor.
+\end_layout
+
+\begin_layout Subsection
+Lenguajes de programación general vs lenguajes de especificación de dominio
+\end_layout
+
+\begin_layout Standard
+Los GPLs están típicamente conformes con las especificaciones de Turing;
+ por tanto, pueden ser utilizados para implementar cualquier artefacto compatibl
+e con una máquina de Turing.
+ Entonces, ¿Por qué existen diversos GPLs? mucho depende de la estrategia
+ de ejecución.
+ Por ejemplo, el código C es compilado a un código nativo eficiente.
+ Mientras que Ruby en general es ejecutado por una máquina virtual (una
+ combinación entre compiladores e interpretes).
+ Las características que ofrecen cada uno de los lenguajes, están optimizadas
+ para las tareas que son relevantes a sus respectivos dominios.
+ Por ejemplo, en C se puede manipular la memoria (aspecto importante para
+ comunicarse con dispositivos de bajo nivel).
+ Por otro lado, en Ruby no se puede manipular memoria pero gracias al recolector
+ de basura el programador no tiene que preocuparse de alocar y liberar memoria
+ manualmente.
+\end_layout
+
+\begin_layout Standard
+Incluso en el campo de los GPLs, existen diferentes lenguajes, cada uno
+ exponiendo diferentes funcionalidades, ajustadas a una tarea específica.
+ Entre más específica se vuelve una tarea, es más adecuado el uso de lenguajes
+ especializados.
+ Un DSL, simplemente es un lenguaje que está optimizado para una clase de
+ problemas o un dominio en particular.
+ Los lenguajes de especificación de dominio, sacrifican cierta flexibilidad
+ para expresar cualquier tipo de programa, en favor de la productividad
+ y precisión de programas relevantes en un dominio en particular.
+ Por tanto, los DSL son restringidos a la creación de programas correctos.
+ 
+\end_layout
+
+\begin_layout Subsection
+Ingredientes de un lenguaje de programación
+\end_layout
+
+\begin_layout Standard
+Un DSL y un GPL, deben tener los siguientes ingredientes principales 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brambilla2012"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Enumerate
+Sintaxis concreta, define la notación que usarán los usuarios para definir
+ los programas.
+ Es la representación específica del lenguaje a modelar.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Sintaxis abstracta, es la estructura de datos que persiste la semántica
+ de la información relevante expresada por un programa.
+ Por lo general es un árbol o un gráfico.
+ No debe contener detalles de notación.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Semántica describe el significado de los elementos definidos en el lenguaje
+ y el significado de combinar dichos elementos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/IngredientesLenguajeModelado.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Ingredientes-principales-de"
+
+\end_inset
+
+Ingredientes principales de un lenguaje
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Ingredientes-principales-de"
+
+\end_inset
+
+, muestra la relación entre los tres ingredientes: la semántica define el
+ significado de la sintaxis abstracta e indirectamente el de la sintaxis
+ concreta; la sintaxis concreta representa la sintaxis abstracta.
+\end_layout
+
+\begin_layout Subsection
+Clasificación de los DSLs
+\end_layout
+
+\begin_layout Standard
+Los DSLs se pueden clasificar en dos categorías: 
+\end_layout
+
+\begin_layout Enumerate
+DSL externo, es un lenguaje de programación que se construye, desde cero
+ y tiene una infraestructura independiente para el análisis léxico, técnicas
+ de parseo, interpretación y generación de código 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Ghosh2010"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+DSL interno, es un lenguaje que utiliza la infraestructura de un lenguaje
+ de programación existente; para construir la semántica de especificación
+ de dominio encima de él.
+ (ejemplo: 
+\begin_inset Quotes eld
+\end_inset
+
+Rails en Ruby
+\begin_inset Quotes erd
+\end_inset
+
+).
+ Por ende, los DSL internos están embebidos dentro de un lenguaje de programació
+n general.
+ Usualmente, el lenguaje 
+\begin_inset Quotes eld
+\end_inset
+
+host
+\begin_inset Quotes erd
+\end_inset
+
+ es de tipos dinámicos y la implementación del DSL es basada en meta-programació
+n.
 \end_layout
 
 \begin_layout Subsection
@@ -2737,83 +2502,236 @@ parser
  hechos a la medida ofrecen un mejor rendimiento.
 \end_layout
 
-\begin_layout Subsection
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Xtext"
-
-\end_inset
-
-Xtext
+\begin_layout Section
+Ingeniería de Software Orientada a Modelos (MDSE)
 \end_layout
 
 \begin_layout Standard
-Xtext es una herramienta que sirve para implementar lenguajes de programación
- (DSLs o GPLs), dentro del marco de trabajo de Eclipse.
- Xtext es un generador de 
-\begin_inset Quotes eld
+MDSE es un marco de trabajo conceptual unificado en donde todo el ciclo
+ de vida del software es visto como un proceso de producción, refinamiento
+ e integración de modelos [5].
+ MDSE es una metodología para aplicar las ventajas del modelado a las actividade
+s de ingeniería de software.
+ En el contexto del MDSE, el software se obtiene como resultado de la siguiente
+ ecuación:
+\begin_inset Newline newline
 \end_inset
 
-parsers
-\begin_inset Quotes erd
-\end_inset
 
- y ofrece toda la infraestructura para definir restricciones, manejo de
- tipos, 
-\begin_inset Quotes eld
-\end_inset
-
-scoping
-\begin_inset Quotes erd
-\end_inset
-
-, generación de código, interpretes, 
-\begin_inset Quotes eld
-\end_inset
-
-quickfixes
-\begin_inset Quotes erd
-\end_inset
-
- y todas las características de un lenguaje de programación moderno.
- Para la generación del 
-\begin_inset Quotes eld
-\end_inset
-
-parser
-\begin_inset Quotes erd
-\end_inset
-
-, Xtext se apoya en ANTLR 
+\family typewriter
+Modelos
+\lang english
+ + 
+\lang spanish
+Transformaciones
+\lang english
+ = Software
+\family default
+\lang spanish
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "Antlr"
+key "Brambilla2012"
 
 \end_inset
 
- (pronunciado: 
-\begin_inset Quotes eld
-\end_inset
-
-Antler, ANother Tool for Language Recognition
-\begin_inset Quotes erd
-\end_inset
-
-).
- La definición de la gramática en ANTLR se realiza en un solo archivo.
- Un modelos semánticos 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Fowler2010"
-
-\end_inset
-
- es un modelo de objetos en memoria, que un DSL debe popular.
- El modelo semántico y la sintaxis abstracta son términos equivalentes.
- Xtext se apoya en EMF Ecore para persistir el modelo semántico en memoria.
+.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Standard
+El lenguaje de modelado es la notación por la cual se expresan los modelos
+ y las transformaciones.
+ El proceso dirigido por modelos define que tipos de modelos (orden de los
+ mismos y su nivel de abstracción) son necesarios de acuerdo a un determinado
+ tipo de software.
+ La definición y el uso de DSLs es un sabor del MDSE, que se aplica por
+ medio de la creación de representaciones formales, que son específicas
+ a un aspecto particular de un sistema de software y son procesables con
+ la ayuda de herramientas.
+ MDSE proporciona una visión exhaustiva para el desarrollo de sistemas.
+ La Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Visión-general-de"
+
+\end_inset
+
+, es un vistazo general de los principales aspectos considerados en MDSE,
+ y resume como los diferentes problemas son resueltos de acuerdo a las siguiente
+s dimensiones ortogonales: conceptualización (columnas) e implementación
+ (filas).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/VistazoMDSE.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Visión-general-de"
+
+\end_inset
+
+Visión general de la metodología MDSE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El problema de implementación se resuelve con el pareo de modelos a un sistema
+ de software existente o por definir.
+ Consiste en la definición de tres conceptos: 
+\end_layout
+
+\begin_layout Enumerate
+El nivel de modelamiento: define los modelos.
+ 
+\end_layout
+
+\begin_layout Enumerate
+El nivel de realización: implementa soluciones, a través de artefactos que
+ son usados dentro de sistemas en ejecución (código en caso de software)
+ 
+\end_layout
+
+\begin_layout Enumerate
+Nivel de automatización: resultado de la correspondencia entre los niveles
+ de modelamiento y realización.
+ 
+\end_layout
+
+\begin_layout Standard
+Los problemas de conceptualización, están orientados a definir modelos conceptua
+les para describir la realidad.
+ Esto puede ser aplicado a varios niveles:
+\end_layout
+
+\begin_layout Enumerate
+Nivel de aplicación: lugar en donde se definen los modelos de las aplicaciones,
+ las reglas de transformación son aplicadas, y los componentes del sistema
+ en ejecución son generados.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Nivel del dominio de aplicación: define el lenguaje de modelamiento, transformac
+iones, y plataformas de implementación para un dominio específico.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Nivel meta: la conceptualización de los modelos y transformaciones son definidos.
+ 
+\end_layout
+
+\begin_layout Standard
+El flujo principal del MDSE parte con los modelos de aplicación hasta la
+ realización, a través de transformaciones subsecuentes del modelo.
+ Esto permite la reutilización de modelos y ejecución de sistemas en diferentes
+ plataformas.
+ Estos transformaciones son posibles gracias a la especificación de modelos,
+ de acuerdo al un lenguaje de modelado que define la semántica de los elementos
+ de los modelos.
+ Es posible definir modelos de la realidad y luego modelos que describen
+ modelos (meta-modelos), después modelos recursivos que describen meta-modelos
+ (llamados meta-meta-modelos).
+ En teoría, se pueden definir instancias infinitas para los niveles de los
+ meta-modelos, pero en la práctica, se ha demostrado que los meta-meta-modelos
+ se pueden definir así mismos.
+ La figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Modelado,-metamodelos-y"
+
+\end_inset
+
+, muestra un ejemplo completo de meta-modelado.
+\end_layout
+
+\begin_layout Standard
+Los meta-modelos pueden ser útiles para: 
+\end_layout
+
+\begin_layout Enumerate
+Definir nuevos lenguajes para el modelado o programación.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Definir nuevos lenguajes de modelado para intercambiar y almacenar información.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Definir nuevas propiedades y funcionalidades que pueden ser asociadas a
+ información existente (meta data)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/Modelos_MetaModelos.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelado,-metamodelos-y"
+
+\end_inset
+
+Modelado, metamodelos y meta-meta-modelos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 
 \lang english
 \begin_inset CommandInset label
@@ -2825,6 +2743,25 @@ name "sub:EMF-Ecore"
 
 \lang spanish
 EMF Ecore
+\end_layout
+
+\begin_layout Standard
+MDSE necesita herramientas que den soporte al desarrollo de modelos y permitan
+ su integración dentro del proceso de desarrollo de software.
+ Dichas herramientas deben:
+\end_layout
+
+\begin_layout Itemize
+Permitir la manipulación de modelos (por medio de la exposición de una API).
+\end_layout
+
+\begin_layout Itemize
+Garantizar un cierto grado de alineamiento semántico y calidad en el modelo,
+ por medio de la conformancia con el meta-modelo.
+\end_layout
+
+\begin_layout Itemize
+Transformar modelos.
 \end_layout
 
 \begin_layout Standard
@@ -2842,7 +2779,7 @@ key "Steinberg2009"
 
 \end_inset
 
-, es el corazón de las herramientas de modelado de Eclipse.
+, es el corazón de las herramientas de modelado de Eclipse para el MDSE.
  EMF expone una amplia variedad de servicios y herramientas para persistir,
  editar y transformar modelos.
  Para la definición de meta-modelos, el EMF utiliza Ecore.
@@ -2984,8 +2921,93 @@ Meta-modelo básico de Ecore
 
 \end_layout
 
-\begin_layout Subsubsection
-Sintaxis y Gramática 
+\begin_layout Chapter
+Estrategia de implementación
+\end_layout
+
+\begin_layout Standard
+Para la construcción de TextRAM, se evaluaron dos herramientas: Xtext y
+ Rascal.
+ A continuación se presenta una descripción de ambas tecnologías, con el
+ objetivo de compararlas y justificar la elección de la herramienta más
+ adecuada para TextRAM.
+\end_layout
+
+\begin_layout Section
+Xtext
+\end_layout
+
+\begin_layout Standard
+Xtext es una herramienta que sirve para implementar lenguajes de programación
+ (DSLs o GPLs), dentro del marco de trabajo de Eclipse.
+ Xtext es un generador de 
+\begin_inset Quotes eld
+\end_inset
+
+parsers
+\begin_inset Quotes erd
+\end_inset
+
+ y ofrece toda la infraestructura para definir restricciones, manejo de
+ tipos, 
+\begin_inset Quotes eld
+\end_inset
+
+scoping
+\begin_inset Quotes erd
+\end_inset
+
+, generación de código, interpretes, 
+\begin_inset Quotes eld
+\end_inset
+
+quickfixes
+\begin_inset Quotes erd
+\end_inset
+
+ y todas las características de un lenguaje de programación moderno.
+ Para la generación del 
+\begin_inset Quotes eld
+\end_inset
+
+parser
+\begin_inset Quotes erd
+\end_inset
+
+, Xtext se apoya en ANTLR 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Antlr"
+
+\end_inset
+
+ (pronunciado: 
+\begin_inset Quotes eld
+\end_inset
+
+Antler, ANother Tool for Language Recognition
+\begin_inset Quotes erd
+\end_inset
+
+).
+ La definición de la gramática en ANTLR se realiza en un solo archivo.
+ Un modelo semánticos 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fowler2010"
+
+\end_inset
+
+ es un modelo de objetos en memoria, que un DSL debe popular.
+ El modelo semántico y la sintaxis abstracta son términos equivalentes.
+ Xtext se apoya en EMF Ecore (ver 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:EMF-Ecore"
+
+\end_inset
+
+) para persistir el modelo semántico en memoria.
 \end_layout
 
 \begin_layout Standard
@@ -2995,448 +3017,10 @@ La gramática (piedra angular de Xtext) es la definición formal de la sintaxis
  con la sintaxis abstracta representada en memoria.
  El modelo es construido dinámicamente por el "parser" cuando se consume
  una entrada válida de texto.
- 
+ Xtext permite la reutilización de otras gramáticas.
 \end_layout
 
-\begin_layout Subsubsection*
-Declaración del lenguaje
-\end_layout
-
-\begin_layout Standard
-\noindent
-El lenguaje se declara en el encabezado de la gramática.
- Ejemplo:
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-java grammar cl.pleiad.ram.Textram with org.eclipse.xtext.common.Terminals
-\end_layout
-
-\begin_layout Standard
-\noindent
-En el encabezado también se indica la reutilización de otras gramáticas,
- por ejemplo: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-org.eclipse.xtext.common.Terminals
-\end_layout
-
-\begin_layout Subsubsection*
-Reglas Terminales
-\end_layout
-
-\begin_layout Standard
-\noindent
-\begin_inset Quotes eld
-\end_inset
-
-Lexing
-\begin_inset Quotes erd
-\end_inset
-
- es el proceso de creación de 
-\begin_inset Quotes eld
-\end_inset
-
-tokens
-\begin_inset Quotes erd
-\end_inset
-
- mediante el consumo de una secuencia de caracteres de entrada.
- Los 
-\begin_inset Quotes eld
-\end_inset
-
-tokens
-\begin_inset Quotes erd
-\end_inset
-
- son uno o más caracteres que corresponden a una regla terminal o 
-\begin_inset Quotes eld
-\end_inset
-
-keyword
-\begin_inset Quotes erd
-\end_inset
-
-.
- Por ejemplo ID es una regla terminal, definida en org.eclipse.xtext.common.Terminal
-s, su implementación es la siguiente: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal ID: ('^')?('a'..'z'|'A'..'Z'|' ')('a'..'z'|'A'..'Z'|'0'..'9')*;
-\end_layout
-
-\begin_layout Standard
-\noindent
-El orden de las reglas 
-\begin_inset Quotes eld
-\end_inset
-
-terminal
-\begin_inset Quotes erd
-\end_inset
-
- es importante para la gramática, debido a que se sobre-escriben unas a
- otras.
- 
-\end_layout
-
-\begin_layout Subsubsection*
-Tipos de retorno
-\end_layout
-
-\begin_layout Standard
-\noindent
-Cada regla terminal, retorna un EDataType de Ecore (por defecto ecore::EString).
- A continuación se presenta la definición de una regla llamada INT que retorna
- ecore::EInt: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal INT: returns ecore::EInt:(''..'9')
-\family default
-+ 
-\end_layout
-
-\begin_layout Subsubsection*
-\noindent
-Expresiones Backus-Naur extendendidas 
-\end_layout
-
-\begin_layout Standard
-\noindent
-Las reglas terminales son descritas por medio de expresiones 
-\begin_inset Quotes eld
-\end_inset
-
-Extended Backus-Naur Form
-\begin_inset Quotes erd
-\end_inset
-
- (EBNF).
- Las cardinalidades de EBNF son:
-\end_layout
-
-\begin_layout Enumerate
-\noindent
-Exactamente uno (sin operador, configurado por defecto) 
-\end_layout
-
-\begin_layout Enumerate
-\noindent
-Uno o más (operador ?) 
-\end_layout
-
-\begin_layout Enumerate
-\noindent
-Cualquiera (cero o más, operador *) 
-\end_layout
-
-\begin_layout Enumerate
-\noindent
-Uno o muchos (operador +) 
-\end_layout
-
-\begin_layout Subsubsection*
-Rango de caracteres 
-\end_layout
-
-\begin_layout Standard
-Un rango de caracteres puede ser declarado con el operador 
-\family typewriter
-..
-\family default
-, ejemplo:
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal INT returns ecore::EInt:('0'..'9')
-\family default
-+ 
-\end_layout
-
-\begin_layout Standard
-\noindent
-En este caso INT retorna uno o más caracteres en '0' y '9' 
-\begin_inset Quotes eld
-\end_inset
-
-Wildcards
-\begin_inset Quotes erd
-\end_inset
-
- La gramática de Xtext, soporta el uso de 
-\begin_inset Quotes eld
-\end_inset
-
-wildcards
-\begin_inset Quotes erd
-\end_inset
-
-.
- Por ejemplo el .
- (punto), permite el uso de cualquier carácter: terminal FOO: 'f' .
- 'o'; esta regla permite las siguientes expresiones: 
-\emph on
-foo, f0o, f_o
-\emph default
-.
-\end_layout
-
-\begin_layout Subsubsection*
-"Until Token" 
-\end_layout
-
-\begin_layout Standard
-\noindent
-Indica que todo debe ser consumido hasta la aparición de un 
-\begin_inset Quotes eld
-\end_inset
-
-token
-\begin_inset Quotes erd
-\end_inset
-
-: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal ML_COMMENT:'/*' -> '*/';
-\end_layout
-
-\begin_layout Standard
-\noindent
-El ejemplo anterior es un comentario regular de Java.
- 
-\end_layout
-
-\begin_layout Subsubsection*
-\noindent
-\begin_inset Quotes eld
-\end_inset
-
-Negated Token
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\noindent
-Todos los 
-\begin_inset Quotes eld
-\end_inset
-
-tokens
-\begin_inset Quotes erd
-\end_inset
-
- pueden ser negados, mediante el uso del signo de admiración: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal BETWEEN_HASHES: '#'(!'#') * '#'
-\family default
- 
-\end_layout
-
-\begin_layout Subsubsection*
-\noindent
-Llamada de reglas 
-\end_layout
-
-\begin_layout Standard
-\noindent
-Las reglas pueden referenciar otras reglas: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal DOUBLE : INT '.'
-\family default
- INT; 
-\end_layout
-
-\begin_layout Standard
-\noindent
-En este caso la regla DOUBLE está llamando a la regla INT.
-\end_layout
-
-\begin_layout Subsubsection*
-\noindent
-Alternativas
-\end_layout
-
-\begin_layout Standard
-\noindent
-Permiten definir una lista de opciones válidas.
- Por ejemplo el la regla del espacio en blanco, utiliza una alternativa
- de la siguiente forma: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal WS: (' '|'
-\backslash
-t'|'
-\backslash
-r'|'
-\backslash
-n')+;
-\family default
- 
-\end_layout
-
-\begin_layout Subsubsection*
-\noindent
-Grupos 
-\end_layout
-
-\begin_layout Standard
-\noindent
-Se llama grupo a la secuencia de 
-\begin_inset Quotes eld
-\end_inset
-
-tokens
-\begin_inset Quotes erd
-\end_inset
-
- que se definen uno detrás de otro: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal ASCII '0x'('0'..'7')('0'..'9'|'A'..'F');
-\family default
- 
-\end_layout
-
-\begin_layout Standard
-\noindent
-El ejemplo anterior, representa 2 dígitos hexadecimales de caracteres ASCII.
- 
-\end_layout
-
-\begin_layout Subsubsection*
-\noindent
-Fragmentos terminales 
-\end_layout
-
-\begin_layout Standard
-\noindent
-Debido a que las reglas terminales son usadas en un contexto sin estado,
- no es fácil reutilizar partes de su definición; para resolver este problema
- se utilizan los fragmentos.
- Los fragmentos permiten los mismos elementos EBNF como reglas terminales,
- pero no son consumidas por el 
-\begin_inset Quotes eld
-\end_inset
-
-lexer
-\begin_inset Quotes erd
-\end_inset
-
-.
- En su lugar son definidas para ser usadas por otras reglas terminales:
- 
-\end_layout
-
-\begin_layout Standard
-\noindent
-terminal fragment ESCAPED_CHAR : ’
-\backslash
-
-\backslash
-’ (’n’|’t’|’r’|’
-\backslash
-
-\backslash
-’); terminal STRING : ’"’ ( ESCAPED_CHAR | !(’
-\backslash
-
-\backslash
-’|’"’) )* ’"’ | "’" ( ESCAPED_CHAR | !(’
-\backslash
-
-\backslash
-’|"’") )* "’" ; 
-\end_layout
-
-\begin_layout Subsubsection*
-\noindent
-Fin de archivo (EOF) 
-\end_layout
-
-\begin_layout Standard
-\noindent
-El 
-\begin_inset Quotes eld
-\end_inset
-
-token
-\begin_inset Quotes erd
-\end_inset
-
- fin de archivo, puede ser usado para describir que el final del flujo de
- entrada es valido en un cierto punto de una regla terminal: 
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\family typewriter
-terminal UNCLOSED_STRING: 
-\begin_inset Quotes eld
-\end_inset
-
-
-\begin_inset Quotes erd
-\end_inset
-
-(!
-\begin_inset Quotes erd
-\end_inset
-
-
-\begin_inset Quotes erd
-\end_inset
-
-)* EOF;
-\end_layout
-
-\begin_layout Subsubsection*
+\begin_layout Subsection*
 \begin_inset Quotes eld
 \end_inset
 
@@ -3499,7 +3083,7 @@ hints
  para la construcción directa del AST: 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Subsection*
 Asignaciones 
 \end_layout
 
@@ -3533,7 +3117,7 @@ aspect
  Los tipos involucrados en la asignación deben ser compatibles.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Subsection*
 Operadores de asignación
 \end_layout
 
@@ -3561,7 +3145,7 @@ true
  
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Subsection*
 Referencias cruzadas
 \end_layout
 
@@ -3639,7 +3223,7 @@ linking
  
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Subsection*
 Determinación de alcance y enlazamiento 
 \end_layout
 
@@ -3719,7 +3303,7 @@ Alcance global.
  
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Subsection*
 Restricciones 
 \end_layout
 
@@ -3769,140 +3353,14 @@ Definición declarativa de las restricciones, con asociación a los conceptos
  del lenguaje (o patrones estructurales).
 \end_layout
 
-\begin_layout Subsubsection*
-Sistema de tipos 
-\end_layout
-
-\begin_layout Standard
-Los sistemas de tipos, implementan cálculo de tipos y verificación de tipos.
- 
-\end_layout
-
-\begin_layout Subsubsection*
-Conceptos básico del sistema de tipos
-\end_layout
-
-\begin_layout Standard
-Para introducir los conceptos básicos del sistema de tipos, se hará uso
- del AST de la Figura 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:AST-de-un"
-
-\end_inset
-
-.
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename img/TypeSystemBasics.png
-	scale 70
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\lang english
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:AST-de-un"
-
-\end_inset
-
-AST de un fragmento de código; copiado de 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Voelter2013"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-El AST de la Figura 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:AST-de-un"
-
-\end_inset
-
-, contiene cajas que representan instancias de los conceptos del lenguaje,
- las líneas sólidas representan contenedores y las líneas punteadas representan
- referencias-cruzadas.
- Un sistema de tipos, debe contemplar:
-\end_layout
-
-\begin_layout Enumerate
-Declaración de tipos fijos: algunos elementos de los programas tienen tipos
- fijos.
- Los mismos no deben ser derivados o calculados.
- Por lo general permanecen igual y son definidos con anticipación.
- Algunos ejemplos son: la constante entera IntConst (cuyo tipo es IntType),
- el concepto de raíz cuadrada sqrt (cuyo tipo es double), así como las declaraci
-ones de tipos por si mismas (el tipo de IntType es IntType, el tipo de DoubleTyp
-e es Double-Type).
- 
-\end_layout
-
-\begin_layout Enumerate
-Derivación de tipos: para algunos elementos del programa, el tipo debe ser
- derivado a partir de los tipos de otros elementos.
- Por ejemplo, el tipo VarRef (variable de referencia) es del tipo de la
- variable referenciada.
- El tipo de la variable es del tipo de su tipo declarado.
- Por ejemplo, el tipo de x y de la referencia a x es IntType.
- 
-\end_layout
-
-\begin_layout Enumerate
-Cálculo de tipos comunes: muchos de los sistemas de tipo, tienen alguna
- especie de jerarquía de tipos.
- En el ejemplo, IntType es un sub-tipo de DoubleType (por tanto, IntType
- puede ser usado, siempre que DoubleType sea esperado).
- El sistema de tipos debe soportar la especificación de relación de subtipos.
- 
-\end_layout
-
-\begin_layout Enumerate
-Verificación de tipos: finalmente, un sistema de tipo debe verificar los
- errores de tipo y reportarlos al usuario.
- Ejemplo: un error de tipo ocurre si una variable DoubleType es asignada
- a una variable IntType.
-\end_layout
-
-\begin_layout Subsubsection*
+\begin_layout Subsection*
 Inferencia del modelo de Ecore 
 \end_layout
 
 \begin_layout Standard
 Como se mencionó en 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "sub:EMF-Ecore"
 
 \end_inset
@@ -3940,7 +3398,7 @@ EReference: se crea un EReference si hay una regla que llama a otra regla,
  casos el tipo será igual al tipo de retorno de la regla llamada.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsection*
 Transformaciones
 \end_layout
 
@@ -4023,29 +3481,11 @@ return
 \begin_inset Quotes erd
 \end_inset
 
-).
-\end_layout
-
-\begin_layout Standard
-Para la construcción de TextRAM, se analizaron dos herramientas: Xtext y
- Rascal.
- Las principales características de Xtext ya fueron abarcadas en 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sub:Xtext"
-
-\end_inset
-
-.
- A continuación se presentan las características generales de Rascal.
+)
 \end_layout
 
 \begin_layout Section
-Evaluación de Herramientas
-\end_layout
-
-\begin_layout Subsection
-Rascal 
+Rascal
 \end_layout
 
 \begin_layout Standard
@@ -4299,7 +3739,7 @@ Read-Eval-Print-Loop
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Diferencias entre Xtext y Rascal 
 \end_layout
 
