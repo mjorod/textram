@@ -1,2 +1,5 @@
 # Build and Release Folders
 bin/
+
+# Eclipse folders
+.metadata
