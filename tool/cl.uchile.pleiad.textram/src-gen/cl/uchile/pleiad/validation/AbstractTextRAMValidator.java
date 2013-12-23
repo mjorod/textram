@@ -12,8 +12,8 @@ public class AbstractTextRAMValidator extends org.eclipse.xtext.validation.Abstr
 	@Override
 	protected List<EPackage> getEPackages() {
 	    List<EPackage> result = new ArrayList<EPackage>();
+	    result.add(cl.uchile.pleiad.textRAM.TextRAMPackage.eINSTANCE);
 	    result.add(EPackage.Registry.INSTANCE.getEPackage("http://cs.mcgill.ca/sel/ram/2.1"));
-	    result.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/emf/2002/Ecore"));
 		return result;
 	}
 }
