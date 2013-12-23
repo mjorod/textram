@@ -3,3 +3,8 @@ bin/
 
 # Eclipse folders
 .metadata
+
+# Package Files
+*.jar
+*.war
+*.ear
