@@ -11,3 +11,4 @@ bin/
 
 # generated folders
 src-gen/
+xtend-gen/
