@@ -32,6 +32,13 @@ public class TextRAMSemanticSequencer extends AbstractDelegatingSemanticSequence
 				else break;
 			}
 		else if(semanticObject.eClass().getEPackage() == TextRAMPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
+			case TextRAMPackage.CLASS:
+				if(context == grammarAccess.getClassRule() ||
+				   context == grammarAccess.getClassifierRule()) {
+					sequence_Class(context, (cl.uchile.pleiad.textRAM.Class) semanticObject); 
+					return; 
+				}
+				else break;
 			case TextRAMPackage.STRUCTURAL_VIEW:
 				if(context == grammarAccess.getStructuralViewRule()) {
 					sequence_StructuralView(context, (StructuralView) semanticObject); 
@@ -53,7 +60,16 @@ public class TextRAMSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Constraint:
-	 *     {StructuralView}
+	 *     (partial?='partial'? abstract?='abstract'? name=EString)
+	 */
+	protected void sequence_Class(EObject context, cl.uchile.pleiad.textRAM.Class semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     ((classes+=Classifier classes+=Classifier*)?)
 	 */
 	protected void sequence_StructuralView(EObject context, StructuralView semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

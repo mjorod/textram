@@ -8,6 +8,7 @@ import cl.uchile.pleiad.textRAM.StructuralView;
 import cl.uchile.pleiad.textRAM.TextRAMFactory;
 import cl.uchile.pleiad.textRAM.TextRAMPackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -21,6 +22,13 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  */
 public class TextRAMPackageImpl extends EPackageImpl implements TextRAMPackage
 {
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass classEClass = null;
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -99,6 +107,36 @@ public class TextRAMPackageImpl extends EPackageImpl implements TextRAMPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getClass_()
+  {
+    return classEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getClass_Partial()
+  {
+    return (EAttribute)classEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getClass_Abstract()
+  {
+    return (EAttribute)classEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getStructuralView()
   {
     return structuralViewEClass;
@@ -134,6 +172,10 @@ public class TextRAMPackageImpl extends EPackageImpl implements TextRAMPackage
     isCreated = true;
 
     // Create classes and their features
+    classEClass = createEClass(CLASS);
+    createEAttribute(classEClass, CLASS__PARTIAL);
+    createEAttribute(classEClass, CLASS__ABSTRACT);
+
     structuralViewEClass = createEClass(STRUCTURAL_VIEW);
   }
 
@@ -169,9 +211,14 @@ public class TextRAMPackageImpl extends EPackageImpl implements TextRAMPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
+    classEClass.getESuperTypes().add(theRamPackage.getClassifier());
     structuralViewEClass.getESuperTypes().add(theRamPackage.getStructuralView());
 
     // Initialize classes and features; add operations and parameters
+    initEClass(classEClass, cl.uchile.pleiad.textRAM.Class.class, "Class", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getClass_Partial(), ecorePackage.getEBoolean(), "partial", null, 0, 1, cl.uchile.pleiad.textRAM.Class.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getClass_Abstract(), ecorePackage.getEBoolean(), "abstract", null, 0, 1, cl.uchile.pleiad.textRAM.Class.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(structuralViewEClass, StructuralView.class, "StructuralView", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource

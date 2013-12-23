@@ -2,7 +2,14 @@
  */
 package cl.uchile.pleiad.textRAM.util;
 
-import cl.uchile.pleiad.textRAM.*;
+import ca.mcgill.cs.sel.ram.Classifier;
+import ca.mcgill.cs.sel.ram.MappableElement;
+import ca.mcgill.cs.sel.ram.NamedElement;
+import ca.mcgill.cs.sel.ram.ObjectType;
+import ca.mcgill.cs.sel.ram.Type;
+
+import cl.uchile.pleiad.textRAM.StructuralView;
+import cl.uchile.pleiad.textRAM.TextRAMPackage;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -72,6 +79,18 @@ public class TextRAMSwitch<T> extends Switch<T>
   {
     switch (classifierID)
     {
+      case TextRAMPackage.CLASS:
+      {
+        cl.uchile.pleiad.textRAM.Class class_ = (cl.uchile.pleiad.textRAM.Class)theEObject;
+        T result = caseClass(class_);
+        if (result == null) result = caseClassifier(class_);
+        if (result == null) result = caseObjectType(class_);
+        if (result == null) result = caseType(class_);
+        if (result == null) result = caseMappableElement(class_);
+        if (result == null) result = caseNamedElement(class_);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case TextRAMPackage.STRUCTURAL_VIEW:
       {
         StructuralView structuralView = (StructuralView)theEObject;
@@ -82,6 +101,22 @@ public class TextRAMSwitch<T> extends Switch<T>
       }
       default: return defaultCase(theEObject);
     }
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Class</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Class</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseClass(cl.uchile.pleiad.textRAM.Class object)
+  {
+    return null;
   }
 
   /**
@@ -96,6 +131,86 @@ public class TextRAMSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseStructuralView(StructuralView object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNamedElement(NamedElement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseType(Type object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Mappable Element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Mappable Element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseMappableElement(MappableElement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Object Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Object Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseObjectType(ObjectType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Classifier</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Classifier</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseClassifier(Classifier object)
   {
     return null;
   }

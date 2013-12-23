@@ -82,34 +82,132 @@ public class TextRAMGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "StructuralView");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cStructuralViewAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cStructuralViewKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cStructureKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Keyword cRightCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Assignment cClassesAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
+		private final RuleCall cClassesClassifierParserRuleCall_3_0_0 = (RuleCall)cClassesAssignment_3_0.eContents().get(0);
+		private final Assignment cClassesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cClassesClassifierParserRuleCall_3_1_0 = (RuleCall)cClassesAssignment_3_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//StructuralView returns ram::StructuralView:
-		//	{StructuralView} "StructuralView" "{" "}";
+		//	{StructuralView} "structure" "{" (classes+=Classifier classes+=Classifier*)? "}";
 		public ParserRule getRule() { return rule; }
 
-		//{StructuralView} "StructuralView" "{" "}"
+		//{StructuralView} "structure" "{" (classes+=Classifier classes+=Classifier*)? "}"
 		public Group getGroup() { return cGroup; }
 
 		//{StructuralView}
 		public Action getStructuralViewAction_0() { return cStructuralViewAction_0; }
 
-		//"StructuralView"
-		public Keyword getStructuralViewKeyword_1() { return cStructuralViewKeyword_1; }
+		//"structure"
+		public Keyword getStructureKeyword_1() { return cStructureKeyword_1; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 
+		//(classes+=Classifier classes+=Classifier*)?
+		public Group getGroup_3() { return cGroup_3; }
+
+		//classes+=Classifier
+		public Assignment getClassesAssignment_3_0() { return cClassesAssignment_3_0; }
+
+		//Classifier
+		public RuleCall getClassesClassifierParserRuleCall_3_0_0() { return cClassesClassifierParserRuleCall_3_0_0; }
+
+		//classes+=Classifier*
+		public Assignment getClassesAssignment_3_1() { return cClassesAssignment_3_1; }
+
+		//Classifier
+		public RuleCall getClassesClassifierParserRuleCall_3_1_0() { return cClassesClassifierParserRuleCall_3_1_0; }
+
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_3() { return cRightCurlyBracketKeyword_3; }
+		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
+	}
+
+	public class ClassifierElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Classifier");
+		private final RuleCall cClassParserRuleCall = (RuleCall)rule.eContents().get(1);
+		
+		//Classifier returns ram::Classifier:
+		//	Class;
+		public ParserRule getRule() { return rule; }
+
+		//Class
+		public RuleCall getClassParserRuleCall() { return cClassParserRuleCall; }
+	}
+
+	public class ClassElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Class");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cClassAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cPartialAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cPartialPartialKeyword_1_0 = (Keyword)cPartialAssignment_1.eContents().get(0);
+		private final Assignment cAbstractAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cAbstractAbstractKeyword_2_0 = (Keyword)cAbstractAssignment_2.eContents().get(0);
+		private final Keyword cClassKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cNameAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cNameEStringParserRuleCall_4_0 = (RuleCall)cNameAssignment_4.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
+		
+		//Class:
+		//	{Class} partial?="partial"? abstract?="abstract"? "class" name=EString //(':' (superTypes+=[ram::Classifier] ( "," superTypes+=[ram::Classifier])* ')')?)?
+		//	"{" //                ('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		//	//                ('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+		//	//                ('attributes' '{' attributes+=Attribute ( "," attributes+=Attribute)* '}' )?
+		//	"}";
+		public ParserRule getRule() { return rule; }
+
+		//{Class} partial?="partial"? abstract?="abstract"? "class" name=EString //(':' (superTypes+=[ram::Classifier] ( "," superTypes+=[ram::Classifier])* ')')?)?
+		//"{" //                ('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////                ('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+		////                ('attributes' '{' attributes+=Attribute ( "," attributes+=Attribute)* '}' )?
+		//"}"
+		public Group getGroup() { return cGroup; }
+
+		//{Class}
+		public Action getClassAction_0() { return cClassAction_0; }
+
+		//partial?="partial"?
+		public Assignment getPartialAssignment_1() { return cPartialAssignment_1; }
+
+		//"partial"
+		public Keyword getPartialPartialKeyword_1_0() { return cPartialPartialKeyword_1_0; }
+
+		//abstract?="abstract"?
+		public Assignment getAbstractAssignment_2() { return cAbstractAssignment_2; }
+
+		//"abstract"
+		public Keyword getAbstractAbstractKeyword_2_0() { return cAbstractAbstractKeyword_2_0; }
+
+		//"class"
+		public Keyword getClassKeyword_3() { return cClassKeyword_3; }
+
+		//name=EString
+		public Assignment getNameAssignment_4() { return cNameAssignment_4; }
+
+		//EString
+		public RuleCall getNameEStringParserRuleCall_4_0() { return cNameEStringParserRuleCall_4_0; }
+
+		////(':' (superTypes+=[ram::Classifier] ( "," superTypes+=[ram::Classifier])* ')')?)?
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_5() { return cLeftCurlyBracketKeyword_5; }
+
+		////                ('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+		////                ('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+		////                ('attributes' '{' attributes+=Attribute ( "," attributes+=Attribute)* '}' )?
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
 	}
 	
 	
 	private AspectElements pAspect;
 	private EStringElements pEString;
 	private StructuralViewElements pStructuralView;
+	private ClassifierElements pClassifier;
+	private ClassElements pClass;
 	
 	private final Grammar grammar;
 
@@ -170,13 +268,37 @@ public class TextRAMGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//StructuralView returns ram::StructuralView:
-	//	{StructuralView} "StructuralView" "{" "}";
+	//	{StructuralView} "structure" "{" (classes+=Classifier classes+=Classifier*)? "}";
 	public StructuralViewElements getStructuralViewAccess() {
 		return (pStructuralView != null) ? pStructuralView : (pStructuralView = new StructuralViewElements());
 	}
 	
 	public ParserRule getStructuralViewRule() {
 		return getStructuralViewAccess().getRule();
+	}
+
+	//Classifier returns ram::Classifier:
+	//	Class;
+	public ClassifierElements getClassifierAccess() {
+		return (pClassifier != null) ? pClassifier : (pClassifier = new ClassifierElements());
+	}
+	
+	public ParserRule getClassifierRule() {
+		return getClassifierAccess().getRule();
+	}
+
+	//Class:
+	//	{Class} partial?="partial"? abstract?="abstract"? "class" name=EString //(':' (superTypes+=[ram::Classifier] ( "," superTypes+=[ram::Classifier])* ')')?)?
+	//	"{" //                ('operations' '{' operations+=Operation ( "," operations+=Operation)* '}' )?
+	//	//                ('associationEnds' '{' associationEnds+=AssociationEnd ( "," associationEnds+=AssociationEnd)* '}' )?
+	//	//                ('attributes' '{' attributes+=Attribute ( "," attributes+=Attribute)* '}' )?
+	//	"}";
+	public ClassElements getClassAccess() {
+		return (pClass != null) ? pClass : (pClass = new ClassElements());
+	}
+	
+	public ParserRule getClassRule() {
+		return getClassAccess().getRule();
 	}
 
 	//terminal ID:

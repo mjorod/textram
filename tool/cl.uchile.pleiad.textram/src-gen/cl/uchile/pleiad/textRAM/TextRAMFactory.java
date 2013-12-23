@@ -23,6 +23,15 @@ public interface TextRAMFactory extends EFactory
   TextRAMFactory eINSTANCE = cl.uchile.pleiad.textRAM.impl.TextRAMFactoryImpl.init();
 
   /**
+   * Returns a new object of class '<em>Class</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Class</em>'.
+   * @generated
+   */
+  Class createClass();
+
+  /**
    * Returns a new object of class '<em>Structural View</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

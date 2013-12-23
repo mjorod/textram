@@ -2,7 +2,9 @@
  */
 package cl.uchile.pleiad.textRAM.impl;
 
-import cl.uchile.pleiad.textRAM.*;
+import cl.uchile.pleiad.textRAM.StructuralView;
+import cl.uchile.pleiad.textRAM.TextRAMFactory;
+import cl.uchile.pleiad.textRAM.TextRAMPackage;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -64,10 +66,22 @@ public class TextRAMFactoryImpl extends EFactoryImpl implements TextRAMFactory
   {
     switch (eClass.getClassifierID())
     {
+      case TextRAMPackage.CLASS: return createClass();
       case TextRAMPackage.STRUCTURAL_VIEW: return createStructuralView();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public cl.uchile.pleiad.textRAM.Class createClass()
+  {
+    ClassImpl class_ = new ClassImpl();
+    return class_;
   }
 
   /**

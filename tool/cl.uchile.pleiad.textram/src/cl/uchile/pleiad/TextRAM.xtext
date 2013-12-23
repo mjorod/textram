@@ -17,5 +17,21 @@ EString returns ecore::EString:
 
 StructuralView returns ram::StructuralView:
         {StructuralView}
-        'StructuralView'
-        '{''}';
+        'structure'
+        '{'
+       		(classes+=Classifier (classes+=Classifier)* )?
+        '}';
+
+Classifier returns ram::Classifier:
+        Class;
+
+Class returns Class:
+        {Class}
+        (partial?='partial')?
+        (abstract?='abstract')?
+        'class'
+        name=EString
+        '{'                 
+        '}';
+
+        
