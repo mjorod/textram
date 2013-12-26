@@ -1,0 +1,354 @@
+  + isSpawned
+  exit synchronizing / spawn supporting : isLastExitingParticipant: target is of type ExitSynchronizingContext instead of ExitSynchronizingParticipant => an interference criteria for each message view
+  terminatable: the last leavecontext message must be send to terminator not to the context !!!
+   code snippets: update to reformulated comments, highlight keywords
+   make printable greyscale version
+  example and interface chapter
+  loc figures in conclusion
+  correct abstract 
+  & interface chapter & conclusion
+  appendix code snippets
+  listoffigures clash
+
+
+
+
+If Terminatable doesn't need Pausable can we throw it???
+
+
+
+
+
+
+Collaborative binding for EntrySynchronizing
+
+declare dependecy algorithm:
+----------------------------
+list direct dependend aspects fltr and append its dependencies to the end of the list
+traverse list frtl and delete every second and later occurrence of an aspect such that every aspect is mentioned exactly once
+
+mixin ordering within aspect important
+--------------------------------------
+
+
+
+
+Transaction
+Transacted -> Transactable
+
+
+Collaborative:
+remove field myContext
+NO : details for add remove participant???
+
+
+Pausable:
+setPaused instead of pauseParticipant and continueParticipant
+first getter then setter
+setToPaused setToUnpaused -> setPaused(boolean)
+Pausable depends on Collaborative not on Context !!!
+continueContext: setPaused vor notify
+blockedCall as parameter?
+remove continueParticipant in blockedCall
+look at everything
+number of permits in model!
+
+Terminatable:
+terminateParticipant message view : setPaused(true)
+terminateContext(terminator)
+
+OutcomeVotable:
+OutcomeControllingParticipant -> OutcomeVotableParticipant
+votes relation -> HashMap<Outcome>
+registerVote: add(v,p) -> put(p, v)
+message view for computeOutcome
+
+
+OutcomeVoting
+OutcomeControllingParticipant -> OutcomeVotingParticipant
+message view for getDefaultVote
+
+
+Closable
+isLastEnteringParticipant
+boolean closed
+close() -> setClosed(boolean)
+int maxParticipantCount
+howto model the fact that maxParticipantCount is intialized to maxint?
+addParticipant message view -> addParticipant(p) and real after!
+this.participants.size() == max
+
+
+SpawnSupporting
+boolean spawned
+setToSpawned -> setSpawned(boolean spawned)
+int SpawnSupportingContext.spawnedParticipantCount
+
+
+ExitSynchronizing
+noOfBlockedParticipants -> blockedParticipantsCount
+underlinement!!!
+leaveContext -> before that ends with decreaseBlockedParticipantCount();
+number of permits in model!
+waitOrReleaseBeforeLeaving
+isLastExitingParticipant
+
+
+EntrySynchronizing
+remodell
+semaphore
+boolean EntrySynchronizingParticipant.waitingForEntry and getter and setter
+waitingParticipantCount
+move lastParticipantEntered to context in enterContext message view
+leaveContext -> around with proceed
+setMinParticipantCount
+
+
+NestedCollaborative
+CollaborativeParticipant -> NestedParticipant
+parent == c -> parent == myContext
+
+
+ExitSynchronizingSpawnSupporting
+waitOrReleaseBeforeLeaving
+isLastExitingParticipant
+blocked - spawned -> blocked + spawned
+
+
+ClosableSpawnSupporting
+isLastEnteringParticipant
+
+
+Nested
+getChildren
+method order
+
+
+NestedTracingConflictResolution
+
+
+Tracing
+add addAll to Set and List
+change param and msg view for removeTraces
+
+
+TwoPhaseLocking
+add releaseAcquiredLocks
+add Lockable 
+
+
+NestedTwoPhaseConflictResolution
+
+
+Checkpointing
+add discardCheckpoints
+add trace removal to restoreCheckpoints
+
+
+CheckpointingNestedConflictResolution
+
+
+Recovering
+contextCompleted: add else for discardCheckpoints
+
+
+Lockable
+lock -> myLock
+
+
+
+
+---
+
+
+.participants -> getParticipants
+.participants.size() -> getParticipantCount
+
+OutcomeVotable
+boolean alreadyVoted()
+votes() in computeOutcome
+
+OutcomeVoting
+use alreadyVoted() in leaveContext
+
+Terminatable
+terminateParticipant := first leave then setPaused?
+
+
+
+---
+graffle
+
+Collaborative 
+Set<CollaborativeParticipants> getParticipants
+
+ClosableSpawnSupportingConflictResolution
+result = false
+...
+if ... result = true
+
+Recovering
+contextCompleted Deferring
+		Set<Traced> accessed = context.getAccessed();
+		context.removeTraces(accessed);
+
+
+
+
+----
+
+
+graffle
+
+Context: 
+relation snap
+enterContext(c) instead of enterContext(Context c) in msg view
+
+Nested:
+addChildrensResults: NestedContext instead of TracingContext
+move result:= to center
+
+Deferrable cleaning
+
+NestedCollaborative
+and -> &&
+
+
+
+
+----
+
+
+graffle
+feature diagram: 
+deferrable depends on context
+
+Tracing:
+getContext -> getContext
+
+OutcomeAware:
+no getContext and no setContext republish
+
+Checkpointing:
+checkpointM is aff b getContext
+createAndEnter ->
+leaveContext ->
+
+Recovering:
+contexCompl i a b removeTraces, discardCheckpoints
+
+Deferring:
+no getOriginal, updateOriginal reexposure
+
+export Nested without state diagram
+
+OutcomeVotable:
+voteAndLeaveContext ->
+
+ExitSynchronizing:
+- waitOrRelease
+no getParticipantCount no binding too
+- getBlockedParticipantCount
+tilde isLastExiting
+
+Closable:
+joinContext ->
+- getMaxParticipantCount
+isLastAllowedParticipant
+
+SpawnSupporting:
+- isSpawned
+- getSpawnedParticipantCount
+
+------------
+
+graffle
+
+OMTT feature:
+blockable depends on context
+
+AspectOPTIMA featur:
+remove dependency for deferrable and context
+
+getContext in OMTT
+
+exitsync spawnsupp
+waitOrReleaseBeforeLeaving label
+
+make spawned participants die!
+
+exclude spawned participants from entry synchronization!
+
+closable:
+Integer.MAX_VALUE
+
+add enumeration AccessKind to AccessClassified
+
+directly caller:* instead of Caller -> * ????
+
+discuss modeled participant retrieval in pointcuts and new isAlreadyTransacted (getContext exposed in Nested)
+
+regex change: field & relations to attributes & associations
+
+look at every relation and multiplicity
+
+CHECK FOR CONSTRUCTOR INITIALIZATION OF 0..1 FIELDS !
+
+
+----
+
+
+add constructor to semaphore in blockable
+
+space between Deferrable.updateOriginal and affected by
+
+remove | from all contexts in twophaselocking
+
+----
+
+remove DefferingNested from feature diagrams
+
+switch wait and release in ExitSync.waitOrReleaseBeforeLeaving
+
+move decreaseWaitingParticipantCount in EntrySync.waitOrReleaseBeforeEntering
+
+rename NestedCollaborative to Collaborative Nested
+
+----
+
+
+  revise related work
+
+  write abstract
+
+  include goals into first mapping section 
+and introduction
+  
+  -> J
+
+restructure code
+
+proofread mapping chapter and update listings
+
+finish OMTT example and write text about it
+
+
+
+
+code:
+merge interface for conflict resolutions
+  merge interface for variation invariant part
+pausable
+  new participant retrieval
+inject participant directly into thread
+  cleanup comments: write associations, attributes and methods in comments instead of fields and methods
+
+
+
+graffle:
+get Deferring top line down
+  align double lines
+check if parts up to date
+  remove dependecy between deferring and checkpointable
+make sure that >= or = in confl resl. is the same as in original aspect
+SharedLockableBinding: check whether the instantiation directive should not be a binding directive

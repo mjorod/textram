@@ -149,12 +149,12 @@ key "AbedBSYAK2012"
 
 \end_inset
 
-, es una herramienta desarollado por el equipo de trabajo del Prof.
+, es una herramienta desarollada por el equipo de trabajo del Prof.
  Dr.
  Jörg Kienzle de la universidad McGill, que modela aspectos por medio de
  la notación gráfica de RAM y una interfaz táctil; actualmente es la principal
- alternativa para diseñar modelos basados en RAM.
- En contraste con es, Voelter hace una comparación entre las notaciones
+ alternativa para diseñar modelos en RAM.
+ En contraste con eso, Voelter hace una comparación entre las notaciones
  gráficas y textuales, donde afirma: “el formato textual es por lo general
  más usado, escala mejor y construirlo requiere mucho menos esfuerzo” 
 \begin_inset CommandInset citation
@@ -244,7 +244,7 @@ key "Booch1993"
 \end_layout
 
 \begin_layout Standard
-Los lenguajes de programación, que componen módulos en base a la invocación
+Los lenguajes de programación que componen módulos en base a la invocación
  de procedimientos (lenguajes orientados a objetos, lenguajes funcionales
  y lenguajes procedurales), en ocasiones rompen los principios de modularización
 \begin_inset CommandInset citation
@@ -273,8 +273,8 @@ pooling, caching
 \begin_inset Quotes erd
 \end_inset
 
-), patrones de diseño (observer), autenticación y autorización, concurrencia,
- manejo de excepciones.
+), patrones de diseño (observer), autenticación, autorización, concurrencia,
+ manejo de excepciones, etc.
 \end_layout
 
 \begin_layout Standard
@@ -294,13 +294,15 @@ Las preocupaciones transversales no se pueden reutilizar.
 \end_layout
 
 \begin_layout Itemize
-El razonamiento local de una preocupación transversal es difícil.
+No hay un punto único de razonamiento para una preocupación.
 \end_layout
 
 \begin_layout Standard
 La programación orientada a aspectos resuelve los problemas inherentes a
  la dispersión y entrelazamiento de código, ofreciendo al programador mecanismos
- para separar preocupaciones transversales en forma limpia y concisa.
+ para separar preocupaciones transversales en forma limpia y concisa; además
+ dispone de otra alternativa para la composición de módulos (invocación
+ implícita de módulos).
  Un 
 \emph on
 aspecto
@@ -477,8 +479,8 @@ advice
 \begin_inset Quotes erd
 \end_inset
 
- es una forma de una transversalidad dinámica porqué afecta la ejecución
- del sistema.
+ es una forma de transversalidad dinámica porqué afecta la ejecución del
+ sistema.
 \end_layout
 
 \begin_layout Itemize
@@ -495,7 +497,7 @@ Inter-type declarations
 \end_layout
 
 \begin_layout Itemize
-Aspectos: son módulos para expresar los mecanismos anteriores.
+Aspectos: son módulos para expresar los conceptos anteriores.
 \end_layout
 
 \begin_layout Section
@@ -632,10 +634,12 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename img/MergingClassDiagrams.png
+	filename img/kompose_example.pdf
 	scale 60
-	rotateOrigin center
+	BoundingBox 0bp 0bp 373bp 303bp
+	rotateOrigin centerTop
 
 \end_inset
 
@@ -823,8 +827,9 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename img/SequenceDiagramWeavingExample.png
+	filename img/sequence_weaving_example.pdf
 	scale 60
 
 \end_inset
@@ -1297,9 +1302,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename img/Game.png
-	scale 70
+	filename img/Game.pdf
+	scale 55
 
 \end_inset
 
@@ -1619,9 +1625,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename img/Checkpointable.png
-	scale 80
+	filename img/Checkpointable.pdf
+	scale 50
 
 \end_inset
 
@@ -2219,10 +2226,11 @@ e con una máquina de Turing.
  Entonces, ¿Por qué existen diversos GPLs? mucho depende de la estrategia
  de ejecución.
  Por ejemplo, el código C es compilado a un código nativo eficiente.
- Mientras que Ruby en general es ejecutado por una máquina virtual (una
- combinación entre compiladores e interpretes).
- Las características que ofrecen cada uno de los lenguajes, están optimizadas
- para las tareas que son relevantes a sus respectivos dominios.
+ Mientras que Ruby es ejecutado por una máquina virtual (una combinación
+ entre compiladores e interpretes).
+ En general, las características que ofrecen cada uno de los lenguajes,
+ están optimizadas para las tareas que son relevantes a sus respectivos
+ dominios.
  Por ejemplo, en C se puede manipular la memoria (aspecto importante para
  comunicarse con dispositivos de bajo nivel).
  Por otro lado, en Ruby no se puede manipular memoria pero gracias al recolector
@@ -2286,6 +2294,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename img/IngredientesLenguajeModelado.png
 
@@ -2328,59 +2337,6 @@ reference "fig:Ingredientes-principales-de"
 , muestra la relación entre los tres ingredientes: la semántica define el
  significado de la sintaxis abstracta e indirectamente el de la sintaxis
  concreta; la sintaxis concreta representa la sintaxis abstracta.
-\end_layout
-
-\begin_layout Subsection
-Clasificación de los DSLs
-\end_layout
-
-\begin_layout Standard
-Los DSLs se pueden clasificar en dos categorías: 
-\end_layout
-
-\begin_layout Enumerate
-DSL externo, es un lenguaje de programación que se construye, desde cero
- y tiene una infraestructura independiente para el análisis léxico, técnicas
- de parseo, interpretación y generación de código 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Ghosh2010"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Enumerate
-DSL interno, es un lenguaje que utiliza la infraestructura de un lenguaje
- de programación existente; para construir la semántica de especificación
- de dominio encima de él.
- (ejemplo: 
-\begin_inset Quotes eld
-\end_inset
-
-Rails en Ruby
-\begin_inset Quotes erd
-\end_inset
-
-).
- Por ende, los DSL internos están embebidos dentro de un lenguaje de programació
-n general.
- Usualmente, el lenguaje 
-\begin_inset Quotes eld
-\end_inset
-
-host
-\begin_inset Quotes erd
-\end_inset
-
- es de tipos dinámicos y la implementación del DSL es basada en meta-programació
-n.
-\end_layout
-
-\begin_layout Subsection
-Sintaxis concreta y abstracta
 \end_layout
 
 \begin_layout Standard
@@ -2502,6 +2458,55 @@ parser
  hechos a la medida ofrecen un mejor rendimiento.
 \end_layout
 
+\begin_layout Subsection
+Clasificación de los DSLs
+\end_layout
+
+\begin_layout Standard
+Los DSLs se pueden clasificar en dos categorías: 
+\end_layout
+
+\begin_layout Enumerate
+DSL externo, es un lenguaje de programación que se construye, desde cero
+ y tiene una infraestructura independiente para el análisis léxico, técnicas
+ de parseo, interpretación y generación de código 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Ghosh2010"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+DSL interno, es un lenguaje que utiliza la infraestructura de un lenguaje
+ de programación existente; para construir la semántica de especificación
+ de dominio encima de él.
+ (ejemplo: 
+\begin_inset Quotes eld
+\end_inset
+
+Rails en Ruby
+\begin_inset Quotes erd
+\end_inset
+
+).
+ Por ende, los DSL internos están embebidos dentro de un lenguaje de programació
+n general.
+ Usualmente, el lenguaje 
+\begin_inset Quotes eld
+\end_inset
+
+host
+\begin_inset Quotes erd
+\end_inset
+
+ es de tipos dinámicos y la implementación del DSL es basada en meta-programació
+n.
+\end_layout
+
 \begin_layout Section
 Ingeniería de Software Orientada a Modelos (MDSE)
 \end_layout
@@ -2570,9 +2575,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename img/VistazoMDSE.png
-	scale 60
+	scale 75
 
 \end_inset
 
@@ -2699,9 +2705,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename img/Modelos_MetaModelos.png
-	scale 60
+	scale 85
 
 \end_inset
 
@@ -2817,6 +2824,49 @@ Mecanismos de reflexión para la manipulación de instancias del meta-modelo.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename img/EcoreBasicMetamodel.pdf
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Meta-modelo-básico-de"
+
+\end_inset
+
+Meta-modelo básico de Ecore
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
 Los modelos básicos de Ecore son:
 \end_layout
 
@@ -2882,45 +2932,6 @@ EPackage
  
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename img/EcoreBasicMetamodel.png
-	scale 70
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Meta-modelo-básico-de"
-
-\end_inset
-
-Meta-modelo básico de Ecore
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Chapter
 Estrategia de implementación
 \end_layout
@@ -2929,8 +2940,7 @@ Estrategia de implementación
 Para la construcción de TextRAM, se evaluaron dos herramientas: Xtext y
  Rascal.
  A continuación se presenta una descripción de ambas tecnologías, con el
- objetivo de compararlas y justificar la elección de la herramienta más
- adecuada para TextRAM.
+ objetivo de compararlas y determinar la herramienta más adecuada para TextRAM.
 \end_layout
 
 \begin_layout Section
@@ -2991,7 +3001,7 @@ Antler, ANother Tool for Language Recognition
 
 ).
  La definición de la gramática en ANTLR se realiza en un solo archivo.
- Un modelo semánticos 
+ Un modelo semántico 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fowler2010"
@@ -3551,15 +3561,18 @@ Síntesis: finalmente, el meta-programa producirá un tipo de resultado.
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Float figure
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
+\noindent
+\align center
 \begin_inset Graphics
-	filename img/EasyParadigm.png
-	scale 70
+	filename img/EasyParadigm.pdf
+	scale 60
 
 \end_inset
 
@@ -3805,15 +3818,39 @@ language workbench
 \end_layout
 
 \begin_layout Standard
+Rascal y Xtext comparten las mismas cualidades descritas en la Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Modelo-de-un"
+
+\end_inset
+
+.
+ TextRAM será desarrollado en Xtext debido a que dicha herramienta está
+ íntimamente ligada a Ecore que es el lenguaje de meta-modelado utilizado
+ por RAM (ver sección: 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:EMF-Ecore"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename /Users/moliva/textram/docs/201312 - Master First Report/img/LWModel.png
-	scale 35
+	filename img/LWModel.png
+	scale 45
+	scaleBeforeRotation
+	rotateAngle 90
 
 \end_inset
 
@@ -3846,34 +3883,9 @@ key "LWC2013"
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Rascal y Xtext comparten las mismas cualidades descritas en la Figura 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Modelo-de-un"
-
-\end_inset
-
-.
- TextRAM será desarrollado en Xtext debido a que dicha herramienta está
- íntimamente ligada a Ecore que es el lenguaje de meta-modelado utilizado
- por RAM (ver: 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sub:EMF-Ecore"
-
-\end_inset
-
-).
 \end_layout
 
 \begin_layout Standard
