@@ -5,9 +5,9 @@
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://www.uchile.cl/pleiad/TextRAM" 
-       class = "cl.uchile.pleiad.textRAM.TextRAMPackage"
-       genModel = "model/generated/TextRAM.genmodel" /> 
+       uri = "http://cs.mcgill.ca/sel/ram/2.1" 
+       class = "ca.mcgill.cs.sel.ram.RamPackage"
+       genModel = "model/RAM.genmodel" /> 
 	
   </extension>
 

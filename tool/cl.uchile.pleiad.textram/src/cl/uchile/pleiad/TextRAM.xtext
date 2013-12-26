@@ -1,12 +1,10 @@
 grammar cl.uchile.pleiad.TextRAM with org.eclipse.xtext.common.Terminals
 
-generate textRAM "http://www.uchile.cl/pleiad/TextRAM"
-
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-import "http://cs.mcgill.ca/sel/ram/2.1" as ram
+import "http://cs.mcgill.ca/sel/ram/2.1"
 
-Aspect returns ram::Aspect:
-        'Aspect'
+Aspect returns Aspect:
+        'aspect'
         name=EString
         '{'
                 structuralView=StructuralView
@@ -15,14 +13,14 @@ Aspect returns ram::Aspect:
 EString returns ecore::EString:
         STRING | ID;
 
-StructuralView returns ram::StructuralView:
+StructuralView returns StructuralView:
         {StructuralView}
         'structure'
         '{'
        		(classes+=Classifier (classes+=Classifier)* )?
         '}';
 
-Classifier returns ram::Classifier:
+Classifier returns Classifier:
         Class;
 
 Class returns Class:
