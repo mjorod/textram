@@ -1,7 +1,6 @@
 package cl.uchile.pleiad.textram.tests
 
 import ca.mcgill.cs.sel.ram.Aspect
-import cl.uchile.pleiad.TextRAMInjectorProvider
 import com.google.inject.Inject
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -11,7 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(typeof(XtextRunner))
-@InjectWith(typeof(TextRAMInjectorProvider))
+@InjectWith(typeof(TextRAMTestsInjectorProvider))
 class TextRamParserTest {
 	
 	@Inject extension ParseHelper<Aspect>
