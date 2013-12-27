@@ -2,7 +2,13 @@
 <?eclipse version="3.0"?>
 
 <plugin>
-
+	<extension point="org.eclipse.emf.ecore.generated_package">
+	    <package 
+	       uri = "http://cs.mcgill.ca/sel/ram/2.1" 
+	       class = "ca.mcgill.cs.sel.ram.RamPackage"
+	       genModel = "model/RAM.genmodel" /> 
+		
+    </extension>
     <extension
             point="org.eclipse.ui.editors">
         <editor
