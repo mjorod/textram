@@ -8,6 +8,7 @@ import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
+import cl.uchile.pleiad.TextRAMTestsInjectorProvider
 
 @RunWith(typeof(XtextRunner))
 @InjectWith(typeof(TextRAMTestsInjectorProvider))
