@@ -29,7 +29,25 @@ Class returns Class:
         (abstract?='abstract')?
         'class'
         name=EString
-        '{'                 
+        '{'
+			( operations+=Operation ( ";"? operations+=Operation)*  )?                 
         '}';
+
+Operation returns Operation:
+        (abstract?='abstract')?
+        (static?='static')?
+        (partial?='partial')?
+        visibility=Visibility
+        returnType=[Type|EString]
+        name=EString 
+        '('
+        	//(parameters+=Parameter ( "," parameters+=Parameter)* )?
+        ')';
+        
+enum Visibility returns Visibility:
+	public = '+' | private = '-' | protected = '~' 
+;
+
+                
 
         
