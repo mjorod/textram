@@ -3,6 +3,12 @@
  */
 package cl.uchile.pleiad.scoping;
 
+import ca.mcgill.cs.sel.ram.StructuralView;
+import ca.mcgill.cs.sel.ram.Type;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 
 /**
@@ -13,4 +19,9 @@ import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
  */
 @SuppressWarnings("all")
 public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
+  public IScope scope_Operation_returnType(final StructuralView ctx, final EReference reference) {
+    EList<Type> _types = ctx.getTypes();
+    IScope _scopeFor = Scopes.scopeFor(_types);
+    return _scopeFor;
+  }
 }
