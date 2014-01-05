@@ -3,6 +3,12 @@
  */
 package cl.uchile.pleiad.scoping
 
+import org.eclipse.xtext.scoping.IScope
+import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import org.eclipse.emf.ecore.EReference
+import ca.mcgill.cs.sel.ram.StructuralView
+import org.eclipse.xtext.scoping.Scopes
+
 /**
  * This class contains custom scoping description.
  * 
@@ -10,6 +16,16 @@ package cl.uchile.pleiad.scoping
  * on how and when to use it 
  *
  */
-class TextRAMScopeProvider extends org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider {
+class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
+//	
+//	public IScope scope_Operation_returnType(Operation context, EReference reference) 
+//	{
+//		
+//	}
+
+	def IScope scope_Operation_returnType(StructuralView ctx, EReference reference)
+	{
+		Scopes::scopeFor(ctx.getTypes());
+	}
 
 }

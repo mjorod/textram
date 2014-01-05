@@ -7,7 +7,7 @@ Aspect returns Aspect:
         'aspect'
         name=EString
         '{'
-                structuralView=StructuralView
+			structuralView=StructuralView
         '}';
 
 EString returns ecore::EString:
@@ -17,12 +17,16 @@ StructuralView returns StructuralView:
         {StructuralView}
         'structure'
         '{'
-       		(classes+=Classifier (classes+=Classifier)* )?
+        	(classes+=Classifier (classes+=Classifier)* )?
         '}';
-
+        
 Classifier returns Classifier:
         Class;
 
+Type returns Type:
+        Class | {RVoid} | {RBoolean} | {RInt} | {RChar} | {RString} | {RAny} | {REnum} | {RSet} | {RSequence} |  {RDouble} | {RFloat};// | ImplementationClass_Impl;
+
+  
 Class returns Class:
         {Class}
         (partial?='partial')?
@@ -34,6 +38,7 @@ Class returns Class:
         '}';
 
 Operation returns Operation:
+		{Operation}
         (abstract?='abstract')?
         (static?='static')?
         (partial?='partial')?
@@ -41,13 +46,10 @@ Operation returns Operation:
         returnType=[Type|EString]
         name=EString 
         '('
-        	//(parameters+=Parameter ( "," parameters+=Parameter)* )?
         ')';
         
+
 enum Visibility returns Visibility:
-	public = '+' | private = '-' | protected = '~' 
+	public = '+' | private = '-' | protected = '#' | package = "~" 
 ;
-
-                
-
         

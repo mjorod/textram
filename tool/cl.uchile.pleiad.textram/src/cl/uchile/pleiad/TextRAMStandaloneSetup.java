@@ -3,6 +3,16 @@
 */
 package cl.uchile.pleiad;
 
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EValidator;
+import org.eclipse.ocl.examples.pivot.delegate.OCLDelegateDomain;
+import org.eclipse.ocl.examples.pivot.delegate.OCLInvocationDelegateFactory;
+import org.eclipse.ocl.examples.pivot.delegate.OCLSettingDelegateFactory;
+import org.eclipse.ocl.examples.pivot.delegate.OCLValidationDelegateFactory;
+import org.eclipse.ocl.examples.xtext.oclinecore.OCLinEcoreStandaloneSetup;
+
+
 /**
  * Initialization support for running Xtext languages 
  * without equinox extension registry
@@ -10,7 +20,34 @@ package cl.uchile.pleiad;
 public class TextRAMStandaloneSetup extends TextRAMStandaloneSetupGenerated{
 
 	public static void doSetup() {
+		initializeOCL();
+		
 		new TextRAMStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}
+
+	private static void initializeOCL() {
+        // initialize OCL
+        // register Pivot globally (resourceSet == null)
+        org.eclipse.ocl.examples.pivot.OCL.initialize(null);
+        
+        String oclDelegateURI = OCLDelegateDomain.OCL_DELEGATE_URI_PIVOT;
+        EOperation.Internal.InvocationDelegate.Factory.Registry.INSTANCE.put(oclDelegateURI,
+            new OCLInvocationDelegateFactory.Global());
+        EStructuralFeature.Internal.SettingDelegate.Factory.Registry.INSTANCE.put(oclDelegateURI,
+            new OCLSettingDelegateFactory.Global());
+        EValidator.ValidationDelegate.Registry.INSTANCE.put(oclDelegateURI,
+            new OCLValidationDelegateFactory.Global());
+        
+        OCLinEcoreStandaloneSetup.doSetup();
+        
+        // install the OCL Standard library
+        //
+        // using Eclipse Indigo
+        //
+        // org.eclipse.ocl.examples.library.oclstdlib.OCLstdlib.install();
+        // using Eclipse Juno
+        //
+        org.eclipse.ocl.examples.pivot.model.OCLstdlib.install();
+    }
 }
 

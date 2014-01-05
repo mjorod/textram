@@ -3,9 +3,19 @@
  */
 package cl.uchile.pleiad;
 
+import org.eclipse.xtext.conversion.IValueConverterService;
+
+import cl.uchile.pleiad.valueconverter.TypesValueConverter;
+
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 public class TextRAMRuntimeModule extends cl.uchile.pleiad.AbstractTextRAMRuntimeModule {
+	
+	@Override
+	public Class<? extends IValueConverterService> 
+	    bindIValueConverterService() {
+	    return TypesValueConverter.class;
+	}
 
 }
