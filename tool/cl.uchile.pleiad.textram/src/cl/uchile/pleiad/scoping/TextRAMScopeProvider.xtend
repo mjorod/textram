@@ -3,11 +3,13 @@
  */
 package cl.uchile.pleiad.scoping
 
-import org.eclipse.xtext.scoping.IScope
-import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
-import org.eclipse.emf.ecore.EReference
 import ca.mcgill.cs.sel.ram.StructuralView
+import cl.uchile.pleiad.types.ITypeSystem
+import com.google.inject.Inject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 
 /**
  * This class contains custom scoping description.
@@ -17,15 +19,11 @@ import org.eclipse.xtext.scoping.Scopes
  *
  */
 class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
-//	
-//	public IScope scope_Operation_returnType(Operation context, EReference reference) 
-//	{
-//		
-//	}
-
-	def IScope scope_Operation_returnType(StructuralView ctx, EReference reference)
+	
+	@Inject extension ITypeSystem typeSystem 
+	
+	def IScope scope_Operation_returnType(StructuralView structuralView, EReference reference)
 	{
-		Scopes::scopeFor(ctx.getTypes());
+		Scopes::scopeFor(structuralView.getDefaultTypes);
 	}
-
 }

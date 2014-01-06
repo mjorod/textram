@@ -4,7 +4,8 @@
 package cl.uchile.pleiad;
 
 import org.eclipse.xtext.conversion.IValueConverterService;
-
+import cl.uchile.pleiad.types.ITypeSystem;
+import cl.uchile.pleiad.types.TypeSystem;
 import cl.uchile.pleiad.valueconverter.TypesValueConverter;
 
 /**
@@ -16,6 +17,10 @@ public class TextRAMRuntimeModule extends cl.uchile.pleiad.AbstractTextRAMRuntim
 	public Class<? extends IValueConverterService> 
 	    bindIValueConverterService() {
 	    return TypesValueConverter.class;
+	}
+	
+	public Class<? extends ITypeSystem> bindITypeSystem() {
+		  return TypeSystem.class;
 	}
 
 }
