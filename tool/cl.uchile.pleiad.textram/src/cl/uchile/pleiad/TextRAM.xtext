@@ -17,14 +17,14 @@ StructuralView returns StructuralView:
         {StructuralView}
         'structure'
         '{'
-        	(classes+=Classifier (classes+=Classifier)* )?
+        	( classes+=Classifier (classes+=Classifier)* )?
         '}';
         
 Classifier returns Classifier:
         Class;
 
 Type returns Type:
-        Class | {RVoid} | {RBoolean} | {RInt} | {RChar} | {RString} | {RAny} | {REnum} | {RSet} | {RSequence} |  {RDouble} | {RFloat};// | ImplementationClass_Impl;
+        Class | {RVoid} | {RBoolean} | {RInt} | {RChar} | {RString} | {RAny} |  {RDouble} | {RFloat};// | ImplementationClass_Impl;
 
   
 Class returns Class:
