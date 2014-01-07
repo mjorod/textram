@@ -9,6 +9,7 @@ import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
 import cl.uchile.pleiad.TextRAMTestsInjectorProvider
+import org.junit.Before
 
 /*TODO: testAspectModelWithNoNameIsNotAllowed
  *      testAspectModelWithStrangeCharsIsNotAllowed
@@ -24,6 +25,12 @@ class TextRamParserTest {
 	
 	@Inject extension ParseHelper<Aspect>
 	@Inject extension ValidationTestHelper
+	
+//	@Before
+//	def Before() {
+//		
+//		
+//	}
 //	
 //	@Test
 //	def testEmptyAspectModelWithEmptyStructure() {
@@ -46,7 +53,7 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-		        	-  int operation op()        
+		        	-  int op()        
 		        }	
 		    }
 		}
