@@ -26,29 +26,18 @@ class TextRamParserTest {
 	@Inject extension ParseHelper<Aspect>
 	@Inject extension ValidationTestHelper
 	
-//	@Before
-//	def Before() {
-//		
-//		
-//	}
-//	
-//	@Test
-//	def testEmptyAspectModelWithEmptyStructure() {
-//		'''aspect A { structure {  } }'''.parse.assertNoErrors
-//	}
-//	
-//	@Test
-//	def testAspectModelWithVeryLongName() {
-//		'''aspect veryLoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooongName { structure {  } }'''.parse.assertNoErrors
-//	}
-//	
-//	@Test
-//	def testEmptyAspectModelWithEmptyStructureAndEmptyClasses() {
-//		'''aspect A { structure { class C1 {} class C2{} } }'''.parse.assertNoErrors
-//	}
+	@Test
+	def testEmptyAspectModelWithEmptyStructure() {
+		'''aspect A { structure {  } }'''.parse.assertNoErrors
+	}
 	
 	@Test
-	def testClassWithOneParameterlessPublicMethod() {
+	def testEmptyAspectModelWithEmptyStructureAndEmptyClasses() {
+		'''aspect A { structure { class C1 {} class C2{} } }'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testClassWithOneParameterlessPrivateMethod() {
 		'''
 		aspect A { 
 			structure {
@@ -60,18 +49,6 @@ class TextRamParserTest {
 		'''.parse.assertNoErrors
 	}
 	
-//	@Test
-//	def testClassWithOneParameterlessPrivateMethod() {
-//		'''
-//		aspect A {
-//		    structure {
-//		    	class C1 {
-//		    		- privateMethod()
-//		    	}
-//		    }
-//		}
-//		'''.parse.assertNoErrors
-//	}
 //	
 //	@Test
 //	def testClassWithOneParameterlessAspectPrivateMethod() {
