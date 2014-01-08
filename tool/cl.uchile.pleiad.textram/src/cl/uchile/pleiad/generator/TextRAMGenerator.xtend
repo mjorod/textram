@@ -3,9 +3,14 @@
  */
 package cl.uchile.pleiad.generator
 
+import ca.mcgill.cs.sel.ram.Aspect
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.xtext.generator.IGenerator
+import cl.uchile.pleiad.util.RAMPersistenceAdapter
+
+//import org.eclipse.xtext.parsetree.reconstr.Serializer
+
 
 /**
  * Generates code from your model files on save.
@@ -15,10 +20,11 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 class TextRAMGenerator implements IGenerator {
 	
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(typeof(Greeting))
-//				.map[name]
-//				.join(', '))
-	}
+    	for (aspect : resource.allContents.toIterable.filter(typeof(Aspect))){
+    		val relativePath = '''aspects/«aspect.name».ram'''
+    		val content = RAMPersistenceAdapter::serializeRAMAspect(aspect, relativePath)
+    		fsa.generateFile(relativePath, content)
+	    }
+     }
+     	
 }
