@@ -10,34 +10,8 @@ package cl.uchile.pleiad;
 public class TextRAMStandaloneSetup extends TextRAMStandaloneSetupGenerated{
 
 	public static void doSetup() {
-		//initializeOCL();
-		
 		new TextRAMStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}
 
-//	public void initializeOCL() {
-//        // initialize OCL
-//        // register Pivot globally (resourceSet == null)
-//        org.eclipse.ocl.examples.pivot.OCL.initialize(null);
-//        
-//        String oclDelegateURI = OCLDelegateDomain.OCL_DELEGATE_URI_PIVOT;
-//        EOperation.Internal.InvocationDelegate.Factory.Registry.INSTANCE.put(oclDelegateURI,
-//            new OCLInvocationDelegateFactory.Global());
-//        EStructuralFeature.Internal.SettingDelegate.Factory.Registry.INSTANCE.put(oclDelegateURI,
-//            new OCLSettingDelegateFactory.Global());
-//        EValidator.ValidationDelegate.Registry.INSTANCE.put(oclDelegateURI,
-//            new OCLValidationDelegateFactory.Global());
-//        
-//        OCLinEcoreStandaloneSetup.doSetup();
-//        
-//        // install the OCL Standard library
-//        //
-//        // using Eclipse Indigo
-//        //
-//        // org.eclipse.ocl.examples.library.oclstdlib.OCLstdlib.install();
-//        // using Eclipse Juno
-//        //
-//        org.eclipse.ocl.examples.pivot.model.OCLstdlib.install();
-//    }
 }
 
