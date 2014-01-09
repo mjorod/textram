@@ -42,7 +42,9 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-		        	-  int op()        
+					operations {
+		        		-  int op()
+		        	}        
 		        }	
 		    }
 		}
@@ -58,7 +60,9 @@ class TextRamParserTest {
 					
 				}
 				class C1 {
-		        	-  CA operation()
+					operations {
+		        		-  CA operation()
+		        	}
 		        }	
 		    }
 		}
@@ -71,7 +75,9 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-		        	-  int operation(int parm1)        
+					operations {
+		        		-  int operation(int parm1)
+		        	}        
 		        }	
 		    }
 		}
@@ -84,7 +90,9 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-		        	-  int operation(int parm1, char parm2, boolean parm3)        
+					operations {
+		        		-  int operation(int parm1, char parm2, boolean parm3)
+		        	}        
 		        }	
 		    }
 		}
@@ -97,7 +105,9 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-		        	-  int operation(ExistingClass parm1, char parm2, ExistingClass parm3)        
+					operations {
+		        		-  int operation(ExistingClass parm1, char parm2, ExistingClass parm3)
+		        	}        
 		        }
 				class ExistingClass {
 					
@@ -106,5 +116,56 @@ class TextRamParserTest {
 		}
 		'''.parse.assertNoErrors
 	}
+	
+	@Test
+	def testClassWithOneAttribute() {
+		'''
+		aspect A { 
+			structure {
+				class C1 {
+					attributes {
+	        			int myAttr
+	        		}
+		        }
+		    }
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testClassWithMoreThanOneAttribute() {
+		'''
+		aspect A {
+			structure {
+				class C1 {
+					attributes {
+						int myAttr
+						char MyChar
+					}
+				}
+			}
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testClassWithAttributesAndOperations() {
+		'''
+		aspect A {
+			structure {
+				class C1 {
+					attributes {
+						int myAttr
+						char myChar
+					}
+					operations {
+						- boolean myBooleanOper()
+					}
+				}
+			}
+		}
+		'''.parse.assertNoErrors
+	}
+	
 	
 }
