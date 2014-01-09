@@ -70,12 +70,11 @@ RVoid:
 	{RVoid}
 ;
   
-  
 Class returns Class:
     {Class}
-    (partial?='partial')?
     (abstract?='abstract')?
     'class'
+    (partial?='|')?
     name=EString
     '{'
         ( 'attributes' '{' attributes+=Attribute ( ";"? attributes+=Attribute)* '}' )?
@@ -92,9 +91,9 @@ Operation returns Operation:
 	{Operation}
     (abstract?='abstract')?
     (static?='static')?
-    (partial?='partial')?
     visibility=Visibility
     returnType=[Type|EString]
+    (partial?='|')?
     name=EString 
     '('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?

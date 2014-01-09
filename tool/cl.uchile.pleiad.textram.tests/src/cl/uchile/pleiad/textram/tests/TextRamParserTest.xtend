@@ -168,5 +168,34 @@ class TextRamParserTest {
 		'''.parse.assertNoErrors
 	}
 	
+	@Test
+	def testPartialClassIsValid() {
+		'''
+		aspect A {
+			structure {
+				class |Partial {
+					
+				}
+			}
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testPartialOperationIsValid() {
+		'''
+		aspect A {
+			structure {
+				class C1 {
+					operations {
+						- int |myPartialMethod()
+					}
+				}
+			}
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	
 	
 }
