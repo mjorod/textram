@@ -1,26 +1,43 @@
 package cl.uchile.pleiad.types
 
-import ca.mcgill.cs.sel.ram.StructuralView
+import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.RamFactory
+import ca.mcgill.cs.sel.ram.StructuralView
+import ca.mcgill.cs.sel.ram.Type
+import org.eclipse.emf.common.util.EList
 
 class TypeSystem implements ITypeSystem {
 	
 	override getDefaultTypes(StructuralView structuralView) {
+		val EList<Type> typesToReturn = structuralView.getTypes();
 		
-		if (structuralView.getTypes().length == 0) {
-			structuralView.getTypes().add(RamFactory.eINSTANCE.createRVoid());
-			structuralView.getTypes().add(RamFactory.eINSTANCE.createRBoolean());
-			structuralView.getTypes().add(RamFactory.eINSTANCE.createRInt());
-			structuralView.getTypes().add(RamFactory.eINSTANCE.createRChar());
-			structuralView.getTypes().add(RamFactory.eINSTANCE.createRString());
-			structuralView.getTypes().add(RamFactory.eINSTANCE.createRAny());
-//			structuralView.getTypes().add(RamFactory.eINSTANCE.createREnum());
-//			structuralView.getTypes().add(RamFactory.eINSTANCE.createRSet());
-			structuralView.getTypes().add(RamFactory.eINSTANCE.createRDouble());
-			structuralView.getTypes().add(RamFactory.eINSTANCE.createRFloat());
+		typesToReturn.appendPrimitiveTypes
+		
+//		typesToReturn.appendClasses(structuralView.getClasses.filter(typeof(Class)))
+				
+		return typesToReturn
+	}
+	
+	private static def appendClasses(EList<Type> typesToReturn, Iterable<Class> classes) {
+		classes.forEach [ c |
+			if (typesToReturn.contains(c) == false)
+ 		   		typesToReturn.add(c)
+		]
+	}
+	
+	private static def appendPrimitiveTypes(EList<Type> typesToReturn) {
+		if (typesToReturn.length == 0) {
+			typesToReturn.add(RamFactory.eINSTANCE.createRVoid());
+			typesToReturn.add(RamFactory.eINSTANCE.createRBoolean());
+			typesToReturn.add(RamFactory.eINSTANCE.createRInt());
+			typesToReturn.add(RamFactory.eINSTANCE.createRChar());
+			typesToReturn.add(RamFactory.eINSTANCE.createRString());
+			typesToReturn.add(RamFactory.eINSTANCE.createRAny());
+		//			typesToReturn.add(RamFactory.eINSTANCE.createREnum());
+		//			typesToReturn.add(RamFactory.eINSTANCE.createRSet());
+			typesToReturn.add(RamFactory.eINSTANCE.createRDouble());
+			typesToReturn.add(RamFactory.eINSTANCE.createRFloat());
 		}
-		
-		return structuralView.getTypes()
 	}
 	
 }
