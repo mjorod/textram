@@ -5,6 +5,8 @@ import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import org.eclipse.emf.common.util.EList
+import ca.mcgill.cs.sel.ram.RamPackage
+import ca.mcgill.cs.sel.ram.PrimitiveType
 
 class TypeSystem implements ITypeSystem {
 	
@@ -39,5 +41,12 @@ class TypeSystem implements ITypeSystem {
 			typesToReturn.add(RamFactory.eINSTANCE.createRFloat());
 		}
 	}
+	
+	override getPrimitiveTypes(StructuralView structuralView) {
+		structuralView.getTypes().appendPrimitiveTypes
+
+		structuralView.getTypes().filter(typeof(PrimitiveType)) as EList<PrimitiveType>
+	}
+	
 	
 }

@@ -25,6 +25,18 @@ Classifier returns Classifier:
 
 Type returns Type:
 	Class | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat;
+	
+PrimitiveType returns PrimitiveType:
+    RBoolean | RInt | RChar | RString | RDouble | RFloat;// | REnum;
+
+TypedElement returns TypedElement:
+    Attribute;
+
+TemporaryProperty returns TemporaryProperty:
+    Attribute;
+        
+StructuralFeature returns StructuralFeature:
+	Attribute;
 
 RString:
 	{RString}
@@ -58,27 +70,35 @@ RVoid:
 	{RVoid}
 ;
   
+  
 Class returns Class:
-        {Class}
-        (partial?='partial')?
-        (abstract?='abstract')?
-        'class'
-        name=EString
-        '{'
-			( operations+=Operation ( ";"? operations+=Operation)*  )?                 
-        '}';
+    {Class}
+    (partial?='partial')?
+    (abstract?='abstract')?
+    'class'
+    name=EString
+    '{'
+        ( 'attributes' '{' attributes+=Attribute ( ";"? attributes+=Attribute)* '}' )?
+        ( 'operations' '{' operations+=Operation ( ";"? operations+=Operation)* '}' )?                 
+    '}';
+
+Attribute returns Attribute:
+	{Attribute}
+    (static?='static')?
+    type=[PrimitiveType|EString]
+    name=EString;
 
 Operation returns Operation:
-		{Operation}
-        (abstract?='abstract')?
-        (static?='static')?
-        (partial?='partial')?
-        visibility=Visibility
-        returnType=[Type|EString]
-        name=EString 
-        '('
-        	( parameters+=Parameter ( "," parameters+=Parameter)* )?
-        ')';
+	{Operation}
+    (abstract?='abstract')?
+    (static?='static')?
+    (partial?='partial')?
+    visibility=Visibility
+    returnType=[Type|EString]
+    name=EString 
+    '('
+    	( parameters+=Parameter ( "," parameters+=Parameter)* )?
+    ')';
 
 Parameter returns Parameter:
     {Parameter}

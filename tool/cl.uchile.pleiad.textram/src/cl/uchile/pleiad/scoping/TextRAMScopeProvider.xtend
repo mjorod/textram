@@ -26,4 +26,10 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	{
 		Scopes::scopeFor(structuralView.getDefaultTypes)
 	}
+	
+	def IScope scope_Attribute_type(StructuralView structuralView, EReference reference)
+	{
+		Scopes::scopeFor(structuralView.getPrimitiveTypes)
+	}
+	
 }
