@@ -49,33 +49,62 @@ class TextRamParserTest {
 		'''.parse.assertNoErrors
 	}
 	
-//	
-//	@Test
-//	def testClassWithOneParameterlessAspectPrivateMethod() {
-//		'''
-//		aspect A {
-//			structure {
-//				class C1 {
-//					~ privateAspectMethod()
-//				}
-//			}
-//		}
-//		'''.parse.assertNoErrors
-//	}
-//	
-//	@Test
-//	def testClassWithAllMethodsModifiers() {
-//		'''
-//		aspect A {
-//			structure {
-//				class C1 {
-//					+ publicMethod()
-//					- privateMethod()
-//					~ privateAspectMethod()
-//					
-//				}
-//			}
-//		}
-//		'''.parse.assertNoErrors
-//	}
+	@Test 
+	def testOperationWithReturnTypeOfExistingClass() {
+		'''
+		aspect A { 
+			structure {
+				class CA {
+					
+				}
+				class C1 {
+		        	-  CA operation()
+		        }	
+		    }
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testOperationWithOneParameter() {
+		'''
+		aspect A { 
+			structure {
+				class C1 {
+		        	-  int operation(int parm1)        
+		        }	
+		    }
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testOperationWithAListOfParameter() {
+		'''
+		aspect A { 
+			structure {
+				class C1 {
+		        	-  int operation(int parm1, char parm2, boolean parm3)        
+		        }	
+		    }
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testParameterTypeOfExistingClass() {
+		'''
+		aspect A { 
+			structure {
+				class C1 {
+		        	-  int operation(ExistingClass parm1, char parm2, ExistingClass parm3)        
+		        }
+				class ExistingClass {
+					
+				}
+		    }
+		}
+		'''.parse.assertNoErrors
+	}
+	
 }
