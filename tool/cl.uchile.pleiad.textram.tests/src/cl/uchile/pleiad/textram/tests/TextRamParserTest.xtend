@@ -140,7 +140,8 @@ class TextRamParserTest {
 				class C1 {
 					attributes {
 						int myAttr
-						char MyChar
+						char MyChar;
+						char MtOtherChar
 					}
 				}
 			}
