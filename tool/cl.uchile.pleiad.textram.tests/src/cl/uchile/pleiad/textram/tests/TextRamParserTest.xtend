@@ -196,6 +196,19 @@ class TextRamParserTest {
 		'''.parse.assertNoErrors
 	}
 	
-	
-	
+	@Test
+	def testAssociationBetweenClasses() {
+		'''
+		aspect A {
+			structure {
+				class From {}
+				class To {}
+
+				associations {
+		            0..0 From -> 0..1 To { mySubject }
+		        }		
+			}
+		}		
+		'''.parse.assertNoErrors
+	}	
 }
