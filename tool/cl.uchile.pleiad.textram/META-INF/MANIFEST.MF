@@ -32,4 +32,7 @@ Export-Package: cl.uchile.pleiad,
  cl.uchile.pleiad.validation,
  cl.uchile.pleiad.scoping,
  cl.uchile.pleiad.generator,
- cl.uchile.pleiad.formatting
+ cl.uchile.pleiad.formatting,
+ cl.uchile.pleiad.textRam,
+ cl.uchile.pleiad.textRam.impl,
+ cl.uchile.pleiad.textRam.util

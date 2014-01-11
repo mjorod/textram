@@ -3,7 +3,10 @@
  */
 package cl.uchile.pleiad.scoping
 
-import ca.mcgill.cs.sel.ram.StructuralView
+import ca.mcgill.cs.sel.ram.Association
+import ca.mcgill.cs.sel.ram.RamFactory
+import cl.uchile.pleiad.textRam.TAssociationEnd
+import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.types.ITypeSystem
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EReference
@@ -22,14 +25,55 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	@Inject extension ITypeSystem typeSystem 
 	
-	def IScope scope_Operation_returnType(StructuralView structuralView, EReference reference)
+	def IScope scope_Operation_returnType(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor(structuralView.getDefaultTypes)
 	}
 	
-	def IScope scope_Attribute_type(StructuralView structuralView, EReference reference)
+	def IScope scope_Attribute_type(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor(structuralView.getPrimitiveTypes)
+	}
+	
+	def IScope_TAssociation(TStructuralView structuralView, EReference reference)
+	{
+		structuralView.getTAssociations().forEach[ tAssoc | 
+			
+			// create association
+			var association = RamFactory::eINSTANCE.createAssociation()
+			association.setName( tAssoc.fromEnd.getClassName + "_" + tAssoc.toEnd.getClassName )
+			
+			// create from association end
+			var fromEnd = RamFactory::eINSTANCE.createAssociationEnd()
+			fromEnd.setAssoc(association)
+			fromEnd.setLowerBound(tAssoc.fromEnd.lowerBound)
+			fromEnd.setUpperBound(tAssoc.fromEnd.upperBound)
+			fromEnd.setName( tAssoc.fromEnd.getClassName.toLowerCaseFirst )
+			
+			// create to association end
+			var toEnd = RamFactory::eINSTANCE.createAssociationEnd()
+			toEnd.setAssoc(association)
+			toEnd.setLowerBound(tAssoc.toEnd.lowerBound)
+			toEnd.setUpperBound(tAssoc.toEnd.upperBound)
+			toEnd.setName( tAssoc.toEnd.getClassName.toLowerCaseFirst )
+			
+			structuralView.addAssociation(association)
+		]
+	}
+	
+	def addAssociation(TStructuralView structuralView, Association association)
+	{
+		structuralView.getAssociations.add(association)
+	}
+	
+	def private getClassName(TAssociationEnd tAssoc) {
+		return tAssoc.classReference.name
+	}
+	
+	def toLowerCaseFirst(String text) {
+		var charArray = text.toCharArray
+		charArray.set(0,  Character.toLowerCase( charArray.get(0) ))
+		String.valueOf(charArray)
 	}
 	
 }
