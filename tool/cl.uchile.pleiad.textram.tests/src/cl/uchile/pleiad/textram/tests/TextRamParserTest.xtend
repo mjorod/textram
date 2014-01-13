@@ -210,5 +210,21 @@ class TextRamParserTest {
 			}
 		}		
 		'''.parse.assertNoErrors
+	}
+	
+	@Test 
+	def testValueConverterForManyMultiplicityOnUpperBound() {
+		'''
+		aspect A {
+			structure {
+				class From {}
+				class To {}
+
+				associations {
+		            0..* From -> 0..* To { mySubject }
+		        }		
+			}
+		}		
+		'''.parse.assertNoErrors
 	}	
 }

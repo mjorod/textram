@@ -127,8 +127,11 @@ TAssociation returns textRam::TAssociation:
 
 TAssociationEnd returns textRam::TAssociationEnd:
 	{textRam::TAssociationEnd}
-    lowerBound=EInt
+    lowerBound=ElementBound
     '..'
-    upperBound=EInt
+    upperBound=ElementBound
     classReference=[Class|EString]
 ;
+
+ElementBound returns ecore::EInt:
+	'*' | INT;
