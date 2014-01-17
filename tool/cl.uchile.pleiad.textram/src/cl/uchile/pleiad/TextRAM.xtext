@@ -3,29 +3,39 @@ grammar cl.uchile.pleiad.TextRAM with org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://cs.mcgill.ca/sel/ram/2.1"
 
+generate textRam "http://cl.pleiad.textram/1.0" as textRam
+
 Aspect returns Aspect:
 'aspect'
 name=EString
 '{'
-	structuralView=StructuralView
+	structuralView=TStructuralView
 '}';
 
 EString returns ecore::EString:
-STRING | ID;
+    STRING | ID;
 
-StructuralView returns StructuralView:
-	{StructuralView}
-	'structure'
-	'{'
-		( classes+=Classifier (classes+=Classifier)* )?
-	'}';
+EInt returns ecore::EInt:
+    '-'? INT;
+
+AbstractStructuralView returns StructuralView:
+    TStructuralView
+; 
+
+TStructuralView returns textRam::TStructuralView:
+    {textRam::TStructuralView}
+    'structure'
+    '{'
+        ( classes+=Classifier (classes+=Classifier)* )?
+        ('associations' '{' tAssociations+=TAssociation ( "," tAssociations+=TAssociation)* '}' )?
+    '}';
         
 Classifier returns Classifier:
     Class;
 
 Type returns Type:
-	Class | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat;
-	
+    Class | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat;
+        
 PrimitiveType returns PrimitiveType:
     RBoolean | RInt | RChar | RString | RDouble | RFloat;// | REnum;
 
@@ -36,41 +46,42 @@ TemporaryProperty returns TemporaryProperty:
     Attribute;
         
 StructuralFeature returns StructuralFeature:
-	Attribute;
+    Attribute;
 
 RString:
-	{RString}
+    {RString}
 ;
 
 RFloat:
-	{RFloat}
+    {RFloat}
 ;
 
 RDouble:
-	{RDouble}
+    {RDouble}
 ;
 
 RAny:
-	{RAny}
+    {RAny}
 ;
 
 RChar:
-	{RChar}
+    {RChar}
 ;
 
 RInt:
-	{RInt}
+    {RInt}
 ;
 
 RBoolean:
-	{RBoolean}
+    {RBoolean}
 ;
 
 RVoid:
-	{RVoid}
+    {RVoid}
 ;
   
-Class returns Class:
+
+Class:
     {Class}
     (abstract?='abstract')?
     'class'
@@ -78,17 +89,17 @@ Class returns Class:
     name=EString
     '{'
         ( 'attributes' '{' attributes+=Attribute ( ";"? attributes+=Attribute)* '}' )?
-        ( 'operations' '{' operations+=Operation ( ";"? operations+=Operation)* '}' )?                 
+        ( 'operations' '{' operations+=Operation ( ";"? operations+=Operation)* '}' )?
     '}';
 
 Attribute returns Attribute:
-	{Attribute}
+    {Attribute}
     (static?='static')?
     type=[PrimitiveType|EString]
     name=EString;
 
 Operation returns Operation:
-	{Operation}
+    {Operation}
     (abstract?='abstract')?
     (static?='static')?
     visibility=Visibility
@@ -102,9 +113,24 @@ Operation returns Operation:
 Parameter returns Parameter:
     {Parameter}
     type=[Type|EString]
-	name=EString;        
+        name=EString;  
 
 enum Visibility returns Visibility:
 	public = '+' | private = '-' | protected = '#' | package = "~" 
 ;
-        
+
+TAssociation returns textRam::TAssociation:
+    {textRam::TAssociation}
+    fromEnd=TAssociationEnd "->" toEnd=TAssociationEnd  '{' name=EString  '}'  
+;
+
+TAssociationEnd returns textRam::TAssociationEnd:
+	{textRam::TAssociationEnd}
+    lowerBound=ElementBound
+    '..'
+    upperBound=ElementBound
+    classReference=[Class|EString]
+;
+
+ElementBound returns ecore::EInt:
+	'*' | INT;
