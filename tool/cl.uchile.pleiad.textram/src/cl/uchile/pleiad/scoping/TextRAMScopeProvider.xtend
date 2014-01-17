@@ -3,7 +3,10 @@
  */
 package cl.uchile.pleiad.scoping
 
-import ca.mcgill.cs.sel.ram.StructuralView
+import ca.mcgill.cs.sel.ram.Association
+import ca.mcgill.cs.sel.ram.RamFactory
+import cl.uchile.pleiad.textRam.TAssociationEnd
+import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.types.ITypeSystem
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EReference
@@ -22,12 +25,12 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	@Inject extension ITypeSystem typeSystem 
 	
-	def IScope scope_Operation_returnType(StructuralView structuralView, EReference reference)
+	def IScope scope_Operation_returnType(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor(structuralView.getDefaultTypes)
 	}
 	
-	def IScope scope_Attribute_type(StructuralView structuralView, EReference reference)
+	def IScope scope_Attribute_type(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor(structuralView.getPrimitiveTypes)
 	}

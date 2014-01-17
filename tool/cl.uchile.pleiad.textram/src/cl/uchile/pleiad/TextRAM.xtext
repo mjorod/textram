@@ -22,6 +22,7 @@ AbstractStructuralView returns StructuralView:
     TStructuralView
 ; 
 
+
 TStructuralView returns textRam::TStructuralView:
     {textRam::TStructuralView}
     'structure'
