@@ -7,24 +7,28 @@ import ca.mcgill.cs.sel.ram.Type
 import org.eclipse.emf.common.util.EList
 import ca.mcgill.cs.sel.ram.RamPackage
 import ca.mcgill.cs.sel.ram.PrimitiveType
+import org.eclipse.emf.common.util.BasicEList
 
 class TypeSystem implements ITypeSystem {
 	
 	override getDefaultTypes(StructuralView structuralView) {
-		val EList<Type> typesToReturn = structuralView.getTypes();
 		
-		typesToReturn.appendPrimitiveTypes
+		structuralView.types.appendPrimitiveTypes
 		
-//		typesToReturn.appendClasses(structuralView.getClasses.filter(typeof(Class)))
-				
-		return typesToReturn
+		return structuralView.allTypes
 	}
 	
-	private static def appendClasses(EList<Type> typesToReturn, Iterable<Class> classes) {
-		classes.forEach [ c |
-			if (typesToReturn.contains(c) == false)
- 		   		typesToReturn.add(c)
-		]
+	private static def getAllTypes(StructuralView structuralView) {
+		val EList<Type>  typeList = new BasicEList<Type> 
+		for ( clazz : structuralView.classes ) {
+			typeList.add(clazz)
+		}
+		
+		for ( type : structuralView.types ) {
+			typeList.add(type)
+		}
+		
+		typeList
 	}
 	
 	private static def appendPrimitiveTypes(EList<Type> typesToReturn) {
