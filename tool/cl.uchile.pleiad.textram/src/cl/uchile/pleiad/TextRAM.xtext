@@ -10,6 +10,7 @@ Aspect returns Aspect:
 name=EString
 '{'
 	structuralView=TStructuralView
+	('instantiations' '{' instantiations+=Instantiation ( ";"? instantiations+=Instantiation)* '}' )?
 '}';
 
 EString returns ecore::EString:
@@ -21,7 +22,6 @@ EInt returns ecore::EInt:
 AbstractStructuralView returns StructuralView:
     TStructuralView
 ; 
-
 
 TStructuralView returns textRam::TStructuralView:
     {textRam::TStructuralView}
@@ -81,13 +81,12 @@ RVoid:
     {RVoid}
 ;
   
-
 Class:
     {Class}
     (abstract?='abstract')?
     'class'
     (partial?='|')?
-    name=EString
+    name=EString (':' superTypes+=[Classifier|EString])?
     '{'
         ( 'attributes' '{' attributes+=Attribute ( ";"? attributes+=Attribute)* '}' )?
         ( 'operations' '{' operations+=Operation ( ";"? operations+=Operation)* '}' )?
@@ -127,11 +126,48 @@ TAssociation returns textRam::TAssociation:
 
 TAssociationEnd returns textRam::TAssociationEnd:
 	{textRam::TAssociationEnd}
-    lowerBound=ElementBound
-    '..'
-    upperBound=ElementBound
+    (lowerBound=ElementBound
+    '..')?
+    (upperBound=ElementBound)?
     classReference=[Class|EString]
 ;
 
 ElementBound returns ecore::EInt:
 	'*' | INT;
+	
+Instantiation returns Instantiation:
+    ('type' type=InstantiationType)?
+    externalAspect=[Aspect|EString]
+    ('{' mappings+=ClassifierMapping ( ";"? mappings+=ClassifierMapping)* '}' )
+;
+    
+enum InstantiationType returns InstantiationType:
+    Depends = 'Depends' | Extends = 'Extends';
+    
+ClassifierMapping returns ClassifierMapping:
+    fromElement=[Classifier|EString] 
+    '->'
+    toElement=[Classifier|EString]
+	('operationMappings' '{' operationMappings+=OperationMapping ( ";"? operationMappings+=OperationMapping)* '}' )?
+	('attributeMappings' '{' attributeMappings+=AttributeMapping ( ";"? attributeMappings+=AttributeMapping)* '}' )?
+;
+
+OperationMapping returns OperationMapping:
+    fromElement=[Operation|EString]
+    '->'
+    toElement=[Operation|EString]
+    //('parameterMappings' '{' parameterMappings+=ParameterMapping ( "," parameterMappings+=ParameterMapping)* '}' )?
+;
+
+AttributeMapping returns AttributeMapping:
+    fromElement=[Attribute|EString]
+    toElement=[Attribute|EString]
+;
+    
+
+//ParameterMapping returns ParameterMapping:
+//    'ParameterMapping'
+//    '{'
+//            'fromElement' fromElement=[Parameter|EString]
+//            'toElement' toElement=[Parameter|EString]
+//    '}';     
