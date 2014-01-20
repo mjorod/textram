@@ -1,13 +1,11 @@
 package cl.uchile.pleiad.types
 
-import ca.mcgill.cs.sel.ram.Class
+import ca.mcgill.cs.sel.ram.PrimitiveType
 import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
-import org.eclipse.emf.common.util.EList
-import ca.mcgill.cs.sel.ram.RamPackage
-import ca.mcgill.cs.sel.ram.PrimitiveType
 import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.EList
 
 class TypeSystem implements ITypeSystem {
 	
@@ -51,6 +49,8 @@ class TypeSystem implements ITypeSystem {
 
 		structuralView.getTypes().filter(typeof(PrimitiveType)) as EList<PrimitiveType>
 	}
+	
+
 	
 	
 }
