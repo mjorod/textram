@@ -23,12 +23,12 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	@Inject extension ITypeSystem typeSystem 
 	
-	def IScope scope_Operation_returnType(TStructuralView structuralView, EReference reference)
+	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor(structuralView.getDefaultTypes)
 	}
 	
-	def IScope scope_Attribute_type(TStructuralView structuralView, EReference reference)
+	def IScope scope_TAttribute_type(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor(structuralView.getPrimitiveTypes)
 	}

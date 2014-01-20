@@ -1,6 +1,7 @@
 package cl.uchile.pleiad.textram.tests
 
 import ca.mcgill.cs.sel.ram.Aspect
+import cl.uchile.pleiad.TextRAMTestsInjectorProvider
 import com.google.inject.Inject
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -8,8 +9,6 @@ import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.junit.Test
 import org.junit.runner.RunWith
-import cl.uchile.pleiad.TextRAMTestsInjectorProvider
-import org.junit.Before
 
 /*TODO: testAspectModelWithNoNameIsNotAllowed
  *      testAspectModelWithStrangeCharsIsNotAllowed
@@ -42,9 +41,7 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-					operations {
-		        		-  int op()
-		        	}        
+					- int op()
 		        }	
 		    }
 		}
@@ -60,9 +57,7 @@ class TextRamParserTest {
 					
 				}
 				class C1 {
-					operations {
-		        		-  CA operation()
-		        	}
+					- CA operation()
 		        }	
 		    }
 		}
@@ -75,9 +70,7 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-					operations {
-		        		-  int operation(int parm1)
-		        	}        
+		        	- int operation(int parm1)
 		        }	
 		    }
 		}
@@ -90,9 +83,7 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-					operations {
-		        		-  int operation(int parm1, char parm2, boolean parm3)
-		        	}        
+					-  int operation(int parm1, char parm2, boolean parm3)        
 		        }	
 		    }
 		}
@@ -105,9 +96,7 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-					operations {
-		        		-  int operation(ExistingClass parm1, char parm2, ExistingClass parm3)
-		        	}        
+	        		-  int operation(ExistingClass parm1, char parm2, ExistingClass parm3)
 		        }
 				class ExistingClass {
 					
@@ -123,9 +112,7 @@ class TextRamParserTest {
 		aspect A { 
 			structure {
 				class C1 {
-					attributes {
-	        			int myAttr
-	        		}
+        			int myAttr
 		        }
 		    }
 		}
@@ -138,11 +125,9 @@ class TextRamParserTest {
 		aspect A {
 			structure {
 				class C1 {
-					attributes {
-						int myAttr
-						char MyChar;
-						char MtOtherChar
-					}
+					int myAttr
+					char MyChar;
+					char MtOtherChar
 				}
 			}
 		}
@@ -155,13 +140,9 @@ class TextRamParserTest {
 		aspect A {
 			structure {
 				class C1 {
-					attributes {
-						int myAttr
-						char myChar
-					}
-					operations {
-						- boolean myBooleanOper()
-					}
+					int myAttr
+					char myChar
+					- boolean myBooleanOper()
 				}
 			}
 		}
@@ -187,9 +168,7 @@ class TextRamParserTest {
 		aspect A {
 			structure {
 				class C1 {
-					operations {
-						- int |myPartialMethod()
-					}
+					- int |myPartialMethod()
 				}
 			}
 		}
@@ -282,9 +261,7 @@ class TextRamParserTest {
 		aspect A {
 			structure {
 				class Super {
-					attributes {
-						int myInt
-					}
+					int myInt
 				}
 				
 				class Derived : Super {
@@ -294,5 +271,4 @@ class TextRamParserTest {
 		}
 		'''.parse.assertNoErrors
 	}
-	 	
 }

@@ -31,9 +31,9 @@ class TextRamScopeProviderTest {
      	
      	val first = 
      	'''
-     	aspect ExternalAspect {
+		aspect ExternalAspect {
 			structure {
-				class ExternalClass { }
+				class |ExternalClass { }
 				class SecondExternalClass { }
 			}
 		}
@@ -47,7 +47,7 @@ class TextRamScopeProviderTest {
 			}
 			instantiations {
 				ExternalAspect {
-					ExternalClass -> MyClass
+					|ExternalClass -> MyClass 
 				}
 			}
 		}
@@ -58,9 +58,5 @@ class TextRamScopeProviderTest {
      	
      	second.instantiations.head.externalAspect.assertSame(first)
      	second.instantiations.head.externalAspect.structuralView.classes.head.assertSame(first.structuralView.classes.head)
-     	
-     }
-	
-	
-	
+     }	
 }

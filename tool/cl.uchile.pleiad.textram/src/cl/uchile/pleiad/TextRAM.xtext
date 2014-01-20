@@ -32,22 +32,14 @@ TStructuralView returns textRam::TStructuralView:
     '}';
         
 Classifier returns Classifier:
-    Class;
+    TClass;
 
 Type returns Type:
-    Class | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat;
+    TClass | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat;
         
 PrimitiveType returns PrimitiveType:
     RBoolean | RInt | RChar | RString | RDouble | RFloat;// | REnum;
 
-TypedElement returns TypedElement:
-    Attribute;
-
-TemporaryProperty returns TemporaryProperty:
-    Attribute;
-        
-StructuralFeature returns StructuralFeature:
-    Attribute;
 
 RString:
     {RString}
@@ -80,26 +72,33 @@ RBoolean:
 RVoid:
     {RVoid}
 ;
+
+AbstractClass returns Class:
+	TClass
+;
+
+TClassMember returns textRam::TClassMember:
+	TAttribute | TOperation
+;
   
-Class:
-    {Class}
+TClass returns textRam::TClass:
+    {textRam::TClass}
     (abstract?='abstract')?
     'class'
     (partial?='|')?
     name=EString (':' superTypes+=[Classifier|EString])?
     '{'
-        ( 'attributes' '{' attributes+=Attribute ( ";"? attributes+=Attribute)* '}' )?
-        ( 'operations' '{' operations+=Operation ( ";"? operations+=Operation)* '}' )?
+    	( members+=TClassMember  ( ";"? members+= TClassMember)*  )?
     '}';
 
-Attribute returns Attribute:
-    {Attribute}
+TAttribute returns textRam::TAttribute:
+    {textRam::TAttribute}
     (static?='static')?
     type=[PrimitiveType|EString]
     name=EString;
 
-Operation returns Operation:
-    {Operation}
+TOperation returns textRam::TOperation:
+    {textRam::TOperation}
     (abstract?='abstract')?
     (static?='static')?
     visibility=Visibility
@@ -138,14 +137,24 @@ ElementBound returns ecore::EInt:
 Instantiation returns Instantiation:
     ('type' type=InstantiationType)?
     externalAspect=[Aspect|EString]
-    ('{' mappings+=ClassifierMapping ( ";"? mappings+=ClassifierMapping)* '}' )
+    ('{' mappings+=TClassifierMapping ( ";"? mappings+=TClassifierMapping)* '}' )
 ;
     
 enum InstantiationType returns InstantiationType:
     Depends = 'Depends' | Extends = 'Extends';
     
-ClassifierMapping returns ClassifierMapping:
-    fromElement=[Classifier|EString] 
+
+AbstractClassifierMapping returns ClassifierMapping:
+    TClassifierMapping
+; 
+
+Mapping:
+	OperationMapping | AttributeMapping
+;
+
+TClassifierMapping returns textRam::TClassifierMapping:
+    ('|')?
+    fromElement=[Classifier|EString]('<' '>')?
     '->'
     toElement=[Classifier|EString]
 	('operationMappings' '{' operationMappings+=OperationMapping ( ";"? operationMappings+=OperationMapping)* '}' )?
