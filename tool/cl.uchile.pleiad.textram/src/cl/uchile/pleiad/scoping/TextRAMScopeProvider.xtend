@@ -3,9 +3,7 @@
  */
 package cl.uchile.pleiad.scoping
 
-import ca.mcgill.cs.sel.ram.Association
-import ca.mcgill.cs.sel.ram.RamFactory
-import cl.uchile.pleiad.textRam.TAssociationEnd
+import ca.mcgill.cs.sel.ram.Instantiation
 import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.types.ITypeSystem
 import com.google.inject.Inject
@@ -33,6 +31,10 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_Attribute_type(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor(structuralView.getPrimitiveTypes)
+	}
+	
+	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
+		Scopes::scopeFor(instantiation.externalAspect.structuralView.classes)
 	}
 	
 }
