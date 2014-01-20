@@ -56,7 +56,9 @@ class TextRamScopeProviderTest {
      	first.assertNoErrors
      	second.assertNoErrors
      	
-     	second.instantiations.head.externalAspect.assertSame(first.structuralView.classes.head)
+     	second.instantiations.head.externalAspect.assertSame(first)
+     	second.instantiations.head.externalAspect.structuralView.classes.head.assertSame(first.structuralView.classes.head)
+     	
      }
 	
 	
