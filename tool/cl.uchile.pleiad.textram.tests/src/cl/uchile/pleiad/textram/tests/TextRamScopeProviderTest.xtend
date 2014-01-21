@@ -1,17 +1,18 @@
 package cl.uchile.pleiad.textram.tests
 
-import org.junit.runner.RunWith
-import org.eclipse.xtext.junit4.InjectWith
-import org.eclipse.xtext.junit4.XtextRunner
-import cl.uchile.pleiad.TextRAMTestsInjectorProvider
 import ca.mcgill.cs.sel.ram.Aspect
+import ca.mcgill.cs.sel.ram.InstantiationType
+import cl.uchile.pleiad.TextRAMTestsInjectorProvider
 import com.google.inject.Inject
-import org.eclipse.xtext.junit4.util.ParseHelper
-import org.eclipse.xtext.scoping.IScopeProvider
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper
-import org.junit.Test
 import com.google.inject.Provider
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.xtext.junit4.InjectWith
+import org.eclipse.xtext.junit4.XtextRunner
+import org.eclipse.xtext.junit4.util.ParseHelper
+import org.eclipse.xtext.junit4.validation.ValidationTestHelper
+import org.junit.Test
+import org.junit.runner.RunWith
+
 import static extension org.junit.Assert.*
 
 @RunWith(typeof(XtextRunner))
@@ -61,7 +62,7 @@ class TextRamScopeProviderTest {
      }
 
  	@Test 
-	def void testBindPartialMethods() {
+	def void testInstantiationExtension() {
 		val resourceSet = resourceSetProvider.get
 		
 		val first = 
@@ -69,8 +70,11 @@ class TextRamScopeProviderTest {
 		aspect ExternalAspect {
 			structure {
 				class |ExternalClass { 
-					- int NonPartialMethod()
-					- int |PartialMethod(int parm1)
+					- int   nonPartialMethod()
+					- int   |partialMethod(int parm1)
+					+ float publicMethod(float f1)
+					~ void intraAspectMethod()
+					int attribute
 				}
 				class SecondExternalClass { }
 			}
@@ -82,12 +86,16 @@ class TextRamScopeProviderTest {
 		aspect Aspect {
 			structure {
 				class MyClass { 
-					- int MyOperation(int parm1)
+					- int   innerNonPartialMethod()
+					- int   |innerPartialMethod(int parm1)
+					+ float innerPublicMethod(float f1)
+					~ void innerIntraAspectMethod()
+					int innerAttribute
 				}
 			}
 			instantiations {
-				ExternalAspect {
-					|ExternalClass<|PartialMethod> -> MyClass<MyOperation> 
+				extends ExternalAspect {
+					|ExternalClass<nonPartialMethod, |partialMethod, publicMethod, intraAspectMethod, attribute> -> MyClass<innerNonPartialMethod, |innerPartialMethod, innerPublicMethod, innerIntraAspectMethod, innerAttribute>
 				}
 			}
 		}
@@ -96,8 +104,53 @@ class TextRamScopeProviderTest {
 		first.assertNoErrors
 		second.assertNoErrors
 		
-//		second.instantiations.head.externalAspect.assertSame(first)
-//	 	second.instantiations.head.externalAspect.structuralView.classes.head.assertSame(first.structuralView.classes.head)
-	}     
+		second.instantiations.head.type.assertSame( InstantiationType.EXTENDS )
+	}
+	
+	@Test 
+	def void testInstantiationCustomization() {
+		val resourceSet = resourceSetProvider.get
+		
+		val first = 
+		'''
+		aspect ExternalAspect {
+			structure {
+				class |ExternalClass { 
+					- int   nonPartialMethod()
+					- int   |partialMethod(int parm1)
+					+ float publicMethod(float f1)
+					~ void intraAspectMethod()
+					int attribute
+				}
+				class SecondExternalClass { }
+			}
+		}
+		'''.parse(resourceSet)
+		
+		val second = 
+		'''
+		aspect Aspect {
+			structure {
+				class MyClass { 
+					- int   innerNonPartialMethod()
+					- int   |innerPartialMethod(int parm1)
+					+ float innerPublicMethod(float f1)
+					~ void innerIntraAspectMethod()
+					int innerAttribute
+				}
+			}
+			instantiations {
+				dependsOn ExternalAspect {
+					|ExternalClass<publicMethod> -> MyClass<innerPublicMethod>
+				}
+			}
+		}
+		'''.parse(resourceSet)
+		
+		first.assertNoErrors
+		second.assertNoErrors
+		
+		second.instantiations.head.type.assertSame( InstantiationType.DEPENDS )
+	} 
      
 }
