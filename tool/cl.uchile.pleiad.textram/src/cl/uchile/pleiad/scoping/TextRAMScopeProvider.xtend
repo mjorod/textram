@@ -47,13 +47,18 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 	
 	def IScope scope_TClassifierMapping_fromMember(TClassifierMapping classifierMapping, EReference reference) {
+		// instantiation type from the container of classifierMapping
 		val instantiationType = (classifierMapping.eContainer as Instantiation).type
+		
+		// class from external aspect
 		val fromElement = classifierMapping.fromElement as TClass
 		
+		// customization is allowed to use only public elements
 		if (instantiationType == InstantiationType.DEPENDS) {
 			return Scopes::scopeFor( fromElement.members.filter(TOperation).filter(t | t.visibility == Visibility.PUBLIC) )
 		}
 		
+		// extensions is allowed to use public and private elements
 		return Scopes::scopeFor( fromElement.members )	
 	}
 	
