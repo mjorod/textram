@@ -6,11 +6,13 @@ import java.io.OutputStream;
 import java.util.Collections;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import ca.mcgill.cs.sel.ram.Aspect;
@@ -19,7 +21,9 @@ import ca.mcgill.cs.sel.ram.AssociationEnd;
 import ca.mcgill.cs.sel.ram.Class;
 import ca.mcgill.cs.sel.ram.Classifier;
 import ca.mcgill.cs.sel.ram.RamFactory;
+import ca.mcgill.cs.sel.ram.RamPackage;
 import ca.mcgill.cs.sel.ram.StructuralView;
+import ca.mcgill.sel.ram.controller.edit.AdapterFactoryUtil;
 import cl.uchile.pleiad.textRam.TAssociation;
 import cl.uchile.pleiad.textRam.TStructuralView;
 
@@ -36,16 +40,16 @@ public class RAMPersistenceAdapter {
     	Aspect newAspect = RamFactory.eINSTANCE.createAspect();
     	newAspect.setName(aspect.getName());
     	
+    	EditingDomain editingDomain = AdapterFactoryUtil.getEditingDomain(newAspect);
+    	CompoundCommand compoundCommand = new CompoundCommand();
+    	
     	StructuralView structuralView = RamFactory.eINSTANCE.createStructuralView();
     	
-    	newAspect.setStructuralView(structuralView);
+    	compoundCommand.append(AddCommand.create(editingDomain, newAspect, RamPackage.Literals.STRUCTURAL_VIEW, structuralView));
+    	compoundCommand.append(AddCommand.create(editingDomain, structuralView, RamPackage.Literals.TYPE, EcoreUtil.copyAll(tsv.getTypes())));
+    	compoundCommand.append(AddCommand.create(editingDomain, structuralView, RamPackage.Literals.CLASSIFIER, EcoreUtil.copyAll(tsv.getClasses())));
     	
-    	// types
-        structuralView.getTypes().addAll(EcoreUtil.copyAll(tsv.getTypes()));
-    	
-        structuralView.getClasses().addAll(EcoreUtil.copyAll(tsv.getClasses()));
-        
-    	// associations
+        // associations
         for ( TAssociation t : tsv.getTAssociations() ) {
         	 Class from = null;
         	 Class to = null;
@@ -53,7 +57,7 @@ public class RAMPersistenceAdapter {
         	 String classNameFrom = t.getFromEnd().getClassReference().getName();
         	 String classNameTo = t.getToEnd().getClassReference().getName();
         
-        	 for ( Classifier c : newAspect.getStructuralView().getClasses() ) {
+        	 for ( Classifier c : aspect.getStructuralView().getClasses() ) {
         		 if ( c.getName() == classNameFrom ) {
             		from = (Class) c;
             	 }
@@ -73,7 +77,7 @@ public class RAMPersistenceAdapter {
              fromEnd.setLowerBound(1);
              fromEnd.setName(toLowerCaseFirst(to.getName()));
              
-             from.getAssociationEnds().add(fromEnd);
+             compoundCommand.append(AddCommand.create(editingDomain, from, RamPackage.Literals.CLASS__ASSOCIATION_ENDS, fromEnd));
              
              // create to association end
              AssociationEnd toEnd = RamFactory.eINSTANCE.createAssociationEnd();
@@ -81,11 +85,14 @@ public class RAMPersistenceAdapter {
              toEnd.setLowerBound(1);
              toEnd.setName(toLowerCaseFirst(from.getName()));
              
-             to.getAssociationEnds().add(toEnd);
+             compoundCommand.append(AddCommand.create(editingDomain, to, RamPackage.Literals.CLASS__ASSOCIATION_ENDS, toEnd));
              
              // create command for association
-             structuralView.getAssociations().add(association);
+             compoundCommand.append(AddCommand.create(editingDomain, structuralView, RamPackage.Literals.STRUCTURAL_VIEW__ASSOCIATIONS, association));
+
         }
+        
+        doExecute(editingDomain, compoundCommand);
         
         ResourceSet resourceSet = new ResourceSetImpl();
     	
