@@ -26,7 +26,7 @@ class TextRamScopeProviderTest {
 	
 	
 	 @Test 
-	 def void testScopeForExternalAspect() {
+	 def void testBindPartialClass() {
      	val resourceSet = resourceSetProvider.get
      	
      	val first = 
@@ -58,5 +58,46 @@ class TextRamScopeProviderTest {
      	
      	second.instantiations.head.externalAspect.assertSame(first)
      	second.instantiations.head.externalAspect.structuralView.classes.head.assertSame(first.structuralView.classes.head)
-     }	
+     }
+
+ 	@Test 
+	def void testBindPartialMethods() {
+		val resourceSet = resourceSetProvider.get
+		
+		val first = 
+		'''
+		aspect ExternalAspect {
+			structure {
+				class |ExternalClass { 
+					- int NonPartialMethod()
+					- int |PartialMethod(int parm1)
+				}
+				class SecondExternalClass { }
+			}
+		}
+		'''.parse(resourceSet)
+		
+		val second = 
+		'''
+		aspect Aspect {
+			structure {
+				class MyClass { 
+					- int MyOperation(int parm1)
+				}
+			}
+			instantiations {
+				ExternalAspect {
+					|ExternalClass<|PartialMethod> -> MyClass<MyOperation> 
+				}
+			}
+		}
+		'''.parse(resourceSet)
+		
+		first.assertNoErrors
+		second.assertNoErrors
+		
+//		second.instantiations.head.externalAspect.assertSame(first)
+//	 	second.instantiations.head.externalAspect.structuralView.classes.head.assertSame(first.structuralView.classes.head)
+	}     
+     
 }

@@ -135,48 +135,22 @@ ElementBound returns ecore::EInt:
 	'*' | INT;
 	
 Instantiation returns Instantiation:
-    ('type' type=InstantiationType)?
+    (type=InstantiationType)?
     externalAspect=[Aspect|EString]
     ('{' mappings+=TClassifierMapping ( ";"? mappings+=TClassifierMapping)* '}' )
 ;
     
 enum InstantiationType returns InstantiationType:
-    Depends = 'Depends' | Extends = 'Extends';
+    Depends = 'dependsOn' | Extends = 'extends';
     
 
 AbstractClassifierMapping returns ClassifierMapping:
     TClassifierMapping
 ; 
 
-Mapping:
-	OperationMapping | AttributeMapping
-;
-
 TClassifierMapping returns textRam::TClassifierMapping:
     ('|')?
-    fromElement=[Classifier|EString]('<' '>')?
+    fromElement=[Classifier|EString] ('<' ('|')? fromMember+=[textRam::TClassMember] ("," ('|')? fromMember+=[textRam::TClassMember])* '>')?
     '->'
-    toElement=[Classifier|EString]
-	('operationMappings' '{' operationMappings+=OperationMapping ( ";"? operationMappings+=OperationMapping)* '}' )?
-	('attributeMappings' '{' attributeMappings+=AttributeMapping ( ";"? attributeMappings+=AttributeMapping)* '}' )?
+    toElement=[Classifier|EString] ('<' ('|')? toMember+=[textRam::TClassMember] ("," ('|')? toMember+=[textRam::TClassMember])*  '>')?
 ;
-
-OperationMapping returns OperationMapping:
-    fromElement=[Operation|EString]
-    '->'
-    toElement=[Operation|EString]
-    //('parameterMappings' '{' parameterMappings+=ParameterMapping ( "," parameterMappings+=ParameterMapping)* '}' )?
-;
-
-AttributeMapping returns AttributeMapping:
-    fromElement=[Attribute|EString]
-    toElement=[Attribute|EString]
-;
-    
-
-//ParameterMapping returns ParameterMapping:
-//    'ParameterMapping'
-//    '{'
-//            'fromElement' fromElement=[Parameter|EString]
-//            'toElement' toElement=[Parameter|EString]
-//    '}';     

@@ -4,6 +4,8 @@
 package cl.uchile.pleiad.scoping
 
 import ca.mcgill.cs.sel.ram.Instantiation
+import cl.uchile.pleiad.textRam.TClass
+import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.types.ITypeSystem
 import com.google.inject.Inject
@@ -11,6 +13,9 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import ca.mcgill.cs.sel.ram.InstantiationType
+import ca.mcgill.cs.sel.ram.Visibility
+import cl.uchile.pleiad.textRam.TOperation
 
 /**
  * This class contains custom scoping description.
@@ -35,6 +40,26 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
 		Scopes::scopeFor(instantiation.externalAspect.structuralView.classes)
+	}
+	
+	def IScope scope_ClassifierMapping_toElement(TStructuralView structuralView, EReference reference) {
+		Scopes::scopeFor(structuralView.classes)
+	}
+	
+	def IScope scope_TClassifierMapping_fromMember(TClassifierMapping classifierMapping, EReference reference) {
+		val instantiationType = (classifierMapping.eContainer as Instantiation).type
+		val fromElement = classifierMapping.fromElement as TClass
+		
+		if (instantiationType == InstantiationType.DEPENDS) {
+			return Scopes::scopeFor( fromElement.members.filter(TOperation).filter(t | t.visibility == Visibility.PUBLIC) )
+		}
+		
+		return Scopes::scopeFor( fromElement.members )	
+	}
+	
+	def IScope scope_TClassifierMapping_toMember(TClassifierMapping classifierMapping, EReference reference ) {
+		val toElement =classifierMapping.toElement as TClass 
+		Scopes::scopeFor( toElement.members )
 	}
 	
 }
