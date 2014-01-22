@@ -18,13 +18,23 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import ca.mcgill.cs.sel.ram.Aspect;
 import ca.mcgill.cs.sel.ram.Association;
 import ca.mcgill.cs.sel.ram.AssociationEnd;
+import ca.mcgill.cs.sel.ram.Attribute;
+import ca.mcgill.cs.sel.ram.AttributeMapping;
 import ca.mcgill.cs.sel.ram.Class;
 import ca.mcgill.cs.sel.ram.Classifier;
+import ca.mcgill.cs.sel.ram.ClassifierMapping;
+import ca.mcgill.cs.sel.ram.Instantiation;
+import ca.mcgill.cs.sel.ram.Mapping;
 import ca.mcgill.cs.sel.ram.RamFactory;
 import ca.mcgill.cs.sel.ram.RamPackage;
 import ca.mcgill.cs.sel.ram.StructuralView;
 import ca.mcgill.sel.ram.controller.edit.AdapterFactoryUtil;
 import cl.uchile.pleiad.textRam.TAssociation;
+import cl.uchile.pleiad.textRam.TAttribute;
+import cl.uchile.pleiad.textRam.TClass;
+import cl.uchile.pleiad.textRam.TClassMember;
+import cl.uchile.pleiad.textRam.TClassifierMapping;
+import cl.uchile.pleiad.textRam.TOperation;
 import cl.uchile.pleiad.textRam.TStructuralView;
 
 public class RAMPersistenceAdapter {
@@ -35,7 +45,7 @@ public class RAMPersistenceAdapter {
     public static String serializeRAMAspect(Aspect aspect, String path) {
     	String result = "";
     	
-    	TStructuralView tsv = (TStructuralView)aspect.getStructuralView();
+    	TStructuralView tStructuralView = (TStructuralView)aspect.getStructuralView();
     	
     	Aspect newAspect = RamFactory.eINSTANCE.createAspect();
     	newAspect.setName(aspect.getName());
@@ -46,11 +56,58 @@ public class RAMPersistenceAdapter {
     	StructuralView structuralView = RamFactory.eINSTANCE.createStructuralView();
     	
     	compoundCommand.append(AddCommand.create(editingDomain, newAspect, RamPackage.Literals.STRUCTURAL_VIEW, structuralView));
-    	compoundCommand.append(AddCommand.create(editingDomain, structuralView, RamPackage.Literals.TYPE, EcoreUtil.copyAll(tsv.getTypes())));
-    	compoundCommand.append(AddCommand.create(editingDomain, structuralView, RamPackage.Literals.CLASSIFIER, EcoreUtil.copyAll(tsv.getClasses())));
+    	compoundCommand.append(AddCommand.create(editingDomain, structuralView, RamPackage.Literals.TYPE, EcoreUtil.copyAll(tStructuralView.getTypes())));
+    	
+    	// classes
+    	for ( Classifier classifier : tStructuralView.getClasses() ) {
+    		TClass tClass = (TClass)classifier;
+    		
+    		Class newClass = RamFactory.eINSTANCE.createClass();
+    		newClass.setName(tClass.getName());
+    		newClass.setAbstract(tClass.isAbstract());
+    		newClass.setPartial(tClass.isPartial());
+
+    		// creates superTypes
+    		compoundCommand.append(AddCommand.create(editingDomain, newClass, RamPackage.Literals.CLASS__SUPER_TYPES, EcoreUtil.copyAll(tClass.getSuperTypes())));
+    		
+    		// add class
+    		compoundCommand.append(AddCommand.create(editingDomain, structuralView, RamPackage.Literals.CLASSIFIER, newClass));
+    		
+    		// members
+    		for (TClassMember classMember : tClass.getMembers() ) {
+    			if ( classMember instanceof TAttribute ) {
+    				TAttribute tAttribute = (TAttribute)classMember;
+    				
+    				// creates Attribute
+    				Attribute newAttribute = RamFactory.eINSTANCE.createAttribute();
+    				
+    				// set name
+    				newAttribute.setName(tAttribute.getName());
+    				
+    				// set static feature
+    				newAttribute.setStatic(tAttribute.isStatic());
+    				
+//    				compoundCommand.append(AddCommand.create(editingDomain, newAttribute, RamPackage.Literals.STRUCTURAL_FEATURE__STATIC, tAttribute.isStatic()));
+    				
+    				// set type feature
+    				newAttribute.setType(tAttribute.getType());
+//    				compoundCommand.append(AddCommand.create(editingDomain, newAttribute, RamPackage.Literals.ATTRIBUTE__TYPE, tAttribute.getType()));
+    				
+    				// attach attribute to the class attributes
+    				compoundCommand.append(AddCommand.create(editingDomain, newClass, RamPackage.Literals.CLASS__ATTRIBUTES, newAttribute));
+    				
+    			}
+    			
+//    			if ( classMember instanceof TOperation ) {
+//    				
+//    			}
+    			
+    		}
+    	}
+    	
     	
         // associations
-        for ( TAssociation t : tsv.getTAssociations() ) {
+        for ( TAssociation t : tStructuralView.getTAssociations() ) {
         	 Class from = null;
         	 Class to = null;
         	
@@ -91,6 +148,67 @@ public class RAMPersistenceAdapter {
              compoundCommand.append(AddCommand.create(editingDomain, structuralView, RamPackage.Literals.STRUCTURAL_VIEW__ASSOCIATIONS, association));
 
         }
+        
+        // aspects instantiations
+//        for ( Instantiation instantiation : aspect.getInstantiations() ) {
+//        	
+//        	Instantiation newInstantiation = RamFactory.eINSTANCE.createInstantiation();
+//        	
+//        	// instantiation type
+//        	compoundCommand.append(AddCommand.create(editingDomain, newInstantiation, RamPackage.Literals.INSTANTIATION__TYPE, instantiation.getType()));
+//        	
+//        	// external aspect
+//        	compoundCommand.append(AddCommand.create(editingDomain, newInstantiation, RamPackage.Literals.INSTANTIATION__EXTERNAL_ASPECT, instantiation.getExternalAspect()));
+//        	
+//        	// mappings
+//        	for (Mapping mapping : instantiation.getMappings() )
+//        	{
+//        		ClassifierMapping newClassifierMapping = RamFactory.eINSTANCE.createClassifierMapping();
+//        		
+//        		TClassifierMapping tClassifierMapping = (TClassifierMapping)mapping;
+//        		
+//        		// from element
+//        		compoundCommand.append(AddCommand.create(editingDomain, newClassifierMapping, RamPackage.Literals.CLASSIFIER_MAPPING__FROM_ELEMENT, EcoreUtil.copy(tClassifierMapping.getFromElement())));
+//        		
+//        		// to element
+//        		compoundCommand.append(AddCommand.create(editingDomain, newClassifierMapping, RamPackage.Literals.CLASSIFIER_MAPPING__TO_ELEMENT, EcoreUtil.copy(tClassifierMapping.getToElement())));
+//        		
+//        		// index to get ClassMemberTo
+//        		int classMemberPosition = 0;
+//        		// members mappings
+//        		for ( TClassMember classMemberFrom : tClassifierMapping.getFromMember() ) {
+//
+//        			// class member To
+//        			TClassMember classMemberTo = tClassifierMapping.getFromMember().get(classMemberPosition);
+//        			classMemberPosition += 1;
+//        			
+//        			// typeOf member
+//        			if (classMemberFrom instanceof TAttribute) {
+//        				
+//        				// creates attribute mapping
+//        				AttributeMapping newAttributeMapping = RamFactory.eINSTANCE.createAttributeMapping();
+//        				
+//        				// creates attribute mapping from element
+////        				compoundCommand.append(AddCommand.create(editingDomain, newAttributeMapping, RamPackage.Literals.ATTRIBUTE_MAPPING, classMemberFrom.get ));
+//        				
+//        				// creates attribute mapping to element
+//        			}
+//        			
+//        			if (classMemberFrom instanceof TOperation) {
+//        				
+//        			}
+//        			
+//        		}
+//        		
+//        		
+//        	}
+//        
+//        	
+//        	
+//        	
+//        	
+//        }
+        
         
         doExecute(editingDomain, compoundCommand);
         

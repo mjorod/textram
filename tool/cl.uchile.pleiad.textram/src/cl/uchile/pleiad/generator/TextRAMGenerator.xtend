@@ -4,10 +4,10 @@
 package cl.uchile.pleiad.generator
 
 import ca.mcgill.cs.sel.ram.Aspect
+import cl.uchile.pleiad.converter.TextRAMModelConverter
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import cl.uchile.pleiad.util.RAMPersistenceAdapter
 
 //import org.eclipse.xtext.parsetree.reconstr.Serializer
 
@@ -22,7 +22,7 @@ class TextRAMGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
     	for (aspect : resource.allContents.toIterable.filter(typeof(Aspect))){
     		val relativePath = '''aspects/«aspect.name».ram'''
-    		val content = RAMPersistenceAdapter::serializeRAMAspect(aspect, relativePath)
+    		val content = TextRAMModelConverter::serializeRAMAspect(aspect)
     		fsa.generateFile(relativePath, content)
 	    }
      }
