@@ -150,64 +150,64 @@ public class RAMPersistenceAdapter {
         }
         
         // aspects instantiations
-//        for ( Instantiation instantiation : aspect.getInstantiations() ) {
-//        	
-//        	Instantiation newInstantiation = RamFactory.eINSTANCE.createInstantiation();
-//        	
-//        	// instantiation type
-//        	compoundCommand.append(AddCommand.create(editingDomain, newInstantiation, RamPackage.Literals.INSTANTIATION__TYPE, instantiation.getType()));
-//        	
-//        	// external aspect
-//        	compoundCommand.append(AddCommand.create(editingDomain, newInstantiation, RamPackage.Literals.INSTANTIATION__EXTERNAL_ASPECT, instantiation.getExternalAspect()));
-//        	
-//        	// mappings
-//        	for (Mapping mapping : instantiation.getMappings() )
-//        	{
-//        		ClassifierMapping newClassifierMapping = RamFactory.eINSTANCE.createClassifierMapping();
-//        		
-//        		TClassifierMapping tClassifierMapping = (TClassifierMapping)mapping;
-//        		
-//        		// from element
-//        		compoundCommand.append(AddCommand.create(editingDomain, newClassifierMapping, RamPackage.Literals.CLASSIFIER_MAPPING__FROM_ELEMENT, EcoreUtil.copy(tClassifierMapping.getFromElement())));
-//        		
-//        		// to element
-//        		compoundCommand.append(AddCommand.create(editingDomain, newClassifierMapping, RamPackage.Literals.CLASSIFIER_MAPPING__TO_ELEMENT, EcoreUtil.copy(tClassifierMapping.getToElement())));
-//        		
-//        		// index to get ClassMemberTo
-//        		int classMemberPosition = 0;
-//        		// members mappings
-//        		for ( TClassMember classMemberFrom : tClassifierMapping.getFromMember() ) {
-//
-//        			// class member To
-//        			TClassMember classMemberTo = tClassifierMapping.getFromMember().get(classMemberPosition);
-//        			classMemberPosition += 1;
-//        			
-//        			// typeOf member
-//        			if (classMemberFrom instanceof TAttribute) {
-//        				
-//        				// creates attribute mapping
-//        				AttributeMapping newAttributeMapping = RamFactory.eINSTANCE.createAttributeMapping();
-//        				
-//        				// creates attribute mapping from element
-////        				compoundCommand.append(AddCommand.create(editingDomain, newAttributeMapping, RamPackage.Literals.ATTRIBUTE_MAPPING, classMemberFrom.get ));
-//        				
-//        				// creates attribute mapping to element
-//        			}
-//        			
-//        			if (classMemberFrom instanceof TOperation) {
-//        				
-//        			}
-//        			
-//        		}
-//        		
-//        		
-//        	}
-//        
-//        	
-//        	
-//        	
-//        	
-//        }
+        for ( Instantiation instantiation : aspect.getInstantiations() ) {
+        	
+        	Instantiation newInstantiation = RamFactory.eINSTANCE.createInstantiation();
+        	
+        	// instantiation type
+        	compoundCommand.append(AddCommand.create(editingDomain, newInstantiation, RamPackage.Literals.INSTANTIATION__TYPE, instantiation.getType()));
+        	
+        	// external aspect
+        	compoundCommand.append(AddCommand.create(editingDomain, newInstantiation, RamPackage.Literals.INSTANTIATION__EXTERNAL_ASPECT, instantiation.getExternalAspect()));
+        	
+        	// mappings
+        	for (Mapping mapping : instantiation.getMappings() )
+        	{
+        		ClassifierMapping newClassifierMapping = RamFactory.eINSTANCE.createClassifierMapping();
+        		
+        		TClassifierMapping tClassifierMapping = (TClassifierMapping)mapping;
+        		
+        		// from element
+        		compoundCommand.append(AddCommand.create(editingDomain, newClassifierMapping, RamPackage.Literals.CLASSIFIER_MAPPING__FROM_ELEMENT, EcoreUtil.copy(tClassifierMapping.getFromElement())));
+        		
+        		// to element
+        		compoundCommand.append(AddCommand.create(editingDomain, newClassifierMapping, RamPackage.Literals.CLASSIFIER_MAPPING__TO_ELEMENT, EcoreUtil.copy(tClassifierMapping.getToElement())));
+        		
+        		// index to get ClassMemberTo
+        		int classMemberPosition = 0;
+        		// members mappings
+        		for ( TClassMember classMemberFrom : tClassifierMapping.getFromMember() ) {
+
+        			// class member To
+        			TClassMember classMemberTo = tClassifierMapping.getFromMember().get(classMemberPosition);
+        			classMemberPosition += 1;
+        			
+        			// typeOf member
+        			if (classMemberFrom instanceof TAttribute) {
+        				
+        				// creates attribute mapping
+        				AttributeMapping newAttributeMapping = RamFactory.eINSTANCE.createAttributeMapping();
+        				
+        				// creates attribute mapping from element
+//        				compoundCommand.append(AddCommand.create(editingDomain, newAttributeMapping, RamPackage.Literals.ATTRIBUTE_MAPPING, classMemberFrom.get ));
+        				
+        				// creates attribute mapping to element
+        			}
+        			
+        			if (classMemberFrom instanceof TOperation) {
+        				
+        			}
+        			
+        		}
+        		
+        		
+        	}
+        
+        	
+        	
+        	
+        	
+        }
         
         
         doExecute(editingDomain, compoundCommand);
