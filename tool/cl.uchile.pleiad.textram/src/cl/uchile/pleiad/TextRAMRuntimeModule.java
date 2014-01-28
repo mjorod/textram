@@ -5,8 +5,6 @@ package cl.uchile.pleiad;
 
 import org.eclipse.xtext.conversion.IValueConverterService;
 
-import cl.uchile.pleiad.converter.IModelConverter;
-import cl.uchile.pleiad.converter.ModelConverterProxy;
 import cl.uchile.pleiad.converter.TextRAMConverter;
 import cl.uchile.pleiad.types.ITypeSystem;
 import cl.uchile.pleiad.types.TypeSystem;
