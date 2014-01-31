@@ -5,31 +5,28 @@ import java.util.Map
 
 class ModelConverterProxy implements IModelConverter {
 	
-	private static var ModelConverterProxy instance;
-	private var Map<String, Aspect> aspects = newHashMap
+	private static val ModelConverterProxy instance = new ModelConverterProxy
+	private val Map<String, Aspect> aspects = newHashMap
 	
 	private new() {}
 	
 	def static getInstance() {
-		if (instance == null) { 
-			instance = new ModelConverterProxy
-		}
 		instance
 	}
 	
-	def reset() {
+	def void reset() {
 		aspects.clear
 	}
 	
-	override convertTextRAMModelToRAMModel(Aspect aspect) {
-		if (aspects.containsKey(aspect.name) == false) {
+	override convertTextRAMModelToRAMModel(Aspect textRamAspect) {
+		if (aspects.containsKey(textRamAspect.name) == false) {
 			val modelConverter = new ModelConverter
 			
-			val Aspect ramAspect = modelConverter.convertTextRAMModelToRAMModel(aspect)
+			val Aspect ramAspect = modelConverter.convertTextRAMModelToRAMModel(textRamAspect)
 			
-			aspects.put(aspect.name, ramAspect)
+			aspects.put(textRamAspect.name, ramAspect)
 		}
 		
-		aspects.get(aspect.name)
+		aspects.get(textRamAspect.name)
 	}
 }
