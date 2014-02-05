@@ -16,6 +16,8 @@ import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import ca.mcgill.cs.sel.ram.InstantiationType
 import ca.mcgill.cs.sel.ram.Visibility
 import cl.uchile.pleiad.textRam.TOperation
+import ca.mcgill.cs.sel.ram.Aspect
+import java.util.List
 
 /**
  * This class contains custom scoping description.
@@ -65,6 +67,18 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TClassifierMapping_toMember(TClassifierMapping classifierMapping, EReference reference ) {
 		val toElement =classifierMapping.toElement as TClass 
 		Scopes::scopeFor( toElement.members )
+	}
+	
+	def IScope scope_TMessageView_class(Aspect aspect, EReference reference) {
+		val classes = aspect.structuralView.classes.filter(TClass)
+		
+		Scopes::scopeFor( classes )
+	}
+	
+	def IScope scope_TMessageView_specifies(Aspect aspect, EReference reference) {
+		val operations = aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter(oper | oper.visibility == Visibility.PUBLIC).toList 
+		
+		Scopes::scopeFor( operations )
 	}
 	
 }

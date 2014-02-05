@@ -20,10 +20,21 @@ class TypeSystem implements ITypeSystem {
 		val EList<Type>  typeList = new BasicEList<Type> 
 		for ( clazz : structuralView.classes ) {
 			typeList.add(clazz)
+			
+			// it also add a RSet
+//			val rSet = RamFactory.eINSTANCE.createRSet()
+//			rSet.setType(clazz)
+//			rSet.setInstanceClassName(rSet.name)
+//			structuralView.types.add(rSet as Type)
 		}
 		
 		for ( type : structuralView.types ) {
 			typeList.add(type)
+			
+//			// it also add a RSet
+//			val rSet = RamFactory.eINSTANCE.createRSet()
+//			rSet.setType(type as ObjectType)
+//			typeList.add(rSet)
 		}
 		
 		typeList

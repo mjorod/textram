@@ -11,17 +11,26 @@ name=EString
 '{'
 	structuralView=TStructuralView
 	('instantiations' '{' instantiations+=Instantiation ( ";"? instantiations+=Instantiation)* '}' )?
+	('messages' '{' messageViews+=AbstractMessageView ( ";"? messageViews+=AbstractMessageView)* '}' )?
 '}';
 
+terminal TEMPLATE: (ID'<' ID '>')*;
+
 EString returns ecore::EString:
-    STRING | ID;
+    STRING | ID | TEMPLATE;
 
 EInt returns ecore::EInt:
     '-'? INT;
+    
+ReferenceType returns ReferenceType:
+    'ReferenceType' /* TODO: implement this rule and an appropriate IValueConverter */;    
 
 AbstractStructuralView returns StructuralView:
     TStructuralView
-; 
+;
+
+AbstractMessageView returns AbstractMessageView:
+	TMessageView;
 
 TStructuralView returns textRam::TStructuralView:
     {textRam::TStructuralView}
@@ -35,7 +44,10 @@ Classifier returns Classifier:
     TClass;
 
 Type returns Type:
-    TClass | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat;
+    TClass | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat | RSet;
+
+ObjectType returns ObjectType:
+    TClass | RBoolean | RInt | RChar | RString | RSet | RDouble | RFloat;    
         
 PrimitiveType returns PrimitiveType:
     RBoolean | RInt | RChar | RString | RDouble | RFloat;// | REnum;
@@ -71,6 +83,10 @@ RBoolean:
 
 RVoid:
     {RVoid}
+;
+
+RSet returns RSet:
+	{RSet}
 ;
 
 AbstractClass returns Class:
@@ -112,7 +128,7 @@ TOperation returns textRam::TOperation:
 Parameter returns Parameter:
     {Parameter}
     type=[Type|EString]
-        name=EString;  
+    name=EString;  
 
 enum Visibility returns Visibility:
 	public = '+' | private = '-' | protected = '#' | package = "~" 
@@ -154,3 +170,243 @@ TClassifierMapping returns textRam::TClassifierMapping:
     '->'
     toElement=[Classifier|EString] ('<' ('|')? toMember+=[textRam::TClassMember] ("," ('|')? toMember+=[textRam::TClassMember])*  '>')?
 ;
+
+TMessageView returns textRam::TMessageView:
+	{textRam::TMessageView}
+	'messageView' (class=[textRam::TClass]'.')? specifies=[textRam::TOperation|EString] '{'
+//		('specification' specification=TInteraction)?
+	'}'
+;
+
+//AbstractInteraction returns Interaction:
+//	TInteraction
+//;
+//
+//TInteraction returns textRam::TInteraction:
+//	'objects' '{' 
+//		objects+=TLifeline (';'? objects+=TLifeline )*
+//	'}'
+//	interactionMessages+=TInteractionMessage
+//;
+//
+//TInteractionMessage returns textRam::TInteractionMessage:
+//	{textRam::TInteractionMessage}
+//	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline]
+//;
+//
+//TLifeline returns textRam::TLifeline:
+//	name=EString ':' represents=[textRam::TStructuralFeature]; 
+//
+//TStructuralFeature returns textRam::TStructuralFeature:
+//        TAssociationEnd | TAttribute | TClass;
+
+//Message returns Message:
+//	'Message'
+//	'{'
+//		'messageSort' messageSort=MessageSort
+////	    'sendEvent' sendEvent=[MessageEnd|EString]
+////	    'receiveEvent' receiveEvent=[MessageEnd|EString]
+////	    'signature' signature=[Operation|EString]
+////	    ('assignTo' assignTo=[StructuralFeature|EString])?
+//	    //('arguments' '{' arguments+=ParameterValueMapping ( "," arguments+=ParameterValueMapping)* '}' )?
+//	    //('returns' ^returns=ValueSpecification)?
+//	'}';
+//	
+//enum MessageSort returns MessageSort:
+//    synchCall = 'synchCall' | createMessage = 'createMessage' | deleteMessage = 'deleteMessage' | reply = 'reply'
+//;	   
+//
+
+//	'Interaction'
+//	'{'
+//	    'fragments' '{' fragments+=InteractionFragment ( "," fragments+=InteractionFragment)* '}' 
+//	    'lifelines' '{' lifelines+=Lifeline ( "," lifelines+=Lifeline)* '}' 
+//	    'messages' '{' messages+=Message ( "," messages+=Message)* '}' 
+//	    ('properties' '{' properties+=Reference ( "," properties+=Reference)* '}' )?
+//	    ('formalGates' '{' formalGates+=Gate ( "," formalGates+=Gate)* '}' )?
+//	'}';
+
+//Lifeline returns Lifeline:
+//    //localProperties+=TemporaryProperty? -> temp variables
+//    represents=[TypedElement|EString]
+//    'Lifeline'
+//    '{'
+//        
+//        'coveredBy' '(' coveredBy+=[InteractionFragment|EString] ( "," coveredBy+=[InteractionFragment|EString])* ')' 
+//        
+//    '}';
+    
+//TemporaryProperty returns TemporaryProperty:
+//    TAttribute | Reference;
+
+//TypedElement returns TypedElement:
+//	Reference;
+	    
+//Reference returns Reference:
+//    static?='static'
+//    'Reference'
+//    name=EString ':' type=[ObjectType|EString];    
+//
+
+
+//MessageView returns MessageView:
+//    'MessageView'
+//    '{'
+//        ('affectedBy' '(' affectedBy+=[AspectMessageView|EString] ( "," affectedBy+=[AspectMessageView|EString])* ')' )?
+//        'specifies' specifies=[Operation|EString]
+//        ('specification' specification=Interaction)?
+//    '}';
+//    
+//Interaction returns Interaction:
+//    'Interaction'
+//    '{'
+//        'fragments' '{' fragments+=InteractionFragment ( "," fragments+=InteractionFragment)* '}' 
+//        'lifelines' '{' lifelines+=Lifeline ( "," lifelines+=Lifeline)* '}' 
+//        'messages' '{' messages+=Message ( "," messages+=Message)* '}' 
+//        ('properties' '{' properties+=Reference ( "," properties+=Reference)* '}' )?
+//        ('formalGates' '{' formalGates+=Gate ( "," formalGates+=Gate)* '}' )?
+//    '}';
+//
+//Lifeline returns Lifeline:
+//    'Lifeline'
+//    '{'
+//        'represents' represents=[TypedElement|EString]
+//        'coveredBy' '(' coveredBy+=[InteractionFragment|EString] ( "," coveredBy+=[InteractionFragment|EString])* ')' 
+//        ('localProperties' '{' localProperties+=TemporaryProperty ( "," localProperties+=TemporaryProperty)* '}' )?
+//    '}';
+
+//Message returns Message:
+//    'Message'
+//    '{'
+//        'messageSort' messageSort=MessageSort
+//        'sendEvent' sendEvent=[MessageEnd|EString]
+//        'receiveEvent' receiveEvent=[MessageEnd|EString]
+//        'signature' signature=[Operation|EString]
+//        ('assignTo' assignTo=[StructuralFeature|EString])?
+//        ('arguments' '{' arguments+=ParameterValueMapping ( "," arguments+=ParameterValueMapping)* '}' )?
+//        ('returns' ^returns=ValueSpecification)?
+//    '}';   
+//
+//Reference returns Reference:
+//    static?='static'
+//    'Reference'
+//    name=EString
+//    '{'
+//        ('lowerBound' lowerBound=EInt)?
+//        ('upperBound' upperBound=EInt)?
+//        ('referenceType' referenceType=ReferenceType)?
+//        'type' type=[ObjectType|EString]
+//    '}';
+//
+//Gate returns Gate:
+//    'Gate'
+//    name=EString
+//    '{'
+//        'message' message=[Message|EString]
+//    '}';
+//
+//MessageOccurrenceSpecification_Impl returns MessageOccurrenceSpecification:
+//    'MessageOccurrenceSpecification'
+//    '{'
+//        'covered' '(' covered+=[Lifeline|EString] ( "," covered+=[Lifeline|EString])* ')' 
+//        'message' message=[Message|EString]
+//    '}';
+//
+//OccurrenceSpecification_Impl returns OccurrenceSpecification:
+//    'OccurrenceSpecification'
+//    '{'
+//        'covered' '(' covered+=[Lifeline|EString] ( "," covered+=[Lifeline|EString])* ')' 
+//    '}';
+//
+//DestructionOccurrenceSpecification returns DestructionOccurrenceSpecification:
+//    'DestructionOccurrenceSpecification'
+//    '{'
+//        'covered' '(' covered+=[Lifeline|EString] ( "," covered+=[Lifeline|EString])* ')' 
+//        'message' message=[Message|EString]
+//    '}';
+//
+//CombinedFragment returns CombinedFragment:
+//    'CombinedFragment'
+//    '{'
+//        'interactionOperator' interactionOperator=InteractionOperatorKind
+//        'covered' '(' covered+=[Lifeline|EString] ( "," covered+=[Lifeline|EString])* ')' 
+//        'operands' '{' operands+=InteractionOperand ( "," operands+=InteractionOperand)* '}' 
+//    '}';
+//
+//OriginalBehaviorExecution returns OriginalBehaviorExecution:
+//    'OriginalBehaviorExecution'
+//    '{'
+//        'covered' '(' covered+=[Lifeline|EString] ( "," covered+=[Lifeline|EString])* ')' 
+//    '}';
+//
+//ExecutionStatement returns ExecutionStatement:
+//    'ExecutionStatement'
+//    '{'
+//        'covered' '(' covered+=[Lifeline|EString] ( "," covered+=[Lifeline|EString])* ')' 
+//        'specification' specification=ValueSpecification
+//    '}';
+//
+//InteractionFragment returns InteractionFragment:
+//	MessageOccurrenceSpecification_Impl | OccurrenceSpecification_Impl | DestructionOccurrenceSpecification | CombinedFragment | OriginalBehaviorExecution | ExecutionStatement;
+//
+//TemporaryProperty returns TemporaryProperty:
+//    TAttribute | Reference;
+//        
+//MessageSort returns MessageSort:
+//    'MessageSort' /* TODO: implement this rule and an appropriate IValueConverter */;
+//    
+//InteractionOperatorKind returns InteractionOperatorKind:
+//        'InteractionOperatorKind' /* TODO: implement this rule and an appropriate IValueConverter */;
+//
+//InteractionOperand returns InteractionOperand:
+//    'InteractionOperand'
+//    '{'
+//        'fragments' '{' fragments+=InteractionFragment ( "," fragments+=InteractionFragment)* '}' 
+//        ('interactionConstraint' interactionConstraint=ValueSpecification)?
+//    '}';
+//
+//ValueSpecification returns ValueSpecification:
+//    StructuralFeatureValue | ParameterValue | OpaqueExpression | LiteralString | LiteralInteger | LiteralBoolean;
+//
+//StructuralFeatureValue returns StructuralFeatureValue:
+//    'StructuralFeatureValue'
+//    '{'
+//        'value' value=[StructuralFeature|EString]
+//    '}';
+//
+//ParameterValue returns ParameterValue:
+//    'ParameterValue'
+//    '{'
+//        'parameter' parameter=[Parameter|EString]
+//    '}';
+//
+//OpaqueExpression returns OpaqueExpression:
+//    'OpaqueExpression'
+//    '{'
+//        'body' body=EString
+//        'language' language=EString
+//    '}';
+//
+//LiteralString returns LiteralString:
+//    'LiteralString'
+//    '{'
+//        'value' value=EString
+//    '}';
+//
+//LiteralInteger returns LiteralInteger:
+//    'LiteralInteger'
+//    '{'
+//        'value' value=EInt
+//    '}';
+//
+//LiteralBoolean returns LiteralBoolean:
+//    value?='value'
+//    	'LiteralBoolean';
+//
+//ParameterValueMapping returns ParameterValueMapping:
+//    'ParameterValueMapping'
+//    '{'
+//        'parameter' parameter=[Parameter|EString]
+//        'value' value=ValueSpecification
+//    '}';
+//    
