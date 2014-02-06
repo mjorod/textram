@@ -180,7 +180,7 @@ TMessageView returns textRam::TMessageView:
 
 TInteraction returns textRam::TInteraction:
 	'objects' '{'
-		lifelines+=TLifeline (';'? lifelines+=TLifeline)
+		lifelines+=TLifeline (';'? lifelines+=TLifeline)*
 	'}'
 ;
 
