@@ -28,18 +28,18 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference)
 	{
 		val types = structuralView.getTypesFor
-		Scopes::scopeFor(types)
+		Scopes::scopeFor( types )
 	}
 	
 	def IScope scope_TAttribute_type(TStructuralView structuralView, EReference reference)
 	{
 		val primitiveTypes = structuralView.getPrimitiveTypes
-		Scopes::scopeFor(primitiveTypes)
+		Scopes::scopeFor( primitiveTypes )
 	}
 	
 	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
 		val classes = instantiation.getClasses
-		Scopes::scopeFor(classes)
+		Scopes::scopeFor( classes )
 	}
 	
 	def IScope scope_ClassifierMapping_toElement(TStructuralView structuralView, EReference reference) {
@@ -48,7 +48,7 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	def IScope scope_TClassifierMapping_fromMember(TClassifierMapping classifierMapping, EReference reference) {
 		val membersFrom = classifierMapping.getMembersFrom
-		Scopes::scopeFor(membersFrom)
+		Scopes::scopeFor( membersFrom )
 	}
 	
 	def IScope scope_TClassifierMapping_toMember(TClassifierMapping classifierMapping, EReference reference ) {
@@ -58,7 +58,6 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	def IScope scope_TMessageView_class(Aspect aspect, EReference reference) {
 		val classes = aspect.structuralView.classes.filter(TClass)
-		
 		Scopes::scopeFor( classes )
 	}
 	
@@ -69,7 +68,7 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	def IScope scope_TLifeline_represents(Aspect aspect, EReference reference) {
 		val typedElements = aspect.getTTypedElements
-		Scopes::scopeFor(typedElements)
+		Scopes::scopeFor( typedElements )
 	}
 	
 }
