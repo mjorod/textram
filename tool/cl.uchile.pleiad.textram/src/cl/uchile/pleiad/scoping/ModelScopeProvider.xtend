@@ -9,16 +9,14 @@ import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import ca.mcgill.cs.sel.ram.Visibility
 import cl.uchile.pleiad.textRam.TClass
+import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TStructuralView
+import cl.uchile.pleiad.textRam.TTypedElement
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
-import cl.uchile.pleiad.textRam.TClassMember
-import java.util.List
-import cl.uchile.pleiad.textRam.TTypedElement
-import cl.uchile.pleiad.textRam.TAssociationEnd
-import cl.uchile.pleiad.textRam.TAssociation
-import cl.uchile.pleiad.textRam.TStructuralView
+import cl.uchile.pleiad.textRam.TAttribute
 
 class ModelScopeProvider implements IModelScopeProvider {
 	
@@ -34,7 +32,8 @@ class ModelScopeProvider implements IModelScopeProvider {
 	}
 	
 	override getClasses(Instantiation instantiation) {
-		instantiation.externalAspect.structuralView.classes
+		instantiation.externalAspect.structuralView.classes.toList
+		
 	}
 	
 	override getMembersFrom(TClassifierMapping classifierMapping) {
@@ -59,8 +58,10 @@ class ModelScopeProvider implements IModelScopeProvider {
 	}
 	
 	override getTTypedElements(Aspect aspect) {
+		val tStructuralView = (aspect.structuralView as TStructuralView)
 		val ret = aspect.structuralView.classes.filter(TClass).filter(TTypedElement).toList
-		ret.addAll ( (aspect.structuralView as TStructuralView).TAssociations.toList )
+		ret.addAll ( tStructuralView.TAssociations.toList )
+		ret.addAll ( tStructuralView.classes.filter(TClass).map[members].flatten.filter(TAttribute))
 		
 		ret
 	}
