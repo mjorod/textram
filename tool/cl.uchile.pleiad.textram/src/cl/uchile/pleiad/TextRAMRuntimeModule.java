@@ -6,8 +6,8 @@ package cl.uchile.pleiad;
 import org.eclipse.xtext.conversion.IValueConverterService;
 
 import cl.uchile.pleiad.converter.TextRAMConverter;
-import cl.uchile.pleiad.types.ITypeSystem;
-import cl.uchile.pleiad.types.TypeSystem;
+import cl.uchile.pleiad.scoping.IModelScopeProvider;
+import cl.uchile.pleiad.scoping.ModelScopeProvider;
 
 
 /**
@@ -15,8 +15,8 @@ import cl.uchile.pleiad.types.TypeSystem;
  */
 public class TextRAMRuntimeModule extends cl.uchile.pleiad.AbstractTextRAMRuntimeModule {
 	
-	public Class<? extends ITypeSystem> bindITypeSystem() {
-		  return TypeSystem.class;
+	public Class<? extends IModelScopeProvider> bindIModelScopeProvider() {
+		  return ModelScopeProvider.class;
 	}
 	
 	@Override

@@ -174,9 +174,28 @@ TClassifierMapping returns textRam::TClassifierMapping:
 TMessageView returns textRam::TMessageView:
 	{textRam::TMessageView}
 	'messageView' (class=[textRam::TClass]'.')? specifies=[textRam::TOperation|EString] '{'
-//		('specification' specification=TInteraction)?
+		specification=TInteraction
 	'}'
 ;
+
+TInteraction returns textRam::TInteraction:
+	'objects' '{'
+		lifelines+=TLifeline (';'? lifelines+=TLifeline)
+	'}'
+;
+
+TLifeline returns textRam::TLifeline:
+	name=EString ':' represents=[textRam::TTypedElement|EString]
+;
+
+//TODO: It should be StructuralFeature | Parameter
+TTypedElement returns textRam::TTypedElement:
+	TAssociation | TAttribute | TClass
+;
+
+//TInteractionMessage returns textRAM::TInteractionMessage:
+//	
+//;
 
 //AbstractInteraction returns Interaction:
 //	TInteraction

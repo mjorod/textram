@@ -3,21 +3,16 @@
  */
 package cl.uchile.pleiad.scoping
 
+import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Instantiation
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TStructuralView
-import cl.uchile.pleiad.types.ITypeSystem
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
-import ca.mcgill.cs.sel.ram.InstantiationType
-import ca.mcgill.cs.sel.ram.Visibility
-import cl.uchile.pleiad.textRam.TOperation
-import ca.mcgill.cs.sel.ram.Aspect
-import java.util.List
 
 /**
  * This class contains custom scoping description.
@@ -28,20 +23,23 @@ import java.util.List
  */
 class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
-	@Inject extension ITypeSystem typeSystem 
+	@Inject extension IModelScopeProvider scopeProvider 
 	
 	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference)
 	{
-		Scopes::scopeFor(structuralView.getDefaultTypes)
+		val types = structuralView.getTypesFor
+		Scopes::scopeFor(types)
 	}
 	
 	def IScope scope_TAttribute_type(TStructuralView structuralView, EReference reference)
 	{
-		Scopes::scopeFor(structuralView.getPrimitiveTypes)
+		val primitiveTypes = structuralView.getPrimitiveTypes
+		Scopes::scopeFor(primitiveTypes)
 	}
 	
 	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
-		Scopes::scopeFor(instantiation.externalAspect.structuralView.classes)
+		val classes = instantiation.getClasses
+		Scopes::scopeFor(classes)
 	}
 	
 	def IScope scope_ClassifierMapping_toElement(TStructuralView structuralView, EReference reference) {
@@ -49,23 +47,12 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 	
 	def IScope scope_TClassifierMapping_fromMember(TClassifierMapping classifierMapping, EReference reference) {
-		// instantiation type from the container of classifierMapping
-		val instantiationType = (classifierMapping.eContainer as Instantiation).type
-		
-		// class from external aspect
-		val fromElement = classifierMapping.fromElement as TClass
-		
-		// customization is allowed to use only public elements
-		if (instantiationType == InstantiationType.DEPENDS) {
-			return Scopes::scopeFor( fromElement.members.filter(TOperation).filter(t | t.visibility == Visibility.PUBLIC) )
-		}
-		
-		// extensions is allowed to use public and private elements
-		return Scopes::scopeFor( fromElement.members )	
+		val membersFrom = classifierMapping.getMembersFrom
+		Scopes::scopeFor(membersFrom)
 	}
 	
 	def IScope scope_TClassifierMapping_toMember(TClassifierMapping classifierMapping, EReference reference ) {
-		val toElement =classifierMapping.toElement as TClass 
+		val toElement = classifierMapping.toElement as TClass 
 		Scopes::scopeFor( toElement.members )
 	}
 	
@@ -76,9 +63,13 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 	
 	def IScope scope_TMessageView_specifies(Aspect aspect, EReference reference) {
-		val operations = aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter(oper | oper.visibility == Visibility.PUBLIC).toList 
-		
-		Scopes::scopeFor( operations )
+		val operations = aspect.getOperations
+		Scopes::scopeFor(operations)
+	}
+	
+	def IScope scope_TLifeline_represents(Aspect aspect, EReference reference) {
+		val typedElements = aspect.getTTypedElements
+		Scopes::scopeFor(typedElements)
 	}
 	
 }
