@@ -33,7 +33,6 @@ class ModelScopeProvider implements IModelScopeProvider {
 	
 	override getClasses(Instantiation instantiation) {
 		instantiation.externalAspect.structuralView.classes.toList
-		
 	}
 	
 	override getMembersFrom(TClassifierMapping classifierMapping) {
@@ -52,7 +51,7 @@ class ModelScopeProvider implements IModelScopeProvider {
 		return fromElement.members.toList 
 	}
 	
-	override getOperations(Aspect aspect) {
+	override getPublicOperations(Aspect aspect) {
 		val operations = aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter(oper | oper.visibility == Visibility.PUBLIC).toList
 		operations
 	}
@@ -103,6 +102,18 @@ class ModelScopeProvider implements IModelScopeProvider {
 			typesToReturn.add(RamFactory.eINSTANCE.createRDouble());
 			typesToReturn.add(RamFactory.eINSTANCE.createRFloat());
 		}
+	}
+	
+	override getParameters(Aspect aspect) {
+		val tStructuralView = aspect.structuralView as TStructuralView
+		
+		tStructuralView.classes.filter(TClass)
+							   .map[members]
+							   .flatten
+							   .filter(TOperation)
+							   .map[parameters]
+							   .flatten
+							   .toList
 	}
 	
 }

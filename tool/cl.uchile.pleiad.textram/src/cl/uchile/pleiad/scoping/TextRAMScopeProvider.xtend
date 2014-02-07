@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import cl.uchile.pleiad.textRam.TInteraction
 
 /**
  * This class contains custom scoping description.
@@ -27,14 +28,12 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference)
 	{
-		val types = structuralView.getTypesFor
-		Scopes::scopeFor( types )
+		Scopes::scopeFor( structuralView.getTypesFor )
 	}
 	
 	def IScope scope_TAttribute_type(TStructuralView structuralView, EReference reference)
 	{
-		val primitiveTypes = structuralView.getPrimitiveTypes
-		Scopes::scopeFor( primitiveTypes )
+		Scopes::scopeFor( structuralView.getPrimitiveTypes )
 	}
 	
 	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
@@ -43,12 +42,11 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 	
 	def IScope scope_ClassifierMapping_toElement(TStructuralView structuralView, EReference reference) {
-		Scopes::scopeFor(structuralView.classes)
+		Scopes::scopeFor( structuralView.classes )
 	}
 	
 	def IScope scope_TClassifierMapping_fromMember(TClassifierMapping classifierMapping, EReference reference) {
-		val membersFrom = classifierMapping.getMembersFrom
-		Scopes::scopeFor( membersFrom )
+		Scopes::scopeFor( classifierMapping.getMembersFrom )
 	}
 	
 	def IScope scope_TClassifierMapping_toMember(TClassifierMapping classifierMapping, EReference reference ) {
@@ -62,13 +60,23 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 	
 	def IScope scope_TMessageView_specifies(Aspect aspect, EReference reference) {
-		val operations = aspect.getOperations
-		Scopes::scopeFor(operations)
+		Scopes::scopeFor( aspect.getPublicOperations )
 	}
 	
 	def IScope scope_TLifeline_represents(Aspect aspect, EReference reference) {
-		val typedElements = aspect.getTTypedElements
-		Scopes::scopeFor( typedElements )
+		Scopes::scopeFor( aspect.getTTypedElements )
+	}
+	
+	def IScope scope_TInteractionMessage_leftLifeline(TInteraction interaction, EReference reference) {
+		Scopes::scopeFor( interaction.lifelines )
+	}
+	
+	def IScope scope_TMessage_signature(Aspect aspect, EReference reference) {
+		Scopes::scopeFor ( aspect.getPublicOperations )
+	}
+	
+	def IScope scope_TMessage_arguments(Aspect aspect, EReference reference) {
+		Scopes::scopeFor ( aspect.getParameters )
 	}
 	
 }

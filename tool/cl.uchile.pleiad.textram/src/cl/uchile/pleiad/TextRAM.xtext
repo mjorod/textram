@@ -182,16 +182,60 @@ TInteraction returns textRam::TInteraction:
 	'objects' '{'
 		lifelines+=TLifeline (';'? lifelines+=TLifeline)*
 	'}'
+	interactionMessages+=TInteractionMessage (';'? interactionMessages+=TInteractionMessage)*
 ;
 
 TLifeline returns textRam::TLifeline:
 	name=EString ':' represents=[textRam::TTypedElement|EString]
 ;
 
+TInteractionMessage returns textRam::TInteractionMessage:
+	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline|EString] '{'  messages+=TMessage (';'? messages+=TMessage)*  '}'
+;
+
+TMessage returns textRam::TMessage:
+	signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'//( "," arguments+=ParameterValue)* ')')?
+;
+
 //TODO: It should be StructuralFeature | Parameter
 TTypedElement returns textRam::TTypedElement:
 	TAssociation | TAttribute | TClass
 ;
+
+enum MessageSort returns MessageSort:
+    synchCall = 'synchCall' | createMessage = 'createMessage' | deleteMessage = 'deleteMessage' | reply = 'reply'
+;
+
+
+ValueSpecification returns ValueSpecification:
+    StructuralFeatureValue | ParameterValue | OpaqueExpression | LiteralString | LiteralInteger | LiteralBoolean
+;
+
+StructuralFeatureValue returns StructuralFeatureValue:
+    value=[StructuralFeature|EString]
+;
+
+ParameterValue returns ParameterValue:
+	parameter=[Parameter|EString]
+;
+
+OpaqueExpression returns OpaqueExpression:
+	'body' body=EString
+    'language' language=EString
+;
+
+LiteralString returns LiteralString:
+	'value' value=EString
+;
+
+LiteralInteger returns LiteralInteger:
+	'value' value=EInt
+;
+
+LiteralBoolean returns LiteralBoolean:
+    value?='value'
+;
+
 
 //TInteractionMessage returns textRAM::TInteractionMessage:
 //	
@@ -231,9 +275,6 @@ TTypedElement returns textRam::TTypedElement:
 //	    //('returns' ^returns=ValueSpecification)?
 //	'}';
 //	
-//enum MessageSort returns MessageSort:
-//    synchCall = 'synchCall' | createMessage = 'createMessage' | deleteMessage = 'deleteMessage' | reply = 'reply'
-//;	   
 //
 
 //	'Interaction'
@@ -384,48 +425,8 @@ TTypedElement returns textRam::TTypedElement:
 //        ('interactionConstraint' interactionConstraint=ValueSpecification)?
 //    '}';
 //
-//ValueSpecification returns ValueSpecification:
-//    StructuralFeatureValue | ParameterValue | OpaqueExpression | LiteralString | LiteralInteger | LiteralBoolean;
 //
-//StructuralFeatureValue returns StructuralFeatureValue:
-//    'StructuralFeatureValue'
-//    '{'
-//        'value' value=[StructuralFeature|EString]
-//    '}';
+
 //
-//ParameterValue returns ParameterValue:
-//    'ParameterValue'
-//    '{'
-//        'parameter' parameter=[Parameter|EString]
-//    '}';
 //
-//OpaqueExpression returns OpaqueExpression:
-//    'OpaqueExpression'
-//    '{'
-//        'body' body=EString
-//        'language' language=EString
-//    '}';
-//
-//LiteralString returns LiteralString:
-//    'LiteralString'
-//    '{'
-//        'value' value=EString
-//    '}';
-//
-//LiteralInteger returns LiteralInteger:
-//    'LiteralInteger'
-//    '{'
-//        'value' value=EInt
-//    '}';
-//
-//LiteralBoolean returns LiteralBoolean:
-//    value?='value'
-//    	'LiteralBoolean';
-//
-//ParameterValueMapping returns ParameterValueMapping:
-//    'ParameterValueMapping'
-//    '{'
-//        'parameter' parameter=[Parameter|EString]
-//        'value' value=ValueSpecification
-//    '}';
 //    
