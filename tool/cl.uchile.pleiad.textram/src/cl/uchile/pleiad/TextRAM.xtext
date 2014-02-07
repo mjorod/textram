@@ -124,6 +124,15 @@ TOperation returns textRam::TOperation:
     '('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')';
+    
+TOperationSignature returns textRam::TOperationSignature:
+	operation=[textRam::TOperation|EString]
+	'('
+    	( parameters+=Parameter ( "," parameters+=Parameter)* )?
+    ')'
+    ':'
+    returnType=[Type|EString]
+;
 
 Parameter returns Parameter:
     {Parameter}
@@ -190,11 +199,15 @@ TLifeline returns textRam::TLifeline:
 ;
 
 TInteractionMessage returns textRam::TInteractionMessage:
-	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline|EString] '{'  messages+=TMessage (';'? messages+=TMessage)*  '}'
+	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline|EString] '{'  messages+=TAbstractMessage (';'? messages+=TAbstractMessage)*  '}'
+;
+
+TAbstractMessage returns textRam::TAbstractMessage:
+	TMessage | TOperationSignature
 ;
 
 TMessage returns textRam::TMessage:
-	signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'//( "," arguments+=ParameterValue)* ')')?
+	signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
 ;
 
 //TODO: It should be StructuralFeature | Parameter

@@ -79,4 +79,8 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor ( aspect.getParameters )
 	}
 	
+	def IScope scope_TOperationSignature_operation(Aspect aspect, EReference reference) {
+		Scopes::scopeFor ( aspect.getPublicOperations )
+	}
+	
 }
