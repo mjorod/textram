@@ -70,7 +70,11 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TInteractionMessage_leftLifeline(TInteraction interaction, EReference reference) {
 		Scopes::scopeFor( interaction.lifelines )
 	}
-	
+
+	def IScope scope_TMessage_assignTo(Aspect aspect, EReference reference) {
+		Scopes::scopeFor ( aspect.getTStructuralFeature )
+	}	
+
 	def IScope scope_TMessage_signature(Aspect aspect, EReference reference) {
 		Scopes::scopeFor ( aspect.getPublicOperations )
 	}
@@ -82,5 +86,4 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TOperationSignature_operation(Aspect aspect, EReference reference) {
 		Scopes::scopeFor ( aspect.getPublicOperations )
 	}
-	
 }

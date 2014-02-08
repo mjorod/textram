@@ -126,12 +126,17 @@ TOperation returns textRam::TOperation:
     ')';
     
 TOperationSignature returns textRam::TOperationSignature:
+	
 	operation=[textRam::TOperation|EString]
 	'('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')'
     ':'
     returnType=[Type|EString]
+;
+
+TStructuralFeature returns textRam::TStructuralFeature:
+	TAssociation | TAttribute //TODO: | Reference 
 ;
 
 Parameter returns Parameter:
@@ -207,6 +212,7 @@ TAbstractMessage returns textRam::TAbstractMessage:
 ;
 
 TMessage returns textRam::TMessage:
+	(assignTo=[textRam::TStructuralFeature|EString] ':=')?
 	signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
 ;
 

@@ -17,6 +17,9 @@ import cl.uchile.pleiad.textRam.TTypedElement
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import cl.uchile.pleiad.textRam.TAttribute
+import ca.mcgill.cs.sel.ram.StructuralFeature
+import java.util.List
+import cl.uchile.pleiad.textRam.TStructuralFeature
 
 class ModelScopeProvider implements IModelScopeProvider {
 	
@@ -114,6 +117,28 @@ class ModelScopeProvider implements IModelScopeProvider {
 							   .map[parameters]
 							   .flatten
 							   .toList
+	}
+	
+	override getTStructuralFeature(Aspect aspect) {
+		val result = newArrayList()
+		
+		result.addAll ( aspect.getTAttributes.filter(TStructuralFeature) )
+		result.addAll ( aspect.getTAssociations.filter(TStructuralFeature) )
+		
+		//TODO: Reference is missing
+		
+		result
+	}
+	
+	private def getTAssociations(Aspect aspect) {
+		(aspect.structuralView as TStructuralView).TAssociations
+	}
+	
+	private def getTAttributes(Aspect aspect) {
+		aspect.structuralView.classes.filter(TClass)
+									 .map[members]
+									 .flatten
+									 .filter(TAttribute)
 	}
 	
 }
