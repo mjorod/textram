@@ -11,7 +11,7 @@ name=EString
 '{'
 	structuralView=TStructuralView
 	('instantiations' '{' instantiations+=Instantiation ( ";"? instantiations+=Instantiation)* '}' )?
-	('messages' '{' messageViews+=AbstractMessageView ( ";"? messageViews+=AbstractMessageView)* '}' )?
+	('messages' '{' messageViews+=AbstractMessageView '}' )?
 '}';
 
 terminal TEMPLATE: (ID'<' ID '>')*;
@@ -30,14 +30,27 @@ AbstractStructuralView returns StructuralView:
 ;
 
 AbstractMessageView returns AbstractMessageView:
-	TMessageView;
+	TAbstractMessageView
+;
+	
+TAbstractMessageView returns textRam::TAbstractMessageView:
+	'objects' '{'
+		lifelines+=TLifeline (';'? lifelines+=TLifeline)*
+	'}'
+	
+	messages+=TAbstractMessages (messages+=TAbstractMessages)*
+;
+
+TAbstractMessages returns textRam::TAbstractMessages:
+	TMessageView
+;
 
 TStructuralView returns textRam::TStructuralView:
     {textRam::TStructuralView}
     'structure'
     '{'
         ( classes+=Classifier (classes+=Classifier)* )?
-        ('associations' '{' tAssociations+=TAssociation ( ","? tAssociations+=TAssociation)* '}' )?
+        ('associations' '{' tAssociations+=TAssociation ( ";"? tAssociations+=TAssociation)* '}' )?
     '}';
         
 Classifier returns Classifier:
@@ -166,19 +179,14 @@ TClassifierMapping returns textRam::TClassifierMapping:
 ;
 
 TMessageView returns textRam::TMessageView:
-	{textRam::TMessageView}
 	'messageView' (class=[textRam::TClass]'.')? specifies=[textRam::TOperation|EString] '{'
 		specification=TInteraction
 	'}'
 ;
 
 TInteraction returns textRam::TInteraction:
-	'objects' '{'
-		lifelines+=TLifeline (';'? lifelines+=TLifeline)*
-	'}'
 	interactionMessages+=TInteractionMessage (';'? interactionMessages+=TInteractionMessage)*
 ;
-
 
 TLifeline returns textRam::TLifeline:
 	name=EString (':' represents=[textRam::TTypedElement|EString])?

@@ -13,6 +13,8 @@ import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralFeature
 import cl.uchile.pleiad.textRam.TTypedElement
 import java.util.List
+import cl.uchile.pleiad.textRam.TLifeline
+import cl.uchile.pleiad.textRam.TInteraction
 
 interface IModelScopeProvider {
 	
@@ -23,5 +25,7 @@ interface IModelScopeProvider {
 	def List<TOperation> getPublicOperations(Aspect aspect)
 	def List<TTypedElement> getTTypedElements(Aspect aspect)
 	def List<Parameter> getParameters(Aspect aspect)
-	def List<TStructuralFeature> getTStructuralFeature(Aspect aspect) 
+	def List<TStructuralFeature> getTStructuralFeature(Aspect aspect)
+	def List<TLifeline> getLeftTLifelines(Aspect aspect)
+	def List<TLifeline> getRightTLifelines(Aspect aspect)
 }

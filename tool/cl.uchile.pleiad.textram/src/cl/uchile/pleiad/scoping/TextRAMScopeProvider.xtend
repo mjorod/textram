@@ -7,13 +7,13 @@ import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Instantiation
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TInteraction
 import cl.uchile.pleiad.textRam.TStructuralView
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
-import cl.uchile.pleiad.textRam.TInteraction
 
 /**
  * This class contains custom scoping description.
@@ -67,8 +67,12 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( aspect.getTTypedElements )
 	}
 	
-	def IScope scope_TInteractionMessage_leftLifeline(TInteraction interaction, EReference reference) {
-		Scopes::scopeFor( interaction.lifelines )
+	def IScope scope_TInteractionMessage_leftLifeline(Aspect aspect, EReference reference) {
+		Scopes::scopeFor( aspect.getLeftTLifelines )
+	}
+	
+	def IScope scope_TInteractionMessage_rightLifeline(Aspect aspect, EReference reference) {
+		Scopes::scopeFor( aspect.getRightTLifelines )
 	}
 
 	def IScope scope_TMessage_assignTo(Aspect aspect, EReference reference) {

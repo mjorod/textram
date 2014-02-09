@@ -20,6 +20,9 @@ import cl.uchile.pleiad.textRam.TAttribute
 import ca.mcgill.cs.sel.ram.StructuralFeature
 import java.util.List
 import cl.uchile.pleiad.textRam.TStructuralFeature
+import cl.uchile.pleiad.textRam.TInteraction
+import cl.uchile.pleiad.textRam.TextRamFactory
+import cl.uchile.pleiad.textRam.TAbstractMessageView
 
 class ModelScopeProvider implements IModelScopeProvider {
 	
@@ -141,4 +144,34 @@ class ModelScopeProvider implements IModelScopeProvider {
 									 .filter(TAttribute)
 	}
 	
+	override getLeftTLifelines(Aspect aspect) {
+		val tAbstractMessageView = aspect.messageViews.head as TAbstractMessageView
+		
+		if (tAbstractMessageView != null) {
+			if (tAbstractMessageView.lifelines.exists[l | l.name == '>>'] == false) {
+				val tStartGate = TextRamFactory.eINSTANCE.createTLifeline
+				tStartGate.setName(">>")
+				tAbstractMessageView.lifelines.add(tStartGate)
+				
+				return tAbstractMessageView.lifelines
+			}		
+		}
+		
+		return null
+	}
+	
+	override getRightTLifelines(Aspect aspect) {
+		val tAbstractMessageView = aspect.messageViews.head as TAbstractMessageView
+		
+		if (tAbstractMessageView != null) {
+			if (tAbstractMessageView.lifelines.exists[l | l.name == '<<'] == false) {
+				val tEndGate = TextRamFactory.eINSTANCE.createTLifeline
+				tEndGate.setName("<<")
+				tAbstractMessageView.lifelines.add(tEndGate)
+				return tAbstractMessageView.lifelines
+			}		
+		}
+		
+		return null
+	}
 }
