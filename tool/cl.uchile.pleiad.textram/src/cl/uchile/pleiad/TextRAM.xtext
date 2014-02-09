@@ -15,9 +15,10 @@ name=EString
 '}';
 
 terminal TEMPLATE: (ID'<' ID '>')*;
+terminal PARTIAL_STRING: ('|'ID)*;
 
 EString returns ecore::EString:
-    STRING | ID | TEMPLATE | '<<' | '>>';
+    STRING | ID | TEMPLATE | PARTIAL_STRING | '<<' | '>>';
 
 EInt returns ecore::EInt:
     '-'? INT;
@@ -95,7 +96,6 @@ TClass returns textRam::TClass:
     {textRam::TClass}
     (abstract?='abstract')?
     'class'
-    (partial?='|')?
     name=EString (':' superTypes+=[Classifier|EString])?
     '{'
     	( members+=TClassMember  ( ";"? members+= TClassMember)*  )?
@@ -113,7 +113,6 @@ TOperation returns textRam::TOperation:
     (static?='static')?
     visibility=Visibility
     returnType=[Type|EString]
-    (partial?='|')?
     name=EString 
     '('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
@@ -172,14 +171,13 @@ AbstractClassifierMapping returns ClassifierMapping:
 ; 
 
 TClassifierMapping returns textRam::TClassifierMapping:
-    ('|')?
-    fromElement=[Classifier|EString] ('<' ('|')? fromMember+=[textRam::TClassMember] ("," ('|')? fromMember+=[textRam::TClassMember])* '>')?
+    fromElement=[Classifier|EString] ('<' fromMember+=[textRam::TClassMember] ("," fromMember+=[textRam::TClassMember])* '>')?
     '->'
-    toElement=[Classifier|EString] ('<' ('|')? toMember+=[textRam::TClassMember] ("," ('|')? toMember+=[textRam::TClassMember])*  '>')?
+    toElement=[Classifier|EString] ('<' toMember+=[textRam::TClassMember] ("," toMember+=[textRam::TClassMember])*  '>')?
 ;
 
 TMessageView returns textRam::TMessageView:
-	'messageView' class=[textRam::TClass] '.' specifies=[textRam::TOperation|EString] '{'
+	'messageView' class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString] '{'
 		specification=TInteraction
 	'}'
 ;

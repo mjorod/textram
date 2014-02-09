@@ -24,6 +24,8 @@ import java.util.List
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 class ModelConverter implements IModelConverter {
+
+	val String PARTIAL_CHAR = '|'
 	
 	/**
 	 * Transform the textRam model to a ram model
@@ -229,9 +231,9 @@ class ModelConverter implements IModelConverter {
 	
 	private def Class transformClass(TClass textRamClass, StructuralView ramStructuralView, List<MappableElement> cacheForMappableElements) {
 		val ramClass = RamFactory.eINSTANCE.createClass()
-		ramClass.setName(textRamClass.name)
+		ramClass.setName( textRamClass.name.replace(PARTIAL_CHAR, '') )
 		ramClass.setAbstract(textRamClass.abstract)
-		ramClass.setPartial(textRamClass.partial)
+		ramClass.setPartial( textRamClass.name.startsWith(PARTIAL_CHAR) )
 		
 		cacheForMappableElements.add(ramClass)
 		
@@ -244,8 +246,6 @@ class ModelConverter implements IModelConverter {
 			ramClass.superTypes.add(superType)
 		}
 		
-		
-	
 		ramClass
 	}
 	
@@ -263,10 +263,10 @@ class ModelConverter implements IModelConverter {
 	
 	private def copyOperation(TOperation tOperation, Class classOwner) {
 		val ramOperation = RamFactory.eINSTANCE.createOperation()
-		ramOperation.setName(tOperation.name)
+		ramOperation.setName( tOperation.name.replace(PARTIAL_CHAR, '') )
 		ramOperation.setAbstract(tOperation.abstract)
 		ramOperation.setStatic(tOperation.static)
-		ramOperation.setPartial(tOperation.partial)
+		ramOperation.setPartial( tOperation.name.startsWith(PARTIAL_CHAR) )
 		ramOperation.setReturnType(tOperation.returnType)
 		ramOperation.setVisibility(tOperation.visibility)
 		
