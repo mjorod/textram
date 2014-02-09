@@ -5,13 +5,9 @@ package cl.uchile.pleiad.generator
 
 import ca.mcgill.cs.sel.ram.Aspect
 import cl.uchile.pleiad.converter.ModelConverterProxy
-<<<<<<< HEAD
 import cl.uchile.pleiad.util.DirectedGraph
 import cl.uchile.pleiad.util.TextRAMPersistence
 import cl.uchile.pleiad.util.TopologicalSort
-=======
-import cl.uchile.pleiad.util.TextRAMPersistence
->>>>>>> a014222359cdcf28781371da9ca4f2dfb72867b4
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
@@ -27,7 +23,6 @@ import java.util.Calendar
  * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
  */
 class TextRAMGenerator implements IGenerator {
-<<<<<<< HEAD
     
         
     override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -42,21 +37,6 @@ class TextRAMGenerator implements IGenerator {
     			d.addEdge(instantiation.externalAspect, aspect)
     		]
     		
-=======
-	
-	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
-//    	ModelConverterProxy::instance.reset
-    	
-    	for (aspect : resource.allContents.toIterable.filter(Aspect)){
-    		val relativePath = '''aspects/«aspect.name».ram'''
-    		val path = '''../aspects/«aspect.name».ram'''
-			
-			val ramAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(aspect)
-    		
-    		val content = TextRAMPersistence::instance.serializeModel(ramAspect, path)
-    		
-    		fsa.generateFile(relativePath, content)
->>>>>>> a014222359cdcf28781371da9ca4f2dfb72867b4
 	    }
 	    
 	    ModelConverterProxy::instance.reset
