@@ -179,7 +179,7 @@ TClassifierMapping returns textRam::TClassifierMapping:
 ;
 
 TMessageView returns textRam::TMessageView:
-	'messageView' (class=[textRam::TClass]'.')? specifies=[textRam::TOperation|EString] '{'
+	'messageView' class=[textRam::TClass] '.' specifies=[textRam::TOperation|EString] '{'
 		specification=TInteraction
 	'}'
 ;
