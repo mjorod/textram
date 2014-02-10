@@ -128,8 +128,8 @@ class ModelConverter implements IModelConverter {
 	
 	private def createOperationMapping(Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TOperation tClassMemberFrom, TClassMember tClassMemberTo, List<MappableElement> cacheForMappableElements) {
 		val ramOperationMapping = RamFactory.eINSTANCE.createOperationMapping()
-		val externalOperation = ramExternalAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( opr | opr.name == tClassMemberFrom.name )
-		val internalOperation = cacheForMappableElements.findFirst( e | e.name == tClassMemberTo.name ) as Operation
+		val externalOperation = ramExternalAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( opr | opr.name == tClassMemberFrom.name.resolveName )
+		val internalOperation = cacheForMappableElements.findFirst( e | e.name == tClassMemberTo.name.resolveName ) as Operation
 		
 		ramOperationMapping.setFromElement( externalOperation )
 		ramOperationMapping.setToElement( internalOperation )
@@ -191,11 +191,11 @@ class ModelConverter implements IModelConverter {
 	}
 	
 	private def transformAssociation(TAssociation textRamAssociation, StructuralView ramStructuralView, List<MappableElement> cacheForMappableElements) {
-		var Class from = cacheForMappableElements.findFirst( c | c.name == textRamAssociation.fromEnd.classReference.name ) as Class
-		var Class to = cacheForMappableElements.findFirst( c | c.name == textRamAssociation.toEnd.classReference.name ) as Class
+		var Class from = cacheForMappableElements.findFirst( c | c.name == textRamAssociation.fromEnd.classReference.name.resolveName ) as Class
+		var Class to = cacheForMappableElements.findFirst( c | c.name == textRamAssociation.toEnd.classReference.name.resolveName ) as Class
 		
-		val classNameFrom = textRamAssociation.fromEnd.classReference.name
-		val classNameTo = textRamAssociation.toEnd.classReference.name
+		val classNameFrom = textRamAssociation.fromEnd.classReference.name.resolveName
+		val classNameTo = textRamAssociation.toEnd.classReference.name.resolveName
 		
 		// create association
 		var ramAssociation = RamFactory.eINSTANCE.createAssociation()
@@ -206,6 +206,14 @@ class ModelConverter implements IModelConverter {
          
         return ramAssociation
 	}
+	
+	def resolveName(String name) {
+		if (name.startsWith(PARTIAL_CHAR) == true) {
+			return name.substring(1)
+		}
+		
+		name
+	} 
 	
 	private def transformAssociationEndClassFrom(Association ramAssociation, TAssociation textRamAssociation, Class from, Class to) {
 		// create from association end
