@@ -191,7 +191,7 @@ TLifeline returns textRam::TLifeline:
 ;
 
 TInteractionMessage returns textRam::TInteractionMessage:
-	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline|EString] '{'  messages+=TAbstractMessage  '}'
+	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline|EString] '{'  message=TAbstractMessage  '}'
 ;
 
 TAbstractMessage returns textRam::TAbstractMessage:
