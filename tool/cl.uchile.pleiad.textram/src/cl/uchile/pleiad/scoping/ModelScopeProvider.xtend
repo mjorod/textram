@@ -8,21 +8,18 @@ import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import ca.mcgill.cs.sel.ram.Visibility
+import cl.uchile.pleiad.textRam.TAbstractMessageView
+import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TStructuralFeature
 import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.textRam.TTypedElement
+import cl.uchile.pleiad.textRam.TextRamFactory
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
-import cl.uchile.pleiad.textRam.TAttribute
-import ca.mcgill.cs.sel.ram.StructuralFeature
-import java.util.List
-import cl.uchile.pleiad.textRam.TStructuralFeature
-import cl.uchile.pleiad.textRam.TInteraction
-import cl.uchile.pleiad.textRam.TextRamFactory
-import cl.uchile.pleiad.textRam.TAbstractMessageView
 
 class ModelScopeProvider implements IModelScopeProvider {
 	
@@ -168,6 +165,7 @@ class ModelScopeProvider implements IModelScopeProvider {
 				val tEndGate = TextRamFactory.eINSTANCE.createTLifeline
 				tEndGate.setName("<<")
 				tAbstractMessageView.lifelines.add(tEndGate)
+				
 				return tAbstractMessageView.lifelines
 			}		
 		}

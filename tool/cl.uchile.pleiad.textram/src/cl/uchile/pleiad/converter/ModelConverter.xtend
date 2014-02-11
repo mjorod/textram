@@ -6,18 +6,28 @@ import ca.mcgill.cs.sel.ram.Attribute
 import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.Classifier
 import ca.mcgill.cs.sel.ram.ClassifierMapping
+import ca.mcgill.cs.sel.ram.Gate
 import ca.mcgill.cs.sel.ram.Instantiation
+import ca.mcgill.cs.sel.ram.Interaction
+import ca.mcgill.cs.sel.ram.Lifeline
 import ca.mcgill.cs.sel.ram.MappableElement
+import ca.mcgill.cs.sel.ram.MessageSort
+import ca.mcgill.cs.sel.ram.NamedElement
 import ca.mcgill.cs.sel.ram.Operation
 import ca.mcgill.cs.sel.ram.OperationMapping
 import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.StructuralView
+import cl.uchile.pleiad.textRam.TAbstractMessageView
+import cl.uchile.pleiad.textRam.TAbstractMessages
 import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TInteractionMessage
+import cl.uchile.pleiad.textRam.TLifeline
+import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
@@ -46,7 +56,128 @@ class ModelConverter implements IModelConverter {
 		
 		ramAspect.convertInstantiations(aspect, cacheForMappableElements)
 		
+		ramAspect = ramAspect.transformMessages(aspect, cacheForMappableElements)
+						
 		ramAspect
+	}
+	
+	def transformMessages(Aspect ramAspect, Aspect textRamAspect, List<MappableElement> cacheForMappableElements) {
+		val tAbstractMessageView = textRamAspect.getTAbstractMessageView
+		
+		tAbstractMessageView.messages.filter(TMessageView).forEach[ m | m.transformMessageView( ramAspect, cacheForMappableElements ) ]
+		
+		ramAspect
+	}
+	
+	private def getTAbstractMessageView(Aspect textRamAspect) {
+		textRamAspect.messageViews.filter(TAbstractMessageView).head
+	}
+	
+	def transformMessageView(TMessageView textRamMessage, Aspect ramAspect, List<MappableElement> cacheForMappableElements) {
+		val objects = textRamMessage.eContainer as TAbstractMessageView
+		
+		val ramMessageView = RamFactory.eINSTANCE.createMessageView
+		ramMessageView.setSpecifies ( cacheForMappableElements.filter(Operation).findFirst( o | o.name == textRamMessage.specifies.name.resolveName ) )
+		
+		// create interaction.
+		val interaction = RamFactory.eINSTANCE.createInteraction
+		ramMessageView.setSpecification(interaction)
+		
+		// lifelines.
+		objects.lifelines.filter( l | l.name != '>>' && l.name != '<<' ).forEach[ l | l.transformLifeLine(interaction, cacheForMappableElements) ]
+			
+		// transform interactions.		
+		textRamMessage.specification.interactionMessages.forEach[ i | i.transformInteraction(interaction, cacheForMappableElements) ]
+		
+		ramMessageView
+	}
+	
+	def void transformInteraction(TInteractionMessage textRamInsteracionMessage, Interaction interaction, List<MappableElement> cacheForMappableElements) {
+		val ramLifelineFrom = interaction.lifelines.findFirst( l | l.represents.name == textRamInsteracionMessage.leftLifeline.name.resolveName )
+		val ramLifelineTo = interaction.lifelines.findFirst( l | l.represents.name == textRamInsteracionMessage.rightLifeline.name.resolveName )
+		val operation =  cacheForMappableElements.filter(Operation).findFirst( o | o.name == textRamInsteracionMessage.message.signature.name.resolveName )
+		var messageSort = MessageSort.SYNCH_CALL
+								
+		if (textRamInsteracionMessage.leftLifeline.name == '>>') {
+			createStartMessage( operation, interaction, ramLifelineTo, messageSort )
+		}
+		
+		if (textRamInsteracionMessage.rightLifeline.name == '<<') {
+			
+		}
+		
+		if (textRamInsteracionMessage.leftLifeline.name != '>>' && textRamInsteracionMessage.rightLifeline.name != '<<') {
+			createInteractionMessage(ramLifelineFrom, interaction)
+		}
+	}
+	
+	def createInteractionMessage(Lifeline ramLifelineFrom, Interaction interaction) {
+		// create receive event
+		val sendEvent = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
+		sendEvent.getCovered.add(ramLifelineFrom)
+		interaction.fragments.add(sendEvent)
+		
+		// create receive event
+		val receiveEvent = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
+		receiveEvent.getCovered.add(ramLifelineFrom)
+		interaction.fragments.add(receiveEvent)
+		
+		// create message
+		val message = RamFactory.eINSTANCE.createMessage
+		message.setSendEvent( sendEvent )
+		message.setReceiveEvent( receiveEvent )
+		
+		// set references
+		sendEvent.setMessage(message)
+		receiveEvent.setMessage(message)
+		
+		message
+	}
+	
+	def createStartMessage(Operation operation, Interaction interaction, Lifeline ramLifelineTo, MessageSort messageSort) {
+		var Gate gate = null
+		//messageSort = MessageSort.REPLY 
+		
+		// create gate.
+		gate = RamFactory.eINSTANCE.createGate
+		gate.setName( "in_" + operation.name )
+		interaction.formalGates.add(gate)
+		
+		// create receive event
+		val event = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
+		event.getCovered.add(ramLifelineTo)
+		interaction.fragments.add(event)
+		
+		// create message
+		val message = RamFactory.eINSTANCE.createMessage
+		message.setMessageSort(MessageSort.CREATE_MESSAGE)
+		message.setSignature(operation)
+		interaction.getMessages.add(message)
+		
+		// set references
+		event.setMessage(message)
+		gate.setMessage(message)
+		
+		message.setSendEvent(gate)
+		message.setReceiveEvent(event)
+		
+		message
+	}
+	
+	def transformLifeLine(TLifeline tLifeline, Interaction interaction, List<MappableElement> cacheForMappableElements) {
+				// create the life line.
+		val lifeline = RamFactory.eINSTANCE.createLifeline
+		interaction.getLifelines.add(lifeline)
+		
+		val represents = RamFactory.eINSTANCE.createReference
+		represents.setLowerBound(1)
+		represents.setName(tLifeline.name )
+		represents.setType( cacheForMappableElements.filter(Class).findFirst( c | c.name == (tLifeline.represents as NamedElement).name.resolveName ) )
+		
+		interaction.properties.add(represents)
+		lifeline.setRepresents(represents)
+		
+		lifeline
 	}
 	
 	def createStructuralView(Aspect aspect) {

@@ -11,7 +11,7 @@ name=EString
 '{'
 	structuralView=TStructuralView
 	('instantiations' '{' instantiations+=Instantiation ( ";"? instantiations+=Instantiation)* '}' )?
-	('messages' '{' messageViews+=AbstractMessageView '}' )?
+	('messages' '{' messageViews+=TAbstractMessageView '}' )?
 '}';
 
 terminal TEMPLATE: (ID'<' ID '>')*;
@@ -30,11 +30,8 @@ AbstractStructuralView returns StructuralView:
     TStructuralView
 ;
 
-AbstractMessageView returns AbstractMessageView:
-	TAbstractMessageView
-;
-	
-TAbstractMessageView returns textRam::TAbstractMessageView:
+TAbstractMessageView returns AbstractMessageView:
+	{textRam::TAbstractMessageView}		
 	'objects' '{'
 		lifelines+=TLifeline (';'? lifelines+=TLifeline)*
 	'}'
@@ -66,7 +63,7 @@ ObjectType returns ObjectType:
 PrimitiveType returns PrimitiveType:
     RBoolean | RInt | RChar | RString | RDouble | RFloat;// | REnum;
 
-RString: {RString};
+RString: {RString}; 
 
 RFloat: {RFloat};
 
@@ -118,15 +115,6 @@ TOperation returns textRam::TOperation:
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')';
     
-TOperationSignature returns textRam::TOperationSignature:
-	operation=[textRam::TOperation|EString]
-	'('
-    	( parameters+=Parameter ( "," parameters+=Parameter)* )?
-    ')'
-    ':'
-    returnType=[Type|EString]
-;
-
 TStructuralFeature returns textRam::TStructuralFeature:
 	TAssociation | TAttribute //TODO: | Reference 
 ;
@@ -177,6 +165,7 @@ TClassifierMapping returns textRam::TClassifierMapping:
 ;
 
 TMessageView returns textRam::TMessageView:
+	{textRam::TMessageView}
 	'messageView' class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString] '{'
 		specification=TInteraction
 	'}'
@@ -185,6 +174,7 @@ TMessageView returns textRam::TMessageView:
 TInteraction returns textRam::TInteraction:
 	interactionMessages+=TInteractionMessage (';'? interactionMessages+=TInteractionMessage)*
 ;
+
 
 TLifeline returns textRam::TLifeline:
 	name=EString (':' represents=[textRam::TTypedElement|EString])?
@@ -201,6 +191,15 @@ TAbstractMessage returns textRam::TAbstractMessage:
 TMessage returns textRam::TMessage:
 	(assignTo=[textRam::TStructuralFeature|EString] ':=')?
 	signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
+;
+
+TOperationSignature returns textRam::TOperationSignature:
+	signature=[textRam::TOperation|EString]
+	'('
+    	( parameters+=Parameter ( "," parameters+=Parameter)* )?
+    ')'
+    ':'
+    returnType=[Type|EString]
 ;
 
 //TODO: It should be StructuralFeature | Parameter

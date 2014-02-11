@@ -15,6 +15,10 @@ import ca.mcgill.cs.sel.ram.AttributeMapping;
 import ca.mcgill.cs.sel.ram.Class;
 import ca.mcgill.cs.sel.ram.ClassifierMapping;
 import ca.mcgill.cs.sel.ram.Instantiation;
+import ca.mcgill.cs.sel.ram.Interaction;
+import ca.mcgill.cs.sel.ram.Lifeline;
+import ca.mcgill.cs.sel.ram.Message;
+import ca.mcgill.cs.sel.ram.MessageView;
 import ca.mcgill.cs.sel.ram.Operation;
 import ca.mcgill.cs.sel.ram.OperationMapping;
 import ca.mcgill.cs.sel.ram.ParameterMapping;
@@ -191,4 +195,18 @@ public aspect ModelCommand {
 //
 //  		converter.compoundCommand.append(AddCommand.create(converter.editingDomain, operationMapping, RamPackage.Literals.PARAMETER_MAPPING, parameterMapping));
 //      }
+    after(ModelConverter converter, Aspect ramAspect) returning(MessageView messageView) : call ( MessageView transformMessageView(..) )
+    && target(converter) && args(*, ramAspect, ..) {
+    	converter.compoundCommand.append(AddCommand.create(converter.editingDomain, ramAspect, RamPackage.Literals.ASPECT__MESSAGE_VIEWS, messageView));
+    }
+    
+    after(ModelConverter converter, Interaction interaction) returning(Message message) : call ( Message createInteractionMessage(..) )
+    && target(converter) && args(*, interaction, ..) {
+    	converter.compoundCommand.append(AddCommand.create(converter.editingDomain, interaction, RamPackage.Literals.INTERACTION__MESSAGES, message));
+    }
+    
+//    after(ModelConverter converter, Interaction interaction) returning(Lifeline lifeline) : call ( Lifeline transformLifeLine(..) )
+//    && target(converter) && args(*, interaction, ..) {
+//    	converter.compoundCommand.append(AddCommand.create(converter.editingDomain, interaction, RamPackage.Literals.INTERACTION__LIFELINES, lifeline));
+//    }
 }
