@@ -79,15 +79,11 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor ( aspect.getTStructuralFeature )
 	}	
 
-	def IScope scope_TMessage_signature(Aspect aspect, EReference reference) {
+	def IScope scope_TAbstractMessage_signature(Aspect aspect, EReference reference) {
 		Scopes::scopeFor ( aspect.getPublicOperations )
 	}
 	
 	def IScope scope_TMessage_arguments(Aspect aspect, EReference reference) {
 		Scopes::scopeFor ( aspect.getParameters )
-	}
-	
-	def IScope scope_TOperationSignature_operation(Aspect aspect, EReference reference) {
-		Scopes::scopeFor ( aspect.getPublicOperations )
 	}
 }
