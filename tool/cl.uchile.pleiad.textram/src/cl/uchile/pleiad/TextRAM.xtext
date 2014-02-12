@@ -16,7 +16,6 @@ name=EString
 
 terminal TEMPLATE: (ID'<' ID '>')*;
 terminal PARTIAL_STRING: ('|'ID)*;
-
 EString returns ecore::EString:
     STRING | ID | TEMPLATE | PARTIAL_STRING | '<<' | '>>';
 
@@ -115,7 +114,7 @@ TOperation returns textRam::TOperation:
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')';
     
-TStructuralFeature returns textRam::TStructuralFeature:
+StructuralFeature returns textRam::TStructuralFeature:
 	TAssociation | TAttribute //TODO: | Reference 
 ;
 
@@ -166,7 +165,11 @@ TClassifierMapping returns textRam::TClassifierMapping:
 
 TMessageView returns textRam::TMessageView:
 	{textRam::TMessageView}
-	'messageView' class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString] '{'
+	'messageView' class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString] 
+	'('
+    	( parameters+=Parameter ( "," parameters+=Parameter)* )?
+    ')'
+	'{'
 		specification=TInteraction
 	'}'
 ;

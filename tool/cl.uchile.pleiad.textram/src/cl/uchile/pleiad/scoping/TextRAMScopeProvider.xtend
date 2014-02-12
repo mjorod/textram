@@ -86,4 +86,8 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TMessage_arguments(Aspect aspect, EReference reference) {
 		Scopes::scopeFor ( aspect.getParameters )
 	}
+	
+	def IScope scope_TMessageView_parameters(Aspect aspect, EReference reference) {
+		Scopes::scopeFor ( aspect.getParameters )
+	}
 }
