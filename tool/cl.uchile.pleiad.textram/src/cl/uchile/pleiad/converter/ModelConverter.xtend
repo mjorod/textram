@@ -19,7 +19,6 @@ import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.StructuralView
 import cl.uchile.pleiad.textRam.TAbstractMessageView
-import cl.uchile.pleiad.textRam.TAbstractMessages
 import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
@@ -32,6 +31,10 @@ import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
 import org.eclipse.emf.ecore.util.EcoreUtil
+import ca.mcgill.cs.sel.ram.PrimitiveType
+import ca.mcgill.cs.sel.ram.ObjectType
+import ca.mcgill.cs.sel.ram.Type
+import ca.mcgill.cs.sel.ram.RVoid
 
 class ModelConverter implements IModelConverter {
 
@@ -389,7 +392,7 @@ class ModelConverter implements IModelConverter {
 	}
 	
 	private def dispatch transformClassMember(TOperation tOperation, Class classOwner, List<MappableElement> cacheForMappableElements) {
-		val ramOperation = tOperation.copyOperation(classOwner)
+		val ramOperation = tOperation.copyOperation(classOwner, cacheForMappableElements)
 		
 		cacheForMappableElements.add(ramOperation)
 	}
@@ -400,20 +403,44 @@ class ModelConverter implements IModelConverter {
 		cacheForMappableElements.add(ramAttribute)
 	}
 	
-	private def copyOperation(TOperation tOperation, Class classOwner) {
+	private def copyOperation(TOperation tOperation, Class classOwner, List<MappableElement> cacheForMappableElements ) {
 		val ramOperation = RamFactory.eINSTANCE.createOperation()
 		ramOperation.setName( tOperation.name.replace(PARTIAL_CHAR, '') )
 		ramOperation.setAbstract(tOperation.abstract)
 		ramOperation.setStatic(tOperation.static)
 		ramOperation.setPartial( tOperation.name.startsWith(PARTIAL_CHAR) )
-		ramOperation.setReturnType(tOperation.returnType)
+		ramOperation.setReturnType( tOperation.returnType.transformType(cacheForMappableElements) )
 		ramOperation.setVisibility(tOperation.visibility)
 		
-		ramOperation.parameters.addAll( EcoreUtil.copyAll( tOperation.parameters ))
+		tOperation.parameters.forEach[ p |  ramOperation.addParameter(p, cacheForMappableElements ) ]
 		
 		ramOperation
 	}
+	
+	def addParameter(Operation operation, Parameter parameter, List<MappableElement> cacheForMappableElements) {
+		operation.parameters.add( parameter.transformParameter( cacheForMappableElements ) )
+	}
+	
+	def transformParameter(Parameter parameter, List<MappableElement> cacheForMappableElements) {
+		val ramParameter = RamFactory.eINSTANCE.createParameter
+		ramParameter.name = parameter.name
+		ramParameter.type = parameter.type.transformType( cacheForMappableElements)
 		
+		ramParameter
+	}
+	
+	private def dispatch transformType(PrimitiveType type, List<MappableElement> cacheForMappableElements) {
+		type as Type
+	}
+	
+	private def dispatch transformType(Type type, List<MappableElement> cacheForMappableElements) {
+		cacheForMappableElements.findFirst( c | c.name == type.name ) as Type
+	}
+	
+	private def dispatch transformType(RVoid type, List<MappableElement> cacheForMappableElements) {
+		type as Type
+	}
+	
 	private def copyAttribute(TAttribute tAttribute, Class classOwner) {
 		val ramAttribute = RamFactory.eINSTANCE.createAttribute()
 		ramAttribute.setName(tAttribute.name)
