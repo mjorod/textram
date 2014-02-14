@@ -7,7 +7,7 @@ import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Instantiation
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
-import cl.uchile.pleiad.textRam.TInteraction
+import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TStructuralView
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EReference
@@ -83,8 +83,8 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor ( aspect.getPublicOperations )
 	}
 	
-	def IScope scope_TMessage_arguments(Aspect aspect, EReference reference) {
-		Scopes::scopeFor ( aspect.getParameters )
+	def IScope scope_TMessage_arguments(TMessageView messageView, EReference reference) {
+		Scopes::scopeFor ( messageView.getParameters )
 	}
 	
 	def IScope scope_TMessageView_parameters(Aspect aspect, EReference reference) {

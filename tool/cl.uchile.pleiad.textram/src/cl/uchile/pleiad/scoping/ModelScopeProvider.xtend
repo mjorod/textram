@@ -20,6 +20,7 @@ import cl.uchile.pleiad.textRam.TTypedElement
 import cl.uchile.pleiad.textRam.TextRamFactory
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
+import cl.uchile.pleiad.textRam.TMessageView
 
 class ModelScopeProvider implements IModelScopeProvider {
 	
@@ -119,6 +120,11 @@ class ModelScopeProvider implements IModelScopeProvider {
 							   .toList
 	}
 	
+	override getParameters(TMessageView messageView) {
+		messageView.parameters
+	}
+	
+	
 	override getTStructuralFeature(Aspect aspect) {
 		val result = newArrayList()
 		
@@ -172,4 +178,5 @@ class ModelScopeProvider implements IModelScopeProvider {
 		
 		return null
 	}
+		
 }

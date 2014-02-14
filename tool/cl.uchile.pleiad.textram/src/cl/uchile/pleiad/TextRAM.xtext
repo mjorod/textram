@@ -178,7 +178,6 @@ TInteraction returns textRam::TInteraction:
 	interactionMessages+=TInteractionMessage (';'? interactionMessages+=TInteractionMessage)*
 ;
 
-
 TLifeline returns textRam::TLifeline:
 	name=EString (':' represents=[textRam::TTypedElement|EString])?
 ;
