@@ -131,7 +131,7 @@ public aspect ModelCommand {
      * @param to class
      */
     after(ModelConverter converter, Class to) returning(AssociationEnd toEnd): execution ( AssociationEnd transformAssociationEndClassTo(..) )
-    && this(converter) && args(*, *, *, to) {
+    && this(converter) && args(*, *, *, to, *) {
     	
     	converter.compoundCommand.append(AddCommand.create(converter.editingDomain, to, RamPackage.Literals.CLASS__ASSOCIATION_ENDS, toEnd));
     }
@@ -201,7 +201,7 @@ public aspect ModelCommand {
     }
     
     after(ModelConverter converter, Interaction interaction) returning(Message message) : call ( Message createMessageOcurrence(..) )
-    && target(converter) && args(*, interaction, ..) {
+    && target(converter) && args(*, *, interaction, ..) {
     	converter.compoundCommand.append(AddCommand.create(converter.editingDomain, interaction, RamPackage.Literals.INTERACTION__MESSAGES, message));
     }
     

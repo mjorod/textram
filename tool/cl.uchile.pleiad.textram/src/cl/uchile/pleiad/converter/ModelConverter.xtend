@@ -38,7 +38,6 @@ import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
 import org.eclipse.emf.ecore.util.EcoreUtil
-import ca.mcgill.cs.sel.ram.RamPackage
 
 class ModelConverter implements IModelConverter {
 
@@ -91,12 +90,12 @@ class ModelConverter implements IModelConverter {
 	def createInteraction(List<TLifeline> textRamLifelines, TMessageView textRamMessage, List<NamedElement> cacheForElements) {
 		// create interaction 
 		var interaction = RamFactory.eINSTANCE.createInteraction
-		
-		// transform each textRam's lifeline to ram's lifelines
-		interaction = interaction.transformLifelines(textRamLifelines, cacheForElements )
-		
+
 		// set properties for interaction
 		interaction = interaction.transformProperties( textRamLifelines, cacheForElements )
+		
+		// transform each textRam's lifeline to ram's lifelines
+		interaction = interaction.transformLifelines( textRamLifelines, cacheForElements )		
 		
 		// set messages for interaction 
 		interaction = interaction.transformMessages( textRamMessage, cacheForElements ) 
@@ -135,17 +134,22 @@ class ModelConverter implements IModelConverter {
 		// iterates over all textRamLifelines's TClass types to add them to the interaction
 		textRamLifelines.forEach[ l | 
 			
-			val tClass = l.represents as TClass
+			if ( cacheForElements.exists[ c | c.name == l.name ] == false ) {
 			
-			if ( tClass != null ) {
-				// create the property
-				val propertyRepresents = RamFactory.eINSTANCE.createReference
-				propertyRepresents.setLowerBound(1)
-				propertyRepresents.setName( l.name )
-				propertyRepresents.setType( cacheForElements.filter(Class).findFirst( c | c.name == tClass.name.resolveName) )
+				val tClass = l.represents as TClass
 				
-				interaction.properties.add(propertyRepresents)
-			} 
+				if ( tClass != null ) {
+					// create the property
+					val propertyRepresents = RamFactory.eINSTANCE.createReference
+					propertyRepresents.setLowerBound(1)
+					propertyRepresents.setName( l.name )
+					propertyRepresents.setType( cacheForElements.filter(Class).findFirst( c | c.name == tClass.name.resolveName) )
+					
+					interaction.properties.add(propertyRepresents)
+				} 
+				
+			}
+			
 		]
 		
 		interaction
@@ -195,8 +199,9 @@ class ModelConverter implements IModelConverter {
 		}
 		
 		if (textRamInsteracionMessage.leftLifeline.name != '>>' && textRamInsteracionMessage.rightLifeline.name != '<<') {
+			val ramLifelineTo  = interaction.getLifelineTo(textRamInsteracionMessage)
 			val ramLifelineFrom = interaction.getLifelineFrom(textRamInsteracionMessage) 
-			createMessageOcurrence(ramLifelineFrom, interaction, operation)
+			createMessageOcurrence(ramLifelineFrom, ramLifelineTo, interaction, operation)
 		}
 	}
 	
@@ -208,7 +213,7 @@ class ModelConverter implements IModelConverter {
 		interaction.lifelines.findFirst( l | l.represents.name == textRamInsteracionMessage.leftLifeline.name.resolveName )
 	}
 	
-	private def createMessageOcurrence(Lifeline ramLifelineFrom, Interaction interaction, Operation operation) {
+	private def createMessageOcurrence(Lifeline ramLifelineFrom, Lifeline ramLifelineTo, Interaction interaction, Operation operation) {
 		// create receive event
 		val sendEvent = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
 		sendEvent.getCovered.add(ramLifelineFrom)
@@ -216,7 +221,7 @@ class ModelConverter implements IModelConverter {
 		
 		// create receive event
 		val receiveEvent = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
-		receiveEvent.getCovered.add(ramLifelineFrom)
+		receiveEvent.getCovered.add(ramLifelineTo)
 		interaction.fragments.add(receiveEvent)
 		
 		// create message
@@ -288,7 +293,12 @@ class ModelConverter implements IModelConverter {
 		// create the life line.
 		val lifeline = RamFactory.eINSTANCE.createLifeline
 		
-		val lifeLineRepresents = tLifeline.represents.resolveRepresents(interaction, tLifeline, cacheForElements)
+		var represents = cacheForElements.findFirst( c | c.name == tLifeline.name ) as TypedElement 
+		
+		if (represents == null)
+			represents = tLifeline.represents.resolveRepresents(interaction, tLifeline, cacheForElements)
+		
+		val lifeLineRepresents = represents
 		
 		lifeline.setRepresents(lifeLineRepresents)
 		
@@ -460,7 +470,7 @@ class ModelConverter implements IModelConverter {
 		ramAssociation.setName(classNameFrom + "_" + classNameTo);
 		
 		ramAssociation.transformAssociationEndClassFrom( textRamAssociation, from, to )
-		ramAssociation.transformAssociationEndClassTo ( textRamAssociation, from, to, cacheForElements)
+		ramAssociation.transformAssociationEndClassTo ( textRamAssociation, from, to, cacheForElements )
          
         return ramAssociation
 	}
