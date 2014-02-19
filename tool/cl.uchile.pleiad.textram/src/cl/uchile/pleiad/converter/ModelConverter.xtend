@@ -1,5 +1,5 @@
-package cl.uchile.pleiad.converter
 
+package cl.uchile.pleiad.converter
 import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Association
 import ca.mcgill.cs.sel.ram.AssociationEnd
@@ -48,7 +48,7 @@ class ModelConverter implements IModelConverter {
 	 */
 	override Aspect convertTextRAMModelToRAMModel(Aspect aspect) {
 		// cache for all mappable elements (classes, attributes and operations)
-		val List<NamedElement> cacheForElements = newArrayList
+		val List<NamedElement> collector = newArrayList
 
 		// instance of TStructuralView
 		val textRamStructuralView = aspect.structuralView as TStructuralView
@@ -57,20 +57,25 @@ class ModelConverter implements IModelConverter {
 		var ramStructuralView = ramAspect.createStructuralView
 		
 		ramStructuralView = textRamStructuralView.transformTypesToRam(ramStructuralView)
-		ramStructuralView = textRamStructuralView.transformClassesToRam(ramStructuralView, cacheForElements)  
-		ramStructuralView = ramStructuralView.convertAssociations(textRamStructuralView, cacheForElements) 
+		ramStructuralView = textRamStructuralView.transformClassesToRam(ramStructuralView, collector)  
+		ramStructuralView = ramStructuralView.convertAssociations(textRamStructuralView, collector) 
 		
-		ramAspect.convertInstantiations(aspect, cacheForElements)
+		ramAspect.convertInstantiations(aspect, collector)
 		
-		ramAspect = ramAspect.transformMessageViews(aspect, cacheForElements)
+		//ramAspect = ramAspect.transformMessageViews(aspect, collector)
+		
+		//ramAspect = textRamMessageViewToRamMessageView
+			
+			
+//		)
 						
 		ramAspect
 	}
 	
-	def transformMessageViews(Aspect ramAspect, Aspect textRamAspect, List<NamedElement> cacheForElements) {
+	def transformMessageViews(Aspect ramAspect, Aspect textRamAspect, List<NamedElement> collector) {
 		val tAbstractMessageView = textRamAspect.getTAbstractMessageView
 		
-		tAbstractMessageView.messages.filter(TMessageView).forEach[ m | m.transformMessageView( ramAspect, cacheForElements ) ]
+		tAbstractMessageView.messages.filter(TMessageView).forEach[ m | m.transformMessageView( ramAspect, collector ) ]
 		
 		ramAspect
 	}
@@ -79,40 +84,40 @@ class ModelConverter implements IModelConverter {
 		textRamAspect.messageViews.filter(TAbstractMessageView).head
 	}
 	
-	def transformMessageView(TMessageView textRamMessage, Aspect ramAspect, List<NamedElement> cacheForElements) {
+	def transformMessageView(TMessageView textRamMessage, Aspect ramAspect, List<NamedElement> collector) {
 		
 		// create ram message view
-		val ramMessageView = textRamMessage.createMessageView(cacheForElements)
+		val ramMessageView = textRamMessage.createMessageView(collector)
 		
 		ramMessageView
 	}
 	
-	def createInteraction(List<TLifeline> textRamLifelines, TMessageView textRamMessage, List<NamedElement> cacheForElements) {
+	def createInteraction(List<TLifeline> textRamLifelines, TMessageView textRamMessage, List<NamedElement> collector) {
 		// create interaction 
 		var interaction = RamFactory.eINSTANCE.createInteraction
 
 		// set properties for interaction
-		interaction = interaction.transformProperties( textRamLifelines, cacheForElements )
+		interaction = interaction.transformProperties( textRamLifelines, collector )
 		
 		// transform each textRam's lifeline to ram's lifelines
-		interaction = interaction.transformLifelines( textRamLifelines, cacheForElements )		
+		interaction = interaction.transformLifelines( textRamLifelines, collector )		
 		
 		// set messages for interaction 
-		interaction = interaction.transformMessages( textRamMessage, cacheForElements ) 
+		interaction = interaction.transformMessages( textRamMessage, collector ) 
 		
 		
 		interaction
 	}
 	
-	def transformMessages(Interaction interaction, TMessageView textRamMessage, List<NamedElement> cacheForElements) {
-		textRamMessage.specification.interactionMessages.forEach[ i | i.transformMessage(interaction, cacheForElements) ]
+	def transformMessages(Interaction interaction, TMessageView textRamMessage, List<NamedElement> collector) {
+		textRamMessage.specification.interactionMessages.forEach[ i | i.transformMessage(interaction, collector) ]
 		
 		interaction
 	}
 	
-	private def transformLifelines(Interaction interaction, List<TLifeline> textRamLifelines, List<NamedElement> cacheForElements) {
+	private def transformLifelines(Interaction interaction, List<TLifeline> textRamLifelines, List<NamedElement> collector) {
 		textRamLifelines.filter( l | l.name != '>>' && l.name != '<<' ).forEach[ l | 
-			val ramLifeline = l.createLifeline( interaction, cacheForElements)
+			val ramLifeline = l.createLifeline( interaction, collector)
 			
 			interaction.lifelines.add(ramLifeline)			
 		]
@@ -127,14 +132,14 @@ class ModelConverter implements IModelConverter {
 	 *   
 	 * @param interaction receiver of the properties
 	 * @param textRamLifelines container of TClasses. TClasses are the equivalent of Ram's Reference type.
-	 * @param cacheForelements container of all cacheable ram models 
+	 * @param collector container of all cacheable ram models 
 	 */
-	private def transformProperties(Interaction interaction, List<TLifeline> textRamLifelines, List<NamedElement> cacheForElements) {
+	private def transformProperties(Interaction interaction, List<TLifeline> textRamLifelines, List<NamedElement> collector) {
 		
 		// iterates over all textRamLifelines's TClass types to add them to the interaction
 		textRamLifelines.forEach[ l | 
 			
-			if ( cacheForElements.exists[ c | c.name == l.name ] == false ) {
+			if ( collector.exists[ c | c.name == l.name ] == false ) {
 			
 				val tClass = l.represents as TClass
 				
@@ -143,7 +148,7 @@ class ModelConverter implements IModelConverter {
 					val propertyRepresents = RamFactory.eINSTANCE.createReference
 					propertyRepresents.setLowerBound(1)
 					propertyRepresents.setName( l.name )
-					propertyRepresents.setType( cacheForElements.filter(Class).findFirst( c | c.name == tClass.name.resolveName) )
+					propertyRepresents.setType( collector.filter(Class).findFirst( c | c.name == tClass.name.resolveName) )
 					
 					interaction.properties.add(propertyRepresents)
 				} 
@@ -155,38 +160,38 @@ class ModelConverter implements IModelConverter {
 		interaction
 	}
 	
-	private def createMessageView(TMessageView textRamMessage, List<NamedElement> cacheForElements) {
+	private def createMessageView(TMessageView textRamMessage, List<NamedElement> collector) {
 		var ramMessageView = RamFactory.eINSTANCE.createMessageView
 		
-		ramMessageView = ramMessageView.transformSpecifies( textRamMessage, cacheForElements )  
+		ramMessageView = ramMessageView.transformSpecifies( textRamMessage, collector )  
 		
-		ramMessageView = ramMessageView.transformSpecification( textRamMessage, cacheForElements )
+		ramMessageView = ramMessageView.transformSpecification( textRamMessage, collector )
 		
 		ramMessageView
 	}
 	
-	private def transformSpecification(MessageView ramMessageView, TMessageView textRamMessage, List<NamedElement> cacheForElements) {
+	private def transformSpecification(MessageView ramMessageView, TMessageView textRamMessage, List<NamedElement> collector) {
 		//gets a reference of the lifelines block 
 		val objects = textRamMessage.eContainer as TAbstractMessageView
 		
 		// transform ram interaction
-		val interaction = createInteraction(objects.lifelines, textRamMessage, cacheForElements)
+		val interaction = createInteraction(objects.lifelines, textRamMessage, collector)
 		
 		ramMessageView.setSpecification(interaction)
 		
 		ramMessageView
 	}
 	
-	private def transformSpecifies(MessageView ramMessageView, TMessageView textRamMessage, List<NamedElement> cacheForElements) {
-		ramMessageView.setSpecifies ( cacheForElements.filter(Operation).findFirst( o | o.name == textRamMessage.specifies.name.resolveName ) )
+	private def transformSpecifies(MessageView ramMessageView, TMessageView textRamMessage, List<NamedElement> collector) {
+		ramMessageView.setSpecifies ( collector.filter(Operation).findFirst( o | o.name == textRamMessage.specifies.name.resolveName ) )
 		
 		ramMessageView
 	}
 	
-	private def void transformMessage(TInteractionMessage textRamInsteracionMessage, Interaction interaction, List<NamedElement> cacheForElements) {
+	private def void transformMessage(TInteractionMessage textRamInsteracionMessage, Interaction interaction, List<NamedElement> collector) {
 		
 		// mal buscar en cache, nombre de operaciones es repetido
-		val operation =  cacheForElements.filter(Operation).findFirst( o | o.name == textRamInsteracionMessage.message.signature.name.resolveName )
+		val operation =  collector.filter(Operation).findFirst( o | o.name == textRamInsteracionMessage.message.signature.name.resolveName )
 		var messageSort = MessageSort.SYNCH_CALL
 								
 		if (textRamInsteracionMessage.leftLifeline.name == '>>') {
@@ -289,14 +294,14 @@ class ModelConverter implements IModelConverter {
 		parameterValueMapping
 	}
 	
-	def createLifeline(TLifeline tLifeline, Interaction interaction, List<NamedElement> cacheForElements) {
+	def createLifeline(TLifeline tLifeline, Interaction interaction, List<NamedElement> collector) {
 		// create the life line.
 		val lifeline = RamFactory.eINSTANCE.createLifeline
 		
-		var represents = cacheForElements.findFirst( c | c.name == tLifeline.name ) as TypedElement 
+		var represents = collector.findFirst( c | c.name == tLifeline.name ) as TypedElement 
 		
 		if (represents == null)
-			represents = tLifeline.represents.resolveRepresents(interaction, tLifeline, cacheForElements)
+			represents = tLifeline.represents.resolveRepresents(interaction, tLifeline, collector)
 		
 		val lifeLineRepresents = represents
 		
@@ -305,15 +310,15 @@ class ModelConverter implements IModelConverter {
 		lifeline
 	}
 	
-	private def dispatch resolveRepresents(TAssociation element, Interaction interaction, TLifeline tLifeline, List<NamedElement> cacheForElements) {
-		cacheForElements.filter(AssociationEnd).findFirst( a | a.name == element.name ) as TypedElement
+	private def dispatch resolveRepresents(TAssociation element, Interaction interaction, TLifeline tLifeline, List<NamedElement> collector) {
+		collector.filter(AssociationEnd).findFirst( a | a.name == element.name ) as TypedElement
 	}
 	
-	private def dispatch resolveRepresents(TAttribute element, Interaction interaction, TLifeline tLifeline, List<NamedElement> cacheForElements) {
-		cacheForElements.filter(Attribute).findFirst( a | a.name == element.name ) as TypedElement
+	private def dispatch resolveRepresents(TAttribute element, Interaction interaction, TLifeline tLifeline, List<NamedElement> collector) {
+		collector.filter(Attribute).findFirst( a | a.name == element.name ) as TypedElement
 	}
 	
-	private def dispatch resolveRepresents(TClass element, Interaction interaction, TLifeline tLifeline, List<NamedElement> cacheForElements) {
+	private def dispatch resolveRepresents(TClass element, Interaction interaction, TLifeline tLifeline, List<NamedElement> collector) {
 		interaction.properties.findFirst( p | p.name == tLifeline.name )
 	}
 	
@@ -327,8 +332,8 @@ class ModelConverter implements IModelConverter {
 		ramStructuralView
 	}
 	
-	private def transformClassesToRam(TStructuralView textRamStructuralView, StructuralView ramStructuralView, List<NamedElement> cacheForElements) {
-		textRamStructuralView.classes.filter(TClass).forEach[ textRamClass | textRamClass.transformClass(ramStructuralView, cacheForElements)  ]
+	private def transformClassesToRam(TStructuralView textRamStructuralView, StructuralView ramStructuralView, List<NamedElement> collector) {
+		textRamStructuralView.classes.filter(TClass).forEach[ textRamClass | textRamClass.transformClass(ramStructuralView, collector)  ]
 		
 		ramStructuralView
 	}
@@ -346,23 +351,23 @@ class ModelConverter implements IModelConverter {
 		newAspect
 	}
 	
-	private def void convertInstantiations(Aspect ramAspect, Aspect aspect, List<NamedElement> cacheForElements) {
-		aspect.instantiations.forEach[ instantiation | instantiation.convertInstantiation(ramAspect, cacheForElements) ]
+	private def void convertInstantiations(Aspect ramAspect, Aspect aspect, List<NamedElement> collector) {
+		aspect.instantiations.forEach[ instantiation | instantiation.convertInstantiation(ramAspect, collector) ]
 	}
 	
-	private def convertInstantiation(Instantiation instantiation, Aspect ramAspect, List<NamedElement> cacheForElements) {
+	private def convertInstantiation(Instantiation instantiation, Aspect ramAspect, List<NamedElement> collector) {
 		val newInstantiation = RamFactory.eINSTANCE.createInstantiation()
 		val ramExternalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(instantiation.externalAspect) 
 					
 		newInstantiation.setExternalAspect(ramExternalAspect)
 		newInstantiation.setType(instantiation.type)
     	
-//    	instantiation.mappings.forEach[ mapping | mapping.convertMapping(ramExternalAspect, newInstantiation, cacheForElements) ]
+//    	instantiation.mappings.forEach[ mapping | mapping.convertMapping(ramExternalAspect, newInstantiation, collector) ]
     
     	newInstantiation	
 	}
 	
-	private def convertMapping(ClassifierMapping mapping, Aspect ramExternalAspect, Instantiation newInstantiation, List<NamedElement> cacheForElements) {
+	private def convertMapping(ClassifierMapping mapping, Aspect ramExternalAspect, Instantiation newInstantiation, List<NamedElement> collector) {
 		// create ClassifierMapping
 		val ramClassifierMapping = RamFactory.eINSTANCE.createClassifierMapping()
 		val tClassifierMapping = mapping as TClassifierMapping
@@ -372,32 +377,32 @@ class ModelConverter implements IModelConverter {
 		ramClassifierMapping.setFromElement(fromElement)
 		
 		// to element
-		val toElement = cacheForElements.findFirst( e | e.name ==  tClassifierMapping.toElement.name ) as Classifier
+		val toElement = collector.findFirst( e | e.name ==  tClassifierMapping.toElement.name ) as Classifier
 		ramClassifierMapping.setToElement(toElement)
 		
 		// call a dispatch method for mapping members (operations and attributes)
-		tClassifierMapping.fromMember.forEach[ classMemberFrom | classMemberFrom.convertMemberMappings(ramExternalAspect, ramClassifierMapping, tClassifierMapping, cacheForElements) ]
+		tClassifierMapping.fromMember.forEach[ classMemberFrom | classMemberFrom.convertMemberMappings(ramExternalAspect, ramClassifierMapping, tClassifierMapping, collector) ]
 		
 		ramClassifierMapping
 	}
 	
-	private def void convertMemberMappings(TClassMember classMemberFrom, Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TClassifierMapping tClassifierMapping, List<NamedElement> cacheForElements) {
+	private def void convertMemberMappings(TClassMember classMemberFrom, Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TClassifierMapping tClassifierMapping, List<NamedElement> collector) {
 		// class member To
 		val indexOfClassMemberFrom = tClassifierMapping.fromMember.indexOf(classMemberFrom)
 		
 		val classMemberTo = tClassifierMapping.getFromMember().get(indexOfClassMemberFrom)
 		
-		classMemberFrom.createMemberMapping(classMemberTo, ramExternalAspect, newClassifierMapping, tClassifierMapping, cacheForElements);
+		classMemberFrom.createMemberMapping(classMemberTo, ramExternalAspect, newClassifierMapping, tClassifierMapping, collector);
 	}
 	
-	private def dispatch void createMemberMapping(TOperation classMemberFrom, TClassMember classMemberTo, Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TClassifierMapping tClassifierMapping, List<NamedElement> cacheForElements){
-		createOperationMapping(ramExternalAspect, newClassifierMapping, classMemberFrom, classMemberTo, cacheForElements)
+	private def dispatch void createMemberMapping(TOperation classMemberFrom, TClassMember classMemberTo, Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TClassifierMapping tClassifierMapping, List<NamedElement> collector){
+		createOperationMapping(ramExternalAspect, newClassifierMapping, classMemberFrom, classMemberTo, collector)
 	}
 	
-	private def createOperationMapping(Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TOperation tClassMemberFrom, TClassMember tClassMemberTo, List<NamedElement> cacheForElements) {
+	private def createOperationMapping(Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TOperation tClassMemberFrom, TClassMember tClassMemberTo, List<NamedElement> collector) {
 		val ramOperationMapping = RamFactory.eINSTANCE.createOperationMapping()
 		val externalOperation = ramExternalAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( opr | opr.name == tClassMemberFrom.name.resolveName )
-		val internalOperation = cacheForElements.findFirst( e | e.name == tClassMemberTo.name.resolveName ) as Operation
+		val internalOperation = collector.findFirst( e | e.name == tClassMemberTo.name.resolveName ) as Operation
 		
 		ramOperationMapping.setFromElement( externalOperation )
 		ramOperationMapping.setToElement( internalOperation )
@@ -439,28 +444,28 @@ class ModelConverter implements IModelConverter {
 		ramParameterMapping
 	}
 	
-	private def dispatch void createMemberMapping(TAttribute classMemberFrom, TClassMember classMemberTo, Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TClassifierMapping tClassifierMapping, List<NamedElement> cacheForElements){
-		createAttributeMapping(ramExternalAspect, newClassifierMapping, classMemberFrom, classMemberTo, cacheForElements)
+	private def dispatch void createMemberMapping(TAttribute classMemberFrom, TClassMember classMemberTo, Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TClassifierMapping tClassifierMapping, List<NamedElement> collector){
+		createAttributeMapping(ramExternalAspect, newClassifierMapping, classMemberFrom, classMemberTo, collector)
 	}
 	
-	private def createAttributeMapping(Aspect ramExternalAspect, ClassifierMapping ramClassifierMapping, TAttribute classMemberFrom, TClassMember classMemberTo, List<NamedElement> cacheForElements) {
+	private def createAttributeMapping(Aspect ramExternalAspect, ClassifierMapping ramClassifierMapping, TAttribute classMemberFrom, TClassMember classMemberTo, List<NamedElement> collector) {
 		val ramAttributeMapping = RamFactory.eINSTANCE.createAttributeMapping()
 		val externalAttribute = ramExternalAspect.structuralView.classes.filter(Class).map[attributes].flatten.findFirst( attr | attr.name == classMemberFrom.name )
 		ramAttributeMapping.setFromElement( externalAttribute )
-		ramAttributeMapping.setToElement( cacheForElements.findFirst( e | e.name == classMemberTo.name ) as Attribute )
+		ramAttributeMapping.setToElement( collector.findFirst( e | e.name == classMemberTo.name ) as Attribute )
 		
 		ramAttributeMapping
 	}
 	
-	private def convertAssociations(StructuralView ramStructuralView, TStructuralView textRamStructuralView, List<NamedElement> cacheForElements) {
-		textRamStructuralView.TAssociations.forEach[ textRamAssoc | textRamAssoc.transformAssociation(ramStructuralView, cacheForElements)  ]
+	private def convertAssociations(StructuralView ramStructuralView, TStructuralView textRamStructuralView, List<NamedElement> collector) {
+		textRamStructuralView.TAssociations.forEach[ textRamAssoc | textRamAssoc.transformAssociation(ramStructuralView, collector)  ]
 		
 		ramStructuralView
 	}
 	
-	private def transformAssociation(TAssociation textRamAssociation, StructuralView ramStructuralView, List<NamedElement> cacheForElements) {
-		var Class from = cacheForElements.findFirst( c | c.name == textRamAssociation.fromEnd.classReference.name.resolveName ) as Class
-		var Class to = cacheForElements.findFirst( c | c.name == textRamAssociation.toEnd.classReference.name.resolveName ) as Class
+	private def transformAssociation(TAssociation textRamAssociation, StructuralView ramStructuralView, List<NamedElement> collector) {
+		var Class from = collector.findFirst( c | c.name == textRamAssociation.fromEnd.classReference.name.resolveName ) as Class
+		var Class to = collector.findFirst( c | c.name == textRamAssociation.toEnd.classReference.name.resolveName ) as Class
 		
 		val classNameFrom = textRamAssociation.fromEnd.classReference.name.resolveName
 		val classNameTo = textRamAssociation.toEnd.classReference.name.resolveName
@@ -470,7 +475,7 @@ class ModelConverter implements IModelConverter {
 		ramAssociation.setName(classNameFrom + "_" + classNameTo);
 		
 		ramAssociation.transformAssociationEndClassFrom( textRamAssociation, from, to )
-		ramAssociation.transformAssociationEndClassTo ( textRamAssociation, from, to, cacheForElements )
+		ramAssociation.transformAssociationEndClassTo ( textRamAssociation, from, to, collector )
          
         return ramAssociation
 	}
@@ -495,7 +500,7 @@ class ModelConverter implements IModelConverter {
 		fromEnd
 	}
 	
-	private def transformAssociationEndClassTo(Association association, TAssociation tAssociation, Class from, Class to, List<NamedElement> cacheForElements) {
+	private def transformAssociationEndClassTo(Association association, TAssociation tAssociation, Class from, Class to, List<NamedElement> collector) {
 		// create to association end
         var toEnd = RamFactory.eINSTANCE.createAssociationEnd();
         toEnd.setAssoc(association);
@@ -503,88 +508,88 @@ class ModelConverter implements IModelConverter {
         toEnd.setUpperBound(tAssociation.toEnd.upperBound)
         toEnd.setName(tAssociation.name.toLowerCaseFirst)
      
-     	cacheForElements.add(toEnd)
+     	collector.add(toEnd)
      
      	toEnd
    	}
 	
-	private def Class transformClass(TClass textRamClass, StructuralView ramStructuralView, List<NamedElement> cacheForElements) {
+	private def Class transformClass(TClass textRamClass, StructuralView ramStructuralView, List<NamedElement> collector) {
 		val ramClass = RamFactory.eINSTANCE.createClass()
 		ramClass.setName( textRamClass.name.replace(PARTIAL_CHAR, '') )
 		ramClass.setAbstract(textRamClass.abstract)
 		ramClass.setPartial( textRamClass.name.startsWith(PARTIAL_CHAR) )
 		
-		cacheForElements.add(ramClass)
+		collector.add(ramClass)
 		
 		// use dispatch methods to transform attributes and operations
-		textRamClass.members.forEach[ classMember | transformClassMember(classMember, ramClass, cacheForElements ) ]
+		textRamClass.members.forEach[ classMember | transformClassMember(classMember, ramClass, collector ) ]
 		
 		// add super type
 		if (textRamClass.superTypes.empty == false) {
-			val superType = cacheForElements.findFirst( c | c.name == textRamClass.superTypes.head.name ) as Classifier;
+			val superType = collector.findFirst( c | c.name == textRamClass.superTypes.head.name ) as Classifier;
 			ramClass.superTypes.add(superType)
 		}
 		
 		ramClass
 	}
 	
-	private def dispatch transformClassMember(TOperation tOperation, Class classOwner, List<NamedElement> cacheForElements) {
-		val ramOperation = tOperation.copyOperation(classOwner, cacheForElements)
+	private def dispatch transformClassMember(TOperation tOperation, Class classOwner, List<NamedElement> collector) {
+		val ramOperation = tOperation.copyOperation(classOwner, collector)
 		
-		cacheForElements.add(ramOperation)
+		collector.add(ramOperation)
 	}
 	
-	private def dispatch transformClassMember(TAttribute tAttribute, Class classOwner, List<NamedElement> cacheForElements) {
-		val ramAttribute = tAttribute.copyAttribute(classOwner, cacheForElements)
+	private def dispatch transformClassMember(TAttribute tAttribute, Class classOwner, List<NamedElement> collector) {
+		val ramAttribute = tAttribute.copyAttribute(classOwner, collector)
 		
-		cacheForElements.add(ramAttribute)
+		collector.add(ramAttribute)
 	}
 	
-	private def copyOperation(TOperation tOperation, Class classOwner, List<NamedElement> cacheForElements ) {
+	private def copyOperation(TOperation tOperation, Class classOwner, List<NamedElement> collector ) {
 		val ramOperation = RamFactory.eINSTANCE.createOperation()
 		ramOperation.setName( tOperation.name.replace(PARTIAL_CHAR, '') )
 		ramOperation.setAbstract(tOperation.abstract)
 		ramOperation.setStatic(tOperation.static)
 		ramOperation.setPartial( tOperation.name.startsWith(PARTIAL_CHAR) )
-		ramOperation.setReturnType( tOperation.returnType.transformType(cacheForElements) )
+		ramOperation.setReturnType( tOperation.returnType.transformType(collector) )
 		ramOperation.setVisibility(tOperation.visibility)
 		
-		tOperation.parameters.forEach[ p |  ramOperation.addParameter(p, cacheForElements ) ]
+		tOperation.parameters.forEach[ p |  ramOperation.addParameter(p, collector ) ]
 		
 		ramOperation
 	}
 	
-	def addParameter(Operation operation, Parameter parameter, List<NamedElement> cacheForElements) {
-		operation.parameters.add( parameter.transformParameter( cacheForElements ) )
+	def addParameter(Operation operation, Parameter parameter, List<NamedElement> collector) {
+		operation.parameters.add( parameter.transformParameter( collector ) )
 	}
 	
-	def transformParameter(Parameter parameter, List<NamedElement> cacheForElements) {
+	def transformParameter(Parameter parameter, List<NamedElement> collector) {
 		val ramParameter = RamFactory.eINSTANCE.createParameter
 		ramParameter.name = parameter.name
-		ramParameter.type = parameter.type.transformType( cacheForElements)
+		ramParameter.type = parameter.type.transformType( collector)
 		
 		ramParameter
 	}
 	
-	private def dispatch transformType(PrimitiveType type, List<NamedElement> cacheForElements) {
+	private def dispatch transformType(PrimitiveType type, List<NamedElement> collector) {
 		type as Type
 	}
 	
-	private def dispatch transformType(Type type, List<NamedElement> cacheForElements) {
-		cacheForElements.findFirst( c | c.name == type.name ) as Type
+	private def dispatch transformType(Type type, List<NamedElement> collector) {
+		collector.findFirst( c | c.name == type.name ) as Type
 	}
 	
-	private def dispatch transformType(RVoid type, List<NamedElement> cacheForElements) {
+	private def dispatch transformType(RVoid type, List<NamedElement> collector) {
 		type as Type
 	}
 	
-	private def copyAttribute(TAttribute tAttribute, Class classOwner, List<NamedElement> cacheForElements) {
+	private def copyAttribute(TAttribute tAttribute, Class classOwner, List<NamedElement> collector) {
 		val ramAttribute = RamFactory.eINSTANCE.createAttribute()
 		ramAttribute.setName(tAttribute.name)
 		ramAttribute.setStatic(tAttribute.static)
 		ramAttribute.setType(tAttribute.type)
 		
-		cacheForElements.add(ramAttribute)
+		collector.add(ramAttribute)
 		
 		ramAttribute
 	} 	

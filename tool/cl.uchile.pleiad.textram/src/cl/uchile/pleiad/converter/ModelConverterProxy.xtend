@@ -2,6 +2,7 @@ package cl.uchile.pleiad.converter
 
 import ca.mcgill.cs.sel.ram.Aspect
 import java.util.Map
+import cl.uchile.pleiad.generator.StructuralViewGenerator
 
 class ModelConverterProxy implements IModelConverter {
 	
@@ -20,9 +21,9 @@ class ModelConverterProxy implements IModelConverter {
 	
 	override convertTextRAMModelToRAMModel(Aspect textRamAspect) {
 		if (aspects.containsKey(textRamAspect.name) == false) {
-			val modelConverter = new ModelConverter
+			val generator = new StructuralViewGenerator( textRamAspect )
 			
-			val Aspect ramAspect = modelConverter.convertTextRAMModelToRAMModel(textRamAspect)
+			val Aspect ramAspect = generator.generate
 			
 			aspects.put(textRamAspect.name, ramAspect)
 		}
