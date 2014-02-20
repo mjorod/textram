@@ -158,9 +158,9 @@ AbstractClassifierMapping returns ClassifierMapping:
 ; 
 
 TClassifierMapping returns textRam::TClassifierMapping:
-    fromElement=[Classifier|EString] ('<' fromMember+=[textRam::TClassMember] ("," fromMember+=[textRam::TClassMember])* '>')?
+    fromElement=[Classifier|EString] ('<' fromMembers+=[textRam::TClassMember] ("," fromMembers+=[textRam::TClassMember])* '>')?
     '->'
-    toElement=[Classifier|EString] ('<' toMember+=[textRam::TClassMember] ("," toMember+=[textRam::TClassMember])*  '>')?
+    toElement=[Classifier|EString] ('<' toMembers+=[textRam::TClassMember] ("," toMembers+=[textRam::TClassMember])*  '>')?
 ;
 
 TMessageView returns textRam::TMessageView:

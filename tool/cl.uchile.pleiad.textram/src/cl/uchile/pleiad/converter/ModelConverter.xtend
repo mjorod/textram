@@ -362,7 +362,7 @@ class ModelConverter implements IModelConverter {
 		newInstantiation.setExternalAspect(ramExternalAspect)
 		newInstantiation.setType(instantiation.type)
     	
-//    	instantiation.mappings.forEach[ mapping | mapping.convertMapping(ramExternalAspect, newInstantiation, collector) ]
+    	instantiation.mappings.forEach[ mapping | mapping.convertMapping(ramExternalAspect, newInstantiation, collector) ]
     
     	newInstantiation	
 	}
@@ -381,16 +381,16 @@ class ModelConverter implements IModelConverter {
 		ramClassifierMapping.setToElement(toElement)
 		
 		// call a dispatch method for mapping members (operations and attributes)
-		tClassifierMapping.fromMember.forEach[ classMemberFrom | classMemberFrom.convertMemberMappings(ramExternalAspect, ramClassifierMapping, tClassifierMapping, collector) ]
+		tClassifierMapping.fromMembers.forEach[ classMemberFrom | classMemberFrom.convertMemberMappings(ramExternalAspect, ramClassifierMapping, tClassifierMapping, collector) ]
 		
 		ramClassifierMapping
 	}
 	
 	private def void convertMemberMappings(TClassMember classMemberFrom, Aspect ramExternalAspect, ClassifierMapping newClassifierMapping, TClassifierMapping tClassifierMapping, List<NamedElement> collector) {
 		// class member To
-		val indexOfClassMemberFrom = tClassifierMapping.fromMember.indexOf(classMemberFrom)
+		val indexOfClassMemberFrom = tClassifierMapping.fromMembers.indexOf(classMemberFrom)
 		
-		val classMemberTo = tClassifierMapping.getFromMember().get(indexOfClassMemberFrom)
+		val classMemberTo = tClassifierMapping.getFromMembers().get(indexOfClassMemberFrom)
 		
 		classMemberFrom.createMemberMapping(classMemberTo, ramExternalAspect, newClassifierMapping, tClassifierMapping, collector);
 	}
