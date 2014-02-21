@@ -170,13 +170,10 @@ TMessageView returns textRam::TMessageView:
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')'
 	'{'
-		specification=TInteraction
+		interactionMessages+=TInteractionMessage (';'? interactionMessages+=TInteractionMessage)*
 	'}'
 ;
 
-TInteraction returns textRam::TInteraction:
-	interactionMessages+=TInteractionMessage (';'? interactionMessages+=TInteractionMessage)*
-;
 
 TLifeline returns textRam::TLifeline:
 	name=EString (':' represents=[textRam::TTypedElement|EString])?

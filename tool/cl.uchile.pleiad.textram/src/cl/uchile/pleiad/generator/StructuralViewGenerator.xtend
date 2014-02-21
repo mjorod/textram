@@ -5,27 +5,26 @@ import ca.mcgill.cs.sel.ram.Association
 import ca.mcgill.cs.sel.ram.Attribute
 import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.Classifier
+import ca.mcgill.cs.sel.ram.ClassifierMapping
+import ca.mcgill.cs.sel.ram.Instantiation
 import ca.mcgill.cs.sel.ram.Operation
 import ca.mcgill.cs.sel.ram.Parameter
+import ca.mcgill.cs.sel.ram.ParameterMapping
 import ca.mcgill.cs.sel.ram.PrimitiveType
 import ca.mcgill.cs.sel.ram.RVoid
 import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.Type
+import cl.uchile.pleiad.converter.ModelConverterProxy
 import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
+import cl.uchile.pleiad.textRam.TClassMember
+import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
 import org.eclipse.emf.ecore.util.EcoreUtil
-import ca.mcgill.cs.sel.ram.Instantiation
-import cl.uchile.pleiad.converter.ModelConverterProxy
-import java.util.Collection
-import ca.mcgill.cs.sel.ram.ClassifierMapping
-import cl.uchile.pleiad.textRam.TClassifierMapping
-import ca.mcgill.cs.sel.ram.AttributeMapping
-import cl.uchile.pleiad.textRam.TClassMember
-import ca.mcgill.cs.sel.ram.ParameterMapping
+import ca.mcgill.cs.sel.ram.ReferenceType
 
 class StructuralViewGenerator {
 	
@@ -34,23 +33,25 @@ class StructuralViewGenerator {
 	Aspect textRamAspect
 	Aspect ramAspect
 	
-	new(Aspect textRamAspect) {
-		this.textRamAspect = textRamAspect
+	new( Aspect from, Aspect to) {
+		this.textRamAspect = from
+		this.ramAspect = to
 		
-		ramAspect = RamFactory.eINSTANCE.createAspect => [
-			name = textRamAspect.name
-			structuralView = RamFactory.eINSTANCE.createStructuralView
-		]
+		ramAspect.structuralView = RamFactory.eINSTANCE.createStructuralView
 		
 		ramAspect.structuralView.types.addAll(generateTypes)
-		ramAspect.structuralView.classes.addAll(generateClasses)
+		ramAspect.structuralView.classes.addAll(createClasses)
+		generateClasses()
 		ramAspect.structuralView.associations.addAll(generateAssociations)
 		
 		ramAspect.instantiations.addAll(generateInstantiations)
-	
 	}
 	
-	def generateInstantiations() {
+	def getStructuralView() {
+		this.ramAspect.structuralView
+	}
+	
+	private def generateInstantiations() {
 		val List<Instantiation> result = newArrayList
 		
 		textRamAspect.instantiations.forEach[ i | 
@@ -60,7 +61,7 @@ class StructuralViewGenerator {
 		result
 	}
 	
-	def generateInstantiation(Instantiation from) {
+	private def generateInstantiation(Instantiation from) {
 		val myExternalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(from.externalAspect)
 
 		val result = RamFactory.eINSTANCE.createInstantiation => [
@@ -72,7 +73,7 @@ class StructuralViewGenerator {
 		result
 	}
 	
-	def  generateMappings(Instantiation from, Aspect externalAspect) {
+	private def generateMappings(Instantiation from, Aspect externalAspect) {
 		val List<ClassifierMapping> result = newArrayList
 		
 		from.mappings.filter(TClassifierMapping).forEach[ textRamMapping | 
@@ -117,7 +118,7 @@ class StructuralViewGenerator {
 		classifierMapping.operationMappings.add(operationMapping)
 	}
 	
-	def generateParameterMapping(Operation fromOperation, Operation toOperation) {
+	private def generateParameterMapping(Operation fromOperation, Operation toOperation) {
 		val List<ParameterMapping> result = newArrayList  
 
 		fromOperation.parameters.forEach[ fromParm |
@@ -132,35 +133,43 @@ class StructuralViewGenerator {
 		result
 	}
 	
-	def generate() {
-		ramAspect
-	}
-	
-	
-	private def generateClasses() {
+	private def createClasses() {
 		val List<Classifier> result = newArrayList
 		
 		textRamAspect.structuralView.classes.filter(TClass).forEach [ textRamClass |
-			result.add (textRamClass.generateClass)
+			result.add(textRamClass.createClass)
 		]
 		
 		result
 	}
 	
-	private def generateClass(TClass from) {
+	private def generateClasses() {
+		this.textRamAspect.structuralView.classes.filter(TClass).forEach[ textRamClass |
+			val clazz = this.ramAspect.structuralView.classes.findFirst(c | c.name == textRamClass.name.resolveNameWithoutPartial) as Class
+			
+			generateClass(textRamClass, clazz)
+		]
+	}
+	
+	private def createClass(TClass from) { 
 		val clazz = RamFactory.eINSTANCE.createClass
 		
 		clazz.name = from.name.resolveNameWithoutPartial
 		clazz.abstract = from.abstract
 		clazz.partial = from.name.startsWith(PARTIAL)
-		clazz.superTypes.addAll(from.generateSuperTypes)
-		clazz.operations.addAll(from.generateOperations)
-		clazz.attributes.addAll(from.generateAttributes)
 		
 		clazz
 	}
 	
-	def generateSuperTypes(TClass textRamClass) {
+	private def generateClass(TClass from, Class to) {
+		
+		to.superTypes.addAll(from.generateSuperTypes)
+		to.operations.addAll(from.generateOperations)
+		to.attributes.addAll(from.generateAttributes)
+		
+	}
+	
+	private def generateSuperTypes(TClass textRamClass) {
 		val List<Classifier> result = newArrayList
 		
 		textRamClass.superTypes.forEach[ superType | 
@@ -170,7 +179,7 @@ class StructuralViewGenerator {
 		result
 	}
 	
-	def resolveNameWithoutPartial(String name) {
+	private def resolveNameWithoutPartial(String name) {
 		name.replace(PARTIAL, '')
 	}
 	
@@ -218,7 +227,7 @@ class StructuralViewGenerator {
 		result
 	}
 	
-	def generateParameters(TOperation from) {
+	private def generateParameters(TOperation from) {
 		val List<Parameter> result = newArrayList
 		
 		from.parameters.forEach[ p |
@@ -228,7 +237,7 @@ class StructuralViewGenerator {
 		result
 	}
 	
-	def generateParameter(Parameter from) {
+	private def generateParameter(Parameter from) {
 		val result = RamFactory.eINSTANCE.createParameter => [
 			name = from.name.replace(PARTIAL, '')
 			type = from.type.transformType
@@ -242,14 +251,14 @@ class StructuralViewGenerator {
 	}
 	
 	private def dispatch transformType(Type type) {
-		ramAspect.structuralView.classes.findFirst( c | c.name == type.name.replace(PARTIAL, '') )
+		ramAspect.structuralView.classes.findFirst( c | c.name == type.name.resolveNameWithoutPartial) 
 	}
 	
 	private def dispatch transformType(RVoid type) { 
 		type as Type
 	}
 	
-	def generateAssociations() {
+	private def generateAssociations() {
 		val List<Association> result = newArrayList
 
 		val textRamStructuralView = textRamAspect.structuralView as TStructuralView
@@ -257,41 +266,43 @@ class StructuralViewGenerator {
 		textRamStructuralView.TAssociations.forEach[ textRamAssoc | 
 			result.add( textRamAssoc.generateAssociation )
 		]
-		
-		
-		
+
 		result
 	}
 	
-	def Association generateAssociation(TAssociation from) {
+	private def Association generateAssociation(TAssociation textRamAssoc) {
 		val result = RamFactory.eINSTANCE.createAssociation
 		
-		val classFrom = this.ramAspect.structuralView.classes.findFirst[ c | c.name == from.fromEnd.classReference.name.resolveNameWithoutPartial ] as Class
-		val classTo = this.ramAspect.structuralView.classes.findFirst[ c | c.name == from.toEnd.classReference.name.resolveNameWithoutPartial ] as Class
+		val classFrom = this.ramAspect.structuralView.classes.findFirst[ c | c.name == textRamAssoc.fromEnd.classReference.name.resolveNameWithoutPartial ] as Class
+		val classTo = this.ramAspect.structuralView.classes.findFirst[ c | c.name == textRamAssoc.toEnd.classReference.name.resolveNameWithoutPartial ] as Class
 		
-		val nameFrom = from.fromEnd.classReference.name.resolveNameWithoutPartial
-		val nameTo = from.toEnd.classReference.name.resolveNameWithoutPartial
+		val nameFrom = textRamAssoc.fromEnd.classReference.name.resolveNameWithoutPartial
+		val nameTo = textRamAssoc.toEnd.classReference.name.resolveNameWithoutPartial
 		
 		result.name = nameFrom + '_' + nameTo 
 		
-		classFrom.associationEnds.add(result.generateAssociationEndFrom(from, classFrom))
-		classTo.associationEnds.add(result.generateAssociationToFrom(from, classTo))
+		// create from association end
+        val fromEnd = RamFactory.eINSTANCE.createAssociationEnd();
+        fromEnd.setAssoc(result)
+        fromEnd.setLowerBound(1)
+        fromEnd.setName(toLowerCaseFirst(textRamAssoc.name))
+        fromEnd.referenceType = ReferenceType.COMPOSITION
+        
+        classFrom.associationEnds.add(fromEnd)
+        
+        // create to association end
+        val toEnd = RamFactory.eINSTANCE.createAssociationEnd();
+        toEnd.setAssoc(result);
+        toEnd.setLowerBound(1);
+        toEnd.navigable = false
+        toEnd.setName(toLowerCaseFirst(classFrom.getName()));
+		
+		classTo.associationEnds.add(toEnd)
 					
 		result
 	}
 	
-	def generateAssociationToFrom(Association association, TAssociation assocFrom, Class clazz) {
-		val result = RamFactory.eINSTANCE.createAssociationEnd => [
-			assoc = association
-	     	lowerBound = assocFrom.fromEnd.lowerBound
-	     	upperBound = assocFrom.fromEnd.upperBound
-	     	name = clazz.name.toLowerCaseFirst
-		]
-		
-		result
-	}
-	
-	def generateAssociationEndFrom(Association association, TAssociation from, Class clazz) {
+	private def generateAssociationEndFrom(Association association, TAssociation from, Class clazz) {
 		val result = RamFactory.eINSTANCE.createAssociationEnd => [
 			assoc = association
 	     	lowerBound = from.fromEnd.lowerBound
@@ -301,6 +312,17 @@ class StructuralViewGenerator {
 		]
 		
 		result		
+	}
+	
+	private def generateAssociationEndTo(Association association, TAssociation assocTo) {
+		val result = RamFactory.eINSTANCE.createAssociationEnd => [
+			assoc = association
+	     	lowerBound = assocTo.fromEnd.lowerBound
+	     	upperBound = assocTo.fromEnd.upperBound
+	     	name = assocTo.name.toLowerCaseFirst
+		]
+		
+		result
 	}
 	
 	private def generateTypes() {

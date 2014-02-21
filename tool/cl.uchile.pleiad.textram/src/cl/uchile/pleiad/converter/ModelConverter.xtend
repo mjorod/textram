@@ -110,7 +110,7 @@ class ModelConverter implements IModelConverter {
 	}
 	
 	def transformMessages(Interaction interaction, TMessageView textRamMessage, List<NamedElement> collector) {
-		textRamMessage.specification.interactionMessages.forEach[ i | i.transformMessage(interaction, collector) ]
+//		textRamMessage.specification.interactionMessages.forEach[ i | i.transformMessage(interaction, collector) ]
 		
 		interaction
 	}
