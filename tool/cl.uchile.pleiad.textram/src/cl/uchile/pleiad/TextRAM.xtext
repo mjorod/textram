@@ -22,9 +22,10 @@ EString returns ecore::EString:
 EInt returns ecore::EInt:
     '-'? INT;
     
-ReferenceType returns ReferenceType:
-    'ReferenceType' /* TODO: implement this rule and an appropriate IValueConverter */;    
-
+enum ReferenceType returns ReferenceType:
+	Composition = '*' | Aggregation='o'
+;
+	
 AbstractStructuralView returns StructuralView:
     TStructuralView
 ;
@@ -34,7 +35,7 @@ TAbstractMessageView returns AbstractMessageView:
 	'objects' '{'
 		lifelines+=TLifeline (';'? lifelines+=TLifeline)*
 	'}'
-	
+
 	messages+=TAbstractMessages (messages+=TAbstractMessages)*
 ;
 
@@ -114,7 +115,7 @@ TOperation returns textRam::TOperation:
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')';
     
-StructuralFeature returns textRam::TStructuralFeature:
+TStructuralFeature returns textRam::TStructuralFeature:
 	TAssociation | TAttribute //TODO: | Reference 
 ;
 
@@ -129,7 +130,7 @@ enum Visibility returns Visibility:
 
 TAssociation returns textRam::TAssociation:
     {textRam::TAssociation}
-    fromEnd=TAssociationEnd "->" toEnd=TAssociationEnd  '{' name=EString  '}'  
+    fromEnd=TAssociationEnd (referenceType=ReferenceType)?"->" toEnd=TAssociationEnd  '{' name=EString  '}'  
 ;
 
 TAssociationEnd returns textRam::TAssociationEnd:
@@ -174,17 +175,27 @@ TMessageView returns textRam::TMessageView:
 	'}'
 ;
 
-
 TLifeline returns textRam::TLifeline:
-	name=EString (':' represents=[textRam::TTypedElement|EString])?
+	name=EString (':' represents=[textRam::TTypedElement|EString])? 
+	('{' 
+		localProperties+=TAttribute (";"? localProperties+=TAttribute)?
+	'}')?
 ;
 
 TInteractionMessage returns textRam::TInteractionMessage:
-	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline|EString] '{'  message=TAbstractMessage '}'
+	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline|EString]  '{'  message=TAbstractMessage '}'
 ;
 
 TAbstractMessage returns textRam::TAbstractMessage:
-	TMessage | TOperationSignature
+	TSignable | TReturnMessage
+;
+
+TSignable returns textRam::TSignable:
+	TMessage | TOperationSignature 
+;
+
+TReturnMessage returns textRam::TReturnMessage:
+	assignTo=[textRam::TStructuralFeature|EString]
 ;
 
 TMessage returns textRam::TMessage:

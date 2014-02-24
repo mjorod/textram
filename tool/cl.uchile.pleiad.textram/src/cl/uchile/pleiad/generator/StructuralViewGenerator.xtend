@@ -282,46 +282,26 @@ class StructuralViewGenerator {
 		result.name = nameFrom + '_' + nameTo 
 		
 		// create from association end
-        val fromEnd = RamFactory.eINSTANCE.createAssociationEnd();
-        fromEnd.setAssoc(result)
-        fromEnd.setLowerBound(1)
-        fromEnd.setName(toLowerCaseFirst(textRamAssoc.name))
-        fromEnd.referenceType = ReferenceType.COMPOSITION
-        
+        val fromEnd = RamFactory.eINSTANCE.createAssociationEnd()
+        fromEnd.assoc = result
+        fromEnd.lowerBound = textRamAssoc.fromEnd.lowerBound
+        fromEnd.upperBound = textRamAssoc.fromEnd.upperBound
+        fromEnd.name = textRamAssoc.name.toLowerCaseFirst
         classFrom.associationEnds.add(fromEnd)
+        if (textRamAssoc.referenceType != null) {
+        	fromEnd.referenceType = textRamAssoc.referenceType
+        }
         
         // create to association end
-        val toEnd = RamFactory.eINSTANCE.createAssociationEnd();
-        toEnd.setAssoc(result);
-        toEnd.setLowerBound(1);
+        val toEnd = RamFactory.eINSTANCE.createAssociationEnd()
+        toEnd.assoc =result 
+        toEnd.lowerBound = textRamAssoc.toEnd.lowerBound
+        toEnd.upperBound = textRamAssoc.toEnd.upperBound
         toEnd.navigable = false
-        toEnd.setName(toLowerCaseFirst(classFrom.getName()));
+        toEnd.name = classFrom.name.toLowerCaseFirst
 		
 		classTo.associationEnds.add(toEnd)
 					
-		result
-	}
-	
-	private def generateAssociationEndFrom(Association association, TAssociation from, Class clazz) {
-		val result = RamFactory.eINSTANCE.createAssociationEnd => [
-			assoc = association
-	     	lowerBound = from.fromEnd.lowerBound
-	     	upperBound = from.fromEnd.upperBound
-	     	name = clazz.name.toLowerCaseFirst
-	     	navigable = false
-		]
-		
-		result		
-	}
-	
-	private def generateAssociationEndTo(Association association, TAssociation assocTo) {
-		val result = RamFactory.eINSTANCE.createAssociationEnd => [
-			assoc = association
-	     	lowerBound = assocTo.fromEnd.lowerBound
-	     	upperBound = assocTo.fromEnd.upperBound
-	     	name = assocTo.name.toLowerCaseFirst
-		]
-		
 		result
 	}
 	

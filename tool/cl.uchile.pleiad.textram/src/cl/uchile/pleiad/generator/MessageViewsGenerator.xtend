@@ -22,6 +22,11 @@ import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TMessageView
 import java.util.ArrayList
 import java.util.List
+import ca.mcgill.cs.sel.ram.TemporaryProperty
+import ca.mcgill.cs.sel.ram.Attribute
+import cl.uchile.pleiad.textRam.TSignable
+import cl.uchile.pleiad.textRam.TReturnMessage
+import ca.mcgill.cs.sel.ram.MessageSort
 
 class MessageViewsGenerator {
 	
@@ -85,11 +90,13 @@ class MessageViewsGenerator {
 			if (textRamInteractionMessage.leftLifeline.name == '>>') {
 				result.add(generateStartMessage( textRamInteractionMessage, interaction ))	
 			}
-			if (textRamInteractionMessage.rightLifeline.name == '<<') {
-				
-			}
 			if (textRamInteractionMessage.leftLifeline.name != '>>' && textRamInteractionMessage.rightLifeline.name != '<<') {
 				result.add(generateMessageOcurrence(textRamInteractionMessage, interaction))
+			}
+			if (textRamInteractionMessage.rightLifeline.name == '<<') {
+				val firstInteractionMessage = textRamMessageView.interactionMessages.findFirst( im | im.leftLifeline.name == '>>' )
+				
+				result.add(generateEndMessage( firstInteractionMessage, textRamInteractionMessage, interaction ))
 			}
 		]
 		
@@ -116,12 +123,27 @@ class MessageViewsGenerator {
 			receiveEvent = receive
 			signature = operation
 			arguments.addAll(textRamInteractionMessage.generateArguments(operation))
+			assignTo = generateAssignTo( textRamInteractionMessage, interaction )
 		]
 		
 		send.message = message
 		receive.message = message
 		
 		message
+	}
+	
+	def generateAssignTo(TInteractionMessage textRamInteractionMessage, Interaction interaction) {
+		if (textRamInteractionMessage.message instanceof TMessage) {
+			val textRamAttribute = (textRamInteractionMessage.message as TMessage).assignTo as TAttribute
+			
+			val lifeline = interaction.lifelines.findFirst( l | l.represents.name == textRamInteractionMessage.leftLifeline.name )
+			
+			val result = lifeline.localProperties.filter(Attribute).findFirst( a | a.name == textRamAttribute.name )
+			//TODO: references properties?
+			return result
+		}
+		
+		return null
 	}
 	
 	private def generateArguments(TInteractionMessage interactionMessage, Operation operation) {
@@ -164,6 +186,43 @@ class MessageViewsGenerator {
 		result
 	}
 	
+	private def generateEndMessage(TInteractionMessage firstInteractionMessage, TInteractionMessage lastInteractionMessage, Interaction interaction) {
+		val lifeline = getLifelineTo(interaction, firstInteractionMessage)
+		// TODO: references?
+		val tReturnMessage = lastInteractionMessage.message as TReturnMessage
+		val tAttribute = (tReturnMessage.assignTo as TAttribute) 
+		
+		val messageReturns = lifeline.localProperties.filter(Attribute).findFirst( p | p.name == tAttribute.name )
+		val operation = getMessageSignature(firstInteractionMessage)
+		
+		
+		val gate = RamFactory.eINSTANCE.createGate
+		gate.name = "out_" + firstInteractionMessage.rightLifeline.name
+		interaction.formalGates.add(gate)
+		
+		//create receive event
+		val event = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
+		event.covered.add(lifeline)
+		interaction.fragments.add(event)
+		
+		// create message
+		val result = RamFactory.eINSTANCE.createMessage => [
+			signature = operation
+			sendEvent = event
+			receiveEvent = gate
+			messageSort = MessageSort.REPLY
+			returns = RamFactory.eINSTANCE.createStructuralFeatureValue => [ value = messageReturns ]
+		]
+		
+		interaction.getMessages.add(result)
+		
+		// set references
+		event.message = result
+		gate.message = result
+		
+		result
+	}
+	
 	private def getLifelineTo(Interaction interaction, TInteractionMessage textRamInteractionMessage) {
 		val lifeLineTo = interaction.lifelines.findFirst( l | l.represents.name == textRamInteractionMessage.rightLifeline.name.resolveName )
 		lifeLineTo
@@ -177,13 +236,16 @@ class MessageViewsGenerator {
 	private def getMessageSignature(TInteractionMessage textRamInteractionMessage) {
 		var Class classOwner  
 		
-		switch textRamInteractionMessage.rightLifeline.represents {
-			TClass: classOwner = this.ramAspect.findClass( (textRamInteractionMessage.rightLifeline.represents as TClass).name.resolveName ) as Class  
+		if ( textRamInteractionMessage.message instanceof TSignable ) {
+			switch textRamInteractionMessage.rightLifeline.represents {
+				TClass: classOwner = this.ramAspect.findClass( (textRamInteractionMessage.rightLifeline.represents as TClass).name.resolveName ) as Class  
+			}
+			val result = classOwner.operations.findFirst[ o | o.name == (textRamInteractionMessage.message as TSignable).signature.name.resolveName ]
+			
+			return result
 		}
 		
-		val result = classOwner.operations.findFirst[ o | o.name == textRamInteractionMessage.message.signature.name.resolveName ]
-		
-		result
+		return null
 	}
 	
 	
@@ -200,12 +262,27 @@ class MessageViewsGenerator {
 		val result = new ArrayList<Lifeline> 
 		
 		textRamLifelines.filter( l | l.name != '>>' && l.name != '<<' ).forEach[ textRamLifeline | 
-			var lifeline = RamFactory.eINSTANCE.createLifeline
-			lifeline.represents = findRepresents(textRamLifeline, properties)
-			
-			//TODO: what happend with localproperties?
+			var lifeline = RamFactory.eINSTANCE.createLifeline => [
+				represents = findRepresents(textRamLifeline, properties)
+				localProperties.addAll(generateLocalProperties(textRamLifeline))
+			]
 			
 			result.add(lifeline)
+		]
+		
+		result
+	}
+	
+	def generateLocalProperties(TLifeline textRamLifeline) {
+		val List<TemporaryProperty> result = newArrayList
+		
+		textRamLifeline.localProperties.forEach[ attribute | 
+			val temporaryProperty = RamFactory.eINSTANCE.createAttribute => [
+				name = attribute.name
+				type = attribute.type
+			]
+			
+			result.add(temporaryProperty)
 		]
 		
 		result

@@ -14,6 +14,8 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import cl.uchile.pleiad.textRam.TInteractionMessage
+import cl.uchile.pleiad.textRam.TAbstractMessageView
 
 /**
  * This class contains custom scoping description.
@@ -76,10 +78,16 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 
 	def IScope scope_TMessage_assignTo(Aspect aspect, EReference reference) {
-		Scopes::scopeFor ( aspect.getTStructuralFeature )
-	}	
+		Scopes::scopeFor ( aspect.getMessageAssignTo )
+	}
+	
+	def IScope scope_TReturnMessage_assignTo(TMessageView textRamMessageView, EReference reference) {
+		val firstInteraction = textRamMessageView.interactionMessages.findFirst( i | i.leftLifeline.name == '>>' )
+		
+		Scopes::scopeFor( firstInteraction.rightLifeline.localProperties )
+	}
 
-	def IScope scope_TAbstractMessage_signature(Aspect aspect, EReference reference) {
+	def IScope scope_TSignable_signature(Aspect aspect, EReference reference) {
 		Scopes::scopeFor ( aspect.getPublicOperations )
 	}
 	

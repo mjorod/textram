@@ -26,7 +26,7 @@ interface IModelScopeProvider {
 	def List<TTypedElement> getTTypedElements(Aspect aspect)
 	def List<Parameter> getParameters(Aspect aspect)
 	def List<Parameter> getParameters(TMessageView messageView)
-	def List<TStructuralFeature> getTStructuralFeature(Aspect aspect)
+	def List<TStructuralFeature> getMessageAssignTo(Aspect aspect)
 	def List<TLifeline> getLeftTLifelines(Aspect aspect)
 	def List<TLifeline> getRightTLifelines(Aspect aspect)
 }

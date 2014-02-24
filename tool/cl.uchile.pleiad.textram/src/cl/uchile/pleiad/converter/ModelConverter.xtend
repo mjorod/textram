@@ -189,25 +189,24 @@ class ModelConverter implements IModelConverter {
 	}
 	
 	private def void transformMessage(TInteractionMessage textRamInsteracionMessage, Interaction interaction, List<NamedElement> collector) {
-		
-		// mal buscar en cache, nombre de operaciones es repetido
-		val operation =  collector.filter(Operation).findFirst( o | o.name == textRamInsteracionMessage.message.signature.name.resolveName )
-		var messageSort = MessageSort.SYNCH_CALL
-								
-		if (textRamInsteracionMessage.leftLifeline.name == '>>') {
-			val ramLifelineTo  = interaction.getLifelineTo(textRamInsteracionMessage)
-			createStartMessage( operation, interaction, ramLifelineTo, messageSort )
-		}
-		
-		if (textRamInsteracionMessage.rightLifeline.name == '<<') {
+//		// mal buscar en cache, nombre de operaciones es repetido
+//		val operation =  collector.filter(Operation).findFirst( o | o.name == textRamInsteracionMessage.message.signature.name.resolveName )
+//		var messageSort = MessageSort.SYNCH_CALL
+//								
+//		if (textRamInsteracionMessage.leftLifeline.name == '>>') {
+//			val ramLifelineTo  = interaction.getLifelineTo(textRamInsteracionMessage)
 //			createStartMessage( operation, interaction, ramLifelineTo, messageSort )
-		}
-		
-		if (textRamInsteracionMessage.leftLifeline.name != '>>' && textRamInsteracionMessage.rightLifeline.name != '<<') {
-			val ramLifelineTo  = interaction.getLifelineTo(textRamInsteracionMessage)
-			val ramLifelineFrom = interaction.getLifelineFrom(textRamInsteracionMessage) 
-			createMessageOcurrence(ramLifelineFrom, ramLifelineTo, interaction, operation)
-		}
+//		}
+//		
+//		if (textRamInsteracionMessage.rightLifeline.name == '<<') {
+////			createStartMessage( operation, interaction, ramLifelineTo, messageSort )
+//		}
+//		
+//		if (textRamInsteracionMessage.leftLifeline.name != '>>' && textRamInsteracionMessage.rightLifeline.name != '<<') {
+//			val ramLifelineTo  = interaction.getLifelineTo(textRamInsteracionMessage)
+//			val ramLifelineFrom = interaction.getLifelineFrom(textRamInsteracionMessage) 
+//			createMessageOcurrence(ramLifelineFrom, ramLifelineTo, interaction, operation)
+//		}
 	}
 	
 	private def getLifelineTo(Interaction interaction, TInteractionMessage textRamInsteracionMessage) {

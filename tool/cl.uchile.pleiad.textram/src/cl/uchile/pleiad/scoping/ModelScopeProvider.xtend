@@ -13,6 +13,7 @@ import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralFeature
 import cl.uchile.pleiad.textRam.TStructuralView
@@ -20,7 +21,6 @@ import cl.uchile.pleiad.textRam.TTypedElement
 import cl.uchile.pleiad.textRam.TextRamFactory
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
-import cl.uchile.pleiad.textRam.TMessageView
 
 class ModelScopeProvider implements IModelScopeProvider {
 	
@@ -124,16 +124,24 @@ class ModelScopeProvider implements IModelScopeProvider {
 		messageView.parameters
 	}
 	
-	
-	override getTStructuralFeature(Aspect aspect) {
+	override getMessageAssignTo(Aspect aspect) {
 		val result = newArrayList()
 		
 		result.addAll ( aspect.getTAttributes.filter(TStructuralFeature) )
 		result.addAll ( aspect.getTAssociations.filter(TStructuralFeature) )
-		
-		//TODO: Reference is missing
+		result.addAll ( aspect.getTAttributesFromLifelines.filter(TStructuralFeature) )
 		
 		result
+	}
+	
+	def getGetTAttributesFromLifelines(Aspect aspect) {
+		val tAbstractMessageView = aspect.messageViews.head as TAbstractMessageView
+		
+		if (tAbstractMessageView != null) {
+			return tAbstractMessageView.lifelines.map[localProperties].flatten
+		}
+		
+		return null
 	}
 	
 	private def getTAssociations(Aspect aspect) {
