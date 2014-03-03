@@ -62,7 +62,7 @@ class StructuralViewGenerator {
 	}
 	
 	private def generateInstantiation(Instantiation from) {
-		val myExternalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(from.externalAspect)
+		val Aspect myExternalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(from.externalAspect)
 
 		val result = RamFactory.eINSTANCE.createInstantiation => [
 			externalAspect = myExternalAspect

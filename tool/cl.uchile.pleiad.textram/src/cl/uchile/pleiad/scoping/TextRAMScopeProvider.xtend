@@ -15,7 +15,6 @@ import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import cl.uchile.pleiad.textRam.TInteractionMessage
-import cl.uchile.pleiad.textRam.TAbstractMessageView
 
 /**
  * This class contains custom scoping description.
@@ -77,17 +76,15 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( aspect.getRightTLifelines )
 	}
 
-	def IScope scope_TMessage_assignTo(Aspect aspect, EReference reference) {
-		Scopes::scopeFor ( aspect.getMessageAssignTo )
+	def IScope scope_TMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
+		Scopes::scopeFor ( textRamInteractionMessage.getAssignableFeatures )
 	}
 	
-	def IScope scope_TReturnMessage_assignTo(TMessageView textRamMessageView, EReference reference) {
-		val firstInteraction = textRamMessageView.interactionMessages.findFirst( i | i.leftLifeline.name == '>>' )
-		
-		Scopes::scopeFor( firstInteraction.rightLifeline.localProperties )
+	def IScope scope_TTReturnMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
+		Scopes::scopeFor ( textRamInteractionMessage.getReturnMessageAssignTo )
 	}
 
-	def IScope scope_TSignable_signature(Aspect aspect, EReference reference) {
+	def IScope scope_TMessageWithSignature_signature(Aspect aspect, EReference reference) {
 		Scopes::scopeFor ( aspect.getPublicOperations )
 	}
 	

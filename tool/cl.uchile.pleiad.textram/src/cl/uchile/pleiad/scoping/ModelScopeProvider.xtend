@@ -5,6 +5,7 @@ import ca.mcgill.cs.sel.ram.Instantiation
 import ca.mcgill.cs.sel.ram.InstantiationType
 import ca.mcgill.cs.sel.ram.PrimitiveType
 import ca.mcgill.cs.sel.ram.RamFactory
+import ca.mcgill.cs.sel.ram.RamPackage
 import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import ca.mcgill.cs.sel.ram.Visibility
@@ -13,17 +14,21 @@ import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TInteractionMessage
+import cl.uchile.pleiad.textRam.TMessageAssignableFeature
 import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TOperation
-import cl.uchile.pleiad.textRam.TStructuralFeature
 import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.textRam.TTypedElement
 import cl.uchile.pleiad.textRam.TextRamFactory
+import cl.uchile.pleiad.util.TextRamEcoreUtil
+import java.util.List
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 
 class ModelScopeProvider implements IModelScopeProvider {
 	
+
 	override getTypesFor(StructuralView structuralView) {
 		structuralView.types.appendPrimitiveTypes
 		return structuralView.allTypes
@@ -61,12 +66,33 @@ class ModelScopeProvider implements IModelScopeProvider {
 	}
 	
 	override getTTypedElements(Aspect aspect) {
-		val tStructuralView = (aspect.structuralView as TStructuralView)
-		val ret = aspect.structuralView.classes.filter(TClass).filter(TTypedElement).toList
-		ret.addAll ( tStructuralView.TAssociations.toList )
-		ret.addAll ( tStructuralView.classes.filter(TClass).map[members].flatten.filter(TAttribute))
+		//AssociationEnd
+		//Attribute
+		//Parameter
+		//Reference/Class
 		
-		ret
+		val List<TTypedElement> result = newArrayList
+		
+		result.addAll( aspect.getAllAssociations )
+		result.addAll( aspect.getAllAttributes ) //TODO: nunca me encontré con un attribute
+		//result.addAll( aspect.getAllParameters ) //TODO:parameters
+		result.addAll( aspect.getAllClasses )
+		
+		result
+	}
+	
+	private def getAllClasses(Aspect aspect) {
+		return aspect.structuralView.classes.filter(TClass).filter(TTypedElement).toList
+	}
+	
+	private def getAllAttributes(Aspect aspect) {
+		val tStructuralView = (aspect.structuralView as TStructuralView)
+		return tStructuralView.classes.filter(TClass).map[members].flatten.filter(TAttribute)
+	}
+	
+	private def getAllAssociations(Aspect aspect) {
+		val tStructuralView = (aspect.structuralView as TStructuralView)
+		return tStructuralView.TAssociations.toList 
 	}
 	
 	private static def getAllTypes(StructuralView structuralView) {
@@ -124,13 +150,16 @@ class ModelScopeProvider implements IModelScopeProvider {
 		messageView.parameters
 	}
 	
-	override getMessageAssignTo(Aspect aspect) {
-		val result = newArrayList()
+	override getAssignableFeatures(TInteractionMessage textRamInteractionMessage) {
+		val List<TMessageAssignableFeature> result = newArrayList()
 		
-		result.addAll ( aspect.getTAttributes.filter(TStructuralFeature) )
-		result.addAll ( aspect.getTAssociations.filter(TStructuralFeature) )
-		result.addAll ( aspect.getTAttributesFromLifelines.filter(TStructuralFeature) )
-		
+		result.addAll ( textRamInteractionMessage.leftLifeline.localProperties )
+		result.addAll ( textRamInteractionMessage.getAspect.getAllAssociations )
+		result
+	}
+	
+	private def getAspect(TInteractionMessage textRamInteractionMessage) {
+		val Aspect result = TextRamEcoreUtil.getRootContainerOfType(textRamInteractionMessage, RamPackage.Literals.ASPECT)
 		result
 	}
 	
@@ -143,25 +172,15 @@ class ModelScopeProvider implements IModelScopeProvider {
 		
 		return null
 	}
-	
-	private def getTAssociations(Aspect aspect) {
-		(aspect.structuralView as TStructuralView).TAssociations
-	}
-	
-	private def getTAttributes(Aspect aspect) {
-		aspect.structuralView.classes.filter(TClass)
-									 .map[members]
-									 .flatten
-									 .filter(TAttribute)
-	}
-	
+
 	override getLeftTLifelines(Aspect aspect) {
 		val tAbstractMessageView = aspect.messageViews.head as TAbstractMessageView
 		
 		if (tAbstractMessageView != null) {
 			if (tAbstractMessageView.lifelines.exists[l | l.name == '>>'] == false) {
-				val tStartGate = TextRamFactory.eINSTANCE.createTLifeline
-				tStartGate.setName(">>")
+				val tStartGate = TextRamFactory.eINSTANCE.createTLifeline => [
+					name = '>>'
+				]
 				tAbstractMessageView.lifelines.add(tStartGate)
 				
 				return tAbstractMessageView.lifelines
@@ -176,8 +195,10 @@ class ModelScopeProvider implements IModelScopeProvider {
 		
 		if (tAbstractMessageView != null) {
 			if (tAbstractMessageView.lifelines.exists[l | l.name == '<<'] == false) {
-				val tEndGate = TextRamFactory.eINSTANCE.createTLifeline
-				tEndGate.setName("<<")
+				val tEndGate = TextRamFactory.eINSTANCE.createTLifeline => [
+					name = '<<'
+				]
+				
 				tAbstractMessageView.lifelines.add(tEndGate)
 				
 				return tAbstractMessageView.lifelines
@@ -185,6 +206,16 @@ class ModelScopeProvider implements IModelScopeProvider {
 		}
 		
 		return null
+	}
+	
+	
+	override getReturnMessageAssignTo(TInteractionMessage textRamInteractionMessage) {
+		val List<TMessageAssignableFeature> result = newArrayList
+		
+		result.addAll ( textRamInteractionMessage.getAspect.allAssociations )
+		result.addAll ( textRamInteractionMessage.rightLifeline.localProperties )
+		//TODO: parameters?
+		result
 	}
 		
 }

@@ -4,7 +4,7 @@ import ca.mcgill.cs.sel.ram.Aspect
 import cl.uchile.pleiad.generator.RamGenerator
 import java.util.Map
 
-class ModelConverterProxy implements IModelConverter {
+class ModelConverterProxy {
 	
 	private static val ModelConverterProxy instance = new ModelConverterProxy
 	private val Map<String, Aspect> aspects = newHashMap
@@ -19,7 +19,7 @@ class ModelConverterProxy implements IModelConverter {
 		aspects.clear
 	}
 	
-	override convertTextRAMModelToRAMModel(Aspect textRamAspect) {
+	def Aspect convertTextRAMModelToRAMModel(Aspect textRamAspect) {
 		if (aspects.containsKey(textRamAspect.name) == false) {
 			val generator = new RamGenerator( textRamAspect )
 			

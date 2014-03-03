@@ -8,7 +8,7 @@ final class TextRamEcoreUtil {
 	private new() {}
 	
 	/**
-	 * Returns the next container object in the hierarchy of the given object that {@link EClassifier#isInstance is an instance} of the typepe
+	 * Returns the next container object in the hierarchy of the given object that {@link EClassifier#isInstance is an instance} of the type
 	 *   
      * @param eObject the child object to check
      * @param type the type of container to find

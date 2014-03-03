@@ -99,7 +99,6 @@ TClass returns textRam::TClass:
     '}';
 
 TAttribute returns textRam::TAttribute:
-    {textRam::TAttribute}
     (static?='static')?
     type=[PrimitiveType|EString]
     name=EString;
@@ -115,10 +114,6 @@ TOperation returns textRam::TOperation:
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')';
     
-TStructuralFeature returns textRam::TStructuralFeature:
-	TAssociation | TAttribute //TODO: | Reference 
-;
-
 Parameter returns Parameter:
     {Parameter}
     type=[Type|EString]
@@ -176,34 +171,49 @@ TMessageView returns textRam::TMessageView:
 ;
 
 TLifeline returns textRam::TLifeline:
-	name=EString (':' represents=[textRam::TTypedElement|EString])? 
+	(static?='static')?
+	(reference?='ref')?
+	name=EString ':' (represents=[textRam::TTypedElement|EString])?
 	('{' 
-		localProperties+=TAttribute (";"? localProperties+=TAttribute)?
+		localProperties+=TTemporaryProperty (";"? localProperties+=TTemporaryProperty)?
 	'}')?
 ;
 
+TTemporaryProperty returns textRam::TTemporaryProperty:
+	TReference | TLocalAttribute
+;
+
+TReference returns textRam::TReference:
+	name=EString ':' reference=[textRam::TClass|EString]
+;
+
+TLocalAttribute returns textRam::TLocalAttribute:
+	type=[PrimitiveType|EString]
+	name=EString
+;
+
 TInteractionMessage returns textRam::TInteractionMessage:
-	leftLifeline=[textRam::TLifeline|EString] '=>' rightLifeline=[textRam::TLifeline|EString]  '{'  message=TAbstractMessage '}'
+	leftLifeline=[textRam::TLifeline|EString] '=>' (create?='new')? rightLifeline=[textRam::TLifeline|EString]  ('{'  message=TAbstractMessage '}')?
 ;
 
 TAbstractMessage returns textRam::TAbstractMessage:
-	TSignable | TReturnMessage
+	TMessageWithSignature | TReturnMessage
 ;
 
-TSignable returns textRam::TSignable:
-	TMessage | TOperationSignature 
+TMessageWithSignature returns textRam::TMessageWithSignature:
+	TMessage | TOperationMessage 
 ;
 
 TReturnMessage returns textRam::TReturnMessage:
-	assignTo=[textRam::TStructuralFeature|EString]
+	assignTo=[textRam::TMessageAssignableFeature|EString]
 ;
 
 TMessage returns textRam::TMessage:
-	(assignTo=[textRam::TStructuralFeature|EString] ':=')?
+	(assignTo=[textRam::TMessageAssignableFeature|EString] ':=')?
 	signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
 ;
 
-TOperationSignature returns textRam::TOperationSignature:
+TOperationMessage returns textRam::TOperationMessage:
 	signature=[textRam::TOperation|EString]
 	'('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
@@ -215,6 +225,11 @@ TOperationSignature returns textRam::TOperationSignature:
 //TODO: It should be StructuralFeature | Parameter
 TTypedElement returns textRam::TTypedElement:
 	TAssociation | TAttribute | TClass
+;
+
+//AssignableFeature
+TMessageAssignableFeature returns textRam::TMessageAssignableFeature:
+	TAssociation | TTemporaryProperty 
 ;
 
 enum MessageSort returns MessageSort:

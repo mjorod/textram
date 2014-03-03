@@ -9,10 +9,11 @@ import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TLifeline
+import cl.uchile.pleiad.textRam.TMessageAssignableFeature
 import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TOperation
-import cl.uchile.pleiad.textRam.TStructuralFeature
 import cl.uchile.pleiad.textRam.TTypedElement
 import java.util.List
 
@@ -26,7 +27,8 @@ interface IModelScopeProvider {
 	def List<TTypedElement> getTTypedElements(Aspect aspect)
 	def List<Parameter> getParameters(Aspect aspect)
 	def List<Parameter> getParameters(TMessageView messageView)
-	def List<TStructuralFeature> getMessageAssignTo(Aspect aspect)
+	def List<TMessageAssignableFeature> getAssignableFeatures(TInteractionMessage textRamInteractionMessage)
+	def List<TMessageAssignableFeature> getReturnMessageAssignTo(TInteractionMessage textRamInteractionMessage)
 	def List<TLifeline> getLeftTLifelines(Aspect aspect)
 	def List<TLifeline> getRightTLifelines(Aspect aspect)
 }
