@@ -16,6 +16,8 @@ import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TTypedElement
 import java.util.List
+import cl.uchile.pleiad.textRam.TAspectMessageView
+import cl.uchile.pleiad.textRam.TAbstractMessageView
 
 interface IModelScopeProvider {
 	
@@ -31,4 +33,5 @@ interface IModelScopeProvider {
 	def List<TMessageAssignableFeature> getReturnMessageAssignTo(TInteractionMessage textRamInteractionMessage)
 	def List<TLifeline> getLeftTLifelines(Aspect aspect)
 	def List<TLifeline> getRightTLifelines(Aspect aspect)
+	def List<TAspectMessageView> getAspectMessageViews(TAbstractMessageView abstractMessageView)
 }

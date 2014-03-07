@@ -22,10 +22,6 @@ EString returns ecore::EString:
 EInt returns ecore::EInt:
     '-'? INT;
     
-enum ReferenceType returns ReferenceType:
-	Composition = '*' | Aggregation='o'
-;
-	
 AbstractStructuralView returns StructuralView:
     TStructuralView
 ;
@@ -40,7 +36,7 @@ TAbstractMessageView returns AbstractMessageView:
 ;
 
 TAbstractMessages returns textRam::TAbstractMessages:
-	TMessageView
+	TMessageView | TAspectMessageView      
 ;
 
 TStructuralView returns textRam::TStructuralView:
@@ -63,21 +59,7 @@ ObjectType returns ObjectType:
 PrimitiveType returns PrimitiveType:
     RBoolean | RInt | RChar | RString | RDouble | RFloat;// | REnum;
 
-RString: {RString}; 
-
-RFloat: {RFloat};
-
-RDouble: {RDouble};
-
-RAny: {RAny};
-
-RChar: {RChar};
-
-RInt: {RInt};
-
-RBoolean: {RBoolean};
-
-RVoid: {RVoid};
+RString: {RString}; RFloat: {RFloat}; RDouble: {RDouble}; RAny: {RAny}; RChar: {RChar}; RInt: {RInt}; RBoolean: {RBoolean}; RVoid: {RVoid};
 
 RSet: {RSet};
 
@@ -119,10 +101,6 @@ Parameter returns Parameter:
     type=[Type|EString]
     name=EString;  
 
-enum Visibility returns Visibility:
-	public = '+' | private = '-' | protected = '#' | package = "~" 
-;
-
 TAssociation returns textRam::TAssociation:
     {textRam::TAssociation}
     fromEnd=TAssociationEnd (referenceType=ReferenceType)?"->" toEnd=TAssociationEnd  '{' name=EString  '}'  
@@ -145,9 +123,6 @@ Instantiation returns Instantiation:
     ('{' mappings+=TClassifierMapping ( ";"? mappings+=TClassifierMapping)* '}' )
 ;
     
-enum InstantiationType returns InstantiationType:
-    Depends = 'dependsOn' | Extends = 'extends';
-    
 
 AbstractClassifierMapping returns ClassifierMapping:
     TClassifierMapping
@@ -161,12 +136,23 @@ TClassifierMapping returns textRam::TClassifierMapping:
 
 TMessageView returns textRam::TMessageView:
 	{textRam::TMessageView}
-	'messageView' class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString] 
+	'messageView' class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString]  
 	'('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')'
-	'{'
-		interactionMessages+=TInteractionMessage (';'? interactionMessages+=TInteractionMessage)*
+    ('affectedBy' affectedBy+=[textRam::TAspectMessageView|EString] (',' affectedBy+=[textRam::TAspectMessageView|EString]* )? )?
+	('{'
+		interactionMessages+=TInteraction (';'? interactionMessages+=TInteraction)*
+	'}')?
+;
+
+TAspectMessageView returns textRam::TAspectMessageView:
+	'aspectMessageView' 
+		name=EString '{'
+		'pointcut' pointcut=[textRam::TOperation|EString]
+		'advice' '{'
+			interactionMessages+=TInteraction (';'? interactionMessages+=TInteraction)*
+		'}'
 	'}'
 ;
 
@@ -192,8 +178,21 @@ TLocalAttribute returns textRam::TLocalAttribute:
 	name=EString
 ;
 
+TInteraction returns textRam::TInteraction:
+	TInteractionMessage | TCombinedFragment
+;
+
 TInteractionMessage returns textRam::TInteractionMessage:
-	leftLifeline=[textRam::TLifeline|EString] '=>' (create?='new')? rightLifeline=[textRam::TLifeline|EString]  ('{'  message=TAbstractMessage '}')?
+	leftLifeline=[textRam::TLifeline|EString] '=>' (originalExecution?='*')?  (create?='new')? rightLifeline=[textRam::TLifeline|EString]  ('{'  message=TAbstractMessage '}')?
+;
+
+TCombinedFragment returns textRam::TCombinedFragment:
+	interactionOperator=InteractionOperatorKind '[' interactionConstraint=EString ']' '{'
+		containers+=TInteraction ( containers+=TInteraction )*  
+	'}'
+	('else' '{'
+		elseContainers+=TInteraction ( elseContainers+=TInteraction )*
+	'}')?
 ;
 
 TAbstractMessage returns textRam::TAbstractMessage:
@@ -219,8 +218,7 @@ TOperationMessage returns textRam::TOperationMessage:
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')'
     ':'
-    returnType=[Type|EString]
-;
+    returnType=[Type|EString];
 
 //TODO: It should be StructuralFeature | Parameter
 TTypedElement returns textRam::TTypedElement:
@@ -232,6 +230,24 @@ TMessageAssignableFeature returns textRam::TMessageAssignableFeature:
 	TAssociation | TTemporaryProperty 
 ;
 
+
+LiteralString: {LiteralString};
+
+enum Visibility returns Visibility:
+	public = '+' | private = '-' | protected = '#' | package = "~" 
+;
+
+enum InstantiationType returns InstantiationType:
+    Depends = 'dependsOn' | Extends = 'extends';
+
 enum MessageSort returns MessageSort:
     synchCall = 'synchCall' | createMessage = 'createMessage' | deleteMessage = 'deleteMessage' | reply = 'reply'
+;
+
+enum ReferenceType returns ReferenceType:
+	Composition = '*' | Aggregation='o'
+;
+
+enum InteractionOperatorKind returns InteractionOperatorKind:
+	alt = 'alt' | opt = 'opt' | loop = 'loop'
 ;

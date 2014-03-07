@@ -10,6 +10,7 @@ import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import ca.mcgill.cs.sel.ram.Visibility
 import cl.uchile.pleiad.textRam.TAbstractMessageView
+import cl.uchile.pleiad.textRam.TAspectMessageView
 import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
@@ -215,6 +216,14 @@ class ModelScopeProvider implements IModelScopeProvider {
 		result.addAll ( textRamInteractionMessage.getAspect.allAssociations )
 		result.addAll ( textRamInteractionMessage.rightLifeline.localProperties )
 		//TODO: parameters?
+		result
+	}
+	
+	override getAspectMessageViews(TAbstractMessageView abstractMessageView) {
+		val List<TAspectMessageView> result = newArrayList
+		
+		abstractMessageView.messages.filter(TAspectMessageView).forEach( m | result.add(m))
+		
 		result
 	}
 		

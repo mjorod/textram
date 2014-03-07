@@ -1,9 +1,12 @@
 package cl.uchile.pleiad.generator
 
 import ca.mcgill.cs.sel.ram.Aspect
+import ca.mcgill.cs.sel.ram.AspectMessageView
 import ca.mcgill.cs.sel.ram.Attribute
 import ca.mcgill.cs.sel.ram.Class
+import ca.mcgill.cs.sel.ram.FragmentContainer
 import ca.mcgill.cs.sel.ram.Interaction
+import ca.mcgill.cs.sel.ram.InteractionOperand
 import ca.mcgill.cs.sel.ram.Lifeline
 import ca.mcgill.cs.sel.ram.Message
 import ca.mcgill.cs.sel.ram.MessageSort
@@ -12,25 +15,30 @@ import ca.mcgill.cs.sel.ram.Operation
 import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.ParameterValueMapping
 import ca.mcgill.cs.sel.ram.RamFactory
+import ca.mcgill.cs.sel.ram.RamPackage
 import ca.mcgill.cs.sel.ram.Reference
 import ca.mcgill.cs.sel.ram.StructuralFeature
 import ca.mcgill.cs.sel.ram.TemporaryProperty
 import ca.mcgill.cs.sel.ram.TypedElement
 import cl.uchile.pleiad.textRam.TAbstractMessageView
+import cl.uchile.pleiad.textRam.TAbstractMessages
+import cl.uchile.pleiad.textRam.TAspectMessageView
 import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
+import cl.uchile.pleiad.textRam.TCombinedFragment
 import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TLifeline
 import cl.uchile.pleiad.textRam.TLocalAttribute
 import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TMessageView
-import cl.uchile.pleiad.textRam.TReference
-import cl.uchile.pleiad.textRam.TReturnMessage
-import java.util.ArrayList
-import java.util.List
 import cl.uchile.pleiad.textRam.TMessageWithSignature
 import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TReference
+import cl.uchile.pleiad.textRam.TReturnMessage
+import cl.uchile.pleiad.util.TextRamEcoreUtil
+import java.util.ArrayList
+import java.util.List
 
 //TODO: toLowerCaseFirst is missing
 class MessageViewsGenerator {
@@ -46,7 +54,12 @@ class MessageViewsGenerator {
 		
 		if (this.textRamAspect.messageViews.size > 0) { 
 			val textRamMessages = getTextRamMessages()
-			textRamMessages.forEach[ m | 
+			
+			textRamMessages.filter(TAspectMessageView).forEach[ m | 
+				this.ramAspect.messageViews.add(m.generateMessageView)
+			]
+			
+			textRamMessages.filter(TMessageView).forEach[ m | 
 				this.ramAspect.messageViews.add(m.generateMessageView)
 			]	
 		}	
@@ -57,57 +70,130 @@ class MessageViewsGenerator {
 	}
 	
 	private def getTextRamMessages() {
-		(this.textRamAspect.messageViews.head as TAbstractMessageView).messages.filter(TMessageView)
+		(this.textRamAspect.messageViews.head as TAbstractMessageView).messages
 	}
 	
-	private def generateMessageView(TMessageView textRamMessage) {
+	private def dispatch generateMessageView(TAspectMessageView textRamAspectMessageView){
+		var result = RamFactory.eINSTANCE.createAspectMessageView => [
+			name = textRamAspectMessageView.name
+			pointcut = textRamAspectMessageView.generatePointcut
+			advice = textRamAspectMessageView.createInteraction
+		]
+		
+		result	
+	}
+	
+	private def dispatch generateMessageView(TMessageView textRamMessage) {
 		var MessageView result = RamFactory.eINSTANCE.createMessageView => [
 			specifies = textRamMessage.generateSpecifies
-			specification = textRamMessage.generateSpecification 
+			specification = textRamMessage.createInteraction
+			affectedBy.addAll( textRamMessage.generateAffectedBy )
+		]
+		
+		result
+	}
+	
+	def generateAffectedBy(TMessageView textRamMessageView) {
+		val List<AspectMessageView> result = newArrayList
+		
+		textRamMessageView.affectedBy.forEach[ textRamAspectMessage |
+			result.add(this.ramAspect.messageViews.filter(AspectMessageView).findFirst( m | m.name == textRamAspectMessage.name ))
 		]
 		
 		result
 	}
 	
 	private def generateSpecifies(TMessageView textRamMessage) {
-		ramAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( a | a.name == textRamMessage.specifies.name.resolveName )
+		val result = findOperation(textRamMessage.specifies.name)
+		result
 	}
 	
-	private def Interaction generateSpecification(TMessageView textRamMessage) {
+	private def generatePointcut(TAspectMessageView textRamAspectMessageView) {
+		val result = findOperation(textRamAspectMessageView.pointcut.name)
+		
+		result
+	}
+	
+	private def findOperation(String name) {
+		ramAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( a | a.name == name.resolveName )
+	}
+	
+	private def createInteraction(TAbstractMessages textRamMessage) {
+		
 		val objects = textRamMessage.eContainer as TAbstractMessageView
 		
 		val result = RamFactory.eINSTANCE.createInteraction => [
 			properties.addAll( generateProperties( objects.lifelines ) ) 
 			lifelines.addAll( generateLifelines( objects.lifelines, properties ) )
 		]
-		
-		result.messages.addAll( generateMessages( result, textRamMessage ) )
-		
-		result		
-	}
 	
-	private def generateMessages(Interaction interaction, TMessageView textRamMessageView) {
-		val List<Message> result = newArrayList
-		
-		textRamMessageView.interactionMessages.forEach[ textRamInteractionMessage |
-			
-			if (textRamInteractionMessage.isStartGate) {
-				result.add(generateStartMessage( textRamInteractionMessage, interaction ))	
-			}
-			if (textRamInteractionMessage.isNotStartGateNorEndGate) {
-				result.add(generateMessageOcurrence(textRamInteractionMessage, interaction))
-			}
-			
-			//TODO: se asume que solo habrá de retorno para el primer mensaje
-			if (textRamInteractionMessage.isEndGate ) {
-				val firstInteractionMessage = textRamMessageView.interactionMessages.findFirst( im | im.leftLifeline.name == '>>' )
-				
-				result.add(generateEndMessage( firstInteractionMessage, textRamInteractionMessage, interaction ))
-			}
+		// iterates textRam's interactions		
+		textRamMessage.interactionMessages.forEach[  textRamInteraction | 
+			generateInteractionMessages( textRamInteraction, result, textRamMessage )
 		]
 		
-		result 
+		result
 	}
+	
+	private def dispatch void generateInteractionMessages( TInteractionMessage textRamInteractionMessage, FragmentContainer fragmentContainer, TAbstractMessages textRamMessage) {
+		var Message message
+		
+		if (textRamInteractionMessage.isStartGate) {
+			message = generateStartMessage( textRamInteractionMessage, fragmentContainer as Interaction )	
+		}
+		
+		//TODO: se asume que solo habrá de retorno para el primer mensaje
+		if (textRamInteractionMessage.isEndGate ) {
+			//TODO: i can get textRamMessage using the father of the current message
+			val firstInteractionMessage = textRamMessage.interactionMessages.filter(TInteractionMessage).findFirst( im | im.leftLifeline.name == '>>' )
+			
+			message = generateEndMessage( firstInteractionMessage, textRamInteractionMessage, fragmentContainer as Interaction )
+		}
+		
+		if (textRamInteractionMessage.isNotStartGateNorEndGate) {
+			message = generateMessageOcurrence(textRamInteractionMessage, fragmentContainer)
+		}
+		
+		if ( fragmentContainer instanceof InteractionOperand ) {
+			val Interaction rootInteraction = TextRamEcoreUtil.getRootContainerOfType( fragmentContainer, RamPackage.Literals.INTERACTION )
+			rootInteraction.messages.add(message)	
+		} 
+		else {
+			(fragmentContainer as Interaction).messages.add(message)
+		} 
+		
+		
+	}
+	
+	private def dispatch void generateInteractionMessages ( TCombinedFragment textRamCombinedFragment, FragmentContainer fragmentContainer, TAbstractMessages textRamMessage) {
+		
+		val combinedFragment = RamFactory.eINSTANCE.createCombinedFragment => [
+			interactionOperator = textRamCombinedFragment.interactionOperator
+		]
+		
+		// add fragments!!!!
+		fragmentContainer.fragments.add( combinedFragment )
+			
+		val interactionOperand = RamFactory.eINSTANCE.createInteractionOperand
+		combinedFragment.operands.add( interactionOperand )
+		
+		val interactionConstraint = RamFactory.eINSTANCE.createOpaqueExpression => [
+			body = textRamCombinedFragment.interactionConstraint
+			language = "java"
+		]
+		
+		interactionOperand.interactionConstraint = interactionConstraint
+		
+		textRamCombinedFragment.containers.forEach[ fragment | 
+			generateInteractionMessages( fragment, interactionOperand, textRamMessage )
+		]
+		
+		combinedFragment.operands.map[fragments].flatten.forEach[ fragment | 
+			combinedFragment.covered.addAll( fragment.covered )
+		]
+		
+	}
+
 	
 	private def isStartGate( TInteractionMessage interaction ) {
 		return interaction.leftLifeline.name == '>>'
@@ -121,7 +207,7 @@ class MessageViewsGenerator {
 		return interaction.leftLifeline.name != '>>' && interaction.rightLifeline.name != '<<'
 	}
 	
-	private def  generateMessageOcurrence(TInteractionMessage textRamInteractionMessage, Interaction interaction) {
+	private def generateMessageOcurrence(TInteractionMessage textRamInteractionMessage, FragmentContainer interaction) {
 		val lifeLineFrom = getLifelineFrom(interaction, textRamInteractionMessage)
 		val lifeLineTo = getLifelineTo(interaction, textRamInteractionMessage)
 		
@@ -135,6 +221,11 @@ class MessageViewsGenerator {
 		receive.covered.add(lifeLineTo)
 		interaction.fragments.add(receive)
 		
+		//TODO: defecto en AspectMessageViewView
+//		if ( textRamInteractionMessage.originalExecution == true ) {
+//			attachOriginalBehaviourExecution(lifeLineFrom, interaction)	
+//		}
+		
 		val message = RamFactory.eINSTANCE.createMessage => [
 			sendEvent = send
 			receiveEvent = receive
@@ -145,7 +236,6 @@ class MessageViewsGenerator {
 		if ( textRamInteractionMessage.message instanceof TMessage ) {
 			if ((textRamInteractionMessage.message as TMessage).assignTo != null) {
 				message.assignTo = generateAssignTo(textRamInteractionMessage.message as TMessage, lifeLineTo)
-				
 			}
 		}
 		
@@ -162,7 +252,9 @@ class MessageViewsGenerator {
 	def generateAssignTo(TMessage textRamMessage, Lifeline lifeline) {
 		var StructuralFeature result 
 		
-		result = textRamMessage.assignTo.createStructuralFeature(lifeline)
+		if ( textRamMessage.assignTo != null ) {
+			result = textRamMessage.assignTo.createStructuralFeature(lifeline)
+		}
 				
 		return result
 	}
@@ -172,7 +264,7 @@ class MessageViewsGenerator {
 		result
 	}
 	
-	private def dispatch StructuralFeature  createStructuralFeature(TReference feature, Lifeline lifeline) {
+	private def dispatch StructuralFeature createStructuralFeature(TReference feature, Lifeline lifeline) {
 		val result = lifeline.localProperties.filter(Reference).findFirst( r | r.name == feature.name )
 		result
 	}
@@ -207,6 +299,10 @@ class MessageViewsGenerator {
 		val event = RamFactory.eINSTANCE.createMessageOccurrenceSpecification => [
 			covered.add(lifeLineTo)	
 		]
+		
+		if ( textRamStartInteraction.originalExecution == true ) {
+			attachOriginalBehaviourExecution(lifeLineTo, interaction)	
+		}
 		
 		interaction.fragments.add(event)
 		
@@ -274,6 +370,14 @@ class MessageViewsGenerator {
 		result
 	}
 	
+	private def attachOriginalBehaviourExecution(Lifeline lifeline, Interaction interaction) {
+		val originalBehaviourExecution = RamFactory.eINSTANCE.createOriginalBehaviorExecution => [
+			covered.add(lifeline)
+		]
+		
+		interaction.fragments.add(originalBehaviourExecution)
+	}
+	
 	private def getMessageReturn(TReturnMessage message, Lifeline lifeline) {
 		val result = RamFactory.eINSTANCE.createStructuralFeatureValue => [
 			value = message.assignTo.createStructuralFeature(lifeline)
@@ -282,13 +386,25 @@ class MessageViewsGenerator {
 		result
 	}
 	
-	private def getLifelineTo(Interaction interaction, TInteractionMessage textRamInteractionMessage) {
+	private def dispatch getLifelineTo(Interaction interaction, TInteractionMessage textRamInteractionMessage) {
 		val lifeLineTo = interaction.lifelines.findFirst( l | l.represents.name == textRamInteractionMessage.rightLifeline.name.resolveName )
 		lifeLineTo
 	}
 	
-	private def getLifelineFrom(Interaction interaction, TInteractionMessage textRamInteractionMessage) {
+	private def dispatch getLifelineTo(InteractionOperand interactionOperand, TInteractionMessage textRamInteractionMessage) {
+		val Interaction rootInteraction = TextRamEcoreUtil.getRootContainerOfType( interactionOperand, RamPackage.Literals.INTERACTION )
+		val lifeLineTo = rootInteraction.lifelines.findFirst( l | l.represents.name == textRamInteractionMessage.rightLifeline.name.resolveName )
+		lifeLineTo
+	}	
+	
+	private def dispatch getLifelineFrom(Interaction interaction, TInteractionMessage textRamInteractionMessage) {
 		val lifeLineFrom = interaction.lifelines.findFirst( l | l.represents.name == textRamInteractionMessage.leftLifeline.name.resolveName )
+		lifeLineFrom
+	}
+	
+	private def dispatch getLifelineFrom(InteractionOperand interactionOperand, TInteractionMessage textRamInteractionMessage) {
+		val Interaction rootInteraction = TextRamEcoreUtil.getRootContainerOfType( interactionOperand, RamPackage.Literals.INTERACTION )
+		val lifeLineFrom =  rootInteraction.lifelines.findFirst( l | l.represents.name == textRamInteractionMessage.leftLifeline.name.resolveName )
 		lifeLineFrom
 	}
 	
