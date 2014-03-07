@@ -60,6 +60,26 @@
 
 \begin_body
 
+\begin_layout Title
+Primer Informe de Avance
+\begin_inset Newline newline
+\end_inset
+
+Magíster en Tecnología de la Información
+\begin_inset Newline newline
+\end_inset
+
+Departamento de Ciencias de la Computación
+\begin_inset Newline newline
+\end_inset
+
+Universidad de Chile
+\end_layout
+
+\begin_layout Author
+Marel Josué Oliva Rodríguez
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
@@ -629,7 +649,7 @@ Si existe un elemento que no está presente en el modelo destino (y viceversa),
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -820,7 +840,7 @@ reference "fig:Weaving-de-un"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -1294,7 +1314,7 @@ aspect model
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -1616,7 +1636,7 @@ AspectoOrigina.ClaseParcial -> NombreEntidad
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -2283,7 +2303,7 @@ Semántica describe el significado de los elementos definidos en el lenguaje
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -2567,7 +2587,7 @@ s dimensiones ortogonales: conceptualización (columnas) e implementación
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -2696,7 +2716,7 @@ Definir nuevas propiedades y funcionalidades que pueden ser asociadas a
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -2886,7 +2906,7 @@ EPackage
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -3554,7 +3574,7 @@ Síntesis: finalmente, el meta-programa producirá un tipo de resultado.
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -3812,7 +3832,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/moliva/textram/docs/201312 - Master First Report/img/LWModel.png
+	filename img/LWModel.png
 	scale 35
 
 \end_inset
