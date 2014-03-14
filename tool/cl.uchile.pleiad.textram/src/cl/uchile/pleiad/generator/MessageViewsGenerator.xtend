@@ -160,9 +160,7 @@ class MessageViewsGenerator {
 		} 
 		else {
 			(fragmentContainer as Interaction).messages.add(message)
-		} 
-		
-		
+		}
 	}
 	
 	private def dispatch void generateInteractionMessages ( TCombinedFragment textRamCombinedFragment, FragmentContainer fragmentContainer, TAbstractMessages textRamMessage) {
