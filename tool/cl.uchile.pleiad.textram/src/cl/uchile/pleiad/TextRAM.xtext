@@ -15,9 +15,8 @@ name=EString
 '}';
 
 terminal TEMPLATE: (ID'<' ID '>')*;
-terminal PARTIAL_STRING: ('|'ID)*;
 EString returns ecore::EString:
-    STRING | ID | TEMPLATE | PARTIAL_STRING | '<<' | '>>';
+    STRING | ID | TEMPLATE  | '<<' | '>>';
 
 EInt returns ecore::EInt:
     '-'? INT;
@@ -54,14 +53,17 @@ Type returns Type:
     TClass | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat | RSet;
 
 ObjectType returns ObjectType:
-    TClass | RBoolean | RInt | RChar | RString | RSet | RDouble | RFloat;    
+    TClass | RBoolean | RInt | RChar | RString  | RDouble | RFloat | RSet;
         
 PrimitiveType returns PrimitiveType:
     RBoolean | RInt | RChar | RString | RDouble | RFloat;// | REnum;
 
 RString: {RString}; RFloat: {RFloat}; RDouble: {RDouble}; RAny: {RAny}; RChar: {RChar}; RInt: {RInt}; RBoolean: {RBoolean}; RVoid: {RVoid};
 
-RSet: {RSet};
+RSet: 
+	{RSet}
+//	'Set' '<' type=[ObjectType|EString] '>'
+;
 
 AbstractClass returns Class:
 	TClass
@@ -75,6 +77,7 @@ TClass returns textRam::TClass:
     {textRam::TClass}
     (abstract?='abstract')?
     'class'
+    (partial?='|')?
     name=EString (':' superTypes+=[Classifier|EString])?
     '{'
     	( members+=TClassMember  ( ";"? members+= TClassMember)*  )?
@@ -91,6 +94,8 @@ TOperation returns textRam::TOperation:
     (static?='static')?
     visibility=Visibility
     returnType=[Type|EString]
+    
+    (partial?='|')?
     name=EString 
     '('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?

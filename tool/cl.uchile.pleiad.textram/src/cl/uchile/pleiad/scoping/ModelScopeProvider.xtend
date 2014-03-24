@@ -26,12 +26,15 @@ import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
+import ca.mcgill.cs.sel.ram.RSet
 
 class ModelScopeProvider implements IModelScopeProvider {
 	
-
 	override getTypesFor(StructuralView structuralView) {
 		structuralView.types.appendPrimitiveTypes
+		
+		structuralView.types.addAll(addRSetPrimitiveTypes( structuralView.types ))
+				
 		return structuralView.allTypes
 	}
 	
@@ -101,6 +104,16 @@ class ModelScopeProvider implements IModelScopeProvider {
 		for ( clazz : structuralView.classes ) {
 			typeList.add(clazz)
 			
+			if ( structuralView.types.filter(RSet).exists[t | t.type.name == clazz.name] == false ) {
+				val rSet = RamFactory.eINSTANCE.createRSet => [
+					type = clazz
+					instanceClassName = '''Set<« clazz.name »>'''
+				]
+				
+				structuralView.types.add(rSet)
+				typeList.add(rSet)
+			}
+			
 			// it also add a RSet
 //			val rSet = RamFactory.eINSTANCE.createRSet()
 //			rSet.setType(clazz)
@@ -122,17 +135,44 @@ class ModelScopeProvider implements IModelScopeProvider {
 	
 	private static def appendPrimitiveTypes(EList<Type> typesToReturn) {
 		if (typesToReturn.length == 0) {
-			typesToReturn.add(RamFactory.eINSTANCE.createRVoid());
-			typesToReturn.add(RamFactory.eINSTANCE.createRBoolean());
-			typesToReturn.add(RamFactory.eINSTANCE.createRInt());
-			typesToReturn.add(RamFactory.eINSTANCE.createRChar());
-			typesToReturn.add(RamFactory.eINSTANCE.createRString());
-			typesToReturn.add(RamFactory.eINSTANCE.createRAny());
-		//			typesToReturn.add(RamFactory.eINSTANCE.createREnum());
-		//			typesToReturn.add(RamFactory.eINSTANCE.createRSet());
-			typesToReturn.add(RamFactory.eINSTANCE.createRDouble());
-			typesToReturn.add(RamFactory.eINSTANCE.createRFloat());
+			typesToReturn.add(RamFactory.eINSTANCE.createRVoid)
+			typesToReturn.add(RamFactory.eINSTANCE.createRBoolean)
+			typesToReturn.add(RamFactory.eINSTANCE.createRChar)
+			typesToReturn.add(RamFactory.eINSTANCE.createRInt)
+			typesToReturn.add(RamFactory.eINSTANCE.createRString)
+			typesToReturn.add(RamFactory.eINSTANCE.createRAny)
+			typesToReturn.add(RamFactory.eINSTANCE.createRDouble)
+			typesToReturn.add(RamFactory.eINSTANCE.createRFloat)
 		}
+	}
+	
+	/**
+	 * This method add a RSet type for each primitive type in the list.
+	 * 
+	 * @types list of types in the structural view
+	 * @returns list of RSet type for each primitive type in the structural view
+	 */
+	private static def addRSetPrimitiveTypes(EList<Type> types) {
+		val result = new BasicEList<Type>
+		
+		if (types.filter(RSet).size() == 0) {
+		
+			types.filter(PrimitiveType).forEach[ t |
+				val rSet = RamFactory.eINSTANCE.createRSet => [
+					type = t
+					instanceClassName = '''Set<« t.name »>''' //TODO: implementationName is mandatory for eclipse's workbench. It works with a dummy value.
+				]
+				
+				result.add(rSet)
+			]
+			
+		}
+		else 
+		{
+			result.addAll( types.filter(RSet) )
+		}
+		
+		result
 	}
 	
 	override getParameters(Aspect aspect) {

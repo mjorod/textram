@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import ca.mcgill.cs.sel.ram.RamFactory
+import ca.mcgill.cs.sel.ram.ObjectType
 
 /**
  * This class contains custom scoping description.
@@ -27,7 +29,7 @@ import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	@Inject extension IModelScopeProvider scopeProvider 
-	
+	 
 	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor( structuralView.getTypesFor )
@@ -36,6 +38,19 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TAttribute_type(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor( structuralView.getPrimitiveTypes )
+	}
+	
+	def IScope scope_TSet_type(TStructuralView structuralView, EReference reference) {
+		val a = reference
+		if (structuralView.types.findFirst[ t | t.name == "int"] == null) {
+			val rSet = RamFactory.eINSTANCE.createRSet => [
+				type = structuralView.types.findFirst[ t | t.name == "int"] as ObjectType
+			]
+			
+			structuralView.types.add(rSet)
+		}
+		
+		Scopes::scopeFor(structuralView.types)
 	}
 	
 	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {

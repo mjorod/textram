@@ -24,7 +24,8 @@ import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
 import org.eclipse.emf.ecore.util.EcoreUtil
-import ca.mcgill.cs.sel.ram.ReferenceType
+import org.eclipse.emf.common.util.EList
+import ca.mcgill.cs.sel.ram.RSet
 
 class StructuralViewGenerator {
 	
@@ -41,10 +42,23 @@ class StructuralViewGenerator {
 		
 		ramAspect.structuralView.types.addAll(generateTypes)
 		ramAspect.structuralView.classes.addAll(createClasses)
+		ramAspect.structuralView.types.convertRSetTypeClassFromTClass
+
 		generateClasses()
 		ramAspect.structuralView.associations.addAll(generateAssociations)
 		
 		ramAspect.instantiations.addAll(generateInstantiations)
+	}
+	
+	def void convertRSetTypeClassFromTClass(EList<Type> types) {
+		types.filter(RSet).forEach [ rSetType |
+			//TODO: cleaning instanceClassName (It's pending the good setting of RSet's instanceClassName)
+			rSetType.instanceClassName = null
+
+			if (rSetType.type instanceof TClass) {
+				rSetType.type = this.ramAspect.structuralView.classes.findFirst[ c | c.name == rSetType.type.name ]
+			}
+		] 
 	}
 	
 	def getStructuralView() {
@@ -247,7 +261,7 @@ class StructuralViewGenerator {
 	}
 	
 	private def dispatch transformType(PrimitiveType type) {
-		type as Type
+		ramAspect.structuralView.types.filter(PrimitiveType).findFirst[ t | t.name == type.name ]
 	}
 	
 	private def dispatch transformType(Type type) {
@@ -255,7 +269,11 @@ class StructuralViewGenerator {
 	}
 	
 	private def dispatch transformType(RVoid type) { 
-		type as Type
+		ramAspect.structuralView.types.filter(RVoid).findFirst[ t | t.name == type.name ]
+	}
+	
+	private def dispatch transformType(RSet type) {
+		ramAspect.structuralView.types.filter(RSet).findFirst[ t | t.name == type.name ]
 	}
 	
 	private def generateAssociations() {
@@ -306,7 +324,8 @@ class StructuralViewGenerator {
 	}
 	
 	private def generateTypes() {
-		EcoreUtil.copyAll(textRamAspect.structuralView.types)
+		val result = EcoreUtil.copyAll(textRamAspect.structuralView.types) 
+		result
 	}
 	
 	private def static String toLowerCaseFirst(String text) {

@@ -271,54 +271,25 @@ class TextRamParserTest {
 		}
 		'''.parse.assertNoErrors
 	}
-//	
-//	@Test
-//	def testRSet() {
-//		'''
-//		aspect A {
-//			structure {
-//				class MyClass {
-//					
-//				}
-//				class AnotherPartialClass {
-//					+ Set<MyClass> getPartialClass()
-//				}
-//			}
-//		}
-//		'''.parse.assertNoErrors
-//	}
 	
 	@Test
-	def testMessageView() {
+	def testRSet() {
 		'''
 		aspect A {
 			structure {
-				class ClassA {
-					+ ClassA create()
-					+ void add(ClassB classB)
+				class |MyClass {
+					+ Set<String> getStringType()
+					+ Set<int> getIntType()
 				}
-				class ClassB {}
-				class ClassC {
-					+ ClassC create()
-					+ void add(ClassB classB)
-				}
-				associations {
-					ClassA -> ClassC { myAssoc }
+				class AnotherClass {
+					+ Set<MyClass> getPartialClass()
 				}
 			}
-			messages {
-				messageView ClassA.add(ClassB classB) {
-					objects {
-						origen : 
-					}
-					>>            => target         { add(ClassB classB): void }
-					target:ClassA => myAssoc:ClassC { add(classB)  }
-				}
-			}
-
 		}
 		'''.parse.assertNoErrors
 	}
+	
+	
 	
 	
 }
