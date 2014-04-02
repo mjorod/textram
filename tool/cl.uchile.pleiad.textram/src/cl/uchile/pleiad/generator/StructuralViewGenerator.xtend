@@ -26,6 +26,8 @@ import java.util.List
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.common.util.EList
 import ca.mcgill.cs.sel.ram.RSet
+import org.eclipse.xtext.util.Strings
+import cl.uchile.pleiad.textRam.TAspect
 
 class StructuralViewGenerator {
 	
@@ -80,11 +82,19 @@ class StructuralViewGenerator {
 
 		val result = RamFactory.eINSTANCE.createInstantiation => [
 			externalAspect = myExternalAspect
-			type = from.type
+			type = getInstantiationTypeFromHeader(from)
 			mappings.addAll( from.generateMappings(myExternalAspect) )
 		]
 		
 		result
+	}
+	
+	private def getInstantiationTypeFromHeader(Instantiation instantiation) {
+		val tAspect = this.textRamAspect as TAspect
+		val headerInstantiation = tAspect.headerInstantiations.findFirst[ hi | hi.externalAspects.exists[ ea | ea.name == instantiation.externalAspect.name ]]
+		val type = headerInstantiation.type
+		
+		type
 	}
 	
 	private def generateMappings(Instantiation from, Aspect externalAspect) {
@@ -103,11 +113,13 @@ class StructuralViewGenerator {
 			toElement = this.ramAspect.structuralView.classes.findFirst( c | c.name == textRamClassifierMapping.toElement.name )
 		]
 		
-		for ( Integer i: 0..textRamClassifierMapping.fromMembers.size ) {
-			val fromMember = textRamClassifierMapping.fromMembers.get(i)
-			val toMember = textRamClassifierMapping.toMembers.get(i)
-			
-			generateMemberMapping(fromMember, toMember, externalAspect, result)		
+		if (textRamClassifierMapping.fromMembers.size > 0) {
+			for ( Integer i: 0..textRamClassifierMapping.fromMembers.size - 1) {
+				val fromMember = textRamClassifierMapping.fromMembers.get(i)
+				val toMember = textRamClassifierMapping.toMembers.get(i)
+				
+				generateMemberMapping(fromMember, toMember, externalAspect, result)		
+			}	
 		}
 		
 		result
@@ -159,7 +171,7 @@ class StructuralViewGenerator {
 	
 	private def generateClasses() {
 		this.textRamAspect.structuralView.classes.filter(TClass).forEach[ textRamClass |
-			val clazz = this.ramAspect.structuralView.classes.findFirst(c | c.name == textRamClass.name.resolveNameWithoutPartial) as Class
+			val clazz = this.ramAspect.structuralView.classes.findFirst(c | c.name == textRamClass.name) as Class
 			
 			generateClass(textRamClass, clazz)
 		]
@@ -168,9 +180,9 @@ class StructuralViewGenerator {
 	private def createClass(TClass from) { 
 		val clazz = RamFactory.eINSTANCE.createClass
 		
-		clazz.name = from.name.resolveNameWithoutPartial
+		clazz.name = from.name
 		clazz.abstract = from.abstract
-		clazz.partial = from.name.startsWith(PARTIAL)
+		clazz.partial = from.partial
 		
 		clazz
 	}
@@ -187,14 +199,10 @@ class StructuralViewGenerator {
 		val List<Classifier> result = newArrayList
 		
 		textRamClass.superTypes.forEach[ superType | 
-			result.add( ramAspect.structuralView.classes.findFirst( c | c.name == superType.name.resolveNameWithoutPartial ) )
+			result.add( ramAspect.structuralView.classes.findFirst( c | c.name == superType.name ) )
 		]
 		
 		result
-	}
-	
-	private def resolveNameWithoutPartial(String name) {
-		name.replace(PARTIAL, '')
 	}
 	
 	private def generateOperations(TClass textRamClass) {
@@ -209,10 +217,10 @@ class StructuralViewGenerator {
 	
 	private def generateOperation(TOperation from) {
 		val result = RamFactory.eINSTANCE.createOperation => [
-			name = from.name.resolveNameWithoutPartial
+			name = from.name
 			abstract = from.abstract
 			static = from.static
-			partial = from.name.startsWith(PARTIAL)
+			partial = from.partial
 			returnType = from.returnType.transformType
 			visibility = from.visibility
 			parameters.addAll(generateParameters(from))
@@ -235,7 +243,7 @@ class StructuralViewGenerator {
 		val result = RamFactory.eINSTANCE.createAttribute => [
 			name = from.name
 			static = from.static
-			type = from.type
+			type = from.type.transformType as PrimitiveType
 		]
 		
 		result
@@ -265,7 +273,7 @@ class StructuralViewGenerator {
 	}
 	
 	private def dispatch transformType(Type type) {
-		ramAspect.structuralView.classes.findFirst( c | c.name == type.name.resolveNameWithoutPartial) 
+		ramAspect.structuralView.classes.findFirst( c | c.name == type.name) 
 	}
 	
 	private def dispatch transformType(RVoid type) { 
@@ -291,19 +299,22 @@ class StructuralViewGenerator {
 	private def Association generateAssociation(TAssociation textRamAssoc) {
 		val result = RamFactory.eINSTANCE.createAssociation
 		
-		val classFrom = this.ramAspect.structuralView.classes.findFirst[ c | c.name == textRamAssoc.fromEnd.classReference.name.resolveNameWithoutPartial ] as Class
-		val classTo = this.ramAspect.structuralView.classes.findFirst[ c | c.name == textRamAssoc.toEnd.classReference.name.resolveNameWithoutPartial ] as Class
+		val classFrom = this.ramAspect.structuralView.classes.findFirst[ c | c.name == textRamAssoc.fromEnd.classReference.name ] as Class
+		val classTo = this.ramAspect.structuralView.classes.findFirst[ c | c.name == textRamAssoc.toEnd.classReference.name ] as Class
 		
-		val nameFrom = textRamAssoc.fromEnd.classReference.name.resolveNameWithoutPartial
-		val nameTo = textRamAssoc.toEnd.classReference.name.resolveNameWithoutPartial
+		val nameFrom = textRamAssoc.fromEnd.classReference.name
+		val nameTo = textRamAssoc.toEnd.classReference.name
 		
 		result.name = nameFrom + '_' + nameTo 
 		
 		// create from association end
         val fromEnd = RamFactory.eINSTANCE.createAssociationEnd()
         fromEnd.assoc = result
-        fromEnd.lowerBound = textRamAssoc.fromEnd.lowerBound
-        fromEnd.upperBound = textRamAssoc.fromEnd.upperBound
+        if ( textRamAssoc.fromEnd.lowerBound + textRamAssoc.fromEnd.lowerBound != 0 ) {
+	        fromEnd.lowerBound = textRamAssoc.fromEnd.lowerBound
+	        fromEnd.upperBound = textRamAssoc.fromEnd.upperBound
+        }
+        
         fromEnd.name = textRamAssoc.name.toLowerCaseFirst
         classFrom.associationEnds.add(fromEnd)
         if (textRamAssoc.referenceType != null) {
@@ -313,8 +324,12 @@ class StructuralViewGenerator {
         // create to association end
         val toEnd = RamFactory.eINSTANCE.createAssociationEnd()
         toEnd.assoc =result 
-        toEnd.lowerBound = textRamAssoc.toEnd.lowerBound
-        toEnd.upperBound = textRamAssoc.toEnd.upperBound
+       	
+       	if ( textRamAssoc.toEnd.lowerBound +  textRamAssoc.toEnd.upperBound != 0 ) {
+	       	toEnd.lowerBound = textRamAssoc.toEnd.lowerBound
+	        toEnd.upperBound = textRamAssoc.toEnd.upperBound
+        }
+        
         toEnd.navigable = false
         toEnd.name = classFrom.name.toLowerCaseFirst
 		

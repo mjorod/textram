@@ -503,7 +503,7 @@ class MessageViewsGenerator {
 		val result = RamFactory.eINSTANCE.createReference => [
 			lowerBound = 1
 			name = reference.name
-			type = reference.reference
+			type = this.ramAspect.findClass(reference.reference.name)
 		]
 		
 		result

@@ -8,16 +8,15 @@ import ca.mcgill.cs.sel.ram.Instantiation
 import cl.uchile.pleiad.textRam.TAbstractMessageView
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TInstantiationHeader
 import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TStructuralView
-import com.google.inject.Inject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
-import ca.mcgill.cs.sel.ram.RamFactory
-import ca.mcgill.cs.sel.ram.ObjectType
+import cl.uchile.pleiad.textRam.TAspect
 
 /**
  * This class contains custom scoping description.
@@ -28,8 +27,12 @@ import ca.mcgill.cs.sel.ram.ObjectType
  */
 class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
-	@Inject extension IModelScopeProvider scopeProvider 
-	 
+	extension ModelScopeProvider scopeProvider = new ModelScopeProvider
+	
+	def IScope scope_Instantiation_externalAspect(TAspect aspect, EReference reference) {
+		Scopes::scopeFor( aspect.getExternalAspectsFromHeader )
+	}
+	
 	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference)
 	{
 		Scopes::scopeFor( structuralView.getTypesFor )
@@ -39,34 +42,21 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	{
 		Scopes::scopeFor( structuralView.getPrimitiveTypes )
 	}
-	
-	def IScope scope_TSet_type(TStructuralView structuralView, EReference reference) {
-		val a = reference
-		if (structuralView.types.findFirst[ t | t.name == "int"] == null) {
-			val rSet = RamFactory.eINSTANCE.createRSet => [
-				type = structuralView.types.findFirst[ t | t.name == "int"] as ObjectType
-			]
-			
-			structuralView.types.add(rSet)
-		}
 		
-		Scopes::scopeFor(structuralView.types)
-	}
-	
 	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
 		val classes = instantiation.getClasses
 		Scopes::scopeFor( classes )
 	}
 	
-	def IScope scope_ClassifierMapping_toElement(TStructuralView structuralView, EReference reference) {
-		Scopes::scopeFor( structuralView.classes )
+	def IScope scope_ClassifierMapping_toElement(Aspect aspect, EReference reference) {
+		Scopes::scopeFor( (aspect.structuralView as TStructuralView).classes.filter(TClass) )
 	}
 	
-	def IScope scope_TClassifierMapping_fromMember(TClassifierMapping classifierMapping, EReference reference) {
+	def IScope scope_TClassifierMapping_fromMembers(TClassifierMapping classifierMapping, EReference reference) {
 		Scopes::scopeFor( classifierMapping.getMembersFrom )
 	}
 	
-	def IScope scope_TClassifierMapping_toMember(TClassifierMapping classifierMapping, EReference reference ) {
+	def IScope scope_TClassifierMapping_toMembers(TClassifierMapping classifierMapping, EReference reference ) {
 		val toElement = classifierMapping.toElement as TClass 
 		Scopes::scopeFor( toElement.members )
 	}
@@ -101,7 +91,7 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 
 	def IScope scope_TMessageWithSignature_signature(Aspect aspect, EReference reference) {
-		Scopes::scopeFor ( aspect.getPublicOperations )
+		Scopes::scopeFor ( aspect.getOperations  )
 	}
 	
 	def IScope scope_TMessage_arguments(TMessageView messageView, EReference reference) {
@@ -119,10 +109,4 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TAspectMessageView_pointcut(Aspect aspect, EReference reference ) {
 		Scopes::scopeFor( aspect.getPublicOperations )
 	}
-	
-	
-	
-	
-	
-	
 }

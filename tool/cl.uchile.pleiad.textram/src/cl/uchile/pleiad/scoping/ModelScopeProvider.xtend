@@ -27,10 +27,16 @@ import java.util.List
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import ca.mcgill.cs.sel.ram.RSet
+import cl.uchile.pleiad.textRam.TAspect
 
-class ModelScopeProvider implements IModelScopeProvider {
+class ModelScopeProvider {
 	
-	override getTypesFor(StructuralView structuralView) {
+	def getExternalAspectsFromHeader(TAspect aspect) {
+		val validExternalAspects = aspect.headerInstantiations.map[externalAspects].flatten
+		validExternalAspects						
+	}
+	
+	def getTypesFor(StructuralView structuralView) {
 		structuralView.types.appendPrimitiveTypes
 		
 		structuralView.types.addAll(addRSetPrimitiveTypes( structuralView.types ))
@@ -38,17 +44,17 @@ class ModelScopeProvider implements IModelScopeProvider {
 		return structuralView.allTypes
 	}
 	
-	override getPrimitiveTypes(StructuralView structuralView) {
+	def getPrimitiveTypes(StructuralView structuralView) {
 		structuralView.getTypes().appendPrimitiveTypes
 
 		structuralView.getTypes().filter(typeof(PrimitiveType)).toList
 	}
 	
-	override getClasses(Instantiation instantiation) {
+	def getClasses(Instantiation instantiation) {
 		instantiation.externalAspect.structuralView.classes.toList
 	}
 	
-	override getMembersFrom(TClassifierMapping classifierMapping) {
+	def getMembersFrom(TClassifierMapping classifierMapping) {
 		// instantiation type from the container of classifierMapping
 		val instantiationType = (classifierMapping.eContainer as Instantiation).type
 		
@@ -64,12 +70,17 @@ class ModelScopeProvider implements IModelScopeProvider {
 		return fromElement.members.toList 
 	}
 	
-	override getPublicOperations(Aspect aspect) {
+	def getPublicOperations(Aspect aspect) {
 		val operations = aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter(oper | oper.visibility == Visibility.PUBLIC).toList
 		operations
 	}
 	
-	override getTTypedElements(Aspect aspect) {
+	def getOperations(Aspect aspect) {
+		val operations = aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation)
+		operations
+	}
+	
+	def getTTypedElements(Aspect aspect) {
 		//AssociationEnd
 		//Attribute
 		//Parameter
@@ -175,7 +186,7 @@ class ModelScopeProvider implements IModelScopeProvider {
 		result
 	}
 	
-	override getParameters(Aspect aspect) {
+	def getParameters(Aspect aspect) {
 		val tStructuralView = aspect.structuralView as TStructuralView
 		
 		tStructuralView.classes.filter(TClass)
@@ -187,11 +198,11 @@ class ModelScopeProvider implements IModelScopeProvider {
 							   .toList
 	}
 	
-	override getParameters(TMessageView messageView) {
+	def getParameters(TMessageView messageView) {
 		messageView.parameters
 	}
 	
-	override getAssignableFeatures(TInteractionMessage textRamInteractionMessage) {
+	def getAssignableFeatures(TInteractionMessage textRamInteractionMessage) {
 		val List<TMessageAssignableFeature> result = newArrayList()
 		
 		result.addAll ( textRamInteractionMessage.leftLifeline.localProperties )
@@ -214,7 +225,7 @@ class ModelScopeProvider implements IModelScopeProvider {
 		return null
 	}
 
-	override getLeftTLifelines(Aspect aspect) {
+	def getLeftTLifelines(Aspect aspect) {
 		val tAbstractMessageView = aspect.messageViews.head as TAbstractMessageView
 		
 		if (tAbstractMessageView != null) {
@@ -231,7 +242,7 @@ class ModelScopeProvider implements IModelScopeProvider {
 		return null
 	}
 	
-	override getRightTLifelines(Aspect aspect) {
+	def getRightTLifelines(Aspect aspect) {
 		val tAbstractMessageView = aspect.messageViews.head as TAbstractMessageView
 		
 		if (tAbstractMessageView != null) {
@@ -250,7 +261,7 @@ class ModelScopeProvider implements IModelScopeProvider {
 	}
 	
 	
-	override getReturnMessageAssignTo(TInteractionMessage textRamInteractionMessage) {
+	def getReturnMessageAssignTo(TInteractionMessage textRamInteractionMessage) {
 		val List<TMessageAssignableFeature> result = newArrayList
 		
 		result.addAll ( textRamInteractionMessage.getAspect.allAssociations )
@@ -259,7 +270,7 @@ class ModelScopeProvider implements IModelScopeProvider {
 		result
 	}
 	
-	override getAspectMessageViews(TAbstractMessageView abstractMessageView) {
+	def getAspectMessageViews(TAbstractMessageView abstractMessageView) {
 		val List<TAspectMessageView> result = newArrayList
 		
 		abstractMessageView.messages.filter(TAspectMessageView).forEach( m | result.add(m))

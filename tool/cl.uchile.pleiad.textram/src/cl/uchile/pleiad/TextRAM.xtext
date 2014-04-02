@@ -5,9 +5,12 @@ import "http://cs.mcgill.ca/sel/ram/2.1"
 
 generate textRam "http://cl.pleiad.textram/1.0" as textRam
 
-Aspect returns Aspect:
-'aspect'
-name=EString
+Aspect :
+	TAspect
+;
+
+TAspect returns textRam::TAspect:
+'aspect' name=EString (headerInstantiations+=TInstantiationHeader (","? headerInstantiations+=TInstantiationHeader)*)?
 '{'
 	structuralView=TStructuralView
 	('instantiations' '{' instantiations+=Instantiation ( ";"? instantiations+=Instantiation)* '}' )?
@@ -58,12 +61,7 @@ ObjectType returns ObjectType:
 PrimitiveType returns PrimitiveType:
     RBoolean | RInt | RChar | RString | RDouble | RFloat;// | REnum;
 
-RString: {RString}; RFloat: {RFloat}; RDouble: {RDouble}; RAny: {RAny}; RChar: {RChar}; RInt: {RInt}; RBoolean: {RBoolean}; RVoid: {RVoid};
-
-RSet: 
-	{RSet}
-//	'Set' '<' type=[ObjectType|EString] '>'
-;
+RString: {RString}; RFloat: {RFloat}; RDouble: {RDouble}; RAny: {RAny}; RChar: {RChar}; RInt: {RInt}; RBoolean: {RBoolean}; RVoid: {RVoid}; RSet: {RSet};
 
 AbstractClass returns Class:
 	TClass
@@ -86,7 +84,7 @@ TClass returns textRam::TClass:
 TAttribute returns textRam::TAttribute:
     (static?='static')?
     type=[PrimitiveType|EString]
-    name=EString;
+    (partial?='|')? name=EString;
 
 TOperation returns textRam::TOperation:
     {textRam::TOperation}
@@ -94,7 +92,6 @@ TOperation returns textRam::TOperation:
     (static?='static')?
     visibility=Visibility
     returnType=[Type|EString]
-    
     (partial?='|')?
     name=EString 
     '('
@@ -121,22 +118,25 @@ TAssociationEnd returns textRam::TAssociationEnd:
 
 ElementBound returns ecore::EInt:
 	'*' | INT;
+
+TInstantiationHeader returns textRam::TInstantiationHeader:
+	type = InstantiationType
+	externalAspects+=[Aspect|EString] ("," externalAspects+=[Aspect|EString])*
+;
 	
 Instantiation returns Instantiation:
-    (type=InstantiationType)?
     externalAspect=[Aspect|EString]
-    ('{' mappings+=TClassifierMapping ( ";"? mappings+=TClassifierMapping)* '}' )
+    ('{' mappings+=TClassifierMapping ( ";"? mappings+=TClassifierMapping)* '}')?
 ;
-    
 
 AbstractClassifierMapping returns ClassifierMapping:
     TClassifierMapping
 ; 
 
 TClassifierMapping returns textRam::TClassifierMapping:
-    fromElement=[Classifier|EString] ('<' fromMembers+=[textRam::TClassMember] ("," fromMembers+=[textRam::TClassMember])* '>')?
+    fromElement=[Classifier|EString] ('<' fromMembers+=[textRam::TClassMember|EString] ("," fromMembers+=[textRam::TClassMember|EString])* '>')?
     '->'
-    toElement=[Classifier|EString] ('<' toMembers+=[textRam::TClassMember] ("," toMembers+=[textRam::TClassMember])*  '>')?
+    toElement=[Classifier|EString] ('<' toMembers+=[textRam::TClassMember|EString] ("," toMembers+=[textRam::TClassMember|EString])* '>')?
 ;
 
 TMessageView returns textRam::TMessageView:
@@ -166,7 +166,7 @@ TLifeline returns textRam::TLifeline:
 	(reference?='ref')?
 	name=EString ':' (represents=[textRam::TTypedElement|EString])?
 	('{' 
-		localProperties+=TTemporaryProperty (";"? localProperties+=TTemporaryProperty)?
+		localProperties+=TTemporaryProperty (";"? localProperties+=TTemporaryProperty)*
 	'}')?
 ;
 
@@ -234,7 +234,6 @@ TTypedElement returns textRam::TTypedElement:
 TMessageAssignableFeature returns textRam::TMessageAssignableFeature:
 	TAssociation | TTemporaryProperty 
 ;
-
 
 LiteralString: {LiteralString};
 
