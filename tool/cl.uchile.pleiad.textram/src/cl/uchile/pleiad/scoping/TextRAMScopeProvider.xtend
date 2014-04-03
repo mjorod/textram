@@ -6,9 +6,10 @@ package cl.uchile.pleiad.scoping
 import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Instantiation
 import cl.uchile.pleiad.textRam.TAbstractMessageView
+import cl.uchile.pleiad.textRam.TAspect
+import cl.uchile.pleiad.textRam.TAspectMessageView
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
-import cl.uchile.pleiad.textRam.TInstantiationHeader
 import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TStructuralView
@@ -16,7 +17,6 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
-import cl.uchile.pleiad.textRam.TAspect
 
 /**
  * This class contains custom scoping description.
@@ -106,7 +106,7 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor ( abstractMessageView.getAspectMessageViews )
 	}
 	
-	def IScope scope_TAspectMessageView_pointcut(Aspect aspect, EReference reference ) {
-		Scopes::scopeFor( aspect.getPublicOperations )
+	def IScope scope_TAspectMessageView_pointcut(TAspectMessageView aspectMessageView, EReference reference ) {
+		Scopes::scopeFor( aspectMessageView.getOperationsForAspectMessageView )
 	}
 }

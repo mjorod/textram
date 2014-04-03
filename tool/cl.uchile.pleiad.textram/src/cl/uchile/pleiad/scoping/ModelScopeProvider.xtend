@@ -277,5 +277,15 @@ class ModelScopeProvider {
 		
 		result
 	}
+	
+	def getOperationsForAspectMessageView(TAspectMessageView aspectMessageView ) {
+		if ( aspectMessageView.class_ != null ) {
+			return aspectMessageView.class_.members.filter(TOperation)
+		}
+		else {
+			val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType(aspectMessageView, RamPackage.Literals.ASPECT)
+			return aspect.getPublicOperations
+		}
+	}
 		
 }

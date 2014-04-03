@@ -154,7 +154,7 @@ TMessageView returns textRam::TMessageView:
 TAspectMessageView returns textRam::TAspectMessageView:
 	'aspectMessageView' 
 		name=EString '{'
-		'pointcut' pointcut=[textRam::TOperation|EString]
+		'pointcut' (class=[textRam::TClass|EString] '.')? pointcut=[textRam::TOperation|EString]
 		'advice' '{'
 			interactionMessages+=TInteraction (';'? interactionMessages+=TInteraction)*
 		'}'
