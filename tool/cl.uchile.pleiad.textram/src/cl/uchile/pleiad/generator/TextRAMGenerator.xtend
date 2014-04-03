@@ -12,6 +12,7 @@ import java.util.Calendar
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import cl.uchile.pleiad.textRam.TAspect
 
 //import org.eclipse.xtext.parsetree.reconstr.Serializer
 
@@ -31,11 +32,14 @@ class TextRAMGenerator implements IGenerator {
         for (aspect : resource.allContents.toIterable.filter(Aspect)){
     		d.addNode(aspect)
     		
-    		aspect.instantiations.forEach[ instantiation |
-    			d.addNode(instantiation.externalAspect)
-    			d.addEdge(instantiation.externalAspect, aspect)
-    		]
+    		val textRamAspect = aspect as TAspect
     		
+    		textRamAspect.headerInstantiations.forEach[ instantiation |
+    			instantiation.externalAspects.forEach[  externalAspect |
+    				d.addNode(externalAspect)
+    				d.addEdge(externalAspect, aspect)	
+    			]
+    		]
 	    }
 	    
 	    ModelConverterProxy::instance.reset
