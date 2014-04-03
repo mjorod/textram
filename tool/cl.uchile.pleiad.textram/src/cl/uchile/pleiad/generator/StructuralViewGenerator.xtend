@@ -7,27 +7,28 @@ import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.Classifier
 import ca.mcgill.cs.sel.ram.ClassifierMapping
 import ca.mcgill.cs.sel.ram.Instantiation
+import ca.mcgill.cs.sel.ram.InstantiationType
 import ca.mcgill.cs.sel.ram.Operation
 import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.ParameterMapping
 import ca.mcgill.cs.sel.ram.PrimitiveType
+import ca.mcgill.cs.sel.ram.RSet
 import ca.mcgill.cs.sel.ram.RVoid
 import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.Type
 import cl.uchile.pleiad.converter.ModelConverterProxy
+import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TInstantiationHeader
 import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.common.util.EList
-import ca.mcgill.cs.sel.ram.RSet
-import org.eclipse.xtext.util.Strings
-import cl.uchile.pleiad.textRam.TAspect
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 class StructuralViewGenerator {
 	
@@ -70,8 +71,58 @@ class StructuralViewGenerator {
 	private def generateInstantiations() {
 		val List<Instantiation> result = newArrayList
 		
-		textRamAspect.instantiations.forEach[ i | 
-			result.add( i.generateInstantiation )
+		val aspect = this.textRamAspect as TAspect
+		
+		aspect.headerInstantiations.forEach[ i |
+			if ( i.type == InstantiationType.EXTENDS ) {
+				result.addAll(generateInstantiationExtendsFromHeader(i))
+			}
+			else if ( i.type == InstantiationType.DEPENDS ) {
+				result.addAll(generateInstantiationDependsOnFromHeader(i))
+			}	
+		]
+		
+		result
+	}
+	
+	private def generateInstantiationDependsOnFromHeader(TInstantiationHeader instantiationHeader) {
+		val List<Instantiation> result = newArrayList
+		
+		if (instantiationHeader.type != InstantiationType.DEPENDS) {
+			throw new Exception("Only instantiation of type DEPENDS can be processed in this method")
+		}
+		
+		instantiationHeader.externalAspects.forEach[ ea | 
+			val instantiationDependsOn = this.textRamAspect.instantiations.findFirst[ ins | ins.externalAspect.name == ea.name && ins.mappings.length > 0];
+			result.add( instantiationDependsOn.generateInstantiation )
+		]
+		
+		result
+	}
+	
+	private def generateInstantiationExtendsFromHeader(TInstantiationHeader instantiationHeader ) {
+		if (instantiationHeader.type != InstantiationType.EXTENDS) {
+			throw new Exception("Only instantiation of type EXTENDS can be processed in this method")
+		}
+		
+		val List<Instantiation> result = newArrayList
+		
+		instantiationHeader.externalAspects.forEach[ ea | 
+			val myExternalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(ea)
+			
+			val instantiation = RamFactory.eINSTANCE.createInstantiation => [
+				externalAspect = myExternalAspect
+				type = instantiationHeader.type
+			]
+			
+			// check mappings
+			val instantiationMapped = this.textRamAspect.instantiations.findFirst[ ins | ins.externalAspect.name == ea.name && ins.mappings.length > 0];
+			if (instantiationMapped != null) {
+				instantiation.mappings.addAll( instantiationMapped.generateMappings(myExternalAspect) )
+			}
+			
+			// add instantiation to result
+			result.add(instantiation)
 		]
 		
 		result
