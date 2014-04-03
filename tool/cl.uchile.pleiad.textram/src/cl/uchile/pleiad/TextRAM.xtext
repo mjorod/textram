@@ -30,7 +30,7 @@ AbstractStructuralView returns StructuralView:
 
 TAbstractMessageView returns AbstractMessageView:
 	{textRam::TAbstractMessageView}		
-	'objects' '{'
+	'lifelines' '{'
 		lifelines+=TLifeline (';'? lifelines+=TLifeline)*
 	'}'
 
