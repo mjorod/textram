@@ -19,7 +19,7 @@ TAspect returns textRam::TAspect:
 
 terminal TEMPLATE: (ID'<' ID '>')*;
 EString returns ecore::EString:
-    STRING | ID | TEMPLATE  | '<<' | '>>';
+    STRING | ID | TEMPLATE;
 
 EInt returns ecore::EInt:
     '-'? INT;
@@ -97,7 +97,7 @@ TOperation returns textRam::TOperation:
     '('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')';
-    
+
 Parameter returns Parameter:
     {Parameter}
     type=[Type|EString]
@@ -141,7 +141,7 @@ TClassifierMapping returns textRam::TClassifierMapping:
 
 TMessageView returns textRam::TMessageView:
 	{textRam::TMessageView}
-	'messageView' class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString]  
+	'messageView' (create?='new')? class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString]  
 	'('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')'
@@ -152,9 +152,11 @@ TMessageView returns textRam::TMessageView:
 ;
 
 TAspectMessageView returns textRam::TAspectMessageView:
+	{textRam::TAspectMessageView}
 	'aspectMessageView' 
 		name=EString '{'
-		'pointcut' (class=[textRam::TClass|EString] '.')? pointcut=[textRam::TOperation|EString]
+		'pointcut' (create?='new')? (class=[textRam::TClass|EString] '.')? specifies=[textRam::TOperation|EString]
+		'(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
 		'advice' '{'
 			interactionMessages+=TInteraction (';'? interactionMessages+=TInteraction)*
 		'}'
@@ -163,7 +165,7 @@ TAspectMessageView returns textRam::TAspectMessageView:
 
 TLifeline returns textRam::TLifeline:
 	(static?='static')?
-	(reference?='ref')?
+	referenceType=TLifelineReferenceType
 	name=EString ':' (represents=[textRam::TTypedElement|EString])?
 	('{' 
 		localProperties+=TTemporaryProperty (";"? localProperties+=TTemporaryProperty)*
@@ -184,11 +186,15 @@ TLocalAttribute returns textRam::TLocalAttribute:
 ;
 
 TInteraction returns textRam::TInteraction:
-	TInteractionMessage | TCombinedFragment
+	TInteractionMessage | TCombinedFragment | TOcurrence
+;
+
+TOcurrence returns textRam::TOcurrence:
+	leftLifeline=[textRam::TLifeline|EString] '=>' ocurrenceType=OcurrenceType
 ;
 
 TInteractionMessage returns textRam::TInteractionMessage:
-	leftLifeline=[textRam::TLifeline|EString] '=>' (originalExecution?='*')?  (create?='new')? rightLifeline=[textRam::TLifeline|EString]  ('{'  message=TAbstractMessage '}')?
+	leftLifeline=[textRam::TLifeline|EString] '=>' (create?='new')? rightLifeline=[textRam::TLifeline|EString]  ('{' message=TAbstractMessage '}')?
 ;
 
 TCombinedFragment returns textRam::TCombinedFragment:
@@ -254,4 +260,12 @@ enum ReferenceType returns ReferenceType:
 
 enum InteractionOperatorKind returns InteractionOperatorKind:
 	alt = 'alt' | opt = 'opt' | loop = 'loop'
+;
+
+enum OcurrenceType returns textRam::OcurrenceType:
+	original='*' | destruction='X'
+;
+
+enum TLifelineReferenceType returns textRam::TLifelineReferenceType:
+	reference='ref' | association='assoc' | attribute = 'attr' 
 ;

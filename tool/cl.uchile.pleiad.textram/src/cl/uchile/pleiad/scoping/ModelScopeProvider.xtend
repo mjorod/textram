@@ -28,6 +28,7 @@ import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import ca.mcgill.cs.sel.ram.RSet
 import cl.uchile.pleiad.textRam.TAspect
+import cl.uchile.pleiad.textRam.TAbstractMessages
 
 class ModelScopeProvider {
 	
@@ -225,42 +226,6 @@ class ModelScopeProvider {
 		return null
 	}
 
-	def getLeftTLifelines(Aspect aspect) {
-		val tAbstractMessageView = aspect.messageViews.head as TAbstractMessageView
-		
-		if (tAbstractMessageView != null) {
-			if (tAbstractMessageView.lifelines.exists[l | l.name == '>>'] == false) {
-				val tStartGate = TextRamFactory.eINSTANCE.createTLifeline => [
-					name = '>>'
-				]
-				tAbstractMessageView.lifelines.add(tStartGate)
-				
-				return tAbstractMessageView.lifelines
-			}		
-		}
-		
-		return null
-	}
-	
-	def getRightTLifelines(Aspect aspect) {
-		val tAbstractMessageView = aspect.messageViews.head as TAbstractMessageView
-		
-		if (tAbstractMessageView != null) {
-			if (tAbstractMessageView.lifelines.exists[l | l.name == '<<'] == false) {
-				val tEndGate = TextRamFactory.eINSTANCE.createTLifeline => [
-					name = '<<'
-				]
-				
-				tAbstractMessageView.lifelines.add(tEndGate)
-				
-				return tAbstractMessageView.lifelines
-			}		
-		}
-		
-		return null
-	}
-	
-	
 	def getReturnMessageAssignTo(TInteractionMessage textRamInteractionMessage) {
 		val List<TMessageAssignableFeature> result = newArrayList
 		
@@ -278,12 +243,12 @@ class ModelScopeProvider {
 		result
 	}
 	
-	def getOperationsForAspectMessageView(TAspectMessageView aspectMessageView ) {
-		if ( aspectMessageView.class_ != null ) {
-			return aspectMessageView.class_.members.filter(TOperation)
+	def getOperationsForAspectMessageView(TAbstractMessages messageView) {
+		if ( messageView.class_ != null ) {
+			return messageView.class_.members.filter(TOperation)
 		}
 		else {
-			val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType(aspectMessageView, RamPackage.Literals.ASPECT)
+			val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType(messageView, RamPackage.Literals.ASPECT)
 			return aspect.getPublicOperations
 		}
 	}

@@ -6,8 +6,8 @@ package cl.uchile.pleiad.scoping
 import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Instantiation
 import cl.uchile.pleiad.textRam.TAbstractMessageView
+import cl.uchile.pleiad.textRam.TAbstractMessages
 import cl.uchile.pleiad.textRam.TAspect
-import cl.uchile.pleiad.textRam.TAspectMessageView
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TInteractionMessage
@@ -73,14 +73,6 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TLifeline_represents(Aspect aspect, EReference reference) {
 		Scopes::scopeFor( aspect.getTTypedElements )
 	}
-	
-	def IScope scope_TInteractionMessage_leftLifeline(Aspect aspect, EReference reference) {
-		Scopes::scopeFor( aspect.getLeftTLifelines )
-	}
-	
-	def IScope scope_TInteractionMessage_rightLifeline(Aspect aspect, EReference reference) {
-		Scopes::scopeFor( aspect.getRightTLifelines )
-	}
 
 	def IScope scope_TMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
 		Scopes::scopeFor ( textRamInteractionMessage.getAssignableFeatures )
@@ -105,8 +97,12 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TMessageView_affectedBy(TAbstractMessageView abstractMessageView, EReference reference) {
 		Scopes::scopeFor ( abstractMessageView.getAspectMessageViews )
 	}
-	
-	def IScope scope_TAspectMessageView_pointcut(TAspectMessageView aspectMessageView, EReference reference ) {
-		Scopes::scopeFor( aspectMessageView.getOperationsForAspectMessageView )
+
+	def IScope scope_TAbstractMessages_class(Aspect aspect, EReference reference) {
+		Scopes::scopeFor( (aspect.structuralView as TStructuralView).classes.filter(TClass) )
+	}
+		
+	def IScope scope_TAbstractMessages_specifies(TAbstractMessages messageView, EReference reference ) {
+		Scopes::scopeFor( messageView.getOperationsForAspectMessageView )
 	}
 }
