@@ -105,4 +105,9 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TAbstractMessages_specifies(TAbstractMessages messageView, EReference reference ) {
 		Scopes::scopeFor( messageView.getOperationsForAspectMessageView )
 	}
+	
+	def IScope scope_TAspectMessageView_arguments(TAbstractMessages messageView, EReference reference) {
+		Scopes::scopeFor( messageView.getArgumentsForAspectMessageViewOperation )
+	}
+	
 }

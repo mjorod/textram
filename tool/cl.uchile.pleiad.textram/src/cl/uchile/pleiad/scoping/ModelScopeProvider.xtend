@@ -252,5 +252,30 @@ class ModelScopeProvider {
 			return aspect.getPublicOperations
 		}
 	}
+	
+	def getArgumentsForAspectMessageViewOperation(TAbstractMessages messageView) {
+		val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType(messageView, RamPackage.Literals.ASPECT)
+		
+		val operations = (aspect.structuralView as TStructuralView).classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == messageView.specifies.name ).toList
+		
+		val result = operations.map[parameters].flatten
+		
+		result
+		
+//		// check operation's signature
+//		operations.forEach[ o |
+//			// checks for arguments length
+//			if (o.parameters.length == aspectMessageView.arguments.length) {
+//				// checks each argument type
+//				for ( Integer i: 0..o.parameters.size - 1) {
+//					if ( o.parameters.get(i).type.name.equals( aspectMessageView.arguments.get(i).type.name ) == false ) {
+//						
+//					}
+//				}
+//				
+//			}
+//			
+//		]
+	}
 		
 }
