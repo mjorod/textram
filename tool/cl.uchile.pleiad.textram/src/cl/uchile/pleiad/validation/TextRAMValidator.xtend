@@ -3,9 +3,16 @@
  */
 package cl.uchile.pleiad.validation
 
-import ca.mcgill.cs.sel.ram.Aspect
-import org.eclipse.xtext.util.Strings
+import cl.uchile.pleiad.textRam.TAbstractMessages
+import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TextRamPackage
 import org.eclipse.xtext.validation.Check
+import cl.uchile.pleiad.textRam.TAspectMessageView
+import java.util.List
+import cl.uchile.pleiad.util.TextRamEcoreUtil
+import ca.mcgill.cs.sel.ram.RamPackage
+import ca.mcgill.cs.sel.ram.Aspect
+import cl.uchile.pleiad.textRam.TClass
 
 //import org.eclipse.xtext.validation.Check
 
@@ -16,22 +23,80 @@ import org.eclipse.xtext.validation.Check
  */
 class TextRAMValidator extends AbstractTextRAMValidator {
 
-//  public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					MyDslPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
-//
-//	@Check
-//	def checkAspectHaveName(Aspect aspect) {
-//		if (Strings.isEmpty(aspect.name)) {
-//			error("aspect must have a name", aspect.structuralView)
-//		}
-//	}
-	
+	@Check
+	def checkOperationIsValidOnMessageView(TAbstractMessages messageView) {
+		if (messageView instanceof TAspectMessageView) {
+			// check if class has been defined
+			val clazz = messageView.class_ 
+			val operation = messageView.specifies
+			val parameters = (messageView as TAspectMessageView).arguments
+			
+			var List<TOperation> operations = null 
+			
+			// check if the operation has been defined in the class
+			if (clazz != null) {
+				operations = clazz.members.filter(TOperation).filter( o | o.name == operation.name ).toList	
+			}
+			else {
+				val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType( messageView, RamPackage.Literals.ASPECT ) 
+				operations = aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == operation.name ).toList
+				
+				if (operations.length > 1) {
+					error('ambiguity in operation definition', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+				}
+			}
+			
+
+			// error if the operation doesn't exists
+			if (operations.length == 0) {
+				error('The operation ' + operation.name + ' is undefined for the class ' + clazz.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+			}
+			
+			// there is no operation's overloading
+			if ( operations.length == 1) {
+				if (operations.get(0).parameters.length != parameters.length ) {
+					error('Invalid number of arguments on ' + operation.name, TextRamPackage.Literals.TASPECT_MESSAGE_VIEW__ARGUMENTS)
+				}
+			
+				// check arguments's type
+				if (operations.get(0).parameters.length > 0) { 
+					for ( Integer i: 0..operations.get(0).parameters.size - 1) {
+						if ( parameters.get(i).type.name != operations.get(0).parameters.get(i).type.name ) {
+							error('Type mismatch: cannot convert from  ' + parameters.get(i).type.name + ' to ' + operations.get(0).parameters.get(i).type.name, TextRamPackage.Literals.TASPECT_MESSAGE_VIEW__ARGUMENTS)
+						}
+					}
+				}
+			}
+			
+			// there is operation's overloading
+			if ( operations.length > 1 ) {
+				var matchSignature = false
+				
+				// check the operation's signature
+				for ( o : operations ) {
+
+					if (matchSignature == false) {
+						// check operation's length
+						if ( o.parameters.length == parameters.length ) {
+							
+							var matchParametersType = true
+							for ( Integer i: 0..o.parameters.size - 1) {
+								if ( o.parameters.get(i).type.name != parameters.get(i).type.name ) {
+									matchParametersType = false
+								}
+							}
+							
+							if (matchParametersType == true) {
+								matchSignature = true
+							}
+						}
+					}
+				}
+				
+				if (matchSignature == false) {
+					error('The operation ' + operation.name + ' has no valid arguments ', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+				}		
+			}
+		}
+	}
 }

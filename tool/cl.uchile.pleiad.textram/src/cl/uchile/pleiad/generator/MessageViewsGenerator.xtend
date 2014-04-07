@@ -41,6 +41,7 @@ import cl.uchile.pleiad.textRam.TReturnMessage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.ArrayList
 import java.util.List
+import cl.uchile.pleiad.textRam.TAssociationEnd
 
 //TODO: toLowerCaseFirst is missing
 class MessageViewsGenerator {
@@ -139,9 +140,12 @@ class MessageViewsGenerator {
 			if ( o.parameters.length == operation.parameters.length ) {
 				// check parameter's type
 				var matchParameterType = true
-				for ( Integer i: 0..o.parameters.size - 1) {
-					if ( o.parameters.get(i).type.name == operation.parameters.get(i).type.name == false) {
-						matchParameterType = false;
+				
+				if (o.parameters.size > 0) {
+					for ( Integer i: 0..o.parameters.size - 1) {
+						if ( o.parameters.get(i).type.name == operation.parameters.get(i).type.name == false) {
+							matchParameterType = false;
+						}
 					}
 				}
 				
@@ -237,6 +241,13 @@ class MessageViewsGenerator {
 		val lifeLineTo = getLifelineTo(interaction, textRamInteractionMessage)
 		
 		val operation = getMessageSignature(textRamInteractionMessage)
+		if (operation == null) {
+			var i = 0;
+			i = i +1;
+			val o = getMessageSignature(textRamInteractionMessage)
+			
+			throw new Exception("Operation" + textRamInteractionMessage.message.signature.name + " not founded in " + this.textRamAspect.name)
+		}
 		
 		val send = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
 		send.covered.add(lifeLineFrom)
@@ -439,7 +450,7 @@ class MessageViewsGenerator {
 	}
 	
 	private def dispatch getClassOwner(TAssociation owner) {
-		val result = this.ramAspect.findAssociationEnd( owner.name ).eContainer as Class
+		val result = this.ramAspect.findClassFromAssociationEnd(owner)
 		result
 	}
 	
@@ -476,6 +487,11 @@ class MessageViewsGenerator {
 	
 	def findAssociationEnd(Aspect aspect, String name) {
 		val result = aspect.structuralView.classes.filter(Class).map[associationEnds].flatten.findFirst( a | a.name == name )
+		result
+	}
+	
+	def findClassFromAssociationEnd( Aspect aspect, TAssociation assoc ) {
+		val result = this.ramAspect.findClass( assoc.toEnd.classReference.name )
 		result
 	}
 	
