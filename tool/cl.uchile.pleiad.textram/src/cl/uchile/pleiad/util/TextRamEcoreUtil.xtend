@@ -2,6 +2,11 @@ package cl.uchile.pleiad.util
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
+import java.util.List
+import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TClass
+import ca.mcgill.cs.sel.ram.Class
+import ca.mcgill.cs.sel.ram.Operation
 
 final class TextRamEcoreUtil {
 	
@@ -29,5 +34,33 @@ final class TextRamEcoreUtil {
 		}
 		
 		return null	
-	}	
-}
+	}
+	
+	def static List<TOperation> findOperations(TClass clazz, String name) {
+		val List<TOperation> result = newArrayList
+		
+		result.addAll(clazz.members.filter(TOperation).filter( o | o.name == name ).toList)
+		
+		if (result.size == 0) {
+			clazz.superTypes.filter(TClass).forEach[ s |
+				result.addAll( s.findOperations(name)  )
+			]
+		}
+		
+		result
+	}
+	
+	def static List<Operation> findOperations(Class clazz, String name) {
+		val List<Operation> result = newArrayList
+		
+		result.addAll(clazz.operations.filter( o | o.name == name ).toList)
+		
+		if (result.size == 0) {
+			clazz.superTypes.filter(Class).forEach[ s |
+				result.addAll( s.findOperations(name)  )
+			]
+		}
+		
+		result
+	}
+	}

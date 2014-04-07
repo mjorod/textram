@@ -105,7 +105,7 @@ class MessageViewsGenerator {
 	}
 	
 	private def generateSpecifies(TMessageView textRamMessage) {
-		val result = findOperation(textRamMessage.specifies.name)
+		val result = findOperationWithSameSignature(textRamMessage)
 		result
 	}
 	
@@ -123,18 +123,14 @@ class MessageViewsGenerator {
 		result
 	}
 	
-	private def Operation findOperationWithSameSignature(TAbstractMessages from) {
-		val operation = from.specifies
-		val clazz = from.class_
-		var Iterable<Operation> classOperations = null
+	private def getMessageSignature(TInteractionMessage textRamInteractionMessage) {
+		val operation = textRamInteractionMessage.message.signature
+	
+		val List<Operation> classOperations = newArrayList
 		
-		if ( clazz != null ) {
-			classOperations = ramAspect.structuralView.classes.filter(c | c.name == clazz.name).map[operations].flatten.filter( a | a.name == operation.name)	
-		}
-		else {
-			classOperations = ramAspect.structuralView.classes.map[operations].flatten.filter( a | a.name == operation.name)
-		}
+		classOperations.addAll(ramAspect.structuralView.classes.map[operations].flatten.filter( a | a.name == operation.name))
 		
+		//TODO: repeated code -> findOperationWithSameSignature
 		for ( o : classOperations ) {
 			// check parameter's length
 			if ( o.parameters.length == operation.parameters.length ) {
@@ -158,8 +154,45 @@ class MessageViewsGenerator {
 		return null
 	}
 	
-	private def findOperation(String name) {
-		ramAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( a | a.name == name)
+	private def Operation findOperationWithSameSignature(TAbstractMessages from) {
+		val operation = from.specifies
+		var Class clazz = null
+		
+		if (from.class_ != null) { 
+			clazz = this.ramAspect.findClass( from.class_.name )
+		}
+		
+		val List<Operation> classOperations = newArrayList
+		
+		// since the class is optional, checks if there are any class defined
+		if ( clazz != null ) {
+			classOperations.addAll(TextRamEcoreUtil.findOperations( clazz, operation.name ))
+		}
+		else {
+			classOperations.addAll(ramAspect.structuralView.classes.map[operations].flatten.filter( a | a.name == operation.name))
+		}
+		
+		for ( o : classOperations ) {
+			// check parameter's length
+			if ( o.parameters.length == operation.parameters.length ) {
+				// check parameter's type
+				var matchParameterType = true
+				
+				if (o.parameters.size > 0) {
+					for ( Integer i: 0..o.parameters.size - 1) {
+						if ( o.parameters.get(i).type.name == operation.parameters.get(i).type.name == false) {
+							matchParameterType = false;
+						}
+					}
+				}
+				
+				if (matchParameterType == true) {
+					return o			 
+				}
+			}
+		}
+		
+		return null
 	}
 	
 	private def createInteraction(TAbstractMessages textRamMessage) {
@@ -242,11 +275,7 @@ class MessageViewsGenerator {
 		
 		val operation = getMessageSignature(textRamInteractionMessage)
 		if (operation == null) {
-			var i = 0;
-			i = i +1;
-			val o = getMessageSignature(textRamInteractionMessage)
-			
-			throw new Exception("Operation" + textRamInteractionMessage.message.signature.name + " not founded in " + this.textRamAspect.name)
+			throw new Exception("Operation: " + textRamInteractionMessage.message.signature.name + " not founded in " + this.textRamAspect.name)
 		}
 		
 		val send = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
@@ -437,18 +466,6 @@ class MessageViewsGenerator {
 		lifeLineFrom
 	}
 	
-	private def getMessageSignature(TInteractionMessage textRamInteractionMessage) {
-		var Operation result
-		
-		val signatureName = textRamInteractionMessage.message.getSignature.name
-		
-		val classOwner = textRamInteractionMessage.rightLifeline.represents.getClassOwner
-		
-		result =  classOwner.operations.findFirst( o | o.name == signatureName )
-		
-		return result
-	}
-	
 	private def dispatch getClassOwner(TAssociation owner) {
 		val result = this.ramAspect.findClassFromAssociationEnd(owner)
 		result
@@ -482,7 +499,11 @@ class MessageViewsGenerator {
 	}
 	
 	private def findClass(Aspect aspect, String name) {
-		aspect.structuralView.classes.findFirst[ c | c.name == name ]
+		var result = aspect.structuralView.classes.filter(Class).findFirst[ c | 
+			c.name == name
+		]
+		
+		result
 	}
 	
 	def findAssociationEnd(Aspect aspect, String name) {

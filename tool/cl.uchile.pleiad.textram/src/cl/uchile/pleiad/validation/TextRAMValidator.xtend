@@ -31,15 +31,15 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 			val operation = messageView.specifies
 			val parameters = (messageView as TAspectMessageView).arguments
 			
-			var List<TOperation> operations = null 
+			val List<TOperation> operations = newArrayList 
 			
 			// check if the operation has been defined in the class
 			if (clazz != null) {
-				operations = clazz.members.filter(TOperation).filter( o | o.name == operation.name ).toList	
+				operations.addAll( TextRamEcoreUtil.findOperations(clazz,  operation.name) )
 			}
 			else {
 				val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType( messageView, RamPackage.Literals.ASPECT ) 
-				operations = aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == operation.name ).toList
+				operations.addAll()aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == operation.name ).toList
 				
 				if (operations.length > 1) {
 					error('ambiguity in operation definition', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
