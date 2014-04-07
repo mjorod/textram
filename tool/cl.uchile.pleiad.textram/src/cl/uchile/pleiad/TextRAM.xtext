@@ -134,14 +134,14 @@ AbstractClassifierMapping returns ClassifierMapping:
 ; 
 
 TClassifierMapping returns textRam::TClassifierMapping:
-    fromElement=[Classifier|EString] ('<' fromMembers+=[textRam::TClassMember|EString] ("," fromMembers+=[textRam::TClassMember|EString])* '>')?
+    (partialFromElement?='|')? fromElement=[Classifier|EString] ('<' fromMembers+=[textRam::TClassMember|EString] ("," fromMembers+=[textRam::TClassMember|EString])* '>')?
     '->'
-    toElement=[Classifier|EString] ('<' toMembers+=[textRam::TClassMember|EString] ("," toMembers+=[textRam::TClassMember|EString])* '>')?
+    (partialToElement?='|')? toElement=[Classifier|EString] ('<' toMembers+=[textRam::TClassMember|EString] ("," toMembers+=[textRam::TClassMember|EString])* '>')?
 ;
 
 TMessageView returns textRam::TMessageView:
 	{textRam::TMessageView}
-	'messageView' (create?='new')? class=[textRam::TClass|EString] '.' specifies=[textRam::TOperation|EString]  
+	'messageView' (create?='new')? (partialClass?='|')? class=[textRam::TClass|EString] '.' (partialOperation?='|')? specifies=[textRam::TOperation|EString]  
 	'('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
     ')'
@@ -155,7 +155,7 @@ TAspectMessageView returns textRam::TAspectMessageView:
 	{textRam::TAspectMessageView}
 	'aspectMessageView' 
 		name=EString '{'
-		'pointcut' (create?='new')? (class=[textRam::TClass|EString] '.')? specifies=[textRam::TOperation|EString]
+		'pointcut' (create?='new')?  ( (partialClass?='|')? class=[textRam::TClass|EString] '.')? (partialOperation?='|')? specifies=[textRam::TOperation|EString]
 		'(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
 		'advice' '{'
 			interactionMessages+=TInteraction (';'? interactionMessages+=TInteraction)*
@@ -177,7 +177,7 @@ TTemporaryProperty returns textRam::TTemporaryProperty:
 ;
 
 TReference returns textRam::TReference:
-	name=EString ':' reference=[textRam::TClass|EString]
+	name=EString ':' (partialClass?='|')? reference=[textRam::TClass|EString]
 ;
 
 TLocalAttribute returns textRam::TLocalAttribute:
@@ -220,10 +220,11 @@ TReturnMessage returns textRam::TReturnMessage:
 
 TMessage returns textRam::TMessage:
 	(assignTo=[textRam::TMessageAssignableFeature|EString] ':=')?
-	signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
+	(partialOperation?='|')? signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
 ;
 
 TOperationMessage returns textRam::TOperationMessage:
+	(partialOperation?='|')?
 	signature=[textRam::TOperation|EString]
 	'('
     	( parameters+=Parameter ( "," parameters+=Parameter)* )?
