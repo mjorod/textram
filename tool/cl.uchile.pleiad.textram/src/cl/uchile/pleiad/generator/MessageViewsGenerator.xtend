@@ -116,10 +116,42 @@ class MessageViewsGenerator {
 			result = clazz.operations.findFirst[ o | o.name == textRamAspectMessageView.specifies.name ]
 		} 
 		else {
-			result = findOperation(textRamAspectMessageView.specifies.name)		
+			result = findOperationWithSameSignature(textRamAspectMessageView)		
 		}
 				
 		result
+	}
+	
+	private def Operation findOperationWithSameSignature(TAbstractMessages from) {
+		val operation = from.specifies
+		val clazz = from.class_
+		var Iterable<Operation> classOperations = null
+		
+		if ( clazz != null ) {
+			classOperations = ramAspect.structuralView.classes.filter(c | c.name == clazz.name).map[operations].flatten.filter( a | a.name == operation.name)	
+		}
+		else {
+			classOperations = ramAspect.structuralView.classes.map[operations].flatten.filter( a | a.name == operation.name)
+		}
+		
+		for ( o : classOperations ) {
+			// check parameter's length
+			if ( o.parameters.length == operation.parameters.length ) {
+				// check parameter's type
+				var matchParameterType = true
+				for ( Integer i: 0..o.parameters.size - 1) {
+					if ( o.parameters.get(i).type.name == operation.parameters.get(i).type.name == false) {
+						matchParameterType = false;
+					}
+				}
+				
+				if (matchParameterType == true) {
+					return o			 
+				}
+			}
+		}
+		
+		return null
 	}
 	
 	private def findOperation(String name) {
@@ -274,12 +306,24 @@ class MessageViewsGenerator {
 		val textRamLifeline = (messageView.eContainer as TAbstractMessageView).lifelines.get(0)
 		val lifeLineTo = interaction.lifelines.findFirst( l | l.represents.name == textRamLifeline.name)
 		
-		val clazz = this.ramAspect.findClass(messageView.class_.name)
-		val operation = clazz.operations.findFirst[ o | o.name == messageView.specifies.name ]
+		var Operation operation = null
 		
-		val gate = RamFactory.eINSTANCE.createGate => [
-			name =  "in_" + operation.name
-		]
+		if ( messageView.class_ != null ) {
+			var Class clazz = null
+			clazz = this.ramAspect.findClass(messageView.class_.name) as Class
+			operation = clazz.operations.findFirst[ o | o.name == messageView.specifies.name ]	
+		}
+		else {
+			val operations = this.ramAspect.structuralView.classes.filter(Class).map[operations].flatten.filter( o | o.name == messageView.specifies.name )
+			if (operations.length != 1) {
+				throw new Exception("Invalid operation definition.")
+			}
+			
+			operation = operations.get(0)
+		}
+				
+		val gate = RamFactory.eINSTANCE.createGate
+		gate.name =  "in_" + operation.name
 		
 		interaction.formalGates.add(gate)
 		
@@ -291,12 +335,11 @@ class MessageViewsGenerator {
 		interaction.fragments.add(event)
 		
 		// create message
-		val result = RamFactory.eINSTANCE.createMessage => [
-			signature = operation
-			arguments.addAll(generateArguments(operation))
-			sendEvent = gate
-			receiveEvent = event
-		]
+		val result = RamFactory.eINSTANCE.createMessage
+		result.signature = operation
+		result.arguments.addAll(generateArguments(operation))
+		result.sendEvent = gate
+		result.receiveEvent = event
 		
 		if (messageView.create == true) {
 			result.messageSort = MessageSort.CREATE_MESSAGE

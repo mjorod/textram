@@ -256,12 +256,20 @@ class ModelScopeProvider {
 	def getArgumentsForAspectMessageViewOperation(TAbstractMessages messageView) {
 		val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType(messageView, RamPackage.Literals.ASPECT)
 		
-		val operations = (aspect.structuralView as TStructuralView).classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == messageView.specifies.name ).toList
+		val clazz = messageView.class_
+		
+		var Iterable<TOperation> operations
+		
+		if (clazz != null) {
+			operations = (aspect.structuralView as TStructuralView).classes.filter(TClass).filter( c | c.name == messageView.class_.name ).map[members].flatten.filter(TOperation).filter( o | o.name == messageView.specifies.name )
+		}
+		else {
+			operations = (aspect.structuralView as TStructuralView).classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == messageView.specifies.name )
+		}
 		
 		val result = operations.map[parameters].flatten
 		
 		result
-		
 //		// check operation's signature
 //		operations.forEach[ o |
 //			// checks for arguments length
@@ -276,6 +284,8 @@ class ModelScopeProvider {
 //			}
 //			
 //		]
+//		
+		
 	}
 		
 }
