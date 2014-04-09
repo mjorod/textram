@@ -3,16 +3,19 @@
  */
 package cl.uchile.pleiad.validation
 
-import cl.uchile.pleiad.textRam.TAbstractMessages
-import cl.uchile.pleiad.textRam.TOperation
-import cl.uchile.pleiad.textRam.TextRamPackage
-import org.eclipse.xtext.validation.Check
-import cl.uchile.pleiad.textRam.TAspectMessageView
-import java.util.List
-import cl.uchile.pleiad.util.TextRamEcoreUtil
-import ca.mcgill.cs.sel.ram.RamPackage
 import ca.mcgill.cs.sel.ram.Aspect
+import ca.mcgill.cs.sel.ram.Class
+import ca.mcgill.cs.sel.ram.RamPackage
+import cl.uchile.pleiad.textRam.TAbstractMessages
+import cl.uchile.pleiad.textRam.TAspectMessageView
 import cl.uchile.pleiad.textRam.TClass
+import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TReference
+import cl.uchile.pleiad.textRam.TextRamPackage
+import cl.uchile.pleiad.util.TextRamEcoreUtil
+import java.util.List
+import org.eclipse.xtext.validation.Check
 
 //import org.eclipse.xtext.validation.Check
 
@@ -23,80 +26,145 @@ import cl.uchile.pleiad.textRam.TClass
  */
 class TextRAMValidator extends AbstractTextRAMValidator {
 
-	@Check
-	def checkOperationIsValidOnMessageView(TAbstractMessages messageView) {
-		if (messageView instanceof TAspectMessageView) {
-			// check if class has been defined
-			val clazz = messageView.class_ 
-			val operation = messageView.specifies
-			val parameters = (messageView as TAspectMessageView).arguments
-			
-			val List<TOperation> operations = newArrayList 
-			
-			// check if the operation has been defined in the class
-			if (clazz != null) {
-				operations.addAll( TextRamEcoreUtil.findOperations(clazz,  operation.name) )
-			}
-			else {
-				val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType( messageView, RamPackage.Literals.ASPECT ) 
-				operations.addAll()aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == operation.name ).toList
-				
-				if (operations.length > 1) {
-					error('ambiguity in operation definition', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-				}
-			}
-			
-
-			// error if the operation doesn't exists
-			if (operations.length == 0) {
-				error('The operation ' + operation.name + ' is undefined for the class ' + clazz.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-			}
-			
-			// there is no operation's overloading
-			if ( operations.length == 1) {
-				if (operations.get(0).parameters.length != parameters.length ) {
-					error('Invalid number of arguments on ' + operation.name, TextRamPackage.Literals.TASPECT_MESSAGE_VIEW__ARGUMENTS)
-				}
-			
-				// check arguments's type
-				if (operations.get(0).parameters.length > 0) { 
-					for ( Integer i: 0..operations.get(0).parameters.size - 1) {
-						if ( parameters.get(i).type.name != operations.get(0).parameters.get(i).type.name ) {
-							error('Type mismatch: cannot convert from  ' + parameters.get(i).type.name + ' to ' + operations.get(0).parameters.get(i).type.name, TextRamPackage.Literals.TASPECT_MESSAGE_VIEW__ARGUMENTS)
-						}
-					}
-				}
-			}
-			
-			// there is operation's overloading
-			if ( operations.length > 1 ) {
-				var matchSignature = false
-				
-				// check the operation's signature
-				for ( o : operations ) {
-
-					if (matchSignature == false) {
-						// check operation's length
-						if ( o.parameters.length == parameters.length ) {
-							
-							var matchParametersType = true
-							for ( Integer i: 0..o.parameters.size - 1) {
-								if ( o.parameters.get(i).type.name != parameters.get(i).type.name ) {
-									matchParametersType = false
-								}
-							}
-							
-							if (matchParametersType == true) {
-								matchSignature = true
-							}
-						}
-					}
-				}
-				
-				if (matchSignature == false) {
-					error('The operation ' + operation.name + ' has no valid arguments ', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-				}		
-			}
-		}
-	}
+//	@Check
+//	def checkOperationIsValidOnMessageView(TAbstractMessages messageView) {
+//		if (messageView instanceof TAspectMessageView) {
+//			// check if class has been defined
+//			val clazz = messageView.class_ 
+//			val operation = messageView.specifies
+//			val parameters = (messageView as TAspectMessageView).arguments
+//			
+//			val List<TOperation> operations = newArrayList 
+//			
+//			// check if the operation has been defined in the class
+//			if (clazz != null) {
+//				operations.addAll( TextRamEcoreUtil.findOperations(clazz,  operation.name) )
+//			}
+//			else {
+//				val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType( messageView, RamPackage.Literals.ASPECT ) 
+//				operations.addAll()aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == operation.name ).toList
+//				
+//				if (operations.length > 1) {
+//					error('ambiguity in operation definition', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+//				}
+//			}
+//			
+//
+//			// error if the operation doesn't exists
+//			if (operations.length == 0) {
+//				error('The operation ' + operation.name + ' is undefined for the class ' + clazz.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+//			}
+//			
+//			// there is no operation's overloading
+//			if ( operations.length == 1) {
+//				if (operations.get(0).parameters.length != parameters.length ) {
+//					error('Invalid number of arguments on ' + operation.name, TextRamPackage.Literals.TASPECT_MESSAGE_VIEW__ARGUMENTS)
+//				}
+//			
+//				// check arguments's type
+//				if (operations.get(0).parameters.length > 0) { 
+//					for ( Integer i: 0..operations.get(0).parameters.size - 1) {
+//						if ( parameters.get(i).type.name != operations.get(0).parameters.get(i).type.name ) {
+//							error('Type mismatch: cannot convert from  ' + parameters.get(i).type.name + ' to ' + operations.get(0).parameters.get(i).type.name, TextRamPackage.Literals.TASPECT_MESSAGE_VIEW__ARGUMENTS)
+//						}
+//					}
+//				}
+//			}
+//			
+//			// there is operation's overloading
+//			if ( operations.length > 1 ) {
+//				var matchSignature = false
+//				
+//				// check the operation's signature
+//				for ( o : operations ) {
+//
+//					if (matchSignature == false) {
+//						// check operation's length
+//						if ( o.parameters.length == parameters.length ) {
+//							
+//							var matchParametersType = true
+//							for ( Integer i: 0..o.parameters.size - 1) {
+//								if ( o.parameters.get(i).type.name != parameters.get(i).type.name ) {
+//									matchParametersType = false
+//								}
+//							}
+//							
+//							if (matchParametersType == true) {
+//								matchSignature = true
+//							}
+//						}
+//					}
+//				}
+//				
+//				if (matchSignature == false) {
+//					error('The operation ' + operation.name + ' has no valid arguments ', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+//				}		
+//			}
+//		}
+//	}
+//	
+//	@Check
+//	def checkPartialDefinitionsOnTAbstractMessages(TAbstractMessages messageView) {
+//		val clazz = messageView.class_
+//		val operation = messageView.specifies
+//		
+//		if (clazz != null && clazz.partial != messageView.partialClass) {
+//			if (clazz.partial == true) {
+//				error('The class ' + clazz.name +' has to be defined as partial.', TextRamPackage.Literals.TABSTRACT_MESSAGES__CLASS)
+//			}
+//			else {
+//				error('The class ' + clazz.name + ' is not a partial class.' , TextRamPackage.Literals.TABSTRACT_MESSAGES__CLASS)
+//			}
+//		}
+//		
+//		if (operation != null && operation.partial != messageView.partialOperation) {
+//			if (operation.partial == true) {
+//				error('The operation ' + operation.name +' has to be defined as partial.', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+//			}
+//			else {
+//				error('The operation ' + operation.name + ' is not a partial operation.' , TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+//			}
+//		}		
+//	}
+//	
+//	@Check
+//	def checkPartialDefinitionOnReference(TReference reference) {
+//		if (reference.partialClass == false && reference.reference.partial == true) {
+//			error('The class ' + reference.reference.name + ' has to be defined as partial.', TextRamPackage.Literals.TREFERENCE__REFERENCE )
+//		}
+//		
+//		if (reference.partialClass == true && reference.reference.partial == false ) {
+//			error('The class ' + reference.reference.name + ' is not a partial class.', TextRamPackage.Literals.TREFERENCE__REFERENCE ) 
+//		}
+//	}
+//	
+//	@Check
+//	def checkPartialDefinitionOnTMessageWithSignature(TMessageWithSignature message) {
+//		if (message.partialOperation == false && message.signature.partial == true) {
+//			error('The class ' + message.signature.name + ' has to be defined as partial.', TextRamPackage.Literals.TMESSAGE_WITH_SIGNATURE__SIGNATURE )
+//		}
+//		
+//		if (message.partialOperation == true && message.signature.partial == false) {
+//			error('The class ' + message.signature.name + ' is not a partial class.', TextRamPackage.Literals.TMESSAGE_WITH_SIGNATURE__SIGNATURE ) 
+//		}
+//	}
+//	
+//	@Check
+//	def checkPartialDefinitionOnTClassifierMapping(TClassifierMapping classifierMapping) {
+//		if ( classifierMapping.partialFromElement == false &&  (classifierMapping.fromElement as Class).partial == true) {
+//			error('The class ' + classifierMapping.fromElement.name + ' has to be defined as partial (fromElement).', TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_FROM_ELEMENT )
+//		}
+//		
+//		if ( classifierMapping.partialFromElement == true &&  (classifierMapping.fromElement as Class).partial == false) {
+//			error('The class ' + classifierMapping.fromElement.name + ' is not a partial class (fromElement).', TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_FROM_ELEMENT )
+//		}
+//		
+//		if ( classifierMapping.partialToElement == false &&  (classifierMapping.toElement as Class).partial == true) {
+//			error('The class ' + classifierMapping.toElement.name + ' has to be defined as partial (toElement).', TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_TO_ELEMENT )
+//		}
+//		
+//		if ( classifierMapping.partialToElement == true &&  (classifierMapping.toElement as Class).partial == false) {
+//			error('The class ' + classifierMapping.toElement.name + ' is not a partial class (toElement).', TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_TO_ELEMENT )
+//		}
+//	}
 }

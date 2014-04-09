@@ -19,6 +19,7 @@ import ca.mcgill.cs.sel.ram.RamPackage
 import ca.mcgill.cs.sel.ram.Reference
 import ca.mcgill.cs.sel.ram.StructuralFeature
 import ca.mcgill.cs.sel.ram.TemporaryProperty
+import ca.mcgill.cs.sel.ram.Type
 import ca.mcgill.cs.sel.ram.TypedElement
 import cl.uchile.pleiad.textRam.TAbstractMessageView
 import cl.uchile.pleiad.textRam.TAbstractMessages
@@ -33,15 +34,13 @@ import cl.uchile.pleiad.textRam.TLifelineReferenceType
 import cl.uchile.pleiad.textRam.TLocalAttribute
 import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TMessageView
-import cl.uchile.pleiad.textRam.TMessageWithSignature
 import cl.uchile.pleiad.textRam.TOcurrence
-import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TParameterValue
 import cl.uchile.pleiad.textRam.TReference
 import cl.uchile.pleiad.textRam.TReturnMessage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.ArrayList
 import java.util.List
-import cl.uchile.pleiad.textRam.TAssociationEnd
 
 //TODO: toLowerCaseFirst is missing
 class MessageViewsGenerator {
@@ -112,7 +111,9 @@ class MessageViewsGenerator {
 	private def generatePointcut(TAspectMessageView textRamAspectMessageView) {
 		var Operation result = null
 		
-		if (textRamAspectMessageView.class_ != null) {
+		val veryDumbClass_ = textRamAspectMessageView.class_ // can't use (textRamAspectMessageView.class_ != null)
+		
+		if (veryDumbClass_ != null) {
 			val clazz = this.ramAspect.findClass( textRamAspectMessageView.class_.name )
 			result = clazz.operations.findFirst[ o | o.name == textRamAspectMessageView.specifies.name ]
 		} 
@@ -123,35 +124,52 @@ class MessageViewsGenerator {
 		result
 	}
 	
-	private def getMessageSignature(TInteractionMessage textRamInteractionMessage) {
-		val operation = textRamInteractionMessage.message.signature
+	private def dispatch Operation getMessageSignature(TReturnMessage message) { 
+		throw new ClassCastException("Cannot get a signature from TReturnMessage type")
+	}
+	
+	private def dispatch Operation getMessageSignature(TMessage message) {
+		val textRamOperation = message.signature
 	
 		val List<Operation> classOperations = newArrayList
+		val arguments = message.arguments
 		
-		classOperations.addAll(ramAspect.structuralView.classes.map[operations].flatten.filter( a | a.name == operation.name))
+		classOperations.addAll(ramAspect.structuralView.classes.map[operations].flatten.filter( a | a.name == textRamOperation.name))
 		
 		//TODO: repeated code -> findOperationWithSameSignature
 		for ( o : classOperations ) {
 			// check parameter's length
-			if ( o.parameters.length == operation.parameters.length ) {
+			if ( o.parameters.length == arguments.length ) {
 				// check parameter's type
 				var matchParameterType = true
 				
 				if (o.parameters.size > 0) {
 					for ( Integer i: 0..o.parameters.size - 1) {
-						if ( o.parameters.get(i).type.name == operation.parameters.get(i).type.name == false) {
+						if ( o.parameters.get(i).type.name == arguments.get(i).typeForTValueSpecification.name == false) {
 							matchParameterType = false;
 						}
 					}
 				}
 				
 				if (matchParameterType == true) {
-					return o			 
+					return o
 				}
 			}
 		}
 		
 		return null
+	}
+	
+	private def dispatch getTypeForTValueSpecification(TLocalAttribute specification) {
+		specification.type as Type
+	}
+	
+	private def dispatch getTypeForTValueSpecification(TReference specification) {
+		specification.reference as Type
+	}
+	
+	private def dispatch getTypeForTValueSpecification(TParameterValue specification) {
+		specification.parameter.type as Type
 	}
 	
 	private def Operation findOperationWithSameSignature(TAbstractMessages from) {
@@ -163,6 +181,7 @@ class MessageViewsGenerator {
 		}
 		
 		val List<Operation> classOperations = newArrayList
+		val arguments = from.arguments
 		
 		// since the class is optional, checks if there are any class defined
 		if ( clazz != null ) {
@@ -174,13 +193,13 @@ class MessageViewsGenerator {
 		
 		for ( o : classOperations ) {
 			// check parameter's length
-			if ( o.parameters.length == operation.parameters.length ) {
+			if ( o.parameters.length == arguments.length ) {
 				// check parameter's type
 				var matchParameterType = true
 				
 				if (o.parameters.size > 0) {
-					for ( Integer i: 0..o.parameters.size - 1) {
-						if ( o.parameters.get(i).type.name == operation.parameters.get(i).type.name == false) {
+					for ( Integer i: 0..o.parameters.size - 1 ) {
+						if ( o.parameters.get(i).type.name == arguments.get(i).type.name == false) {
 							matchParameterType = false;
 						}
 					}
@@ -273,9 +292,9 @@ class MessageViewsGenerator {
 		val lifeLineFrom = getLifelineFrom(interaction, textRamInteractionMessage)
 		val lifeLineTo = getLifelineTo(interaction, textRamInteractionMessage)
 		
-		val operation = getMessageSignature(textRamInteractionMessage)
+		val operation = getMessageSignature(textRamInteractionMessage.message)
 		if (operation == null) {
-			throw new Exception("Operation: " + textRamInteractionMessage.message.signature.name + " not founded in " + this.textRamAspect.name)
+			throw new Exception("Operation: " + (textRamInteractionMessage.message as TMessage).signature.name + " not founded in " + this.textRamAspect.name)
 		}
 		
 		val send = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
@@ -290,7 +309,7 @@ class MessageViewsGenerator {
 			sendEvent = send
 			receiveEvent = receive
 			signature = operation
-			arguments.addAll(generateArguments(operation))
+			arguments.addAll(generateArguments(textRamInteractionMessage.message as TMessage, operation, lifeLineTo))  
 		] 
 		
 		if ( textRamInteractionMessage.message instanceof TMessage ) {
@@ -334,10 +353,14 @@ class MessageViewsGenerator {
 		result	
 	}
 	
-	private def generateArguments(Operation operation) {
+	private def generateArguments(TMessage tMessage,  Operation operation, Lifeline lifeline) {
 		val List<ParameterValueMapping> result = newArrayList
 		
-		operation.parameters.forEach[ p |  result.add( p.createParameterValueMapping ) ]
+		if ( operation.parameters.length > 0 ) {
+			for ( Integer i: 0..operation.parameters.length -1 ) {
+				result.add( createParameterValueMapping(operation.parameters.get(i), tMessage.arguments.get(i), lifeline  ) ) 
+			}
+		}
 		
 		result
 	}
@@ -377,7 +400,8 @@ class MessageViewsGenerator {
 		// create message
 		val result = RamFactory.eINSTANCE.createMessage
 		result.signature = operation
-		result.arguments.addAll(generateArguments(operation))
+		//TODO: arguments for start message?
+//		result.arguments.addAll(generateArguments(textRamInteractionMessage.message as TMessage, operation, lifeLineTo)))
 		result.sendEvent = gate
 		result.receiveEvent = event
 		
@@ -399,41 +423,44 @@ class MessageViewsGenerator {
 	}
 	
 	private def generateEndMessage(TInteractionMessage firstInteractionMessage, TInteractionMessage lastInteractionMessage, Interaction interaction) {
-		val lifeline = getLifelineTo(interaction, firstInteractionMessage)
-		// TODO: references?
-		
-		val gate = RamFactory.eINSTANCE.createGate => [
-			name =  "out_" + firstInteractionMessage.rightLifeline.name
-		]
-		
-		interaction.formalGates.add(gate)
-		
-		//create receive event
-		val event = RamFactory.eINSTANCE.createMessageOccurrenceSpecification => [
-			covered.add(lifeline)
-		]
-		
-		interaction.fragments.add(event)
-		
-		// create message
-		val result = RamFactory.eINSTANCE.createMessage => [
-			signature = getMessageSignature(firstInteractionMessage)
-			sendEvent = event
-			receiveEvent = gate
-			messageSort = MessageSort.REPLY
-		]
-		
-		if (lastInteractionMessage.message != null) { 
-			result.returns = getMessageReturn( lastInteractionMessage.message as TReturnMessage, lifeline )
-		}
-		
-		interaction.messages.add(result)
-		
-		// set references
-		event.message = result
-		gate.message = result
-		
-		result
+	//TODO:FIXMENOW!!
+//		val lifeline = getLifelineTo(interaction, firstInteractionMessage)
+//		// TODO: references?
+//		
+//		val gate = RamFactory.eINSTANCE.createGate => [
+//			name =  "out_" + firstInteractionMessage.rightLifeline.name
+//		]
+//		
+//		interaction.formalGates.add(gate)
+//		
+//		//create receive event
+//		val event = RamFactory.eINSTANCE.createMessageOccurrenceSpecification => [
+//			covered.add(lifeline)
+//		]
+//		
+//		interaction.fragments.add(event)
+//		
+//		// create message
+//		val result = RamFactory.eINSTANCE.createMessage => [
+//			signature = getMessageSignature(firstInteractionMessage)
+//			sendEvent = event
+//			receiveEvent = gate
+//			messageSort = MessageSort.REPLY
+//		]
+//		
+//		if (lastInteractionMessage.message != null) { 
+//			result.returns = getMessageReturn( lastInteractionMessage.message as TReturnMessage, lifeline )
+//		}
+//		
+//		interaction.messages.add(result)
+//		
+//		// set references
+//		event.message = result
+//		gate.message = result
+//		
+//		result
+//		
+		return null
 	}
 	
 	private def getMessageReturn(TReturnMessage message, Lifeline lifeline) {
@@ -466,33 +493,47 @@ class MessageViewsGenerator {
 		lifeLineFrom
 	}
 	
-	private def dispatch getClassOwner(TAssociation owner) {
-		val result = this.ramAspect.findClassFromAssociationEnd(owner)
-		result
-	}
-	
-	private def dispatch getClassOwner(TAttribute owner) {
-		val result = this.ramAspect.findAttribute( owner.name ).eContainer as Class
-		result
-	}
-	
-	private def dispatch getClassOwner(TClass owner) {
-		val result = this.ramAspect.findClass(owner.name)
-		result
-	}
-	
-	private def dispatch TOperation getSignature(TMessageWithSignature textRamMessage) {
-		textRamMessage.signature
-	}
-	
-	private def dispatch TOperation getSignature(TReturnMessage textRamMessage) {
-		throw new ClassCastException("TReturnMessage has not a Signature feature")
-	}
-	
-	private def createParameterValueMapping(Parameter p) {
+	private def dispatch ParameterValueMapping createParameterValueMapping(Parameter p, TLocalAttribute tLocalAttribute, Lifeline lifeline) {
 		val result = RamFactory.eINSTANCE.createParameterValueMapping => [
 			parameter = p
-			value = RamFactory.eINSTANCE.createParameterValue => [ parameter = p ]
+			value = RamFactory.eINSTANCE.createStructuralFeatureValue => [
+				value = lifeline.localProperties.filter(Attribute).findFirst[ l | l.name == tLocalAttribute.name ]
+			]
+		]
+		
+		result
+	}
+	
+	private def dispatch ParameterValueMapping createParameterValueMapping(Parameter p, TReference tReference, Lifeline lifeline) {
+		val result = RamFactory.eINSTANCE.createParameterValueMapping => [
+			parameter = p
+			value = RamFactory.eINSTANCE.createStructuralFeatureValue => [
+				value = lifeline.localProperties.filter(Reference).findFirst[ l | l.name == tReference.name ]
+			]
+		]
+		
+		result
+	}
+	
+	private def dispatch ParameterValueMapping createParameterValueMapping(Parameter p, TLifeline tLifeline, Lifeline lifeline) {
+		val interaction = (lifeline).eContainer as Interaction
+		
+		val result = RamFactory.eINSTANCE.createParameterValueMapping => [
+			parameter = p
+			value = RamFactory.eINSTANCE.createStructuralFeatureValue => [
+				value = interaction.properties.findFirst( prop | prop.name == tLifeline.name )
+			]
+		]
+		
+		result
+	}
+
+	private def dispatch ParameterValueMapping createParameterValueMapping(Parameter p, TParameterValue tParameterValue, Lifeline lifeline) {
+		val result = RamFactory.eINSTANCE.createParameterValueMapping => [
+			parameter = p
+			value = RamFactory.eINSTANCE.createParameterValue => [
+				parameter = p
+			]
 		]
 		
 		result

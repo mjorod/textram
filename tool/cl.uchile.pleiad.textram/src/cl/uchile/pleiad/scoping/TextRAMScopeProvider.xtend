@@ -11,7 +11,7 @@ import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TInteractionMessage
-import cl.uchile.pleiad.textRam.TMessageView
+import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TStructuralView
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
@@ -74,24 +74,20 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( aspect.getTTypedElements )
 	}
 
-	def IScope scope_TMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
+	def IScope scope_TAbstractMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
 		Scopes::scopeFor ( textRamInteractionMessage.getAssignableFeatures )
 	}
 	
-	def IScope scope_TTReturnMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
-		Scopes::scopeFor ( textRamInteractionMessage.getReturnMessageAssignTo )
-	}
+//	def IScope scope_TTReturnMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
+//		Scopes::scopeFor ( textRamInteractionMessage.getReturnMessageAssignTo )
+//	}
 
-	def IScope scope_TMessageWithSignature_signature(Aspect aspect, EReference reference) {
+	def IScope scope_TMessage_signature(Aspect aspect, EReference reference) {
 		Scopes::scopeFor ( aspect.getOperations  )
 	}
 	
-	def IScope scope_TMessage_arguments(TMessageView messageView, EReference reference) {
-		Scopes::scopeFor ( messageView.getParameters )
-	}
-	
-	def IScope scope_TMessageView_parameters(Aspect aspect, EReference reference) {
-		Scopes::scopeFor ( aspect.getParameters )
+	def IScope scope_TMessage_arguments(TInteractionMessage interaction, EReference reference) {
+		Scopes::scopeFor ( interaction.getTValueSpecificationList )
 	}
 	
 	def IScope scope_TMessageView_affectedBy(TAbstractMessageView abstractMessageView, EReference reference) {
@@ -106,7 +102,7 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( messageView.getOperationsForAspectMessageView )
 	}
 	
-	def IScope scope_TAspectMessageView_arguments(TAbstractMessages messageView, EReference reference) {
+	def IScope scope_TAbstractMessages_arguments(TAbstractMessages messageView, EReference reference) {
 		Scopes::scopeFor( messageView.getArgumentsForAspectMessageViewOperation )
 	}
 	

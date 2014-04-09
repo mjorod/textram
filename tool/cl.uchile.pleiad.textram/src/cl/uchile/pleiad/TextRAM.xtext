@@ -37,10 +37,6 @@ TAbstractMessageView returns AbstractMessageView:
 	messages+=TAbstractMessages (messages+=TAbstractMessages)*
 ;
 
-TAbstractMessages returns textRam::TAbstractMessages:
-	TMessageView | TAspectMessageView      
-;
-
 TStructuralView returns textRam::TStructuralView:
     {textRam::TStructuralView}
     'structure'
@@ -139,11 +135,15 @@ TClassifierMapping returns textRam::TClassifierMapping:
     (partialToElement?='|')? toElement=[Classifier|EString] ('<' toMembers+=[textRam::TClassMember|EString] ("," toMembers+=[textRam::TClassMember|EString])* '>')?
 ;
 
+TAbstractMessages returns textRam::TAbstractMessages:
+	TMessageView | TAspectMessageView      
+;
+
 TMessageView returns textRam::TMessageView:
 	{textRam::TMessageView}
 	'messageView' (create?='new')? (partialClass?='|')? class=[textRam::TClass|EString] '.' (partialOperation?='|')? specifies=[textRam::TOperation|EString]  
 	'('
-    	( parameters+=Parameter ( "," parameters+=Parameter)* )?
+    	( arguments+=[Parameter|EString] ( "," arguments+=[Parameter|EString])* )?
     ')'
     ('affectedBy' affectedBy+=[textRam::TAspectMessageView|EString] (',' affectedBy+=[textRam::TAspectMessageView|EString]* )? )?
 	('{'
@@ -172,6 +172,15 @@ TLifeline returns textRam::TLifeline:
 	'}')?
 ;
 
+TValueSpecification returns textRam::TValueSpecification:
+	TTemporaryProperty | TParameterValue | TLifeline
+;
+
+TParameterValue returns textRam::TParameterValue:
+	{textRam::TParameterValue}
+	parameter=[Parameter|EString]
+;
+
 TTemporaryProperty returns textRam::TTemporaryProperty:
 	TReference | TLocalAttribute
 ;
@@ -183,6 +192,7 @@ TReference returns textRam::TReference:
 TLocalAttribute returns textRam::TLocalAttribute:
 	type=[PrimitiveType|EString]
 	name=EString
+	('=' value=EString)?
 ;
 
 TInteraction returns textRam::TInteraction:
@@ -207,11 +217,7 @@ TCombinedFragment returns textRam::TCombinedFragment:
 ;
 
 TAbstractMessage returns textRam::TAbstractMessage:
-	TMessageWithSignature | TReturnMessage
-;
-
-TMessageWithSignature returns textRam::TMessageWithSignature:
-	TMessage | TOperationMessage 
+	TMessage | TReturnMessage
 ;
 
 TReturnMessage returns textRam::TReturnMessage:
@@ -220,17 +226,8 @@ TReturnMessage returns textRam::TReturnMessage:
 
 TMessage returns textRam::TMessage:
 	(assignTo=[textRam::TMessageAssignableFeature|EString] ':=')?
-	(partialOperation?='|')? signature=[textRam::TOperation|EString] '(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
+	(partialOperation?='|')? signature=[textRam::TOperation|EString] '(' ( arguments+=[textRam::TValueSpecification|EString] (',' arguments+=[textRam::TValueSpecification|EString] )?  )? ')'
 ;
-
-TOperationMessage returns textRam::TOperationMessage:
-	(partialOperation?='|')?
-	signature=[textRam::TOperation|EString]
-	'('
-    	( parameters+=Parameter ( "," parameters+=Parameter)* )?
-    ')'
-    ':'
-    returnType=[Type|EString];
 
 //TODO: It should be StructuralFeature | Parameter
 TTypedElement returns textRam::TTypedElement:

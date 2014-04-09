@@ -29,6 +29,13 @@ import org.eclipse.emf.common.util.EList
 import ca.mcgill.cs.sel.ram.RSet
 import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TAbstractMessages
+import cl.uchile.pleiad.textRam.TMessage
+import cl.uchile.pleiad.textRam.TValueSpecification
+import cl.uchile.pleiad.textRam.TAssociation
+import cl.uchile.pleiad.textRam.TParameterValue
+import cl.uchile.pleiad.textRam.TTemporaryProperty
+import cl.uchile.pleiad.textRam.TLifelineReferenceType
+import cl.uchile.pleiad.textRam.TReference
 
 class ModelScopeProvider {
 	
@@ -225,7 +232,8 @@ class ModelScopeProvider {
 		
 		return null
 	}
-
+	
+	//TODO: why uses rightlifeline
 	def getReturnMessageAssignTo(TInteractionMessage textRamInteractionMessage) {
 		val List<TMessageAssignableFeature> result = newArrayList
 		
@@ -285,7 +293,60 @@ class ModelScopeProvider {
 //			
 //		]
 //		
+	}
+	
+	def getTValueSpecificationList(TInteractionMessage interaction) {
+		val List<TValueSpecification> result = newArrayList
 		
+		val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType(interaction, RamPackage.Literals.ASPECT)
+		val operationName = (interaction.message as TMessage).signature.name
+		
+		// possible parameters from signature
+		val clazz = interaction.rightLifeline.represents.getClassOwner(aspect)
+		val List<TParameterValue> parameterValueList = newArrayList
+		clazz.members.filter(TOperation).filter(o | o.name == operationName ).map[parameters].flatten.forEach[ p |
+			val parameterValue = TextRamFactory.eINSTANCE.createTParameterValue => [
+				parameter = p
+			]
+			
+			parameterValueList.add(parameterValue)
+		]
+		
+		// add parameters
+		result.addAll(parameterValueList)
+		
+		
+		val lifeline = interaction.leftLifeline
+		
+		// add class reference
+		if (lifeline.referenceType == TLifelineReferenceType.REFERENCE) {
+			result.add(lifeline)
+		}
+		
+		// add temporary properties
+		val List<TTemporaryProperty> temporaryPropertyList = newArrayList
+		
+		lifeline.localProperties.forEach[ p | 
+			temporaryPropertyList.add(p)
+		]
+		result.addAll(temporaryPropertyList)
+		
+		result
+	}
+	
+	private def dispatch getClassOwner(TAssociation owner, Aspect aspect) {
+		val result = owner.toEnd.classReference as TClass
+		result
+	}
+	
+	private def dispatch getClassOwner(TAttribute owner, Aspect aspect) {
+		val result = ( owner ).eContainer as TClass
+		result
+	}
+	
+	private def dispatch getClassOwner(TClass owner, Aspect aspect) {
+		val result = owner
+		result
 	}
 		
 }
