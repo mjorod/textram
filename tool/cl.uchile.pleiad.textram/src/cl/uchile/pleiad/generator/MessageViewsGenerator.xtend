@@ -145,7 +145,7 @@ class MessageViewsGenerator {
 				
 				if (o.parameters.size > 0) {
 					for ( Integer i: 0..o.parameters.size - 1) {
-						if ( o.parameters.get(i).type.name == arguments.get(i).typeForTValueSpecification.name == false) {
+						if ( o.parameters.get(i).type.name == arguments.get(i).typeNameForTValueSpecification == false) {
 							matchParameterType = false;
 						}
 					}
@@ -160,16 +160,24 @@ class MessageViewsGenerator {
 		return null
 	}
 	
-	private def dispatch getTypeForTValueSpecification(TLocalAttribute specification) {
-		specification.type as Type
+	private def dispatch getTypeNameForTValueSpecification(TLocalAttribute specification) {
+		specification.type.name
 	}
 	
-	private def dispatch getTypeForTValueSpecification(TReference specification) {
-		specification.reference as Type
+	private def dispatch getTypeNameForTValueSpecification(TReference specification) {
+		(specification.reference as TClass).name
 	}
 	
-	private def dispatch getTypeForTValueSpecification(TParameterValue specification) {
-		specification.parameter.type as Type
+	private def dispatch getTypeNameForTValueSpecification(TParameterValue specification) {
+		specification.parameter.type.name
+	}
+	
+	private def dispatch getTypeNameForTValueSpecification(TLifeline l) {
+		if (l.referenceType != TLifelineReferenceType.REFERENCE) {
+			throw new Exception("Only Reference types can be parameters");
+		}
+		
+		(l.represents as TClass).name
 	}
 	
 	private def Operation findOperationWithSameSignature(TAbstractMessages from) {

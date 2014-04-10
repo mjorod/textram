@@ -7,6 +7,7 @@ import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TClass
 import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.Operation
+import cl.uchile.pleiad.textRam.TAssociation
 
 final class TextRamEcoreUtil {
 	
