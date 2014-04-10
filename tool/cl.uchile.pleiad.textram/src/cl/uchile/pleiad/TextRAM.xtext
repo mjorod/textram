@@ -173,11 +173,16 @@ TLifeline returns textRam::TLifeline:
 ;
 
 TValueSpecification returns textRam::TValueSpecification:
-	TTemporaryProperty | TParameterValue | TLifeline
+	TTemporaryProperty | TParameterValue | TLifeline | TDummyValueSpecification
 ;
+
+TDummyValueSpecification returns textRam::TDummyValueSpecification:
+	dummy?='true'
+; 
 
 TParameterValue returns textRam::TParameterValue:
 	{textRam::TParameterValue}
+	name=EString
 	parameter=[Parameter|EString]
 ;
 

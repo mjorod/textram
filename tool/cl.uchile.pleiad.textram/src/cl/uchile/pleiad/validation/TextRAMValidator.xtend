@@ -119,7 +119,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 	}
 	
 	private def dispatch getTypeNameForTValueSpecification(TParameterValue specification) {
-		specification.parameter.type.name
+		specification.name
 	}
 	
 	private def dispatch getTypeNameForTValueSpecification(TLifeline l) {
