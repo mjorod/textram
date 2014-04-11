@@ -16,7 +16,7 @@ recommended to start off with the *Pre-configured Eclipse with Xtext*
 [Xtext pre-configured](https://www.eclipse.org/Xtext/download.html). If you feel comfortable enough, you can add these to your existing installation.
 
 1. Choose Help -> Install New Software... from the menu bar and
-   Add... Insert one of the update site [Xtext](http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/). This site
+   Add... Insert the adequate URL from [Xtext](http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/). This site
    aggregates all the necessary and optional components and
    dependencies of Xtext.
 2. Select the Xtext SDK from the category Xtext {version} and complete
@@ -66,7 +66,8 @@ Once that is done you can run TextRAM.
 
 ## Run TextRAM ##
 
-1. You must make sure that the launch configuration has enough PermGen size. You must make sure that the launch configuration has enough PermGen size.
+1. You must make sure that the launch configuration has enough PermGen
+size. You need to specify this VM argument in your launch configuration: -XX:MaxPermSize=256m
 
 2. In order to run TextRAM,  right-click on the project
 *cl.uchile.pleiad.textram* and navigate to Run As | Run As
@@ -75,10 +76,10 @@ under Eclipse Application; Select that and click **Run**.
 
 3. A new Eclipse instance will be run and a new workbench will
    appear. Let's create a new General project and create a new file
-   with the name of the aspect you want to model. **The extension of
+   with the name of the aspect that you want to model. **The extension of
    the file must be .xram**.  As soon as the file is created it will
    also be opened in a text editor and you will be asked to add the
    Xtext nature to your project. You should accept that to make your
-   DSL editor work correctly in Eclipse.
+   TextRAM editor work correctly in Eclipse.
 
-4. All ram's models will be generated inside *src-gen/aspects/*.
+4. All RAM's models will be generated inside the folder: *src-gen/aspects/*
