@@ -91,11 +91,10 @@ TOperation returns textRam::TOperation:
     (partial?='|')?
     name=EString 
     '('
-    	( parameters+=Parameter ( "," parameters+=Parameter)* )?
+    	( parameters+=TParameter ( "," parameters+=TParameter)* )?
     ')';
 
-Parameter returns Parameter:
-    {Parameter}
+TParameter returns textRam::TParameter:
     type=[Type|EString]
     name=EString;  
 
@@ -143,7 +142,7 @@ TMessageView returns textRam::TMessageView:
 	{textRam::TMessageView}
 	'messageView' (create?='new')? (partialClass?='|')? class=[textRam::TClass|EString] '.' (partialOperation?='|')? specifies=[textRam::TOperation|EString]  
 	'('
-    	( arguments+=[Parameter|EString] ( "," arguments+=[Parameter|EString])* )?
+    	( arguments+=[textRam::TParameter|EString] ( "," arguments+=[textRam::TParameter|EString])* )?
     ')'
     ('affectedBy' affectedBy+=[textRam::TAspectMessageView|EString] (',' affectedBy+=[textRam::TAspectMessageView|EString]* )? )?
 	('{'
@@ -156,7 +155,7 @@ TAspectMessageView returns textRam::TAspectMessageView:
 	'aspectMessageView' 
 		name=EString '{'
 		'pointcut' (create?='new')?  ( (partialClass?='|')? class=[textRam::TClass|EString] '.')? (partialOperation?='|')? specifies=[textRam::TOperation|EString]
-		'(' ( arguments+=[Parameter|EString] (',' arguments+=[Parameter|EString] )?  )? ')'
+		'(' ( arguments+=[textRam::TParameter|EString] (',' arguments+=[textRam::TParameter|EString] )?  )? ')'
 		'advice' '{'
 			interactionMessages+=TInteraction (';'? interactionMessages+=TInteraction)*
 		'}'
@@ -173,18 +172,12 @@ TLifeline returns textRam::TLifeline:
 ;
 
 TValueSpecification returns textRam::TValueSpecification:
-	TTemporaryProperty | TParameterValue | TLifeline | TDummyValueSpecification
+	TTemporaryProperty | TParameter | TLifeline | TDummyValueSpecification
 ;
 
 TDummyValueSpecification returns textRam::TDummyValueSpecification:
 	dummy?='true'
 ; 
-
-TParameterValue returns textRam::TParameterValue:
-	{textRam::TParameterValue}
-	name=EString
-	parameter=[Parameter|EString]
-;
 
 TTemporaryProperty returns textRam::TTemporaryProperty:
 	TReference | TLocalAttribute

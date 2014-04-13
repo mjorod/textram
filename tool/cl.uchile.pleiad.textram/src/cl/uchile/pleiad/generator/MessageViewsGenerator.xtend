@@ -19,7 +19,6 @@ import ca.mcgill.cs.sel.ram.RamPackage
 import ca.mcgill.cs.sel.ram.Reference
 import ca.mcgill.cs.sel.ram.StructuralFeature
 import ca.mcgill.cs.sel.ram.TemporaryProperty
-import ca.mcgill.cs.sel.ram.Type
 import ca.mcgill.cs.sel.ram.TypedElement
 import cl.uchile.pleiad.textRam.TAbstractMessageView
 import cl.uchile.pleiad.textRam.TAbstractMessages
@@ -35,7 +34,7 @@ import cl.uchile.pleiad.textRam.TLocalAttribute
 import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TOcurrence
-import cl.uchile.pleiad.textRam.TParameterValue
+import cl.uchile.pleiad.textRam.TParameter
 import cl.uchile.pleiad.textRam.TReference
 import cl.uchile.pleiad.textRam.TReturnMessage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
@@ -143,7 +142,7 @@ class MessageViewsGenerator {
 				// check parameter's type
 				var matchParameterType = true
 				
-				if (o.parameters.size > 0) {
+				if (o.parameters.empty == false && arguments.empty == false) {
 					for ( Integer i: 0..o.parameters.size - 1) {
 						if ( o.parameters.get(i).type.name == arguments.get(i).typeNameForTValueSpecification == false) {
 							matchParameterType = false;
@@ -168,8 +167,8 @@ class MessageViewsGenerator {
 		(specification.reference as TClass).name
 	}
 	
-	private def dispatch getTypeNameForTValueSpecification(TParameterValue specification) {
-		specification.parameter.type.name
+	private def dispatch getTypeNameForTValueSpecification(TParameter specification) {
+		specification.type.name
 	}
 	
 	private def dispatch getTypeNameForTValueSpecification(TLifeline l) {
@@ -205,7 +204,7 @@ class MessageViewsGenerator {
 				// check parameter's type
 				var matchParameterType = true
 				
-				if (o.parameters.size > 0) {
+				if (o.parameters.empty == false && arguments.empty == false) {
 					for ( Integer i: 0..o.parameters.size - 1 ) {
 						if ( o.parameters.get(i).type.name == arguments.get(i).type.name == false) {
 							matchParameterType = false;
@@ -361,10 +360,23 @@ class MessageViewsGenerator {
 		result	
 	}
 	
-	private def generateArguments(TMessage tMessage,  Operation operation, Lifeline lifeline) {
+	//TODO: generateArguments has duplicated code
+	private def dispatch generateArguments(TAbstractMessages tMessage,  Operation operation, Lifeline lifeline) {
 		val List<ParameterValueMapping> result = newArrayList
 		
-		if ( operation.parameters.length > 0 ) {
+		if ( operation.parameters.empty == false ) {
+			for ( Integer i: 0..operation.parameters.length -1 ) {
+				result.add( createParameterValueMapping(operation.parameters.get(i), tMessage.arguments.get(i), lifeline  ) ) 
+			}
+		}
+		
+		result
+	}
+		
+	private def dispatch generateArguments(TMessage tMessage,  Operation operation, Lifeline lifeline) {
+		val List<ParameterValueMapping> result = newArrayList
+		
+		if ( operation.parameters.empty == false ) {
 			for ( Integer i: 0..operation.parameters.length -1 ) {
 				result.add( createParameterValueMapping(operation.parameters.get(i), tMessage.arguments.get(i), lifeline  ) ) 
 			}
@@ -409,7 +421,7 @@ class MessageViewsGenerator {
 		val result = RamFactory.eINSTANCE.createMessage
 		result.signature = operation
 		//TODO: arguments for start message?
-//		result.arguments.addAll(generateArguments(textRamInteractionMessage.message as TMessage, operation, lifeLineTo)))
+		result.arguments.addAll(generateArguments(messageView, operation, lifeLineTo))
 		result.sendEvent = gate
 		result.receiveEvent = event
 		
@@ -417,6 +429,7 @@ class MessageViewsGenerator {
 			result.messageSort = MessageSort.CREATE_MESSAGE
 		}
 		
+		//TODO: assingTo
 //		if (textRamStartInteraction.message instanceof TMessage) {
 //			result.assignTo = generateAssignTo(textRamStartInteraction.message as TMessage, lifeLineTo)	
 //		}
@@ -536,7 +549,7 @@ class MessageViewsGenerator {
 		result
 	}
 
-	private def dispatch ParameterValueMapping createParameterValueMapping(Parameter p, TParameterValue tParameterValue, Lifeline lifeline) {
+	private def dispatch ParameterValueMapping createParameterValueMapping(Parameter p, TParameter tParameter, Lifeline lifeline) {
 		val result = RamFactory.eINSTANCE.createParameterValueMapping => [
 			parameter = p
 			value = RamFactory.eINSTANCE.createParameterValue => [

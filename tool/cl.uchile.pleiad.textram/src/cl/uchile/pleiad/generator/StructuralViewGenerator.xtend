@@ -29,10 +29,9 @@ import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
+import cl.uchile.pleiad.textRam.TParameter
 
 class StructuralViewGenerator {
-	
-	private val PARTIAL = '|'
 	
 	Aspect textRamAspect
 	Aspect ramAspect
@@ -310,9 +309,9 @@ class StructuralViewGenerator {
 		result
 	}
 	
-	private def generateParameter(Parameter from) {
+	private def generateParameter(TParameter from) {
 		val result = RamFactory.eINSTANCE.createParameter => [
-			name = from.name.replace(PARTIAL, '')
+			name = from.name
 			type = from.type.transformType
 		]
 		

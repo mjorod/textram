@@ -4,39 +4,35 @@ import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Instantiation
 import ca.mcgill.cs.sel.ram.InstantiationType
 import ca.mcgill.cs.sel.ram.PrimitiveType
+import ca.mcgill.cs.sel.ram.RSet
 import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.RamPackage
 import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import ca.mcgill.cs.sel.ram.Visibility
 import cl.uchile.pleiad.textRam.TAbstractMessageView
+import cl.uchile.pleiad.textRam.TAbstractMessages
+import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TAspectMessageView
+import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TInteractionMessage
+import cl.uchile.pleiad.textRam.TLifelineReferenceType
+import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TMessageAssignableFeature
-import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TStructuralView
+import cl.uchile.pleiad.textRam.TTemporaryProperty
 import cl.uchile.pleiad.textRam.TTypedElement
-import cl.uchile.pleiad.textRam.TextRamFactory
+import cl.uchile.pleiad.textRam.TValueSpecification
+import cl.uchile.pleiad.textRam.TextRamPackage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
-import ca.mcgill.cs.sel.ram.RSet
-import cl.uchile.pleiad.textRam.TAspect
-import cl.uchile.pleiad.textRam.TAbstractMessages
-import cl.uchile.pleiad.textRam.TMessage
-import cl.uchile.pleiad.textRam.TValueSpecification
-import cl.uchile.pleiad.textRam.TAssociation
-import cl.uchile.pleiad.textRam.TParameterValue
-import cl.uchile.pleiad.textRam.TTemporaryProperty
-import cl.uchile.pleiad.textRam.TLifelineReferenceType
-import cl.uchile.pleiad.textRam.TReference
-import cl.uchile.pleiad.textRam.TextRamPackage
 
 class ModelScopeProvider {
 	
@@ -207,10 +203,6 @@ class ModelScopeProvider {
 							   .toList
 	}
 	
-	def getParameters(TMessageView messageView) {
-		messageView.parameters
-	}
-	
 	def getAssignableFeatures(TInteractionMessage textRamInteractionMessage) {
 		val List<TMessageAssignableFeature> result = newArrayList()
 		
@@ -302,20 +294,11 @@ class ModelScopeProvider {
 		val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType(interaction, RamPackage.Literals.ASPECT)
 		val operationName = (interaction.message as TMessage).signature.name
 		
-		// possible parameters from signature
-		val clazz = interaction.rightLifeline.represents.getClassOwner(aspect)
-		val List<TParameterValue> parameterValueList = newArrayList
-		clazz.members.filter(TOperation).filter(o | o.name == operationName ).map[parameters].flatten.forEach[ p |
-			val parameterValue = TextRamFactory.eINSTANCE.createTParameterValue => [
-				parameter = p
-//				name = p. name	
-			]
-			
-			parameterValueList.add(parameterValue)
-		]
-		
 		// add parameters
-		result.addAll(parameterValueList)
+		val clazz = interaction.rightLifeline.represents.getClassOwner(aspect)
+		clazz.members.filter(TOperation).filter(o | o.name == operationName ).map[parameters].flatten.forEach[ p |
+			result.add(p)
+		]
 		
 		// add reference lifelines
 		val TAbstractMessageView messageView = TextRamEcoreUtil.getRootContainerOfType(interaction, TextRamPackage.Literals.TABSTRACT_MESSAGE_VIEW)

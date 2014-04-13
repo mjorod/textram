@@ -5,7 +5,6 @@ package cl.uchile.pleiad.validation
 
 import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Class
-import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.RamPackage
 import cl.uchile.pleiad.textRam.TAbstractMessageView
 import cl.uchile.pleiad.textRam.TAbstractMessages
@@ -18,14 +17,14 @@ import cl.uchile.pleiad.textRam.TLifelineReferenceType
 import cl.uchile.pleiad.textRam.TLocalAttribute
 import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TOperation
-import cl.uchile.pleiad.textRam.TParameterValue
+import cl.uchile.pleiad.textRam.TParameter
 import cl.uchile.pleiad.textRam.TReference
+import cl.uchile.pleiad.textRam.TValueSpecification
 import cl.uchile.pleiad.textRam.TextRamPackage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.validation.Check
-import cl.uchile.pleiad.textRam.TValueSpecification
 
 //import org.eclipse.xtext.validation.Check
 
@@ -171,7 +170,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		result 
 	}
 	
-	private def findOperationThatMatchArgumentsSignature(List<TOperation> operations, EList<Parameter> arguments) {
+	private def findOperationThatMatchArgumentsSignature(List<TOperation> operations, EList<TParameter> arguments) {
 		var TOperation result = null
 		
 		for ( o : operations ) {
@@ -192,8 +191,8 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		(specification.reference as TClass).name
 	}
 	
-	private def dispatch getTypeNameForTValueSpecification(TParameterValue specification) {
-		specification.name
+	private def dispatch getTypeNameForTValueSpecification(TParameter specification) {
+		specification.type.name
 	}
 	
 	private def dispatch getTypeNameForTValueSpecification(TLifeline l) {
@@ -204,7 +203,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		(l.represents as TClass).name
 	}
 	
-	private def haveSameArgumentsTypeOnMessageInteraction(EList<Parameter> list, EList<TValueSpecification> list2) {
+	private def haveSameArgumentsTypeOnMessageInteraction(EList<TParameter> list, EList<TValueSpecification> list2) {
 		// assumes both lists have the same size
 		if (list.size != list2.size) {
 			throw new Exception("Argument's lists are not the same size")
@@ -221,7 +220,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		return true;
 	}
 	
-	private def haveSameArgumentsType(EList<Parameter> list, EList<Parameter> list2) {
+	private def haveSameArgumentsType(EList<TParameter> list, EList<TParameter> list2) {
 		// assumes both lists have the same size
 		if (list.size != list2.size) {
 			throw new Exception("Argument's lists are not the same size")
@@ -238,11 +237,11 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		return true;
 	}
 	
-	private def haveSameNumberOfArguments(EList<Parameter> list, EList<Parameter> list2) {
+	private def haveSameNumberOfArguments(EList<TParameter> list, EList<TParameter> list2) {
 		return list.size == list2.size
 	}
 	
-	private def haveSameNumberOfArgumentsOnMessageInteraction(EList<Parameter> list, EList<TValueSpecification> list2) {
+	private def haveSameNumberOfArgumentsOnMessageInteraction(EList<TParameter> list, EList<TValueSpecification> list2) {
 		return list.size == list2.size
 	} 
 	
