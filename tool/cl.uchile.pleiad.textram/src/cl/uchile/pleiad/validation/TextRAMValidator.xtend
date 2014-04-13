@@ -5,22 +5,19 @@ package cl.uchile.pleiad.validation
 
 import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Class
+import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.RamPackage
+import cl.uchile.pleiad.textRam.TAbstractMessageView
 import cl.uchile.pleiad.textRam.TAbstractMessages
-import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
-import cl.uchile.pleiad.textRam.TInteractionMessage
-import cl.uchile.pleiad.textRam.TLifeline
-import cl.uchile.pleiad.textRam.TLifelineReferenceType
-import cl.uchile.pleiad.textRam.TLocalAttribute
 import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TOperation
-import cl.uchile.pleiad.textRam.TParameterValue
 import cl.uchile.pleiad.textRam.TReference
 import cl.uchile.pleiad.textRam.TextRamPackage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
+import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.validation.Check
 
 //import org.eclipse.xtext.validation.Check
@@ -32,179 +29,207 @@ import org.eclipse.xtext.validation.Check
  */
 class TextRAMValidator extends AbstractTextRAMValidator {
 
-	@Check
-	def checkOperationIsValidOnInteraction(TMessage tMessage){
-		val tInteraction = tMessage.eContainer as TInteractionMessage
-		
-		// check operation signature
-		var TClass clazz = null
-		val operation = tMessage.signature
-		val arguments = tMessage.arguments
-		
-		val List<TOperation> operations = newArrayList
-		
-		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.REFERENCE) {
-			clazz = tInteraction.rightLifeline.represents as TClass
-		}
-		
-		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.ASSOCIATION) {
-			clazz = (tInteraction.rightLifeline.represents as TAssociation).toEnd.classReference as TClass
-		}
-		
-		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.ASSOCIATION) {
-			throw new Exception("Attributes not supported as TLifeline references")
-		}
-		
-		operations.addAll( TextRamEcoreUtil.findOperations( clazz, operation.name) )
-			
-		// error if the operation doesn't exists
-		if (operations.length == 0) {
-			error('The operation ' + operation.name + ' is undefined for the class ' + clazz.name, TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
-		}
-			
-		// there is no operation's overloading
-		if ( operations.length == 1 ) {
-			if (operations.get(0).parameters.length != arguments.length ) {
-				error('Invalid number of arguments on ' + operation.name, TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
-			}
-		
-			// check arguments's type
-			if (operations.get(0).parameters.length > 0) { 
-				for ( Integer i: 0..operations.get(0).parameters.size - 1) {
-					if ( arguments.get(i).typeNameForTValueSpecification != operations.get(0).parameters.get(i).type.name ) {
-						error('Type mismatch: cannot convert from  ' + arguments.get(i).typeNameForTValueSpecification + ' to ' + operations.get(0).parameters.get(i).type.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__ARGUMENTS)
-					}
-				}
-			}
-		}
-		
-		// there is operation's overloading
-		if ( operations.length > 1 ) {
-			var matchSignature = false
-			
-			// check the operation's signature
-			for ( o : operations ) {
+//	@Check
+//	def checkOperationIsValidOnInteraction(TMessage tMessage){
+//		val tInteraction = tMessage.eContainer as TInteractionMessage
+//		
+//		// check operation signature
+//		var TClass clazz = null
+//		val operation = tMessage.signature
+//		val arguments = tMessage.arguments
+//		
+//		val List<TOperation> operations = newArrayList
+//		
+//		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.REFERENCE) {
+//			clazz = tInteraction.rightLifeline.represents as TClass
+//		}
+//		
+//		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.ASSOCIATION) {
+//			clazz = (tInteraction.rightLifeline.represents as TAssociation).toEnd.classReference as TClass
+//		}
+//		
+//		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.ASSOCIATION) {
+//			throw new Exception("Attributes not supported as TLifeline references")
+//		}
+//		
+//		operations.addAll( TextRamEcoreUtil.findOperations( clazz, operation.name) )
+//			
+//		// error if the operation doesn't exists
+//		if (operations.length == 0) {
+//			error('The operation ' + operation.name + ' is undefined for the class ' + clazz.name, TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
+//		}
+//			
+//		// there is no operation's overloading
+//		if ( operations.length == 1 ) {
+//			if (operations.get(0).parameters.length != arguments.length ) {
+//				error('Invalid number of arguments on ' + operation.name, TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
+//			}
+//		
+//			// check arguments's type
+//			if (operations.get(0).parameters.length > 0) { 
+//				for ( Integer i: 0..operations.get(0).parameters.size - 1) {
+//					if ( arguments.get(i).typeNameForTValueSpecification != operations.get(0).parameters.get(i).type.name ) {
+//						error('Type mismatch: cannot convert from  ' + arguments.get(i).typeNameForTValueSpecification + ' to ' + operations.get(0).parameters.get(i).type.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__ARGUMENTS)
+//					}
+//				}
+//			}
+//		}
+//		
+//		// there is operation's overloading
+//		if ( operations.length > 1 ) {
+//			var matchSignature = false
+//			
+//			// check the operation's signature
+//			for ( o : operations ) {
+//
+//				if (matchSignature == false) {
+//					// check operation's length
+//					if ( o.parameters.length == arguments.length ) {
+//						
+//						var matchParametersType = true
+//						for ( Integer i: 0..o.parameters.size - 1) {
+//							if ( o.parameters.get(i).type.name != arguments.get(i).typeNameForTValueSpecification ) {
+//								matchParametersType = false
+//							}
+//						}
+//						
+//						if (matchParametersType == true) {
+//							matchSignature = true
+//						}
+//					}
+//				}
+//			}
+//			
+//			if (matchSignature == false) {
+//				error('The operation ' + operation.name + ' has invalid arguments ', TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
+//			}		
+//		
+//		}
+//	}
+//	
+//	private def dispatch getTypeNameForTValueSpecification(TLocalAttribute specification) {
+//		specification.type.name
+//	}
+//	
+//	private def dispatch getTypeNameForTValueSpecification(TReference specification) {
+//		(specification.reference as TClass).name
+//	}
+//	
+//	private def dispatch getTypeNameForTValueSpecification(TParameterValue specification) {
+//		specification.name
+//	}
+	
+//	private def dispatch getTypeNameForTValueSpecification(TLifeline l) {
+//		if (l.referenceType != TLifelineReferenceType.REFERENCE) {
+//			throw new Exception("Only Reference types can be parameters");
+//		}
+//		
+//		(l.represents as TClass).name
+//	}
 
-				if (matchSignature == false) {
-					// check operation's length
-					if ( o.parameters.length == arguments.length ) {
-						
-						var matchParametersType = true
-						for ( Integer i: 0..o.parameters.size - 1) {
-							if ( o.parameters.get(i).type.name != arguments.get(i).typeNameForTValueSpecification ) {
-								matchParametersType = false
-							}
-						}
-						
-						if (matchParametersType == true) {
-							matchSignature = true
-						}
-					}
-				}
-			}
-			
-			if (matchSignature == false) {
-				error('The operation ' + operation.name + ' has invalid arguments ', TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
-			}		
-		
-		}
-	}
+//	@Check
+//	def checkOperationIsValidOnMessageView(TAbstractMessages messageView) {
+//		
+//		val clazz = messageView.class_ 
+//		val messageViewOperation = messageView.specifies
+//		val messageViewArguments = messageView.arguments
+//
+//		val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType( messageView, RamPackage.Literals.ASPECT ) 
+//
+//		val List<TOperation> operations = aspect.getAllOperations(clazz, messageViewOperation.name) 		
+//
+//		if (operations.empty == true) {
+//			error('The operation ' + messageViewOperation.name + ' is undefined', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+//			return
+//		}
+//
+//		if ( operations.haveAmbiguityDefinition == true ) {
+//				error('ambiguity in operation definition', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+//				return
+//		}
+//				
+//		if ( operations.areOverloaded == false ) {
+//			val currentOperation = operations.get(0)
+//			
+//			if ( haveSameNumberOfArguments( currentOperation.parameters, messageViewArguments ) == false ) {
+//				error('Invalid number of arguments on ' + messageViewOperation.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__ARGUMENTS)
+//				return				
+//			}
+//			
+//			if ( haveSameArgumentsType( currentOperation.parameters, messageViewArguments ) == false ) {
+//				//TODO: which parameter?
+//				error('Type mismatch: cannot convert from parameters', TextRamPackage.Literals.TABSTRACT_MESSAGES__ARGUMENTS)
+//				return		
+//			}
+//		} 
+//		else {
+//			// there is operation overloading
+//			val o = operations.findOperationThatMatchArgumentsSignature( messageViewArguments )
+//			if ( o == null) {
+//				error('The operation ' + messageViewOperation.name + ' has invalid arguments ', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+//				return
+//			}
+//		}
+//	
+//	}
 	
-	private def dispatch getTypeNameForTValueSpecification(TLocalAttribute specification) {
-		specification.type.name
-	}
-	
-	private def dispatch getTypeNameForTValueSpecification(TReference specification) {
-		(specification.reference as TClass).name
-	}
-	
-	private def dispatch getTypeNameForTValueSpecification(TParameterValue specification) {
-		specification.name
-	}
-	
-	private def dispatch getTypeNameForTValueSpecification(TLifeline l) {
-		if (l.referenceType != TLifelineReferenceType.REFERENCE) {
-			throw new Exception("Only Reference types can be parameters");
-		}
+	def getAllOperations(Aspect aspect, TClass optionalClass, String operationName) {
+		val List<TOperation> result = newArrayList
 		
-		(l.represents as TClass).name
-	}
-
-	@Check
-	def checkOperationIsValidOnMessageView(TAbstractMessages messageView) {
-		
-		// check if class has been defined
-		val clazz = messageView.class_ 
-		val operation = messageView.specifies
-		val arguments = messageView.arguments
-		
-		val List<TOperation> operations = newArrayList 
-		
-		// check if the operation has been defined in the class
-		if (clazz != null) {
-			operations.addAll( TextRamEcoreUtil.findOperations(clazz,  operation.name) )
+		if ( optionalClass.isDefined ) {
+			result.addAll( TextRamEcoreUtil.findOperations(optionalClass, operationName) )
 		}
 		else {
-			val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType( messageView, RamPackage.Literals.ASPECT ) 
-			operations.addAll(aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation).filter( o | o.name == operation.name ).toList)
-			
-			if (operations.length > 1) {
-				error('ambiguity in operation definition', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-			}
+			result.addAll ( TextRamEcoreUtil.findAspectOperations( aspect, operationName ) )
 		}
 		
-
-		// error if the operation doesn't exists
-		if (operations.length == 0) {
-			error('The operation ' + operation.name + ' is undefined for the class ' + clazz.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-		}
-		
-		// there is no operation's overloading
-		if ( operations.length == 1 ) {
-			if (operations.get(0).parameters.length != arguments.length ) {
-				error('Invalid number of arguments on ' + operation.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__ARGUMENTS)
-			}
-		
-			// check arguments's type
-			if (operations.get(0).parameters.length > 0) { 
-				for ( Integer i: 0..operations.get(0).parameters.size - 1) {
-					if ( arguments.get(i).type.name != operations.get(0).parameters.get(i).type.name ) {
-						error('Type mismatch: cannot convert from  ' + arguments.get(i).type.name + ' to ' + operations.get(0).parameters.get(i).type.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__ARGUMENTS)
-					}
-				}
-			}
-		}
-		
-		// there is operation's overloading
-		if ( operations.length > 1 ) {
-			var matchSignature = false
-			
-			// check the operation's signature
-			for ( o : operations ) {
-
-				if (matchSignature == false) {
-					// check operation's length
-					if ( o.parameters.length == arguments.length ) {
-						
-						var matchParametersType = true
-						for ( Integer i: 0..o.parameters.size - 1) {
-							if ( o.parameters.get(i).type.name != arguments.get(i).type.name ) {
-								matchParametersType = false
-							}
-						}
-						
-						if (matchParametersType == true) {
-							matchSignature = true
-						}
-					}
-				}
-			}
-			
-			if (matchSignature == false) {
-				error('The operation ' + operation.name + ' has invalid arguments ', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-			}		
-		}
+		result
+	}
 	
+	def findOperationThatMatchArgumentsSignature(List<TOperation> operations, EList<Parameter> arguments) {
+		var TOperation result = null
+		
+		for ( o : operations ) {
+			if ( haveSameNumberOfArguments( o.parameters, arguments ) == true &&
+				 haveSameArgumentsType( o.parameters, arguments ) == true ) {
+				result = o
+			}			
+		}
+		
+		result 
+	}
+	
+	def haveSameArgumentsType(EList<Parameter> list, EList<Parameter> list2) {
+		// assumes both lists have the same size
+		if (list.size != list2.size) {
+			throw new Exception("Argument's lists are not the same size")
+		}
+		
+		if ( list.empty == false && list2.empty == false ) {
+			for ( Integer i: 0..list.size - 1) {
+				if ( list.get(i).type.name != list2.get(i).type.name ) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	def haveSameNumberOfArguments(EList<Parameter> list, EList<Parameter> list2) {
+		return list.size == list2.size
+	}
+	
+	def areOverloaded(List<TOperation> operations) {
+		return operations.size > 0
+	}
+	
+	def haveAmbiguityDefinition(List<TOperation> operations) {
+		return operations.size > 1
+	}
+	
+	def isDefined(TClass clazz) {
+		return clazz != null;
 	}
 	
 	@Check
@@ -269,6 +294,13 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		
 		if ( classifierMapping.partialToElement == true &&  (classifierMapping.toElement as Class).partial == false) {
 			error('The class ' + classifierMapping.toElement.name + ' is not a partial class (toElement).', TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_TO_ELEMENT )
+		}
+	}
+	
+	@Check
+	def checkMessageViewBody(TAbstractMessageView messageView) {
+		if ( messageView.lifelines.size > 0 && messageView.messages.size == 0 ) {
+			error('Message views are mandatory', TextRamPackage.Literals.TABSTRACT_MESSAGE_VIEW__LIFELINES)
 		}
 	}
 }
