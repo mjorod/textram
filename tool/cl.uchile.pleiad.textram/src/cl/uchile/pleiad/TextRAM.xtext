@@ -87,6 +87,7 @@ TOperation returns textRam::TOperation:
     (abstract?='abstract')?
     (static?='static')?
     visibility=Visibility
+    (partialReturnType?='|')?
     returnType=[Type|EString]
     (partial?='|')?
     name=EString 
@@ -95,6 +96,7 @@ TOperation returns textRam::TOperation:
     ')';
 
 TParameter returns textRam::TParameter:
+    (partialType?='|')?
     type=[Type|EString]
     name=EString;  
 
@@ -234,7 +236,7 @@ TTypedElement returns textRam::TTypedElement:
 
 //AssignableFeature
 TMessageAssignableFeature returns textRam::TMessageAssignableFeature:
-	TAssociation | TTemporaryProperty 
+	TAssociation | TTemporaryProperty | TLifeline
 ;
 
 LiteralString: {LiteralString};

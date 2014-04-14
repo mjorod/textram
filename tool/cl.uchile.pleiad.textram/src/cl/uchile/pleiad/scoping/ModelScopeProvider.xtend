@@ -208,6 +208,8 @@ class ModelScopeProvider {
 		
 		result.addAll ( textRamInteractionMessage.leftLifeline.localProperties )
 		result.addAll ( textRamInteractionMessage.getAspect.getAllAssociations )
+		result.addAll ( textRamInteractionMessage.rightLifeline )
+		
 		result
 	}
 	

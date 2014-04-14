@@ -258,6 +258,34 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 	}
 	
 	@Check
+	def checkPartialDefinitionForTOperationReturnType(TOperation operation){
+		if (operation.returnType instanceof TClass) {
+			val returnType = operation.returnType as TClass
+			if (returnType.partial == true && operation.partialReturnType == false) {
+				error('Missing | at ' + operation.name, TextRamPackage.Literals.TOPERATION__RETURN_TYPE)
+			}
+			
+			if (returnType.partial == false && operation.partialReturnType == true) {
+				error('Missing | at '+ operation.name, TextRamPackage.Literals.TOPERATION__RETURN_TYPE)
+			}
+		}
+	}
+	
+	@Check
+	def checkPartialDefinitionForTParameterType(TParameter parameter) {
+		if (parameter.type instanceof TClass) {
+			val returnType = parameter.type as TClass
+			if (returnType.partial == true && parameter.partialType == false) {
+				error('Missing | at ' + parameter.name, TextRamPackage.Literals.TPARAMETER__TYPE)
+			}
+			
+			if (returnType.partial == false && parameter.partialType == true) {
+				error('Missing | at ' + parameter.name, TextRamPackage.Literals.TPARAMETER__TYPE)
+			}
+		}
+	}
+	
+	@Check
 	def checkPartialDefinitionsOnTAbstractMessages(TAbstractMessages messageView) {
 		val clazz = messageView.class_
 		val operation = messageView.specifies

@@ -142,17 +142,24 @@ class MessageViewsGenerator {
 				// check parameter's type
 				var matchParameterType = true
 				
-				if (o.parameters.empty == false && arguments.empty == false) {
-					for ( Integer i: 0..o.parameters.size - 1) {
-						if ( o.parameters.get(i).type.name == arguments.get(i).typeNameForTValueSpecification == false) {
-							matchParameterType = false;
+				try {
+					if (o.parameters.empty == false && arguments.empty == false) {
+						for ( Integer i: 0..o.parameters.size - 1) {
+							if ( o.parameters.get(i).type.name == arguments.get(i).typeNameForTValueSpecification == false) {
+								matchParameterType = false;
+							}
 						}
 					}
+					
+					if (matchParameterType == true) {
+						return o
+					}	
+				}
+				catch (NullPointerException e) {
+					var m = e.message
+					m = m;
 				}
 				
-				if (matchParameterType == true) {
-					return o
-				}
 			}
 		}
 		
@@ -339,7 +346,15 @@ class MessageViewsGenerator {
 		var StructuralFeature result 
 		
 		if ( textRamMessage.assignTo != null ) {
-			result = textRamMessage.assignTo.createStructuralFeature(lifeline)
+			if (textRamMessage.assignTo instanceof TAssociation) {
+				result = (textRamMessage.assignTo as TAssociation).createStructuralFeature(lifeline)
+			}		
+			else if (textRamMessage.assignTo instanceof TLifeline) {
+				result = (textRamMessage.assignTo as TLifeline).createStructuralFeature(lifeline)
+			}
+			else {
+				result = (textRamMessage.assignTo).createStructuralFeature(lifeline)
+			}
 		}
 				
 		return result
@@ -358,6 +373,12 @@ class MessageViewsGenerator {
 	private def dispatch StructuralFeature createStructuralFeature(TLocalAttribute feature, Lifeline lifeline) {
 		val result = lifeline.localProperties.filter(Attribute).findFirst( a | a.name == feature.name )
 		result	
+	}
+	
+	private def dispatch StructuralFeature createStructuralFeature(TLifeline tLifeline, Lifeline lifeline) {
+		val represents = (lifeline.eContainer as Interaction).properties.findFirst[ p | p.name == tLifeline.name ]
+		val result = represents
+		result
 	}
 	
 	//TODO: generateArguments has duplicated code
@@ -386,8 +407,11 @@ class MessageViewsGenerator {
 	}
 	
 	private def generateStartMessage(Interaction interaction, TAbstractMessages messageView) {
-		val textRamLifeline = (messageView.eContainer as TAbstractMessageView).lifelines.get(0)
-		val lifeLineTo = interaction.lifelines.findFirst( l | l.represents.name == textRamLifeline.name)
+		if (messageView instanceof TMessageView && (messageView as TMessageView).affectedBy != null) {
+			return null
+		}
+		
+		val lifeLineTo = messageView.interactionMessages.head.getFirstLifeline(interaction)
 		
 		var Operation operation = null
 		
@@ -442,6 +466,22 @@ class MessageViewsGenerator {
 			
 		result	
 	}
+	
+	//TODO: repeated code
+	private def dispatch Lifeline getFirstLifeline(TInteractionMessage interactionMessage, Interaction interaction) {
+		val firstLifeline = interactionMessage.leftLifeline
+		val result = interaction.lifelines.findFirst( l | l.represents.name == firstLifeline.name)
+		
+		result
+	}
+	
+	private def dispatch Lifeline getFirstLifeline(TOcurrence interactionMessage, Interaction interaction) { 
+		val firstLifeline = interactionMessage.leftLifeline
+		val result = interaction.lifelines.findFirst( l | l.represents.name == firstLifeline.name)
+		
+		result
+	}
+	
 	
 	private def generateEndMessage(TInteractionMessage firstInteractionMessage, TInteractionMessage lastInteractionMessage, Interaction interaction) {
 	//TODO:FIXMENOW!!
