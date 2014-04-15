@@ -262,13 +262,26 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		if (operation.returnType instanceof TClass) {
 			val returnType = operation.returnType as TClass
 			if (returnType.partial == true && operation.partialReturnType == false) {
-				error('Missing | at ' + operation.name, TextRamPackage.Literals.TOPERATION__RETURN_TYPE)
+				error('Missing | at ' + operation.returnType.name, TextRamPackage.Literals.TOPERATION__RETURN_TYPE)
 			}
 			
 			if (returnType.partial == false && operation.partialReturnType == true) {
-				error('Missing | at '+ operation.name, TextRamPackage.Literals.TOPERATION__RETURN_TYPE)
+				error(operation.returnType.name + ' is not defined as partial', TextRamPackage.Literals.TOPERATION__RETURN_TYPE)
 			}
 		}
+	}
+	
+	@Check 
+	def checkPartialDefinitionForSuperTypes(TClass clazz) {
+		clazz.superTypes.filter(TClass).forEach[ s | 
+			if (clazz.partialSuperType == false && s.partial == true ) {
+				error('Missing | at ' + s.name, RamPackage.Literals.CLASS__SUPER_TYPES)
+			}
+			
+			if (clazz.partialSuperType == true && s.partial == false ) {
+				error(s.name + ' is not defined as partial', RamPackage.Literals.CLASS__SUPER_TYPES)
+			}
+		]
 	}
 	
 	@Check
@@ -276,11 +289,11 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		if (parameter.type instanceof TClass) {
 			val returnType = parameter.type as TClass
 			if (returnType.partial == true && parameter.partialType == false) {
-				error('Missing | at ' + parameter.name, TextRamPackage.Literals.TPARAMETER__TYPE)
+				error('Missing | at ' + parameter.type.name, TextRamPackage.Literals.TPARAMETER__TYPE)
 			}
 			
 			if (returnType.partial == false && parameter.partialType == true) {
-				error('Missing | at ' + parameter.name, TextRamPackage.Literals.TPARAMETER__TYPE)
+				error(parameter.type.name + ' is not defined as partial', TextRamPackage.Literals.TPARAMETER__TYPE)
 			}
 		}
 	}
@@ -292,7 +305,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		
 		if (clazz != null && clazz.partial != messageView.partialClass) {
 			if (clazz.partial == true) {
-				error('The class ' + clazz.name +' has to be defined as partial.', TextRamPackage.Literals.TABSTRACT_MESSAGES__CLASS)
+				error('Missing | at ' + clazz.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__CLASS)
 			}
 			else {
 				error('The class ' + clazz.name + ' is not a partial class.' , TextRamPackage.Literals.TABSTRACT_MESSAGES__CLASS)
@@ -301,7 +314,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		
 		if (operation != null && operation.partial != messageView.partialOperation) {
 			if (operation.partial == true) {
-				error('The operation ' + operation.name +' has to be defined as partial.', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+				error('Missing | at ' + operation.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
 			}
 			else {
 				error('The operation ' + operation.name + ' is not a partial operation.' , TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
@@ -312,7 +325,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 	@Check
 	def checkPartialDefinitionOnReference(TReference reference) {
 		if (reference.partialClass == false && reference.reference.partial == true) {
-			error('The class ' + reference.reference.name + ' has to be defined as partial.', TextRamPackage.Literals.TREFERENCE__REFERENCE )
+			error('Missing | at ' + reference.reference.name, TextRamPackage.Literals.TREFERENCE__REFERENCE )
 		}
 		
 		if (reference.partialClass == true && reference.reference.partial == false ) {
@@ -323,7 +336,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 	@Check
 	def checkPartialDefinitionOnTMessageWithSignature(TMessage message) {
 		if (message.partialOperation == false && message.signature.partial == true) {
-			error('The class ' + message.signature.name + ' has to be defined as partial.', TextRamPackage.Literals.TMESSAGE__SIGNATURE )
+			error('Missing | at ' + message.signature.name, TextRamPackage.Literals.TMESSAGE__SIGNATURE )
 		}
 		
 		if (message.partialOperation == true && message.signature.partial == false) {
@@ -334,7 +347,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 	@Check
 	def checkPartialDefinitionOnTClassifierMapping(TClassifierMapping classifierMapping) {
 		if ( classifierMapping.partialFromElement == false &&  (classifierMapping.fromElement as Class).partial == true) {
-			error('The class ' + classifierMapping.fromElement.name + ' has to be defined as partial (fromElement).', TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_FROM_ELEMENT )
+			error('Missing | at ' + classifierMapping.fromElement.name, TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_FROM_ELEMENT )
 		}
 		
 		if ( classifierMapping.partialFromElement == true &&  (classifierMapping.fromElement as Class).partial == false) {
@@ -342,7 +355,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		}
 		
 		if ( classifierMapping.partialToElement == false &&  (classifierMapping.toElement as Class).partial == true) {
-			error('The class ' + classifierMapping.toElement.name + ' has to be defined as partial (toElement).', TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_TO_ELEMENT )
+			error('Missing | at ' + classifierMapping.toElement.name, TextRamPackage.Literals.TCLASSIFIER_MAPPING__PARTIAL_TO_ELEMENT )
 		}
 		
 		if ( classifierMapping.partialToElement == true &&  (classifierMapping.toElement as Class).partial == false) {

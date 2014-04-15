@@ -72,7 +72,7 @@ TClass returns textRam::TClass:
     (abstract?='abstract')?
     'class'
     (partial?='|')?
-    name=EString (':' superTypes+=[Classifier|EString])?
+    name=EString (':' (partialSuperType?='|')? superTypes+=[Classifier|EString])?
     '{'
     	( members+=TClassMember  ( ";"? members+= TClassMember)*  )?
     '}';

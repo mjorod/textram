@@ -107,7 +107,7 @@ class StructuralViewGenerator {
 		val List<Instantiation> result = newArrayList
 		
 		instantiationHeader.externalAspects.forEach[ ea | 
-			val myExternalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(ea)
+			val myExternalAspect = ea//ModelConverterProxy::instance.convertTextRAMModelToRAMModel(ea)
 			
 			val instantiation = RamFactory.eINSTANCE.createInstantiation => [
 				externalAspect = myExternalAspect
