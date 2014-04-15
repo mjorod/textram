@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_nM7qgMQvEeODNKiKX0J7sw" name="Random">
+  <structuralView xmi:id="_nM7qgcQvEeODNKiKX0J7sw">
+    <classes xsi:type="ram:Class" xmi:id="_nM7qgsQvEeODNKiKX0J7sw" name="RandomGenerator">
+      <operations xmi:id="_nM7qg8QvEeODNKiKX0J7sw" name="nextRandom"/>
+      <operations xmi:id="_nM7qhMQvEeODNKiKX0J7sw" name="create" returnType="_nM7qgsQvEeODNKiKX0J7sw">
+        <parameters xmi:id="_nM7qhcQvEeODNKiKX0J7sw" name="range"/>
+      </operations>
+    </classes>
+  </structuralView>
+</ram:Aspect>

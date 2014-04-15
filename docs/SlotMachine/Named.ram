@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_r9blEMQvEeODNKiKX0J7sw" name="Named">
+  <structuralView xmi:id="_r9blEcQvEeODNKiKX0J7sw">
+    <classes xsi:type="ram:Class" xmi:id="_r9blEsQvEeODNKiKX0J7sw" name="Named" partial="true">
+      <operations xmi:id="_r9blE8QvEeODNKiKX0J7sw" name="getName"/>
+      <operations xmi:id="_r9blFMQvEeODNKiKX0J7sw" name="setName">
+        <parameters xmi:id="_r9blFcQvEeODNKiKX0J7sw" name="name"/>
+      </operations>
+      <attributes xmi:id="_r9blFsQvEeODNKiKX0J7sw" name="name"/>
+    </classes>
+  </structuralView>
+</ram:Aspect>

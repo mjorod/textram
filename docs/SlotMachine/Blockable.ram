@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_k9rksMQvEeODNKiKX0J7sw" name="Blockable">
+  <structuralView xmi:id="_k9rkscQvEeODNKiKX0J7sw">
+    <classes xsi:type="ram:Class" xmi:id="_k9sLwMQvEeODNKiKX0J7sw" name="Blockable" partial="true">
+      <operations xmi:id="_k9sLwcQvEeODNKiKX0J7sw" name="skip" returnType="_k9sLycQvEeODNKiKX0J7sw">
+        <parameters xmi:id="_k9sLwsQvEeODNKiKX0J7sw" name="value" type="_k9sLyMQvEeODNKiKX0J7sw"/>
+      </operations>
+      <operations xmi:id="_k9sLw8QvEeODNKiKX0J7sw" name="blockableOperation" returnType="_k9sLyMQvEeODNKiKX0J7sw" partial="true"/>
+      <operations xmi:id="_k9sLxMQvEeODNKiKX0J7sw" name="continue" returnType="_k9sLycQvEeODNKiKX0J7sw"/>
+      <operations xmi:id="_k9sLxcQvEeODNKiKX0J7sw" name="block" returnType="_k9sLycQvEeODNKiKX0J7sw"/>
+      <attributes xmi:id="_k9sLxsQvEeODNKiKX0J7sw" name="blocked" type="_k9sLysQvEeODNKiKX0J7sw"/>
+      <attributes xmi:id="_k9sLx8QvEeODNKiKX0J7sw" name="skip" type="_k9sLysQvEeODNKiKX0J7sw"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_k9sLyMQvEeODNKiKX0J7sw" name="ReturnType" partial="true"/>
+    <types xsi:type="ram:RVoid" xmi:id="_k9sLycQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_k9sLysQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RChar" xmi:id="_k9sLy8QvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RInt" xmi:id="_k9sLzMQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RString" xmi:id="_k9sLzcQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RAny" xmi:id="_k9sLzsQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RDouble" xmi:id="_k9sLz8QvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RFloat" xmi:id="_k9sL0MQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k9sL0cQvEeODNKiKX0J7sw" type="_k9sLysQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k9sL0sQvEeODNKiKX0J7sw" type="_k9sLy8QvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k9sL08QvEeODNKiKX0J7sw" type="_k9sLzMQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k9sL1MQvEeODNKiKX0J7sw" type="_k9sLzcQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k9sL1cQvEeODNKiKX0J7sw" type="_k9sLz8QvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k9sL1sQvEeODNKiKX0J7sw" type="_k9sL0MQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k9sL18QvEeODNKiKX0J7sw" type="_k9sLwMQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k9sL2MQvEeODNKiKX0J7sw" type="_k9sLyMQvEeODNKiKX0J7sw"/>
+  </structuralView>
+</ram:Aspect>

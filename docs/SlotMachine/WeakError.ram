@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_k659gMQvEeODNKiKX0J7sw" name="WeakError">
+  <structuralView xmi:id="_k659gcQvEeODNKiKX0J7sw">
+    <classes xsi:type="ram:Class" xmi:id="_k659gsQvEeODNKiKX0J7sw" name="WeakError">
+      <operations xmi:id="_k659g8QvEeODNKiKX0J7sw" name="create" returnType="_k659gsQvEeODNKiKX0J7sw">
+        <parameters xmi:id="_k659hMQvEeODNKiKX0J7sw" name="errorName" type="_k659icQvEeODNKiKX0J7sw"/>
+      </operations>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_k659hcQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_k659hsQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RChar" xmi:id="_k659h8QvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RInt" xmi:id="_k659iMQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RString" xmi:id="_k659icQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RAny" xmi:id="_k659isQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RDouble" xmi:id="_k659i8QvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RFloat" xmi:id="_k659jMQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k659jcQvEeODNKiKX0J7sw" type="_k659hsQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k659jsQvEeODNKiKX0J7sw" type="_k659h8QvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k659j8QvEeODNKiKX0J7sw" type="_k659iMQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k659kMQvEeODNKiKX0J7sw" type="_k659icQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k659kcQvEeODNKiKX0J7sw" type="_k659i8QvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k659ksQvEeODNKiKX0J7sw" type="_k659jMQvEeODNKiKX0J7sw"/>
+    <types xsi:type="ram:RSet" xmi:id="_k659k8QvEeODNKiKX0J7sw" type="_k659gsQvEeODNKiKX0J7sw"/>
+  </structuralView>
+  <instantiations xmi:id="_k659lMQvEeODNKiKX0J7sw">
+    <mappings xmi:id="_k659lcQvEeODNKiKX0J7sw" toElement="_k659gsQvEeODNKiKX0J7sw">
+      <fromElement xsi:type="ram:Class" href="../aspects/Named.ram#_k63hQsQvEeODNKiKX0J7sw"/>
+    </mappings>
+    <externalAspect href="../aspects/Named.ram#_k63hQMQvEeODNKiKX0J7sw"/>
+  </instantiations>
+</ram:Aspect>
