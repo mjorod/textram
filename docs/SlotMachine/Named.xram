@@ -1,0 +1,22 @@
+aspect Named { 
+	structure {
+		
+		class |Named {
+			String name 
+			+ String getName()
+			+ void setName(String name)
+		}
+		
+	}
+		
+//	messages {
+//		lifelines {
+//			ref target:Named
+//		}
+//		
+////		messageView Named.setName(String name) { // setName(name) : void
+////			// this.name = name
+////			target => <<
+////		}
+//	}
+}

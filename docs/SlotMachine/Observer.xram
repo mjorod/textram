@@ -1,0 +1,50 @@
+aspect Observer {
+	
+	structure {
+		
+		class |Subject {
+			+ |Subject create()
+			~ Set<Observer> getObservers()
+			//+ * |modify()
+			+ void |modify()
+			+ void addObserver(|Observer a)
+			+ void removeObserver(|Observer a)
+		}
+		
+		class |Observer {
+			+ void startObserving(|Subject a)
+			+ void stopObserving()
+			+ void |update(|Subject s)
+		}
+		
+		associations {
+			Observer -> 1 Subject { mySubject }
+		}
+	}
+	
+	messages { 
+		lifelines {
+			ref observer:Observer
+			ref subject:Subject { observers:|Observer }//{ Set<Observer> observers }
+		}
+		  
+		messageView |Observer.startObserving(a) { //this.mySubject = s
+			observer => subject { addObserver(observer) } // addObserver(observer)
+		}
+		
+		messageView |Observer.stopObserving() { //this.mySubject = s
+			observer => subject { removeObserver(observer) } // removeObserver(observer)
+		}
+		 
+		aspectMessageView notification {
+			pointcut |Subject.|modify()
+			advice {
+				subject =>*
+				subject => subject { observers := getObservers() }
+				loop ["Observer o : observers"] { 
+					subject => observer { |update(subject) } //update(subject)
+				}
+			} 
+		}		
+	} 
+}

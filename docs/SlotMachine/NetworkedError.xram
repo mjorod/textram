@@ -1,0 +1,55 @@
+aspect NetworkedError extends CriticalError, NormalError, SMNetwork, dependsOn Singleton {
+	
+	structure {
+		class |ReportingInterface {
+			+ void reportCritical(CriticalError err)
+			+ void reportError(NormalError err)
+		}
+		
+		class NetworkCommandExecutor {
+			+ void sendMessage(Result res)
+			+ NetworkCommandExecutor getInstance()
+		}
+		
+		class ErrorResult : Result {
+			+ ErrorResult create(CriticalError err)
+			+ ErrorResult create(NormalError err)
+		}
+		
+		class CriticalError {}
+		class NormalError {}
+		class Result {}
+	}
+	
+	instantiations {
+		Singleton {
+			|Singleton <getInstance> -> NetworkCommandExecutor <getInstance>
+		}
+	} 
+	
+	messages {
+		lifelines {
+			ref ri:ReportingInterface { res:Result }
+			ref nce:NetworkCommandExecutor
+			ref er:ErrorResult { err:CriticalError }
+		}
+		 
+		aspectMessageView sendCritical {
+			pointcut |ReportingInterface.reportCritical(err) //reportCritical(CriticalError err)
+			advice {
+				ri => er  { res := create(err)  } // res := create(err)
+				ri => nce { sendMessage(res) } // sendMessage(res)
+//				nce => << 
+			}
+		}
+		
+		aspectMessageView sendNormal {
+			pointcut reportError(err) // reportError(NormalError err)
+			advice {
+				ri => er  { res := create(err) } // res := create(err)
+				ri => nce { sendMessage(res) }
+//				ri => <<
+			}
+		}
+	}
+}

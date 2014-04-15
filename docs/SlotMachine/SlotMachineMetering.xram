@@ -1,0 +1,32 @@
+aspect SlotMachineMetering {
+	structure {
+		
+		class Machine {
+			int credits
+			+ void play()
+			~ int getCredits()
+			+ void depositCredits(int amount)
+			+ void initializeSlotMachineMeters()
+		}
+		
+		
+		
+	}
+	
+//	instantiations {
+//		dependsOn Metering {
+//			InterceptStateChange < getData, modifyData > -> Machine < getCredits, play >
+//			//Meter < attachMeter > -> Meter < attachMeterToPlay >
+//			InterceptStateChange < getData, modifyData > -> Machine < getCredits, depositCredits >
+//			// Meter < attachMeter > -> Meter < attachMeterToDepositCredits >
+//		}
+//	}
+//	
+//	messages {
+//		objects {
+//			ref machine:Machine
+//		}
+//		
+//	}
+//	
+}

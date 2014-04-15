@@ -1,0 +1,33 @@
+aspect InterceptReturnsMetering extends Metering {
+	
+	structure {
+		class |InterceptReturns {
+			int data
+			~ int getData()
+			~ void setData(int data)
+			+ void interceptedMethod() //  + *|interceptedMethod(..)
+		}    
+	}  
+	      
+	instantiations {
+		Metering {
+			|InterceptStateChange <modifyData> -> |InterceptReturns <setData> 
+		}
+	} 
+	 
+	messages { 
+		lifelines {
+			ref target:InterceptReturns  { int data }
+		}
+		
+		aspectMessageView interceptedMethod {
+			pointcut  |InterceptReturns.interceptedMethod() 
+			advice {
+				target =>*
+				target => target { setData(data) } //setData(returnValue)
+//				target => <<
+			}
+		}
+	}
+	
+}

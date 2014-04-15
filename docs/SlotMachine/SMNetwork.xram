@@ -1,0 +1,85 @@
+aspect SMNetwork extends Betting, dependsOn /*Metering,*/ ReturningCommand {
+	
+	structure {
+		class NetworkCommandExecutor {
+			+ void receivedCommand(Command com)
+			+ void sendMessage(|Result res)
+		}
+		
+		class Command {
+			~ |Result execute()
+		}
+		 
+		class |Result {}
+		
+		class |MeterResult : |Result {
+			+ |MeterResult create(int value) 
+		}
+		
+		class MeterRepository {
+			+ String getValueOfMeter(String name)
+		}
+		
+		class |SMCommand {
+			~ |Result execute()
+		}
+		
+		class |ReadMeterCommand : |SMCommand {
+			~ |Result execute()
+		} 
+	} 
+	
+	instantiations {
+		ReturningCommand {
+			|Command <execute> ->  Command <execute>
+		}
+		 
+//		Metering {
+//			|Meter<getName> -> |ReadMeterCommand<getMeterName>
+//		}
+		
+	}
+	
+	messages {
+		lifelines {
+			ref nce:NetworkCommandExecutor { result:|Result }
+			ref com:SMCommand
+			ref rmc:ReadMeterCommand { res:|Result; String value }
+			ref mrep:MeterRepository
+			ref mres:MeterResult
+			 
+		}
+		
+		messageView NetworkCommandExecutor.receivedCommand(com) {
+			nce => com { result :=execute() } // result := execute()
+			opt [" result != null "] {
+				nce => nce { sendMessage(result) }
+			}
+		}
+		 
+		messageView |ReadMeterCommand.execute() {
+			rmc => rmc      { res := execute() }
+			rmc => mrep     { value := getValueOfMeter(name) }
+			rmc => new mres { res := create(value) } //result := create(value)
+			// return res
+		}	
+	}	 
+}
+
+/*  Received called by the hardware,
+ *  sends calls the hardware with the 
+ *  message as argument
+ */ 
+
+
+/*
+ * This is actually also missing the different possible 
+ * implementations of execute that ideally should be modeled. 
+ * Or one template for each kind of message 
+ * (read meter, read non-meter, set something)
+ */
+ 
+ /*
+  * We also need to look at the dependency semantics 
+  * explicitation (comms protocols on meters).
+  */

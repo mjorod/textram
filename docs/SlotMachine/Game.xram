@@ -1,0 +1,92 @@
+aspect Game dependsOn ZeroToManyOrdered, Random {
+	structure {
+		    
+		class ArrayOfInt {}
+		class Symbol {}
+		
+		class RandomReels {
+			- int spinReel()
+			+ RandomReels create()
+			+ ArrayOfInt spinReels()
+		} 
+		
+		class Machine {
+			+ void initialize()
+			+ void play()
+			+ void addReelAtPosition(int index, Reel a)
+			+ Reel getReelAtPosition(int index)
+		}
+		
+		class Reel {
+			int position
+			+ int getCurrentPosition()
+			+ Symbol getCurrentSymbol()
+			+ void setCurrentPosition(int newPosition)
+			+ void addSymbol(Symbol a)
+			+ Symbol getSymbol(int position)
+			+ Reel create()
+			+ Symbol getSymbolAtPosition(int position)
+			+ void addSymbolAtPosition(int position, Symbol s)
+		}  
+		  
+		class ReelConfiguration {
+			- ReelConfiguration create(String filename)
+			- Symbol getSymbol(int reel, int position)
+		}
+		
+		associations { 
+			Machine -> 1 RandomReels     { myRandom }
+			Machine -> ReelConfiguration { myRC }
+		}		
+	}
+	
+	instantiations {
+		ZeroToManyOrdered {
+			|Data <add, get> -> Machine <addReelAtPosition, getReelAtPosition>;
+			|Associated -> Reel
+			|Data <add, get> -> Reel <addSymbol, getSymbol>
+			|Associated -> Symbol
+		}
+		
+		Random {
+			RandomGenerator <nextRandom> -> RandomReels <spinReels> 
+		}	
+	} 
+		
+	messages {
+		lifelines { 
+			ref target:Machine { s:Symbol; result:ArrayOfInt; r:Reel; int i; int j; int intValueFromResult }
+			ref myRandom:RandomReels
+			ref myRC:ReelConfiguration { String default = "default" } 
+			ref newReel:Reel { symbolResult:Symbol; int position }
+		} 
+		
+		messageView Machine.initialize() {
+			target => new myRandom { myRandom := create() }
+ 			target => new myRC     { myRC := create(default) }
+			
+			loop ["int i = 0; i < 5; i++"] {
+				target => new newReel { newReel := create() }
+				target => target { addReelAtPosition(i, newReel) }
+				
+				loop ["int j = 0; j > 60; j++"] {
+					target => myRC   { s:= getSymbol(i, j) }
+					target => newReel{ addSymbolAtPosition(j, s)   } 
+				} 
+			}
+		} 
+		 
+		messageView Machine.play() {
+			target => myRandom { result := spinReels() }
+			loop["int i = 0; i < result; i++"] {
+				target => target  { r := getReelAtPosition(i) }
+				target => newReel { setCurrentPosition(intValueFromResult) } // setCurrentPosition(result[i])		
+			}
+		}
+		
+		messageView Reel.getCurrentSymbol() { // result := getCurrentSymbol()
+			newReel => newReel { symbolResult := getSymbolAtPosition(position) }
+//			newReel => <<      // { r } 
+		}
+	}
+}

@@ -1,0 +1,73 @@
+aspect SMNetworkArbiter {
+	  
+	structure { 
+		class Arbiter {
+			~ Result notAllowed()
+			+ Arbiter getArbiter()
+			+ boolean getValue()
+			
+		}
+		
+		class Command {
+			+ Result execute()
+			
+			// the following methods have not been defined in the original model
+			+ String getName()
+			+ boolean getValue()
+		}
+		
+		class Result {
+		}
+		
+		class NotAllowed : Result {
+			+ NotAllowed create()
+		}
+		
+		class StringType {}
+		class BooleanType {}
+	}      
+	
+//	instantiations {
+//		Map {
+//			// Key -> String
+//			// Value -> boolean
+//			Key -> StringType
+//			Value -> BooleanType
+//			Data -> Arbiter
+//		}
+//		
+//		Named {
+//			Named -> Command
+//		}
+//		
+//		Singleton {
+//			Singleton < getInstance > -> Arbiter < getArbiter >
+//		}
+//	}
+ 	
+	messages {
+		lifelines {
+			ref com:Command { String name; boolean allowed; ret:NotAllowed }
+			ref arb:Arbiter //singleton
+			ref na:NotAllowed
+		} 
+		
+		aspectMessageView arbitExce {
+			pointcut execute()
+			advice {
+				com => com { name := getName() }
+				com => arb { allowed := getValue() } // allowed := getValue(name)
+				
+//				alt [ "allowed" ] {
+////					com => <<
+//				}
+//				else {
+//					com => new na { ret:=create() }   
+//					com => << //{ ret }
+//				}
+			} 
+		} 
+		
+		messageView Command.execute() affectedBy arbitExce
+	}
+}

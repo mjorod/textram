@@ -1,0 +1,44 @@
+aspect Betting extends Game { 
+	structure {
+        class Machine {
+          int credits
+          + void withDrawCredits(int amount)
+          + void depositCredits (int amount)
+          + void initialize() 
+        }
+  
+        class PayTable {
+          + PayTable create(String fileName)
+          //+ int payout(Symbol first, Symbol second, Symbol third, Symbol fifth)
+        }
+ 
+        associations {
+          Machine -> 0..1 PayTable { myPayTable }
+        } 
+      }    
+       
+      messages {
+      	lifelines {
+      		ref target:Machine { String default = "default" }    
+      		ref myPayTable:PayTable 
+      	}
+      	 
+      	aspectMessageView loadPayTable {
+      		pointcut Machine.initialize()
+      		advice {
+      			target =>*  
+      			target => new myPayTable { myPayTable := create(default) } // myPayTable := create("deafult")
+//      			target => <<
+      		}  
+      	}  
+      	
+      	messageView Machine.initialize() affectedBy loadPayTable  	
+      	
+//      	aspectMessageView playWithMoney {
+//      		pointcut play
+//      		
+//      	}
+      	
+      	
+      }
+}

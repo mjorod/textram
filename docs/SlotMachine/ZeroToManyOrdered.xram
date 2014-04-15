@@ -1,0 +1,33 @@
+aspect ZeroToManyOrdered {
+	structure {
+		class |Associated {}
+		 
+		class |Data {
+			+ void removeAll()
+			+ |Data create()
+			+ void add(|Associated a)
+			+ Set<Associated> getAssociated()
+			+ void remove(int index)
+			+ boolean contains(|Associated a)
+			+ |Associated get(int index)
+			+ void add(int index, |Associated a)
+		}
+		 
+		class Sequence {
+			int size
+			~ Sequence create()
+			~ void add(|Associated a)
+			~ void remove(|Associated a)
+			~ void delete()
+			~ |Associated get(int i)
+			~ void remove(int i)
+			~ boolean contains(|Associated a)
+		}
+		
+		associations {
+			Data *-> 1 Sequence          { mySet }
+			Sequence o-> 0..* Associated { myAssociated }  
+		}  
+	}
+	  
+}  

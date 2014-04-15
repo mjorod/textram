@@ -1,0 +1,83 @@
+aspect Demo extends Betting, dependsOn Singleton { 
+	 
+	structure {
+		class ArrayOfInt {}
+		class Symbol {} //TODO: its is par of extends?
+		
+		class RandomReels {
+			+ ArrayOfInt spinOfReels()
+			+ ReelConfiguration getMyReelConfiguration()
+		}
+		 
+		class Machine {
+			boolean demoMode 
+			//ArrayOfInt nextOutCome TODO: an attribute can only be a PrimitiveType
+			int savedCredits
+			+ void setDemo(boolean on)
+			+ ArrayOfInt getNextOutCome(ArrayOfInt Symbol)
+			+ void setNextOutCome(Symbol s)
+			+ Machine getMachine() //TODO: getInstance? static?
+			+ int currentCredits() //TODO: originally only appears on messages views
+			+ int savedCredits() //TODO: originally only appears on messages views
+		} 
+		
+		class ReelConfiguration {
+			+ int getPositionForSymbol(int reel, Symbol sym)
+		}
+	}  
+	
+	instantiations {
+		Singleton {
+			|Singleton <getInstance> -> Machine <getMachine>
+		}
+	}  
+	  
+	messages {
+		lifelines { 
+			ref target:Machine { int savedCredits; int credits; null:Symbol }
+			ref randomReels:RandomReels { result:ArrayOfInt; outcome:ArrayOfInt; rc:ReelConfiguration }
+			ref rc:ReelConfiguration { int i; outcomeItem:Symbol }
+		}
+		
+		messageView Machine.setDemo(on) {
+			alt [ "on" ] {
+				target => target { savedCredits := currentCredits() }
+			}
+			else {
+				target => target { credits := savedCredits() }
+			}
+			target => target { setNextOutCome(null) } //setNextOutCome(null)
+		} 
+		
+		aspectMessageView determineNextOutcome {
+			pointcut RandomReels.spinOfReels() // result := spinOfReels
+			advice {
+				randomReels => target { outcome := getNextOutCome(result) }
+				alt [ "outcome != null" ] {
+					randomReels => target { setNextOutCome(null) } //setNextOutCome(null)
+
+				randomReels => randomReels { rc := getMyReelConfiguration() }
+				
+					loop [ "int = 0; i < 5; i++" ] {
+						randomReels => rc { getPositionForSymbol (i, outcomeItem) } // getPositionForSymbol(i, outcome[0])
+					}
+   				}
+   				else {
+   					randomReels =>* 
+   				}
+   			
+   					//randomReels => << // { result }
+	   		 }
+	   	} 
+   	  
+//		messageView RandomReels.spinOfReels() affectedBy determineNextOutcome
+//		
+//		/*
+//		 * Returns a reel position that has a symbol
+//		 */
+////		messageView ReelConfiguration.getPositionForSymbol() {
+////			>> => rc { getPositionForSymbol() } // getPositionForSymbol(sym)
+////			rc => <<
+////		}
+	}
+}

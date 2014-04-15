@@ -1,0 +1,10 @@
+aspect ReturningCommand {
+	
+	structure {
+		class |Command {
+			+ void execute() // + * execute()
+		}
+		
+	}
+	
+}
