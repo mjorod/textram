@@ -7,7 +7,7 @@
     <package 
        uri = "http://cs.mcgill.ca/sel/ram/2.1" 
        class = "ca.mcgill.cs.sel.ram.RamPackage"
-       genModel = "model/RAM.genmodel" /> 
+       genModel = "touchram/RAM.genmodel" /> 
 	
   </extension>
 
