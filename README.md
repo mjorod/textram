@@ -69,12 +69,14 @@ Once that is done you can run TextRAM.
 1. You must make sure that the launch configuration has enough PermGen
 size. You need to specify this VM argument in your launch configuration: -XX:MaxPermSize=256m
 
-2. In order to run TextRAM,  right-click on the project
+2. Xtext relies on [MWE2](https://www.eclipse.org/Xtext/documentation.html#MWE2) to generate the language infrastructure of a DSL. Therefore whether you are installing TextRAM for the first time or you changed the DSL's grammar definition, you have to run the artefact generator. Locate cl.uchile.pleiad.textram/src/GenerateTextRAM.mwe2 and from its context menu choose **Run As ->MWE2 Workflow** 
+
+3. In order to run TextRAM,  right-click on the project
 *cl.uchile.pleiad.textram* and navigate to Run As | Run As
 Configurations...; in the dialog you will see *Launch Runtime Eclipse*
 under Eclipse Application; Select that and click **Run**.
 
-3. A new Eclipse instance will be run and a new workbench will
+4. A new Eclipse instance will be run and a new workbench will
    appear. Let's create a new General project and create a new file
    with the name of the aspect that you want to model. **The extension of
    the file must be .xram**.  As soon as the file is created it will
@@ -82,4 +84,4 @@ under Eclipse Application; Select that and click **Run**.
    Xtext nature to your project. You should accept that to make your
    TextRAM editor work correctly in Eclipse.
 
-4. All RAM's models will be generated inside the folder: *src-gen/aspects/*
+5. All RAM's models will be generated inside the folder: *src-gen/aspects/*
