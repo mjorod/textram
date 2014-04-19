@@ -10,7 +10,7 @@ bin/
 *.ear
 
 # generated folders
-src-gen/
+src-gen/cl/*.*
 xtend-gen/
 tool/cl.uchile.pleiad.textram/model/
 
