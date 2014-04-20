@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SEL Commons
+Bundle-SymbolicName: ca.mcgill.sel.commons
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Software Engineering Laboratory, McGill University
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.9.1",
+ org.eclipse.emf.ecore.xmi;bundle-version="2.9.1",
+ org.eclipse.ocl.examples.xtext.oclinecore;bundle-version="3.3.0",
+ org.apache.log4j;bundle-version="1.2.15"
+Export-Package: ca.mcgill.sel.commons,
+ ca.mcgill.sel.commons.emf.util

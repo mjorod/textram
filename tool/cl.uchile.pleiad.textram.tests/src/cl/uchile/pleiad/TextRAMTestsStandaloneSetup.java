@@ -12,6 +12,7 @@ import org.eclipse.ocl.examples.xtext.oclinecore.OCLinEcoreStandaloneSetup;
 
 import com.google.inject.Injector;
 
+import ca.mcgill.cs.sel.ram.RamPackage;
 import cl.uchile.pleiad.TextRAMStandaloneSetup;
 
 /**
@@ -30,8 +31,8 @@ public class TextRAMTestsStandaloneSetup extends TextRAMStandaloneSetup {
 	
 	@Override
 	public void register(Injector injector) {
-		if (!EPackage.Registry.INSTANCE.containsKey(ca.mcgill.cs.sel.ram.RamPackage.eINSTANCE.getNsURI())) {
-			EPackage.Registry.INSTANCE.put(ca.mcgill.cs.sel.ram.RamPackage.eINSTANCE.getNsURI(), ca.mcgill.cs.sel.ram.RamPackage.eINSTANCE);
+		if (!EPackage.Registry.INSTANCE.containsKey(RamPackage.eINSTANCE.getNsURI())) {
+			EPackage.Registry.INSTANCE.put(RamPackage.eINSTANCE.getNsURI(), ca.mcgill.cs.sel.ram.RamPackage.eINSTANCE);
 		}
 		
 		super.register(injector);

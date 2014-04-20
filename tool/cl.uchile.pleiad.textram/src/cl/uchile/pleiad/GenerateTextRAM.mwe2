@@ -17,7 +17,7 @@ Workflow {
     	platformUri = "${runtimeProject}/.."
     	
     	registerGeneratedEPackage = "ca.mcgill.cs.sel.ram.RamPackage"
-		registerGenModelFile = "${runtimeProject}/touchram/RAM.genmodel"
+		registerGenModelFile = "platform:/resource/ca.mcgill.sel.ram/model/RAM.genmodel"
     }
     
     component = DirectoryCleaner {
