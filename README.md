@@ -84,4 +84,6 @@ under Eclipse Application; Select that and click **Run**.
    Xtext nature to your project. You should accept that to make your
    TextRAM editor work correctly in Eclipse.
 
-5. All RAM's models will be generated inside the folder: *src-gen/aspects/*
+5. To be able to see RAM's generated models **you have to create a
+folder named src-gen** in the project you are working on. The
+model aspects will be saved on src-gen/aspects.
