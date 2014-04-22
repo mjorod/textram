@@ -35,6 +35,22 @@ import org.eclipse.xtext.validation.Check
  */
 class TextRAMValidator extends AbstractTextRAMValidator {
 
+    public static val DUPLICATE_ELEMENT = "cl.uchile.pleiad.DuplicateElement"
+    
+    @Check
+    def checkNoDuplicates(TOperation operation) {
+    	val owner = TextRamEcoreUtil.getRootContainerOfType(operation, TextRamPackage.Literals.TCLASS) as TClass;
+    	
+    	val count = owner.members.filter(TOperation).filter( o | o.name == operation.name ).size
+    	
+    	if ( count > 1 ) {
+    		error('''Duplicate member '« operation.name »' ''',TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
+    	}
+    	
+    	
+    	
+    }
+    
 	@Check
 	def checkOperationIsValidOnInteraction(TMessage tMessage){
 		val tInteraction = tMessage.eContainer as TInteractionMessage
