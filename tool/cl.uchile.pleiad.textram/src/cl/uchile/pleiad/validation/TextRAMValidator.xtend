@@ -25,6 +25,7 @@ import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.validation.Check
+import cl.uchile.pleiad.textRam.TClassMember
 
 //import org.eclipse.xtext.validation.Check
 
@@ -38,17 +39,14 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     public static val DUPLICATE_ELEMENT = "cl.uchile.pleiad.DuplicateElement"
     
     @Check
-    def checkNoDuplicates(TOperation operation) {
-    	val owner = TextRamEcoreUtil.getRootContainerOfType(operation, TextRamPackage.Literals.TCLASS) as TClass;
+    def checkNoDuplicates(TClassMember member) {
+    	val owner = TextRamEcoreUtil.getRootContainerOfType(member, TextRamPackage.Literals.TCLASS) as TClass;
     	
-    	val count = owner.members.filter(TOperation).filter( o | o.name == operation.name ).size
+    	val count = owner.members.filter( m | m.name == member.name ).size
     	
     	if ( count > 1 ) {
-    		error('''Duplicate member '« operation.name »' ''',TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
+    		error('''Duplicate member '« member.name »' ''',TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
     	}
-    	
-    	
-    	
     }
     
 	@Check
