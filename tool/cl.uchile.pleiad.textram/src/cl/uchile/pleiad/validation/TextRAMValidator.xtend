@@ -38,8 +38,10 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 
     public static val DUPLICATE_ELEMENT = "cl.uchile.pleiad.DuplicateElement"
     
+    public static val DUPLICATE_CLASS = "cl.uchile.pleiad.DuplicateClass"
+    
     @Check
-    def checkNoDuplicates(TClassMember member) {
+    def checkNoDuplicatesMembers(TClassMember member) {
     	val owner = TextRamEcoreUtil.getRootContainerOfType(member, TextRamPackage.Literals.TCLASS) as TClass;
     	
     	val count = owner.members.filter( m | m.name == member.name ).size
@@ -48,6 +50,9 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     		error('''Duplicate member '« member.name »' ''',TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
     	}
     }
+    
+//    @Check
+//    def check
     
 	@Check
 	def checkOperationIsValidOnInteraction(TMessage tMessage){
@@ -383,4 +388,5 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 			error('Message views are mandatory', TextRamPackage.Literals.TABSTRACT_MESSAGE_VIEW__LIFELINES)
 		}
 	}
+	
 }
