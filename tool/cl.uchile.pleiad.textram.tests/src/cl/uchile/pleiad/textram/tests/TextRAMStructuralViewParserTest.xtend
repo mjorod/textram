@@ -30,4 +30,18 @@ class TextRAMStructuralViewParserTest {
 			}
 		}'''.parse.assertNoErrors
 	}
+
+	public def testAspectWithOneClassWithOnlyOperations() {
+		'''aspect A { 
+			structure { 
+				class C { 
+					+ int operation()
+					- bool operation2()
+				}
+			}
+		}'''.parse.assertNoErrors
+	}
+	
+	
+	
 }
