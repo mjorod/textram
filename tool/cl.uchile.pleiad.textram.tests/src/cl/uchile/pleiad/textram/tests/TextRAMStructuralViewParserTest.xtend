@@ -19,4 +19,15 @@ class TextRAMStructuralViewParserTest {
 	public def testAspectWithOneClassWithoutMembers() {
 		'''aspect A { structure {  class C } }'''.parse.assertNoErrors
 	}
+	
+	public def testAspectWithOneClassWithOnlyAttributes() {
+		'''aspect A { 
+			structure { 
+				class C { 
+					int a
+					int b
+				}
+			}
+		}'''.parse.assertNoErrors
+	}
 }
