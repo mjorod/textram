@@ -16,7 +16,6 @@ tool/cl.uchile.pleiad.textram/model/
 
 # generated files
 tool/cl.uchile.pleiad.textram/plugin.xml_gen
-.project
 
 # workbench
 runtime-EclipseApplication/
