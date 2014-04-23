@@ -50,4 +50,20 @@ class TextRAMStructuralViewValidatorTest {
 				"Duplicate member 'attribute'")				
 	}
 	
+	@Test
+	public def testDuplicateClasses() {
+		'''
+		aspect A {
+			structure {
+				class C {}
+				class C {}
+			}
+		}
+		'''.parse.assertError(
+			TextRamPackage.eINSTANCE.TClass,
+			TextRAMValidator.DUPLICATE_CLASS,
+			"Duplicate class 'C'"
+		)
+	}
+	
 }

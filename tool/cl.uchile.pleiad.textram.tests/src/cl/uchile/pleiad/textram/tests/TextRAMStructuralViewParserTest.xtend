@@ -19,7 +19,7 @@ class TextRAMStructuralViewParserTest {
 	
 	@Test
 	public def testAspectWithOneClassWithoutMembers() {
-		'''aspect A { structure {  class C } }'''.parse.assertNoErrors
+		'''aspect A { structure {  class C{} } }'''.parse.assertNoErrors
 	}
 	
 	@Test
@@ -40,7 +40,7 @@ class TextRAMStructuralViewParserTest {
 			structure { 
 				class C { 
 					+ int operation()
-					- bool operation2()
+					- boolean operation2()
 				}
 			}
 		}'''.parse.assertNoErrors

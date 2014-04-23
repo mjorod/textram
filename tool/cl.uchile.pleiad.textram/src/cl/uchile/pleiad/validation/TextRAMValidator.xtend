@@ -26,6 +26,7 @@ import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.validation.Check
 import cl.uchile.pleiad.textRam.TClassMember
+import cl.uchile.pleiad.textRam.TAspect
 
 //import org.eclipse.xtext.validation.Check
 
@@ -40,9 +41,10 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     
     public static val DUPLICATE_CLASS = "cl.uchile.pleiad.DuplicateClass"
     
+    //TODO: que pasa si está sobre cargado?
     @Check
     def checkNoDuplicatesMembers(TClassMember member) {
-    	val owner = TextRamEcoreUtil.getRootContainerOfType(member, TextRamPackage.Literals.TCLASS) as TClass;
+     	val owner = TextRamEcoreUtil.getRootContainerOfType(member, TextRamPackage.Literals.TCLASS) as TClass;
     	
     	val count = owner.members.filter( m | m.name == member.name ).size
     	
@@ -50,9 +52,19 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     		error('''Duplicate member '« member.name »' ''',TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
     	}
     }
-    
-//    @Check
-//    def check
+   
+    @Check
+    def checkNoDuplicateClass(TClass clazz) {
+		val owner = TextRamEcoreUtil.getRootContainerOfType(clazz, TextRamPackage.Literals.TASPECT) as TAspect;
+		
+		val count = owner.structuralView.classes.filter(TClass).filter( c | c.name == clazz.name ).size
+		
+		if (count > 1) {
+			error ('''Duplicate class '« clazz.name »' ''', RamPackage.Literals.STRUCTURAL_VIEW__CLASSES, DUPLICATE_CLASS)
+		}
+   
+    }
+   
     
 	@Check
 	def checkOperationIsValidOnInteraction(TMessage tMessage){
