@@ -27,6 +27,7 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.validation.Check
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TAspect
+import cl.uchile.pleiad.textRam.TStructuralView
 
 //import org.eclipse.xtext.validation.Check
 
@@ -57,10 +58,10 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     def checkNoDuplicateClass(TClass clazz) {
 		val owner = TextRamEcoreUtil.getRootContainerOfType(clazz, TextRamPackage.Literals.TASPECT) as TAspect;
 		
-		val count = owner.structuralView.classes.filter(TClass).filter( c | c.name == clazz.name ).size
+		val count = (owner.structuralView as TStructuralView).classes.filter(TClass).filter( c | c.name == clazz.name ).size
 		
 		if (count > 1) {
-			error ('''Duplicate class '« clazz.name »' ''', RamPackage.Literals.STRUCTURAL_VIEW__CLASSES, DUPLICATE_CLASS)
+			error ('''Duplicate class '« clazz.name »' ''', RamPackage.eINSTANCE.namedElement_Name, DUPLICATE_CLASS)
 		}
    
     }
