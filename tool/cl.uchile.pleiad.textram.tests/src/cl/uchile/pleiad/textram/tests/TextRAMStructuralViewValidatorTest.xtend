@@ -20,21 +20,7 @@ class TextRAMStructuralViewValidatorTest {
 	@Inject extension ValidationTestHelper
 	
 	@Test
-	public def testDuplicateMembers() {
-		'''
-		aspect A {
-			structure {
-				class C {
-					+ void operation()
-					+ void operation()
-				}
-			}
-		}
-		'''.parse.assertError(
-				TextRamPackage.eINSTANCE.TClassMember,
-				TextRAMValidator.DUPLICATE_ELEMENT,
-				"Duplicate member 'operation'")
-				
+	public def testDuplicateAttributes() {
 		'''	
 		aspect A {
 			structure {

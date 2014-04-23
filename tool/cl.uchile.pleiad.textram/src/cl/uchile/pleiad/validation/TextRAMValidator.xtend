@@ -28,6 +28,7 @@ import org.eclipse.xtext.validation.Check
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TStructuralView
+import cl.uchile.pleiad.textRam.TAttribute
 
 //import org.eclipse.xtext.validation.Check
 
@@ -44,13 +45,13 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     
     //TODO: que pasa si está sobre cargado?
     @Check
-    def checkNoDuplicatesMembers(TClassMember member) {
-     	val owner = TextRamEcoreUtil.getRootContainerOfType(member, TextRamPackage.Literals.TCLASS) as TClass;
+    def checkNoDuplicatesAttributes(TAttribute attr) {
+     	val owner = TextRamEcoreUtil.getRootContainerOfType(attr, TextRamPackage.Literals.TCLASS) as TClass;
     	
-    	val count = owner.members.filter( m | m.name == member.name ).size
+    	val count = owner.members.filter( m | m.name == attr.name ).size
     	
     	if ( count > 1 ) {
-    		error('''Duplicate member '« member.name »' ''',TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
+    		error('''Duplicate member '« attr.name »' ''',TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
     	}
     }
    
