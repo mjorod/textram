@@ -46,6 +46,17 @@ class TextRAMStructuralViewParserTest {
 		}'''.parse.assertNoErrors
 	}
 	
+	@Test
+	public def testClassWithOperationOverloading() {
+		'''aspect A { 
+			structure { 
+				class C { 
+					+ int operation(int a1, int b1)
+					- int operation(boolean a1)
+				}
+			}
+		}'''.parse.assertNoErrors
+	}
 	
 	
 }

@@ -78,8 +78,9 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     	}
     }
 	
-	/*
-	 * creates a string representation for parameter's types
+	/**
+	 * converts to string each parameter's type and creates a concatenated string  
+	 * @ parameters list of parameters
 	 */
 	private def stringifyTypes(EList<TParameter> parameters){
 		var result = "" 

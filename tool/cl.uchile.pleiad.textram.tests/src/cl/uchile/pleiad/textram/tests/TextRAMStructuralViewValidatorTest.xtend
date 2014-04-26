@@ -69,4 +69,5 @@ class TextRAMStructuralViewValidatorTest {
 			"Duplicate member 'operation'")
 	}
 	
+	
 }
