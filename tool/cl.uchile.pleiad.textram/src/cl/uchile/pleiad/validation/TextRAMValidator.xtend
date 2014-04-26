@@ -54,7 +54,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     }
     
     @Check
-    def checkNoDuplicationOperators(TOperation operation) {
+    def checkNoDuplicationOperations(TOperation operation) {
     	val owner = TextRamEcoreUtil.getRootContainerOfType(operation, TextRamPackage.Literals.TCLASS) as TClass;
     	
     	// get all operations with the same name and the same paramter's length
