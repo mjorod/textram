@@ -47,7 +47,7 @@ class TextRAMStructuralViewParserTest {
 	}
 	
 	@Test
-	public def testClassWithOperationOverloading() {
+	public def testClassWithMethodsOverloading() {
 		'''aspect A { 
 			structure { 
 				class C { 
