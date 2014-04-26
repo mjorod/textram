@@ -32,7 +32,7 @@ class TextRAMStructuralViewValidatorTest {
 		}
 		'''.parse.assertError(
 				TextRamPackage.eINSTANCE.TClassMember,
-				TextRAMValidator.DUPLICATE_ELEMENT,
+				TextRAMValidator::DUPLICATE_ELEMENT,
 				"Duplicate member 'attribute'")				
 	}
 	
@@ -47,9 +47,26 @@ class TextRAMStructuralViewValidatorTest {
 		}
 		'''.parse.assertError(
 			TextRamPackage.eINSTANCE.TClass,
-			TextRAMValidator.DUPLICATE_CLASS,
+			TextRAMValidator::DUPLICATE_CLASS,
 			"Duplicate class 'C'"
 		)
+	}
+	
+	@Test
+	public def testDuplicateOperations() {
+		'''
+		aspect A {
+			structure {
+				class C {
+					+ void operation(int a)
+					+ int  operation(int b)
+				}	
+			}
+		}
+		'''.parse.assertError(
+			TextRamPackage.eINSTANCE.TOperation,
+			TextRAMValidator::DUPLICATE_ELEMENT,
+			"Duplicate member 'operation'")
 	}
 	
 }

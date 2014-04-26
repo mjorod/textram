@@ -8,7 +8,9 @@ import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.RamPackage
 import cl.uchile.pleiad.textRam.TAbstractMessageView
 import cl.uchile.pleiad.textRam.TAbstractMessages
+import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TAssociation
+import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TInteractionMessage
@@ -19,16 +21,13 @@ import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TParameter
 import cl.uchile.pleiad.textRam.TReference
+import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.textRam.TValueSpecification
 import cl.uchile.pleiad.textRam.TextRamPackage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.validation.Check
-import cl.uchile.pleiad.textRam.TClassMember
-import cl.uchile.pleiad.textRam.TAspect
-import cl.uchile.pleiad.textRam.TStructuralView
-import cl.uchile.pleiad.textRam.TAttribute
 
 //import org.eclipse.xtext.validation.Check
 
@@ -43,7 +42,6 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     
     public static val DUPLICATE_CLASS = "cl.uchile.pleiad.DuplicateClass"
     
-    //TODO: que pasa si está sobre cargado?
     @Check
     def checkNoDuplicatesAttributes(TAttribute attr) {
      	val owner = TextRamEcoreUtil.getRootContainerOfType(attr, TextRamPackage.Literals.TCLASS) as TClass;
@@ -54,6 +52,44 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     		error('''Duplicate member '« attr.name »' ''',TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
     	}
     }
+    
+    @Check
+    def checkNoDuplicationOperators(TOperation operation) {
+    	val owner = TextRamEcoreUtil.getRootContainerOfType(operation, TextRamPackage.Literals.TCLASS) as TClass;
+    	
+    	// get all operations with the same name and the same paramter's length
+    	val operations = owner.members.filter(TOperation).filter( o | o.name == operation.name 
+    		&& o.parameters.size == operation.parameters.size)
+    	
+    	var error = false
+    	
+    	// check for parameter's types
+    	val List<String> parameterTypesList = newArrayList
+    	for ( o : operations ) {
+    		var parameterTypes = o.parameters.stringifyTypes(); 
+    		
+    		if ( error == false && parameterTypesList.contains(parameterTypes) == false ) {
+    			parameterTypesList.add(parameterTypes)
+    		}
+    		else {
+    			error = true
+    			error('''Duplicate member '« o.name »' ''', TextRamPackage.eINSTANCE.TClassMember_Name, DUPLICATE_ELEMENT)
+    		}
+    	}
+    }
+	
+	/*
+	 * creates a string representation for parameter's types
+	 */
+	private def stringifyTypes(EList<TParameter> parameters){
+		var result = "" 
+		for ( p : parameters ) {
+    			result = result.concat(p.type.name)
+    	}
+    	
+    	result
+	}
+    
    
     @Check
     def checkNoDuplicateClass(TClass clazz) {
