@@ -10,6 +10,7 @@ import cl.uchile.pleiad.textRam.TextRamPackage
 import java.util.List
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
+import static extension cl.uchile.pleiad.util.TextRamEcoreUtil.*
 
 final class TextRamEcoreUtil {
 	
@@ -39,14 +40,20 @@ final class TextRamEcoreUtil {
 		return null	
 	}
 	
-	def static List<TOperation> findOperations(TClass clazz, String name) {
+	/**
+	 * Returns all TextRAM's operations from a {@link TClass}.
+	 * @param clazz owner of the operations
+	 * @param name of the operation
+	 * @return a list of all class's operations that match the given name 
+	 */
+	def static List<TOperation> findTextRamOperations(TClass clazz, String name) {
 		val List<TOperation> result = newArrayList
 		
 		result.addAll(clazz.members.filter(TOperation).filter( o | o.name == name ).toList)
 		
 		if (result.size == 0) {
 			clazz.superTypes.filter(TClass).forEach[ s |
-				result.addAll( s.findOperations(name)  )
+				result.addAll( s.findTextRamOperations(name)  )
 			]
 		}
 		
