@@ -3,14 +3,12 @@ package cl.uchile.pleiad.util
 import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.Operation
-import ca.mcgill.cs.sel.ram.RamPackage
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TOperation
-import cl.uchile.pleiad.textRam.TextRamPackage
+import cl.uchile.pleiad.textRam.TParameter
 import java.util.List
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
-import static extension cl.uchile.pleiad.util.TextRamEcoreUtil.*
 
 final class TextRamEcoreUtil {
 	
@@ -41,7 +39,8 @@ final class TextRamEcoreUtil {
 	}
 	
 	/**
-	 * Returns all TextRAM's operations from a {@link TClass}.
+	 * Returns all TextRAM's operations from a {@link TClass}
+	 * 
 	 * @param clazz owner of the operations
 	 * @param name of the operation
 	 * @return a list of all class's operations that match the given name 

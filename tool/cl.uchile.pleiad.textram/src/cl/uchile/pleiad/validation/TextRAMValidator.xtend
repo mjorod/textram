@@ -24,10 +24,10 @@ import cl.uchile.pleiad.textRam.TReference
 import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.textRam.TValueSpecification
 import cl.uchile.pleiad.textRam.TextRamPackage
-import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.validation.Check
+import cl.uchile.pleiad.util.TextRamEcoreUtil
 
 //import org.eclipse.xtext.validation.Check
 
@@ -103,50 +103,66 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		}
    
     }
-   
     
-	@Check
-	def checkOperationIsValidOnInteraction(TMessage tMessage){
-		val tInteraction = tMessage.eContainer as TInteractionMessage
+    @Check
+    def checkOperationFromMessageViewExistsOnClass(TMessage tMessage) {
+    	val textRamInteraction = tMessage.eContainer as TInteractionMessage
+    	
+    	// gets the operation from message view
+		val messageArgumentsge.signature
 		
-		// check operation signature
-		var TClass clazz = null
-		val signature = tMessage.signature
-		val messageArguments = tMessage.arguments
-		
-		val List<TOperation> operations = getAllOperationsFromInteractionMesage(tInteraction, signature.name)
 
-		if (operations.empty == true) {
-			error('The operation ' + signature.name + ' is undefined for the class ' + clazz.name, TextRamPackage.Literals.TMESSAGE__SIGNATURE)
+		// owner of the operation
+		val owner = textRamInteraction.getTextRamClass
+		
+		if ( owner.containsOperation(operation) == false ) {
+			error('The operation ' + operation.name + ' is undefined', TextRamPackage.Literals.TMESSAGE__SIGNATURE)
 		}
-			
-		// there is no operation's overloading
-		if ( operations.areOverloaded == false ) {
-			val currentOperation = operations.get(0)
-			
-			if ( haveSameNumberOfArgumentsOnMessageInteraction( currentOperation.parameters, messageArguments ) == false ) {
-				error('Invalid number of arguments on ' + signature.name, TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
-				return				
-			}
-			
-			if ( haveSameArgumentsTypeOnMessageInteraction( currentOperation.parameters, messageArguments ) == false ) {
-				//TODO: which parameter?
-				error('Type mismatch: cannot convert from parameters', TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
-				return		
-			}
-
-		} 
-		else {
-			// there is operation overloading
-			val o = operations.findOperationThatMatchArgumentsSignatureOnMessageInteraction( messageArguments )
-			if ( o == null) {
-				error('The operation ' + signature.name + ' has invalid arguments ', TextRamPackage.Literals.TMESSAGE__SIGNATURE)
-				return
-			}
-		}		
+    } 
+    
+//Check
+//ef checkOperationIsValidOnInteraction(TMessage tMessage){
+//// cast to textRamInteraction		
+//val textRamInteraction = tMessage.eContainer as TInteractionMessage
+//
+//// gets the operation from message view
+//val operation = tMessage.signature
+//
+//// gets operation's arguments
+//val operationArguments = tMessage.arguments
+//
+//// ownmessageArgumentsn
+//		l owner = textRamInteraction.getTextRamClass
+//		/		 ( owner.containsOperation(operation) == false ) {
+//		rror('''T'operation '«ope + operation.name +  undefined''','xtRamPackage.Literals.TMESSAGE__SIGNATURE, ME}
+		
+/	//ll methods from the owner class that match operation's name
+//		vaoperations = TextRamEcoreUtil.findTextRamOperations( owner, operation.name)
+//		
+/	//here is no operation's overloading
+//		if operations.areOverloaded == false ) {
+//			v currentOperation = operations.get(0)
+//messeArgentsSameNumberOfArgumentsOnMessageInteraction( currentOperation.parameters, operationArguments ) == false ) {
+//				err('Invalid number of arguments on ' + operation.name, TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
+//			}
+/		
+//	if haveSameArgumentsTypeOnMessageInteraction( currentOperation.parameters, operationArguments ) == false ) {
+//				//DO: which parameter?
+//				err('Type mismatch: cannot convert from parameters', TextRamPackage.Literals.TMESSAGE__ARGUMENTS)
+//			}
+///		}/	else
+//			// ere is operation overloading
+//			val = operations.findOperationThatMatchArgumentsSignatureOnMessageInteraction( operationArguments )
+//			if o == null) {
+//				err('The operation ' + operation.name + ' has invalid arguments ', TextRamPackage.Literals.TMESSAGE__SIGNATURE)
+//			}
+/	}		
 	}
+//	/	d ctainsOperation(TClass clazz, TOperation operation) {
+//		retu clazz.members.filter(TOperation).exists[ o | o.name == operation.name ]
+//	}
 	
-	@Check
+	heck
 	def checkOperationIsValidOnMessageView(TAbstractMessages messageView) {
 		
 		val clazz = messageView.class_ 
@@ -162,8 +178,9 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 			return
 		}
 
+		// if the operation's name has many occurrences inside the structural view, the user must to define the class name.
 		if ( operations.haveAmbiguityDefinition == true ) {
-				error('ambiguity in operation definition', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
+				error('There are more than one operation with the same name. You have to define the class owner of the operation.', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
 				return
 		}
 				
@@ -192,24 +209,27 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 	
 	}
 	
-	private def getAllOperationsFromInteractionMesage(TInteractionMessage tInteraction, String operationName) {
-		val List<TOperation> result = newArrayList
+	/**
+	 * Gets the class from a {@link TInteractionMessage interaction}. 
+	 * Evaluates the rightlifeline's referenceType attribute and resolves how to get the corresponded class.
+	 * 
+	 * @param textRamInteraction current message interaction
+	 * @return {@link TClass class} owner f the message interaction
+	 */
+	private def getTextRamClass(TInteractionMessage textRamInteraction) {
+		var TClass result = null
 		
-		var TClass clazz = null
-		
-		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.REFERENCE) {
-			clazz = tInteraction.rightLifeline.represents as TClass
+		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.REFERENCE) {
+			result = textRamInteraction.rightLifeline.represents as TClass
 		}
 		
-		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.ASSOCIATION) {
-			clazz = (tInteraction.rightLifeline.represents as TAssociation).toEnd.classReference as TClass
+		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.ASSOCIATION) {
+			result = (textRamInteraction.rightLifeline.represents as TAssociation).toEnd.classReference as TClass
 		}
 		
-		if (tInteraction.rightLifeline.referenceType == TLifelineReferenceType.ATTRIBUTE) {
-			throw new Exception("Attributes not supported as TLifeline references")
+		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.ATTRIBUTE) {
+			throw new Exception("Attributes are not supported as TLifeline references")
 		}
-		
-		result.addAll( TextRamEcoreUtil.findOperations( clazz, operationName) )
 		
 		result
 	}
@@ -218,7 +238,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		val List<TOperation> result = newArrayList
 		
 		if ( optionalClass.isDefined ) {
-			result.addAll( TextRamEcoreUtil.findOperations(optionalClass, operationName) )
+			result.addAll( TextRamEcoreUtil.findTextRamOperations(optionalClass, operationName) )
 		}
 		else {
 			result.addAll ( TextRamEcoreUtil.findAspectOperations( aspect, operationName ) )
@@ -311,14 +331,35 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		return list.size == list2.size
 	}
 	
+	/**
+	 * check if the quantity of arguments of two lists are the same.
+	 * This method is used to validate the quantity of arguments between a class's operation and message view header's operation.
+	 * 
+	 * @param list one to compare
+	 * @param list two to compare
+	 * @return returns true if both lists have the same number of elements, otherwise returns false.
+	 */
 	private def haveSameNumberOfArgumentsOnMessageInteraction(EList<TParameter> list, EList<TValueSpecification> list2) {
 		return list.size == list2.size
 	} 
 	
+	/**
+	 * check if the operation is overloaded
+	 * 
+	 * @param operations from a class
+	 * @return retuns true if exists overloading, otherwise returns false.
+	 */
 	private def areOverloaded(List<TOperation> operations) {
 		return operations.size > 0
 	}
 	
+	/**
+	 * There is ambiguity if the operation has more than one occurrence. 
+	 * This method is used to check if the message view header's operation needs the class definition to avoid ambiguity.
+	 * 
+	 * @param operations extracted from the structural view
+	 * @return returns true if exists ambiguity, otherwise returns false.
+	 */
 	private def haveAmbiguityDefinition(List<TOperation> operations) {
 		return operations.size > 1
 	}
