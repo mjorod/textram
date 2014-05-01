@@ -52,7 +52,7 @@ class TextRAMMessageViewValidatorTest {
 	}
 	
 	@Test
-	def testValidTypeOfArgumentsForOverloadedOperatorOnInteraction() {
+	def testValidArgumentsForOperationOnInteraction() {
 		'''
 		aspect A {
 			structure {
@@ -83,4 +83,5 @@ class TextRAMMessageViewValidatorTest {
 			"Invalid arguments on 'start'"
 		)
 	}
+	
 }
