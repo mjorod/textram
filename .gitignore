@@ -10,9 +10,10 @@ bin/
 *.ear
 
 # generated folders
-src-gen/cl/*.*
+src-gen/*.*
 xtend-gen/
 tool/cl.uchile.pleiad.textram/model/
+tool/cl.uchile.pleiad.textram.ui/src-gen
 
 # generated files
 tool/cl.uchile.pleiad.textram/plugin.xml_gen
