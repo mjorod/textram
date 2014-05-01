@@ -157,7 +157,7 @@ TAspectMessageView returns textRam::TAspectMessageView:
 	'aspectMessageView' 
 		name=EString '{'
 		'pointcut' (create?='new')?  ( (partialClass?='|')? class=[textRam::TClass|EString] '.')? (partialOperation?='|')? specifies=[textRam::TOperation|EString]
-		'(' ( arguments+=[textRam::TParameter|EString] (',' arguments+=[textRam::TParameter|EString] )?  )? ')'
+		'(' ( arguments+=[textRam::TParameter|EString] (',' arguments+=[textRam::TParameter|EString] )*  )? ')'
 		'advice' '{'
 			interactionMessages+=TInteraction (';'? interactionMessages+=TInteraction)*
 		'}'
@@ -226,7 +226,7 @@ TReturnMessage returns textRam::TReturnMessage:
 
 TMessage returns textRam::TMessage:
 	(assignTo=[textRam::TMessageAssignableFeature|EString] ':=')?
-	(partialOperation?='|')? signature=[textRam::TOperation|EString] '(' ( arguments+=[textRam::TValueSpecification|EString] (',' arguments+=[textRam::TValueSpecification|EString] )?  )? ')'
+	(partialOperation?='|')? signature=[textRam::TOperation|EString] '(' ( arguments+=[textRam::TValueSpecification|EString] (',' arguments+=[textRam::TValueSpecification|EString] )*  )? ')'
 ;
 
 //TODO: It should be StructuralFeature | Parameter
