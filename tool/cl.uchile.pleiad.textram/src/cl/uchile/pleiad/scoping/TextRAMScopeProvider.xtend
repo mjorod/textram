@@ -71,7 +71,7 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 	
 	def IScope scope_TLifeline_represents(Aspect aspect, EReference reference) {
-		Scopes::scopeFor( aspect.getTTypedElements )
+		Scopes::scopeFor( (aspect as TAspect).getTTypedElements )
 	}
 
 	def IScope scope_TAbstractMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {

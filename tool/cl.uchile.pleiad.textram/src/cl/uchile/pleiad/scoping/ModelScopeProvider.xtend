@@ -85,7 +85,7 @@ class ModelScopeProvider {
 		operations
 	}
 	
-	def getTTypedElements(Aspect aspect) {
+	def getTTypedElements(TAspect aspect) {
 		//AssociationEnd
 		//Attribute
 		//Parameter
@@ -93,12 +93,20 @@ class ModelScopeProvider {
 		
 		val List<TTypedElement> result = newArrayList
 		
-		result.addAll( aspect.getAllAssociations )
-		result.addAll( aspect.getAllAttributes ) //TODO: nunca me encontré con un attribute
-		//result.addAll( aspect.getAllParameters ) //TODO:parameters
-		result.addAll( aspect.getAllClasses )
-		
+		addExtendendTTypedElements(aspect, result)
+					
 		result
+	}
+	
+	private def void addExtendendTTypedElements(TAspect aspect, List<TTypedElement> elements) {
+		elements.addAll( aspect.getAllAssociations )
+		elements.addAll( aspect.getAllAttributes ) //TODO: nunca me encontré con un attribute
+		//result.addAll( aspect.getAllParameters ) //TODO:parameters
+		elements.addAll( aspect.getAllClasses )
+		
+		aspect.headerInstantiations.filter( i | i.type == InstantiationType.EXTENDS).map[externalAspects].flatten.filter(TAspect).forEach[ a | 
+			addExtendendTTypedElements(a , elements)	
+		]		
 	}
 	
 	private def getAllClasses(Aspect aspect) {

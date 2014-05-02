@@ -119,4 +119,39 @@ class TextRamParserMessageViewTest {
 		'''.parse.assertNoErrors
 	}
 	
+	@Test
+	def testModelExtensions() {
+		val aspectB = '''
+		aspect B {
+			structure {
+				class B1 {
+					+ void operationB1_1()
+					+ void operationB1_2()
+					- void operationB1_3()
+				}
+				
+			}
+		}'''.parse
+		
+		'''aspect A extends B {
+			structure {
+				class A1 {
+					+ void operationA1_1()
+				}
+			}
+			
+			messages {
+				lifelines {
+					ref a1:A1
+					ref b1:B1
+				}
+				
+				messageView A1.operationA1_1() {
+					a1 => a1 { operationA1_1() }
+				}
+			}
+		}
+		'''.parse(aspectB.eResource.resourceSet).assertNoErrors
+	}
+	
 }
