@@ -47,7 +47,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
     
     public static val INVALID_ARGUMENTS = "cl.uchile.pleiad.InvalidArguments"
     
-    public static val TYPE_MISMATCH = "cl.uchile.pleiad.TypeMismatch"
+    public static val MEMBERS_AMBIGUITY = "cl.uchile.pleiad.MembersAmbiguity"
     
     @Check
     def checkNoDuplicatesAttributes(TAttribute attr) {
@@ -133,7 +133,6 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		
 		if (o == null) {
 			error("Invalid arguments on '" + operation.name + "'", TextRamPackage.Literals.TMESSAGE__SIGNATURE, INVALID_ARGUMENTS)
-			return
 		}
 	}
 	
@@ -147,46 +146,30 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		return clazz.members.filter(TOperation).exists[ o | o.name == operation.name ]
 	}
 		
-//	@Check
-//	def checkOperationIsValidOnMessageView(TAbstractMessages messageView) {
-//		
-//		val clazz = messageView.class_ 
-//		val messageViewOperation = messageView.specifies
-//		val messageViewArguments = messageView.arguments
-//
-//		val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType( messageView, RamPackage.Literals.ASPECT ) 
-//
-//		val List<TOperation> operations = aspect.getAllOperations(clazz, messageViewOperation.name) 		
-//
-//		if (operations.empty == true) {
-//			error('The operation ' + messageViewOperation.name + ' is undefined', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-//		}
-//
-//		// if the operation's name has many occurrences inside the structural view, the user must to define the class name.
-//		if ( operations.haveAmbiguityDefinition == true ) {
-//				error('There are more than one operation with the same name. You have to define the class owner of the operation.', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-//		}
-//				
-//		if ( operations.areOverloaded == false ) {
-//			val currentOperation = operations.get(0)
-//			
-//			if ( haveSameNumberOfArguments( currentOperation.parameters, messageViewArguments ) == false ) {
-//				error('Invalid number of arguments on ' + messageViewOperation.name, TextRamPackage.Literals.TABSTRACT_MESSAGES__ARGUMENTS)
-//			}
-//			
-//			if ( haveSameArgumentsType( currentOperation.parameters, messageViewArguments ) == false ) {
-//				//TODO: which parameter?
-//				error('Type mismatch: cannot convert from parameters', TextRamPackage.Literals.TABSTRACT_MESSAGES__ARGUMENTS)
-//			}
-//		} 
-//		else {
-//			// there is operation overloading
-//			val o = operations.findOperationThatMatchArgumentsSignature( messageViewArguments )
-//			if ( o == null) {
-//				error('The operation ' + messageViewOperation.name + ' has invalid arguments ', TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES)
-//			}
-//		}
-//	}
+	@Check
+	def checkOperationIsValidOnMessageView(TAbstractMessages messageView) {
+		
+		val clazz = messageView.class_ 
+		val messageViewOperation = messageView.specifies
+		val messageViewArguments = messageView.arguments
+
+		val Aspect aspect = TextRamEcoreUtil.getRootContainerOfType( messageView, RamPackage.Literals.ASPECT ) 
+
+		// gets all aspect's operations
+		val List<TOperation> operations = aspect.getAllOperations(clazz, messageViewOperation.name) 		
+
+		// if the operation's name has many occurrences inside the structural view, the user must to define the class name.
+		if ( operations.haveAmbiguityDefinition == true ) {
+			error("The class's name is mandatory. There are more than one operation with the same name in other classes.", TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES, MEMBERS_AMBIGUITY)
+		}
+		
+		val o = operations.findOperationThatMatchArgumentsSignature( messageViewArguments )
+		
+		if ( o == null) {
+			error("Invalid arguments on '" + messageViewOperation.name + "'", TextRamPackage.Literals.TABSTRACT_MESSAGES__SPECIFIES, INVALID_ARGUMENTS)
+		}
+
+	}
 	
 	/**
 	 * Gets the class from a {@link TInteractionMessage interaction}. 
@@ -213,6 +196,17 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		result
 	}
 	
+	/**
+	 * Gets all operations from the aspect or the optional class that match the given name. 
+	 * If the optional {@link TClass class} is defined, the method returns only the operations for that class.
+	 * Otherwise, returns all the operations from the aspect that match the given name.
+	 * 
+	 * @param aspect owner of the model
+	 * @param optionalClass owner of the operations. This is an optional parameter.
+	 * @param operationName name of the operation to get
+	 * 
+	 * @return all operation that match the given name (from the aspect or the optional class)
+	 */
 	private def getAllOperations(Aspect aspect, TClass optionalClass, String operationName) {
 		val List<TOperation> result = newArrayList
 		
