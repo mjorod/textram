@@ -11,7 +11,6 @@ import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TInteractionMessage
-import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TStructuralView
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
@@ -61,13 +60,17 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( toElement.members )
 	}
 	
-	def IScope scope_TMessageView_class(Aspect aspect, EReference reference) {
-		val classes = aspect.structuralView.classes.filter(TClass)
-		Scopes::scopeFor( classes )
+	def IScope scope_TAbstractMessages_class(Aspect aspect, EReference reference) {
+		val tAspect = (aspect as TAspect)
+		
+		Scopes::scopeFor( tAspect.getExtendedClasses )
 	}
 	
-	def IScope scope_TMessageView_specifies(Aspect aspect, EReference reference) {
-		Scopes::scopeFor( aspect.getPublicOperations )
+		
+	def IScope scope_TAbstractMessages_specifies(Aspect aspect, EReference reference ) {		
+		val tAspect = aspect as TAspect
+		
+		Scopes::scopeFor( tAspect.getExtendedOperations )
 	}
 	
 	def IScope scope_TLifeline_represents(Aspect aspect, EReference reference) {
@@ -82,8 +85,8 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 //		Scopes::scopeFor ( textRamInteractionMessage.getReturnMessageAssignTo )
 //	}
 
-	def IScope scope_TMessage_signature(Aspect aspect, EReference reference) {
-		Scopes::scopeFor ( aspect.getOperations  )
+	def IScope scope_TMessage_signature(TInteractionMessage interaction, EReference reference) {
+		Scopes::scopeFor ( interaction.getExtendedOperationsFromRightLifeline  )
 	}
 	
 	def IScope scope_TMessage_arguments(TInteractionMessage interaction, EReference reference) {
@@ -93,15 +96,8 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TMessageView_affectedBy(TAbstractMessageView abstractMessageView, EReference reference) {
 		Scopes::scopeFor ( abstractMessageView.getAspectMessageViews )
 	}
-
-	def IScope scope_TAbstractMessages_class(Aspect aspect, EReference reference) {
-		Scopes::scopeFor( (aspect.structuralView as TStructuralView).classes.filter(TClass) )
-	}
 		
-	def IScope scope_TAbstractMessages_specifies(TAbstractMessages messageView, EReference reference ) {
-		Scopes::scopeFor( messageView.getOperationsForAspectMessageView )
-	}
-	
+
 	def IScope scope_TAbstractMessages_arguments(TAbstractMessages messageView, EReference reference) {
 		Scopes::scopeFor( messageView.getArgumentsForAspectMessageViewOperation )
 	}

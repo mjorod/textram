@@ -23,134 +23,173 @@ class TextRamScopeProviderTest {
 	@Inject extension ValidationTestHelper
 	//@Inject extension IScopeProvider
 	
-	@Inject Provider<ResourceSet> resourceSetProvider;
+//	@Inject Provider<ResourceSet> resourceSetProvider;
+//	
+	 
+//
+//	
+//	 @Test 
+//	 def void testBindPartialClass() {
+//     	val resourceSet = resourceSetProvider.get
+//     	
+//     	val first = 
+//     	'''
+//		aspect ExternalAspect {
+//			structure {
+//				class |ExternalClass { }
+//				class SecondExternalClass { }
+//			}
+//		}
+//     	'''.parse(resourceSet)
+//     	
+//     	val second = 
+//     	'''
+//		aspect Aspect {
+//			structure {
+//				class MyClass { }
+//			}
+//			instantiations {
+//				ExternalAspect {
+//					|ExternalClass -> MyClass 
+//				}
+//			}
+//		}
+//     	'''.parse(resourceSet)
+//     	
+//     	first.assertNoErrors
+//     	second.assertNoErrors
+//     	
+//     	second.instantiations.head.externalAspect.assertSame(first)
+//     	second.instantiations.head.externalAspect.structuralView.classes.head.assertSame(first.structuralView.classes.head)
+//     }
+//
+// 	@Test 
+//	def void testInstantiationExtension() {
+//		val resourceSet = resourceSetProvider.get
+//		
+//		val first = 
+//		'''
+//		aspect ExternalAspect {
+//			structure {
+//				class |ExternalClass { 
+//					- int   nonPartialMethod()
+//					- int   |partialMethod(int parm1)
+//					+ float publicMethod(float f1)
+//					~ void intraAspectMethod()
+//					int attribute
+//				}
+//				class SecondExternalClass { }
+//			}
+//		}
+//		'''.parse(resourceSet)
+//		
+//		val second = 
+//		'''
+//		aspect Aspect {
+//			structure {
+//				class MyClass { 
+//					- int   innerNonPartialMethod()
+//					- int   |innerPartialMethod(int parm1)
+//					+ float innerPublicMethod(float f1)
+//					~ void innerIntraAspectMethod()
+//					int innerAttribute
+//				}
+//			}
+//			instantiations {
+//				extends ExternalAspect {
+//					|ExternalClass<nonPartialMethod, |partialMethod, publicMethod, intraAspectMethod, attribute> -> MyClass<innerNonPartialMethod, |innerPartialMethod, innerPublicMethod, innerIntraAspectMethod, innerAttribute>
+//				}
+//			}
+//		}
+//		'''.parse(resourceSet)
+//		
+//		first.assertNoErrors
+//		second.assertNoErrors
+//		
+//		second.instantiations.head.type.assertSame( InstantiationType.EXTENDS )
+//	}
+//	
+//	@Test 
+//	def void testInstantiationCustomization() {
+//		val resourceSet = resourceSetProvider.get
+//		
+//		val first = 
+//		'''
+//		aspect ExternalAspect {
+//			structure {
+//				class |ExternalClass { 
+//					- int   nonPartialMethod()
+//					- int   |partialMethod(int parm1)
+//					+ float publicMethod(float f1)
+//					~ void intraAspectMethod()
+//					int attribute
+//				}
+//				class SecondExternalClass { }
+//			}
+//		}
+//		'''.parse(resourceSet)
+//		
+//		val second = 
+//		'''
+//		aspect Aspect {
+//			structure {
+//				class MyClass { 
+//					- int   innerNonPartialMethod()
+//					- int   |innerPartialMethod(int parm1)
+//					+ float innerPublicMethod(float f1)
+//					~ void innerIntraAspectMethod()
+//					int innerAttribute
+//				}
+//			}
+//			instantiations {
+//				dependsOn ExternalAspect {
+//					|ExternalClass<publicMethod> -> MyClass<innerPublicMethod>
+//				}
+//			}
+//		}
+//		'''.parse(resourceSet)
+//		
+//		first.assertNoErrors
+//		second.assertNoErrors
+//		
+//		second.instantiations.head.type.assertSame( InstantiationType.DEPENDS )
+//	}
 	
-	
-	 @Test 
-	 def void testBindPartialClass() {
-     	val resourceSet = resourceSetProvider.get
-     	
-     	val first = 
-     	'''
-		aspect ExternalAspect {
+	@Test
+	def testVisibilityOfExtendedClassesAndOperationsOnMessageView() {
+		
+		val aspectB = '''
+		aspect B {
 			structure {
-				class |ExternalClass { }
-				class SecondExternalClass { }
+				class B1 {
+					+ void operationB1_1()
+					+ void operationB1_2()
+					- void operationB1_3()
+				}
+				
 			}
-		}
-     	'''.parse(resourceSet)
-     	
-     	val second = 
-     	'''
-		aspect Aspect {
+		}'''.parse
+		
+		'''aspect A extends B {
 			structure {
-				class MyClass { }
+				class A1 {
+					+ void operationA1_1()
+				}
 			}
-			instantiations {
-				ExternalAspect {
-					|ExternalClass -> MyClass 
+			
+			messages {
+				lifelines {
+					ref a1:A1
+					ref b1:B1
+				}
+				
+				messageView B1.operationB1_1() {
+					a1 => b1 { operationB1_1() }
+					b1 => b1 { operationB1_2() }
 				}
 			}
 		}
-     	'''.parse(resourceSet)
-     	
-     	first.assertNoErrors
-     	second.assertNoErrors
-     	
-     	second.instantiations.head.externalAspect.assertSame(first)
-     	second.instantiations.head.externalAspect.structuralView.classes.head.assertSame(first.structuralView.classes.head)
-     }
-
- 	@Test 
-	def void testInstantiationExtension() {
-		val resourceSet = resourceSetProvider.get
-		
-		val first = 
-		'''
-		aspect ExternalAspect {
-			structure {
-				class |ExternalClass { 
-					- int   nonPartialMethod()
-					- int   |partialMethod(int parm1)
-					+ float publicMethod(float f1)
-					~ void intraAspectMethod()
-					int attribute
-				}
-				class SecondExternalClass { }
-			}
-		}
-		'''.parse(resourceSet)
-		
-		val second = 
-		'''
-		aspect Aspect {
-			structure {
-				class MyClass { 
-					- int   innerNonPartialMethod()
-					- int   |innerPartialMethod(int parm1)
-					+ float innerPublicMethod(float f1)
-					~ void innerIntraAspectMethod()
-					int innerAttribute
-				}
-			}
-			instantiations {
-				extends ExternalAspect {
-					|ExternalClass<nonPartialMethod, |partialMethod, publicMethod, intraAspectMethod, attribute> -> MyClass<innerNonPartialMethod, |innerPartialMethod, innerPublicMethod, innerIntraAspectMethod, innerAttribute>
-				}
-			}
-		}
-		'''.parse(resourceSet)
-		
-		first.assertNoErrors
-		second.assertNoErrors
-		
-		second.instantiations.head.type.assertSame( InstantiationType.EXTENDS )
+		'''.parse(aspectB.eResource.resourceSet).assertNoErrors
 	}
-	
-	@Test 
-	def void testInstantiationCustomization() {
-		val resourceSet = resourceSetProvider.get
-		
-		val first = 
-		'''
-		aspect ExternalAspect {
-			structure {
-				class |ExternalClass { 
-					- int   nonPartialMethod()
-					- int   |partialMethod(int parm1)
-					+ float publicMethod(float f1)
-					~ void intraAspectMethod()
-					int attribute
-				}
-				class SecondExternalClass { }
-			}
-		}
-		'''.parse(resourceSet)
-		
-		val second = 
-		'''
-		aspect Aspect {
-			structure {
-				class MyClass { 
-					- int   innerNonPartialMethod()
-					- int   |innerPartialMethod(int parm1)
-					+ float innerPublicMethod(float f1)
-					~ void innerIntraAspectMethod()
-					int innerAttribute
-				}
-			}
-			instantiations {
-				dependsOn ExternalAspect {
-					|ExternalClass<publicMethod> -> MyClass<innerPublicMethod>
-				}
-			}
-		}
-		'''.parse(resourceSet)
-		
-		first.assertNoErrors
-		second.assertNoErrors
-		
-		second.instantiations.head.type.assertSame( InstantiationType.DEPENDS )
-	} 
-     
+    
 }

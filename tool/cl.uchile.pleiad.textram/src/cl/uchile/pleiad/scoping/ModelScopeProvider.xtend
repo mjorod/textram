@@ -98,15 +98,83 @@ class ModelScopeProvider {
 		result
 	}
 	
+	def getExtendedOperationsFromRightLifeline(TInteractionMessage interaction) {
+		if ( interaction.message instanceof TMessage == false ) {
+			throw new Exception("Concrete type of TAbstractMessage must be TMessage")
+		}
+		
+		val tMessage = interaction.message as TMessage
+		
+		val owner = TextRamEcoreUtil.getTextRamClass(interaction)
+
+		val operations = TextRamEcoreUtil.findTextRamOperations( owner )
+		
+		return operations
+	}
+	
+	/**
+	 * Gets a hierarchy of the external aspect's classes of type EXTENDS defined in the header of the given {@link TAspect aspect}
+	 * 
+	 * @param aspect owner of the external aspects
+	 * @return a flatten list of the hierarchy of the extended classes for the given aspects   
+	 */
+	def getExtendedClasses(TAspect aspect) {
+		val List<TClass> result = newArrayList
+		
+		addExtendedClasses(aspect, result)
+		
+		result
+	}
+	
+	/**
+	 * Gets the hierarchy of the external aspect's operations of type EXTENDS defined in the header of the given {@link TAspect aspect}
+	 * 
+	 * @param aspect owner of the external aspects
+	 * @return a flatten list of the hierarchy of the extended classes for the given aspects.
+	 */
+	 def getExtendedOperations(TAspect aspect) {
+		val List<TOperation> result = newArrayList
+		
+		addExtendedOperations(aspect, result)
+		
+		result
+	}
+	
 	private def void addExtendendTTypedElements(TAspect aspect, List<TTypedElement> elements) {
 		elements.addAll( aspect.getAllAssociations )
 		elements.addAll( aspect.getAllAttributes ) //TODO: nunca me encontré con un attribute
 		//result.addAll( aspect.getAllParameters ) //TODO:parameters
 		elements.addAll( aspect.getAllClasses )
 		
-		aspect.headerInstantiations.filter( i | i.type == InstantiationType.EXTENDS).map[externalAspects].flatten.filter(TAspect).forEach[ a | 
+		aspect.getExtendedExternalAspects.forEach[ a | 
 			addExtendendTTypedElements(a , elements)	
 		]		
+	}
+	
+	private def void addExtendedClasses(TAspect aspect, List<TClass> classes) {
+        classes.addAll( aspect.structuralView.classes.filter(TClass) )
+        
+		aspect.getExtendedExternalAspects.forEach[ a | 
+			addExtendedClasses(a, classes)
+		]
+	}
+	
+	private def void addExtendedOperations(TAspect aspect, List<TOperation> operations) {
+		operations.addAll(aspect.structuralView.classes.filter(TClass).map[members].flatten.filter(TOperation))
+		
+		aspect.getExtendedExternalAspects.forEach[ a |
+			addExtendedOperations(a, operations)
+		]
+	}
+	
+	/**
+	 * gets all external aspects defined in the header instantiation of the given {@link TAspect aspect} model.
+	 * 
+	 * @param aspect owner of the external aspects
+	 * @return external aspect from the given aspect
+	 */	
+	private def getExtendedExternalAspects(TAspect aspect) {
+		aspect.headerInstantiations.filter( i | i.type == InstantiationType.EXTENDS).map[externalAspects].flatten.filter(TAspect)
 	}
 	
 	private def getAllClasses(Aspect aspect) {

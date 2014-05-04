@@ -123,10 +123,10 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		val operationArguments = tMessage.arguments
 	
 		// the owner of the operation must be the class represented in the rightlifeline
-		val owner = textRamInteraction.getTextRamClass
+		val owner =  TextRamEcoreUtil.getTextRamClass(textRamInteraction)
 		
 		// get all owner's operations
-		val operations = TextRamEcoreUtil.findTextRamOperations( owner, operation.name)
+		val operations = TextRamEcoreUtil.findTextRamOperations(owner, operation.name)
 		
 		// gets the operation that match the signature
 		val o = operations.findOperationThatMatchArgumentsSignatureOnMessageInteraction( operationArguments )
@@ -172,31 +172,6 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 	}
 	
 	/**
-	 * Gets the class from a {@link TInteractionMessage interaction}. 
-	 * Evaluates the rightlifeline's referenceType attribute and resolves how to get the corresponded class.
-	 * 
-	 * @param textRamInteraction current message interaction
-	 * @return {@link TClass class} owner f the message interaction
-	 */
-	private def getTextRamClass(TInteractionMessage textRamInteraction) {
-		var TClass result = null
-		
-		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.REFERENCE) {
-			result = textRamInteraction.rightLifeline.represents as TClass
-		}
-		
-		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.ASSOCIATION) {
-			result = (textRamInteraction.rightLifeline.represents as TAssociation).toEnd.classReference as TClass
-		}
-		
-		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.ATTRIBUTE) {
-			throw new Exception("Attributes are not supported as TLifeline references")
-		}
-		
-		result
-	}
-	
-	/**
 	 * Gets all operations from the aspect or the optional class that match the given name. 
 	 * If the optional {@link TClass class} is defined, the method returns only the operations for that class.
 	 * Otherwise, returns all the operations from the aspect that match the given name.
@@ -211,7 +186,7 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		val List<TOperation> result = newArrayList
 		
 		if ( optionalClass.isDefined ) {
-			result.addAll( TextRamEcoreUtil.findTextRamOperations(optionalClass, operationName) )
+			result.addAll(  TextRamEcoreUtil.findTextRamOperations( optionalClass, operationName ) )
 		}
 		else {
 			result.addAll ( TextRamEcoreUtil.findAspectOperations( aspect, operationName ) )

@@ -36,8 +36,8 @@ class TextRamParserMessageViewTest {
 		}       
 		              
 		associations {    
-			|Data -> 1 Set { mySet }
-			Set -> * |Associated { myAssociated }  
+			Data -> 1 Set { mySet }
+			Set -> * Associated { myAssociated }  
 		}       
 	}' 
 	
@@ -101,14 +101,14 @@ class TextRamParserMessageViewTest {
 				« structuralView »
 			
 				messages {
-					objects {
+					lifelines {
 						ref target:|Data { boolean ignore }
 						ref newData:|Data
-						mySet:mySet 
+						assoc mySet:mySet 
 					}
 					
 					messageView Set.create() {
-						>>     => new target { add(|Associated a) : void }
+						>>     => new target { add(Associated a) : void }
 						target => new mySet { add() }   
 						loop [ 'Observers o : observers' ] {
 							newData => mySet { create() }
@@ -117,41 +117,6 @@ class TextRamParserMessageViewTest {
 				}
 			}
 		'''.parse.assertNoErrors
-	}
-	
-	@Test
-	def testModelExtensions() {
-		val aspectB = '''
-		aspect B {
-			structure {
-				class B1 {
-					+ void operationB1_1()
-					+ void operationB1_2()
-					- void operationB1_3()
-				}
-				
-			}
-		}'''.parse
-		
-		'''aspect A extends B {
-			structure {
-				class A1 {
-					+ void operationA1_1()
-				}
-			}
-			
-			messages {
-				lifelines {
-					ref a1:A1
-					ref b1:B1
-				}
-				
-				messageView A1.operationA1_1() {
-					a1 => a1 { operationA1_1() }
-				}
-			}
-		}
-		'''.parse(aspectB.eResource.resourceSet).assertNoErrors
 	}
 	
 }

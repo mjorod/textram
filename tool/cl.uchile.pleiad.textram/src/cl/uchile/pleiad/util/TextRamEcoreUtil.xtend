@@ -9,6 +9,9 @@ import cl.uchile.pleiad.textRam.TParameter
 import java.util.List
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
+import cl.uchile.pleiad.textRam.TInteractionMessage
+import cl.uchile.pleiad.textRam.TLifelineReferenceType
+import cl.uchile.pleiad.textRam.TAssociation
 
 final class TextRamEcoreUtil {
 	
@@ -39,7 +42,7 @@ final class TextRamEcoreUtil {
 	}
 	
 	/**
-	 * Returns all TextRAM's operations from a {@link TClass}
+	 * Returns all TextRAM's operations that match the given name from a {@link TClass class} and also its super type's operations.
 	 * 
 	 * @param clazz owner of the operations
 	 * @param name of the operation
@@ -53,6 +56,26 @@ final class TextRamEcoreUtil {
 		if (result.size == 0) {
 			clazz.superTypes.filter(TClass).forEach[ s |
 				result.addAll( s.findTextRamOperations(name)  )
+			]
+		}
+		
+		result
+	}
+	
+	/**
+	 * Returns all TextRAM's operations for the given {@link TClass class} and also its super types
+	 * 
+	 * @param clazz owner of the operations
+	 * @return a list of all class's operations
+	 */
+	def static List<TOperation> findTextRamOperations(TClass clazz) {
+		val List<TOperation> result = newArrayList
+		
+		result.addAll(clazz.members.filter(TOperation).toList)
+		
+		if (result.size == 0) {
+			clazz.superTypes.filter(TClass).forEach[ superType |
+				result.addAll( superType.findTextRamOperations  )
 			]
 		}
 		
@@ -80,6 +103,32 @@ final class TextRamEcoreUtil {
 		
 		result
 	}
+	
+	/**
+	 * Gets the class from a {@link TInteractionMessage interaction}. 
+	 * Evaluates the rightlifeline's referenceType attribute and resolves how to get the corresponded class.
+	 * 
+	 * @param textRamInteraction current message interaction
+	 * @return {@link TClass class} owner f the message interaction
+	 */
+	def static getTextRamClass(TInteractionMessage textRamInteraction) {
+		var TClass result = null
+		
+		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.REFERENCE) {
+			result = textRamInteraction.rightLifeline.represents as TClass
+		}
+		
+		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.ASSOCIATION) {
+			result = (textRamInteraction.rightLifeline.represents as TAssociation).toEnd.classReference as TClass
+		}
+		
+		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.ATTRIBUTE) {
+			throw new Exception("Attributes are not supported as TLifeline references")
+		}
+		
+		result
+	}
+	
 	
 //	def static getAllOperationsForClass(TClass clazz, String operationName) {
 //		val List<TOperation> result = newArrayList
