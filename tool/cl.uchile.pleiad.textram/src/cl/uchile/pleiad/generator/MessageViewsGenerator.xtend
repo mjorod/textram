@@ -20,6 +20,7 @@ import ca.mcgill.cs.sel.ram.Reference
 import ca.mcgill.cs.sel.ram.StructuralFeature
 import ca.mcgill.cs.sel.ram.TemporaryProperty
 import ca.mcgill.cs.sel.ram.TypedElement
+import ca.mcgill.cs.sel.ram.ValueSpecification
 import cl.uchile.pleiad.textRam.TAbstractMessageView
 import cl.uchile.pleiad.textRam.TAbstractMessages
 import cl.uchile.pleiad.textRam.TAspectMessageView
@@ -36,7 +37,7 @@ import cl.uchile.pleiad.textRam.TMessageView
 import cl.uchile.pleiad.textRam.TOcurrence
 import cl.uchile.pleiad.textRam.TParameter
 import cl.uchile.pleiad.textRam.TReference
-import cl.uchile.pleiad.textRam.TReturnMessage
+import cl.uchile.pleiad.textRam.TReturnInteraction
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.ArrayList
 import java.util.List
@@ -121,10 +122,6 @@ class MessageViewsGenerator {
 		}
 				
 		result
-	}
-	
-	private def dispatch Operation getMessageSignature(TReturnMessage message) { 
-		throw new ClassCastException("Cannot get a signature from TReturnMessage type")
 	}
 	
 	private def dispatch Operation getMessageSignature(TMessage message) {
@@ -360,25 +357,68 @@ class MessageViewsGenerator {
 		return result
 	}
 	
+	private def getReferenceFromLifeline(TReference tReference, Lifeline lifeline) {
+		lifeline.localProperties.filter(Reference).findFirst( r | r.name == tReference.name )
+	}
+	
+	private def getLocalPropertyFromLifeline(TLocalAttribute tLocalAttribute, Lifeline lifeline) {
+		lifeline.localProperties.filter(Attribute).findFirst( a | a.name == tLocalAttribute.name )
+	}
+	
+	private def getLifelineFromSibiling(TLifeline tLifeline, Lifeline lifeline) {
+		(lifeline.eContainer as Interaction).properties.findFirst[ p | p.name == tLifeline.name ]
+	}
+	
 	private def dispatch StructuralFeature createStructuralFeature(TAssociation feature, Lifeline lifeline) {
 		val result = this.ramAspect.findAssociationEnd( feature.name )
+		
 		result
 	}
 	
 	private def dispatch StructuralFeature createStructuralFeature(TReference feature, Lifeline lifeline) {
-		val result = lifeline.localProperties.filter(Reference).findFirst( r | r.name == feature.name )
+		val result = getReferenceFromLifeline(feature, lifeline)
 		result
 	}
 	
 	private def dispatch StructuralFeature createStructuralFeature(TLocalAttribute feature, Lifeline lifeline) {
-		val result = lifeline.localProperties.filter(Attribute).findFirst( a | a.name == feature.name )
+		val result = getLocalPropertyFromLifeline(feature, lifeline)
 		result	
 	}
 	
 	private def dispatch StructuralFeature createStructuralFeature(TLifeline tLifeline, Lifeline lifeline) {
-		val represents = (lifeline.eContainer as Interaction).properties.findFirst[ p | p.name == tLifeline.name ]
+		val represents = getLifelineFromSibiling(tLifeline, lifeline)
 		val result = represents
 		result
+	}
+	
+	private def dispatch ValueSpecification createValueSpecification(TReference feature, Lifeline lifeline) {
+		val structuralFeature = getReferenceFromLifeline(feature, lifeline)
+		
+		val structuralFeautreValue = RamFactory.eINSTANCE.createStructuralFeatureValue => [
+			value = structuralFeature
+		]
+		
+		return structuralFeautreValue
+	}
+	
+	private def dispatch ValueSpecification createValueSpecification(TLocalAttribute feature, Lifeline lifeline) {
+		val structuralFeature = getLocalPropertyFromLifeline(feature, lifeline)
+		
+		val structuralFeautreValue = RamFactory.eINSTANCE.createStructuralFeatureValue => [
+			value = structuralFeature
+		]
+		
+		return structuralFeautreValue
+	}
+	
+	private def dispatch ValueSpecification createValueSpecification(TLifeline tLifeline, Lifeline lifeline) {
+		val structuralFeature = getLifelineFromSibiling(tLifeline, lifeline)
+		
+		val structuralFeautreValue = RamFactory.eINSTANCE.createStructuralFeatureValue => [
+			value = structuralFeature
+		]
+		
+		return structuralFeautreValue
 	}
 	
 	//TODO: generateArguments has duplicated code
@@ -524,10 +564,8 @@ class MessageViewsGenerator {
 		return null
 	}
 	
-	private def getMessageReturn(TReturnMessage message, Lifeline lifeline) {
-		val result = RamFactory.eINSTANCE.createStructuralFeatureValue => [
-			value = message.assignTo.createStructuralFeature(lifeline)
-		]
+	private def getMessageReturn(TReturnInteraction interaction, Lifeline lifeline) {
+		val result =  interaction.^return.createValueSpecification(lifeline)
 		
 		result
 	}

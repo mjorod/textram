@@ -19,11 +19,14 @@ import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
+import cl.uchile.pleiad.textRam.TCombinedFragment
 import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TLifelineReferenceType
 import cl.uchile.pleiad.textRam.TMessage
 import cl.uchile.pleiad.textRam.TMessageAssignableFeature
+import cl.uchile.pleiad.textRam.TOcurrence
 import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TReturnInteraction
 import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.textRam.TTemporaryProperty
 import cl.uchile.pleiad.textRam.TTypedElement
@@ -102,8 +105,6 @@ class ModelScopeProvider {
 		if ( interaction.message instanceof TMessage == false ) {
 			throw new Exception("Concrete type of TAbstractMessage must be TMessage")
 		}
-		
-		val tMessage = interaction.message as TMessage
 		
 		val owner = TextRamEcoreUtil.getTextRamClass(interaction)
 
@@ -279,6 +280,14 @@ class ModelScopeProvider {
 							   .toList
 	}
 	
+	/**
+	 * Gets all assignable features from TInteractionMessage, according the following rules:
+	 * 1. Only local properties defined in the left lifeline
+	 * 2. All aspect's associations
+	 * 3. The right lifeline 
+	 * 
+	 * @param textRamInteractionMessage current interaction
+	 */
 	def getAssignableFeatures(TInteractionMessage textRamInteractionMessage) {
 		val List<TMessageAssignableFeature> result = newArrayList()
 		
@@ -302,16 +311,6 @@ class ModelScopeProvider {
 		}
 		
 		return null
-	}
-	
-	//TODO: why uses rightlifeline
-	def getReturnMessageAssignTo(TInteractionMessage textRamInteractionMessage) {
-		val List<TMessageAssignableFeature> result = newArrayList
-		
-		result.addAll ( textRamInteractionMessage.getAspect.allAssociations )
-		result.addAll ( textRamInteractionMessage.rightLifeline.localProperties )
-		//TODO: parameters?
-		result
 	}
 	
 	def getAspectMessageViews(TAbstractMessageView abstractMessageView) {
@@ -366,6 +365,66 @@ class ModelScopeProvider {
 //		
 	}
 	
+	def getTValueSpecificationUsedByMessageView(TAbstractMessages messageView) {
+		val List<TValueSpecification> result = newArrayList
+		
+		messageView.interactionMessages.forEach[ i | 
+			val textRamValueSpecification = getTValueSpecificationFromInteraction(i)
+			result.addAll(textRamValueSpecification)
+		]
+				
+		result
+	}
+	
+	private def dispatch List<TValueSpecification> getTValueSpecificationFromInteraction(TInteractionMessage interaction) {
+		val List<TValueSpecification> result = newArrayList
+		
+		val message = interaction.message
+		
+		// adds assignTo
+		if (message != null && message.assignTo != null) {
+			//TODO: why TAssociation is not a TValueSpecification?
+			if ( message.assignTo instanceof TAssociation == false ) {
+				result.add( message.assignTo as TValueSpecification )
+			}
+		}
+		
+		// adds operation's parameters
+		message.signature.parameters.forEach[ p | 
+			result.add(p)
+		]
+		
+		result
+	}
+	
+	private def dispatch List<TValueSpecification> getTValueSpecificationFromInteraction(TCombinedFragment interaction) { 
+		val List<TValueSpecification> result = newArrayList
+		
+		interaction.containers.forEach[ i |
+			val textRamValueSpecification = getTValueSpecificationFromInteraction(i)
+			result.addAll(textRamValueSpecification)		
+		]
+		
+		interaction.elseContainers.forEach[ i |
+			val textRamValueSpecification = getTValueSpecificationFromInteraction(i)
+			result.addAll(textRamValueSpecification)		
+		]
+		
+		result
+	}
+	
+	private def dispatch List<TValueSpecification> getTValueSpecificationFromInteraction(TReturnInteraction interaction) {
+		// do nothing
+		val List<TValueSpecification> result = newArrayList
+		result
+	}
+	
+	private def dispatch List<TValueSpecification> getTValueSpecificationFromInteraction(TOcurrence interaction) {
+		// do nothing
+		val List<TValueSpecification> result = newArrayList
+		result
+	}
+	
 	def getTValueSpecificationList(TInteractionMessage interaction) {
 		val List<TValueSpecification> result = newArrayList
 		
@@ -411,6 +470,5 @@ class ModelScopeProvider {
 	private def dispatch getClassOwner(TClass owner, Aspect aspect) {
 		val result = owner
 		result
-	}
-		
+	}	
 }

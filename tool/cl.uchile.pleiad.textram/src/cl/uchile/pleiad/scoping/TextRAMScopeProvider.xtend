@@ -77,16 +77,16 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( (aspect as TAspect).getTTypedElements )
 	}
 
-	def IScope scope_TAbstractMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
+	def IScope scope_TMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
 		Scopes::scopeFor ( textRamInteractionMessage.getAssignableFeatures )
 	}
 	
-//	def IScope scope_TTReturnMessage_assignTo(TInteractionMessage textRamInteractionMessage, EReference reference) {
-//		Scopes::scopeFor ( textRamInteractionMessage.getReturnMessageAssignTo )
-//	}
-
 	def IScope scope_TMessage_signature(TInteractionMessage interaction, EReference reference) {
 		Scopes::scopeFor ( interaction.getExtendedOperationsFromRightLifeline  )
+	}
+	
+	def IScope scope_TReturnInteraction_return(TAbstractMessages textRamMessageView, EReference reference) {
+		Scopes::scopeFor ( textRamMessageView.getTValueSpecificationUsedByMessageView )
 	}
 	
 	def IScope scope_TMessage_arguments(TInteractionMessage interaction, EReference reference) {

@@ -196,7 +196,7 @@ TLocalAttribute returns textRam::TLocalAttribute:
 ;
 
 TInteraction returns textRam::TInteraction:
-	TInteractionMessage | TCombinedFragment | TOcurrence
+	TInteractionMessage | TCombinedFragment | TOcurrence | TReturnInteraction
 ;
 
 TOcurrence returns textRam::TOcurrence:
@@ -204,7 +204,7 @@ TOcurrence returns textRam::TOcurrence:
 ;
 
 TInteractionMessage returns textRam::TInteractionMessage:
-	leftLifeline=[textRam::TLifeline|EString] '=>' (create?='new')? rightLifeline=[textRam::TLifeline|EString]  ('{' message=TAbstractMessage '}')?
+	leftLifeline=[textRam::TLifeline|EString] '=>' (create?='new')? rightLifeline=[textRam::TLifeline|EString]  ('{' message=TMessage '}')?
 ;
 
 TCombinedFragment returns textRam::TCombinedFragment:
@@ -216,12 +216,8 @@ TCombinedFragment returns textRam::TCombinedFragment:
 	'}')?
 ;
 
-TAbstractMessage returns textRam::TAbstractMessage:
-	TMessage | TReturnMessage
-;
-
-TReturnMessage returns textRam::TReturnMessage:
-	assignTo=[textRam::TMessageAssignableFeature|EString]
+TReturnInteraction returns textRam::TReturnInteraction:
+	'return' return=[textRam::TValueSpecification|EString]
 ;
 
 TMessage returns textRam::TMessage:
