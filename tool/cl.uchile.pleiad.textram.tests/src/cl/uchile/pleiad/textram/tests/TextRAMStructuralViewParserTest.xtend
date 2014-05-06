@@ -58,5 +58,32 @@ class TextRAMStructuralViewParserTest {
 		}'''.parse.assertNoErrors
 	}
 	
+	@Test
+	public def testLayouts() {
+		'''aspect A { 
+			structure { 
+				
+				@@x= 123
+				@@y= 312
+				class C {} 
+			}
+		}'''.parse.assertNoErrors
+	}
+	
+	@Test
+	public def testBidirectionalAssociations() {
+		'''
+		aspect A {
+			structure {
+				class A {}
+				class B {}
+				
+				associations {
+					A & B { myABBA }
+				}
+			}
+		}
+		'''.parse.assertNoErrors
+	}
 	
 }

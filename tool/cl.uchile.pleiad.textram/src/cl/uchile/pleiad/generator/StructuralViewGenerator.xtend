@@ -17,6 +17,7 @@ import ca.mcgill.cs.sel.ram.RVoid
 import ca.mcgill.cs.sel.ram.RamFactory
 import ca.mcgill.cs.sel.ram.Type
 import cl.uchile.pleiad.converter.ModelConverterProxy
+import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity
 import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TAttribute
@@ -25,11 +26,11 @@ import cl.uchile.pleiad.textRam.TClassMember
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TInstantiationHeader
 import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TParameter
 import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
-import cl.uchile.pleiad.textRam.TParameter
 
 class StructuralViewGenerator {
 	
@@ -357,24 +358,27 @@ class StructuralViewGenerator {
 		
 		result.name = nameFrom + '_' + nameTo 
 		
-		// create from association end
+		// create -from- association end
         val fromEnd = RamFactory.eINSTANCE.createAssociationEnd()
         fromEnd.assoc = result
+        
+        // there is no representation of lower bounds if both are zero
         if ( textRamAssoc.fromEnd.lowerBound + textRamAssoc.fromEnd.lowerBound != 0 ) {
 	        fromEnd.lowerBound = textRamAssoc.fromEnd.lowerBound
 	        fromEnd.upperBound = textRamAssoc.fromEnd.upperBound
         }
         
         fromEnd.name = textRamAssoc.name.toLowerCaseFirst
-        classFrom.associationEnds.add(fromEnd)
+        
         if (textRamAssoc.referenceType != null) {
         	fromEnd.referenceType = textRamAssoc.referenceType
         }
         
-        // create to association end
+        // create -to- association end
         val toEnd = RamFactory.eINSTANCE.createAssociationEnd()
         toEnd.assoc =result 
        	
+		// there is no representation of lower bounds if both are zero       	
        	if ( textRamAssoc.toEnd.lowerBound +  textRamAssoc.toEnd.upperBound != 0 ) {
 	       	toEnd.lowerBound = textRamAssoc.toEnd.lowerBound
 	        toEnd.upperBound = textRamAssoc.toEnd.upperBound
@@ -383,7 +387,14 @@ class StructuralViewGenerator {
         toEnd.navigable = false
         toEnd.name = classFrom.name.toLowerCaseFirst
 		
+		// creates associations ends
+		classFrom.associationEnds.add(fromEnd)
 		classTo.associationEnds.add(toEnd)
+		
+		if ( textRamAssoc.directionMultplicity == AssociationDirectionMultiplicity.BIDIRECTIONAL ) {
+			classFrom.associationEnds.add(toEnd)
+			classTo.associationEnds.add(fromEnd)
+		}
 					
 		result
 	}

@@ -69,6 +69,8 @@ TClassMember returns textRam::TClassMember:
   
 TClass returns textRam::TClass:
     {textRam::TClass}
+    ('@@x=' layoutX=EInt)?
+    ('@@y=' layoutY=EInt)?
     (abstract?='abstract')?
     'class'
     (partial?='|')?
@@ -102,7 +104,7 @@ TParameter returns textRam::TParameter:
 
 TAssociation returns textRam::TAssociation:
     {textRam::TAssociation}
-    fromEnd=TAssociationEnd (referenceType=ReferenceType)?"->" toEnd=TAssociationEnd  '{' name=EString  '}'  
+    fromEnd=TAssociationEnd (referenceType=ReferenceType)?  directionMultplicity=AssociationDirectionMultplicity toEnd=TAssociationEnd  '{' name=EString  '}'  
 ;
 
 TAssociationEnd returns textRam::TAssociationEnd:
@@ -250,6 +252,10 @@ enum MessageSort returns MessageSort:
 
 enum ReferenceType returns ReferenceType:
 	Composition = '*' | Aggregation='o'
+;
+
+enum AssociationDirectionMultplicity returns textRam::AssociationDirectionMultiplicity:
+	unidirectional = '->' | bidirectional = '&'
 ;
 
 enum InteractionOperatorKind returns InteractionOperatorKind:
