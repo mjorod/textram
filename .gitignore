@@ -11,12 +11,14 @@ bin/
 
 # generated folders
 src-gen/*.*
-xtend-gen/
-tool/cl.uchile.pleiad.textram/model/
-tool/cl.uchile.pleiad.textram.ui/src-gen
+xtend-gen/*.*
+/tool/cl.uchile.pleiad.textram.ui/src-gen/cl
+/tool/cl.uchile.pleiad.textram/model/
 
 # generated files
 tool/cl.uchile.pleiad.textram/plugin.xml_gen
 
 # workbench
 runtime-EclipseApplication/
+
+
