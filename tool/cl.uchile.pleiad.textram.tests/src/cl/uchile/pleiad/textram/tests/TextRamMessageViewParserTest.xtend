@@ -12,7 +12,7 @@ import org.junit.Test
 
 @RunWith(typeof(XtextRunner))
 @InjectWith(typeof(TextRAMTestsInjectorProvider))
-class TextRamParserMessageViewTest {
+class TextRamMessageViewParserTest {
 	
 	@Inject extension ParseHelper<Aspect>
 	@Inject extension ValidationTestHelper

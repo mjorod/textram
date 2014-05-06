@@ -23,6 +23,48 @@ class TextRAMStructuralViewParserTest {
 	}
 	
 	@Test
+	def testOperationWithOneParameter() {
+		'''
+		aspect A { 
+			structure {
+				class C1 {
+		        	- int operation(int parm1)
+		        }	
+		    }
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testOperationWithAListOfParameter() {
+		'''
+		aspect A { 
+			structure {
+				class C1 {
+					-  int operation(int parm1, char parm2, boolean parm3)        
+		        }	
+		    }
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testParameterTypeOfExistingClass() {
+		'''
+		aspect A { 
+			structure {
+				class C1 {
+	        		-  int operation(ExistingClass parm1, char parm2, ExistingClass parm3)
+		        }
+				class ExistingClass {
+					
+				}
+		    }
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
 	public def testAspectWithOneClassWithOnlyAttributes() {
 		'''aspect A { 
 			structure { 
@@ -80,6 +122,120 @@ class TextRAMStructuralViewParserTest {
 				
 				associations {
 					A & B { myABBA }
+				}
+			}
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testAssociationBetweenClasses() {
+		'''
+		aspect A {
+			structure {
+				class From {}
+				class To {}
+
+				associations {
+		            0..0 From -> 0..1 To { mySubject }
+		        }		
+			}
+		}		
+		'''.parse.assertNoErrors
+	}
+	
+	@Test 
+	def testValueConverterForManyMultiplicityOnUpperBound() {
+		'''
+		aspect A {
+			structure {
+				class From {}
+				class To {}
+
+				associations {
+		            0..* From -> 0..* To { mySubject }
+		        }		
+			}
+		}		
+		'''.parse.assertNoErrors
+	}
+	
+	@Test 
+	def testOptionalLowerBoundOnFromAssociation() {
+		'''
+		aspect A {
+			structure {
+				class From {}
+				class To {}
+
+				associations {
+		            1 From -> 1..1 To { mySubject }
+		        }		
+			}
+		}		
+		'''.parse.assertNoErrors
+	}
+	
+	@Test 
+	def testOptionalLowerBoundOnToAssociation() {
+		'''
+		aspect A {
+			structure {
+				class From {}
+				class To {}
+
+				associations {
+		            1..* From -> 1 To { mySubject }
+		        }		
+			}
+		}		
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testAssociationWithoutLowerBoundAndUpperBound() {
+		'''
+		aspect A {
+			structure {
+				class From {}
+				class To {}
+
+				associations {
+		            From -> To { mySubject }
+		        }		
+			}
+		}		
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testOneSuperType() {
+		'''
+		aspect A {
+			structure {
+				class Super {
+					int myInt
+				}
+				
+				class Derived : Super {
+					
+				}
+			}
+		}
+		'''.parse.assertNoErrors
+	}
+	
+	@Test
+	def testRSet() {
+		'''
+		aspect A {
+			structure {
+				class |MyClass {
+					+ Set<String> getStringType()
+					+ Set<int> getIntType()
+				}
+				class AnotherClass {
+					+ Set<MyClass> getPartialClass()
 				}
 			}
 		}

@@ -108,17 +108,16 @@ class StructuralViewGenerator {
 		val List<Instantiation> result = newArrayList
 		
 		instantiationHeader.externalAspects.forEach[ ea | 
-			val myExternalAspect = ea//ModelConverterProxy::instance.convertTextRAMModelToRAMModel(ea)
 			
 			val instantiation = RamFactory.eINSTANCE.createInstantiation => [
-				externalAspect = myExternalAspect
+				externalAspect = ea
 				type = instantiationHeader.type
 			]
 			
 			// check mappings
 			val instantiationMapped = this.textRamAspect.instantiations.findFirst[ ins | ins.externalAspect.name == ea.name && ins.mappings.length > 0];
 			if (instantiationMapped != null) {
-				instantiation.mappings.addAll( instantiationMapped.generateMappings(myExternalAspect) )
+				instantiation.mappings.addAll( instantiationMapped.generateMappings(ea) )
 			}
 			
 			// add instantiation to result
