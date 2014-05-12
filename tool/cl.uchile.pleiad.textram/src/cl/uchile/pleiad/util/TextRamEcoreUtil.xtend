@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject
 import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TLifelineReferenceType
 import cl.uchile.pleiad.textRam.TAssociation
+import org.eclipse.xtext.EcoreUtil2
 
 final class TextRamEcoreUtil {
 	
@@ -39,6 +40,33 @@ final class TextRamEcoreUtil {
 		}
 		
 		return null	
+	}
+	
+	/**
+	 * Returns the immediately preceding sibling of the given object that {@link EClassifier#isInstance is an instance} of the type
+	 * 
+	 * @param eObject current object
+	 * @param type of the immediately predecessor to find
+	 * @return the first sibling object of the given type, null if none found
+	 */
+	def static <T extends EObject> T getPrev(EObject eObject, EClassifier type) {
+		if (eObject != null) {
+			val parent = eObject.eContainer
+			
+			if (parent != null) {
+				var prev = EcoreUtil2.getPreviousSibling(eObject)
+				 
+				while ( prev != null ) {
+					if ( type.isInstance( prev ) ) {
+						return prev as T
+					}
+					
+					prev = EcoreUtil2.getPreviousSibling(prev)
+				}
+			}
+		}
+		
+		return null
 	}
 	
 	/**

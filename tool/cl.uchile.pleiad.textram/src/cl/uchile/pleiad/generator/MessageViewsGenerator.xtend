@@ -38,6 +38,7 @@ import cl.uchile.pleiad.textRam.TOcurrence
 import cl.uchile.pleiad.textRam.TParameter
 import cl.uchile.pleiad.textRam.TReference
 import cl.uchile.pleiad.textRam.TReturnInteraction
+import cl.uchile.pleiad.textRam.TextRamPackage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.ArrayList
 import java.util.List
@@ -124,7 +125,7 @@ class MessageViewsGenerator {
 		result
 	}
 	
-	private def dispatch Operation getMessageSignature(TMessage message) {
+	private def Operation getMessageSignature(TMessage message) {
 		val textRamOperation = message.signature
 	
 		val List<Operation> classOperations = newArrayList
@@ -233,15 +234,13 @@ class MessageViewsGenerator {
 			lifelines.addAll( generateLifelines( objects.lifelines, properties ) )
 		]
 	
-		// creates start message
-		generateStartMessage(result, textRamMessage)
+		// creates default start message
+		generatesDefaultStartMessage(result, textRamMessage)
 		
 		// creates messages
 		textRamMessage.interactionMessages.forEach[  textRamInteraction | 
 			generateInteractionMessages( textRamInteraction, result, textRamMessage )
 		]
-		
-		// creates end message
 		
 		result
 	}
@@ -258,10 +257,12 @@ class MessageViewsGenerator {
 	}
 	
 	private def dispatch void generateInteractionMessages( TInteractionMessage textRamInteractionMessage, FragmentContainer fragmentContainer, TAbstractMessages textRamMessage) {
-		var Message message
+		val Message message = generateMessageOcurrence(textRamInteractionMessage, fragmentContainer)
 		
-		message = generateMessageOcurrence(textRamInteractionMessage, fragmentContainer)
-		
+		fragmentContainer.addMessage(message)
+	}
+	
+	private def addMessage(FragmentContainer fragmentContainer, Message message) {
 		if ( fragmentContainer instanceof InteractionOperand ) {
 			val Interaction rootInteraction = TextRamEcoreUtil.getRootContainerOfType( fragmentContainer, RamPackage.Literals.INTERACTION )
 			rootInteraction.messages.add(message)	
@@ -297,6 +298,40 @@ class MessageViewsGenerator {
 		combinedFragment.operands.map[fragments].flatten.forEach[ fragment | 
 			combinedFragment.covered.addAll( fragment.covered )
 		]		
+	}
+	
+	private def dispatch void generateInteractionMessages ( TReturnInteraction textRamReturnInteraction, FragmentContainer fragmentContainer, TAbstractMessages textRamMessage) {
+		// gets the previous interaction
+		val TInteractionMessage prev = TextRamEcoreUtil.getPrev( textRamReturnInteraction, TextRamPackage.Literals.TINTERACTION_MESSAGE )
+		
+		if ( prev == null ) {
+			throw new NullPointerException("Previous element of type TInteractionMessage cannot be found")
+		}
+		
+		val interaction = fragmentContainer as Interaction
+		val lifeLineFrom = interaction.lifelines.findFirst( l | l.represents.name == prev.rightLifeline.name )
+		val lifeLineTo =  prev.getFirstLifeline(interaction)
+		
+		val send = RamFactory.eINSTANCE.createMessageOccurrenceSpecification
+		send.covered.add(lifeLineFrom)
+		interaction.fragments.add(send)
+		
+		val receive= RamFactory.eINSTANCE.createMessageOccurrenceSpecification
+		receive.covered.add(lifeLineTo)
+		interaction.fragments.add(receive)
+		
+		val message = RamFactory.eINSTANCE.createMessage => [
+			sendEvent = send
+			receiveEvent = receive
+			messageSort = MessageSort.REPLY
+			returns = getMessageReturn( textRamReturnInteraction, lifeLineTo )
+		] 
+		
+
+		send.message = message
+		receive.message = message
+		
+		fragmentContainer.addMessage(message)
 	}
 	
 	private def generateMessageOcurrence(TInteractionMessage textRamInteractionMessage, FragmentContainer interaction) {
@@ -446,7 +481,7 @@ class MessageViewsGenerator {
 		result
 	}
 	
-	private def generateStartMessage(Interaction interaction, TAbstractMessages messageView) {
+	private def generatesDefaultStartMessage(Interaction interaction, TAbstractMessages messageView) {
 		if (messageView instanceof TMessageView && (messageView as TMessageView).affectedBy != null) {
 			return null
 		}
@@ -520,48 +555,6 @@ class MessageViewsGenerator {
 		val result = interaction.lifelines.findFirst( l | l.represents.name == firstLifeline.name)
 		
 		result
-	}
-	
-	
-	private def generateEndMessage(TInteractionMessage firstInteractionMessage, TInteractionMessage lastInteractionMessage, Interaction interaction) {
-	//TODO:FIXMENOW!!
-//		val lifeline = getLifelineTo(interaction, firstInteractionMessage)
-//		// TODO: references?
-//		
-//		val gate = RamFactory.eINSTANCE.createGate => [
-//			name =  "out_" + firstInteractionMessage.rightLifeline.name
-//		]
-//		
-//		interaction.formalGates.add(gate)
-//		
-//		//create receive event
-//		val event = RamFactory.eINSTANCE.createMessageOccurrenceSpecification => [
-//			covered.add(lifeline)
-//		]
-//		
-//		interaction.fragments.add(event)
-//		
-//		// create message
-//		val result = RamFactory.eINSTANCE.createMessage => [
-//			signature = getMessageSignature(firstInteractionMessage)
-//			sendEvent = event
-//			receiveEvent = gate
-//			messageSort = MessageSort.REPLY
-//		]
-//		
-//		if (lastInteractionMessage.message != null) { 
-//			result.returns = getMessageReturn( lastInteractionMessage.message as TReturnMessage, lifeline )
-//		}
-//		
-//		interaction.messages.add(result)
-//		
-//		// set references
-//		event.message = result
-//		gate.message = result
-//		
-//		result
-//		
-		return null
 	}
 	
 	private def getMessageReturn(TReturnInteraction interaction, Lifeline lifeline) {
