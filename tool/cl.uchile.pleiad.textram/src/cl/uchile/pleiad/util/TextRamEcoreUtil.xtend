@@ -13,10 +13,14 @@ import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TLifelineReferenceType
 import cl.uchile.pleiad.textRam.TAssociation
 import org.eclipse.xtext.EcoreUtil2
+import ca.mcgill.cs.sel.ram.Type
+import ca.mcgill.cs.sel.ram.PrimitiveType
+import ca.mcgill.cs.sel.ram.RVoid
+import ca.mcgill.cs.sel.ram.RSet
 
 final class TextRamEcoreUtil {
 	
-	private new() {}
+	//private new() {}
 	
 	/**
 	 * Returns the next container object in the hierarchy of the given object that {@link EClassifier#isInstance is an instance} of the type
@@ -155,6 +159,22 @@ final class TextRamEcoreUtil {
 		}
 		
 		result
+	}
+	
+	def dispatch getTypeReference(Aspect aspect, PrimitiveType type) {
+		aspect.structuralView.types.filter(PrimitiveType).findFirst[ t | t.name == type.name ]
+	}
+	
+	def dispatch getTypeReference(Aspect aspect, Type type) {
+		aspect.structuralView.classes.findFirst( c | c.name == type.name) 
+	}
+	
+	def dispatch getTypeReference(Aspect aspect, RVoid type) { 
+		aspect.structuralView.types.filter(RVoid).findFirst[ t | t.name == type.name ]
+	}
+	
+	def dispatch getTypeReference(Aspect aspect, RSet type) {
+		aspect.structuralView.types.filter(RSet).findFirst[ t | t.name == type.name ]
 	}
 	
 	
