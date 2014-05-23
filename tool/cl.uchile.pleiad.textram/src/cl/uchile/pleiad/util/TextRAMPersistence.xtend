@@ -17,31 +17,31 @@ class TextRAMPersistence {
         }
         
         def serializeModel(Aspect aspect, String path) {
-                var result = ""
-                
-                val resourceSet = new ResourceSetImpl()
-                val resource = resourceSet.createResource(URI.createFileURI(path))
-                
-                // Add the resources to the resource to be saved.
-        resource.getContents().add(aspect)
-        
-        // Now save the content.
-        try {
-                val outputStream = new ByteArrayOutputStream()
-                
-            resource.save(outputStream, Collections.EMPTY_MAP);
+            var result = ""
             
-            outputStream.flush();
-            outputStream.close();
+            val resourceSet = new ResourceSetImpl()
+            val resource = resourceSet.createResource(URI.createFileURI(path))
             
-            result = outputStream.toString();
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error saving RAM.");
-            result = e.message
-        }
-                
-                result
+            // Add the resources to the resource to be saved.
+        	resource.getContents().add(aspect)
+	        
+	        // Now save the content.
+	        try {
+	             val outputStream = new ByteArrayOutputStream()
+	            
+	            resource.save(outputStream, Collections.EMPTY_MAP);
+	            
+	            outputStream.flush();
+	            outputStream.close();
+	            
+	            result = outputStream.toString();
+	            
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            System.err.println("Error saving RAM.");
+	            result = e.message
+	        }
+	                
+	                result
         }
 }

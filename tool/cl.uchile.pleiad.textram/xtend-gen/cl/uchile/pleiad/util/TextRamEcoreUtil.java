@@ -3,7 +3,11 @@ package cl.uchile.pleiad.util;
 import ca.mcgill.cs.sel.ram.Aspect;
 import ca.mcgill.cs.sel.ram.Classifier;
 import ca.mcgill.cs.sel.ram.Operation;
+import ca.mcgill.cs.sel.ram.PrimitiveType;
+import ca.mcgill.cs.sel.ram.RSet;
+import ca.mcgill.cs.sel.ram.RVoid;
 import ca.mcgill.cs.sel.ram.StructuralView;
+import ca.mcgill.cs.sel.ram.Type;
 import cl.uchile.pleiad.textRam.TAssociation;
 import cl.uchile.pleiad.textRam.TAssociationEnd;
 import cl.uchile.pleiad.textRam.TClass;
@@ -15,6 +19,7 @@ import cl.uchile.pleiad.textRam.TOperation;
 import cl.uchile.pleiad.textRam.TTypedElement;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
+import java.util.Arrays;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
@@ -28,9 +33,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 @SuppressWarnings("all")
 public final class TextRamEcoreUtil {
-  private TextRamEcoreUtil() {
-  }
-  
   /**
    * Returns the next container object in the hierarchy of the given object that {@link EClassifier#isInstance is an instance} of the type
    * 
@@ -270,6 +272,76 @@ public final class TextRamEcoreUtil {
       return _xblockexpression;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  protected Type _getTypeReference(final Aspect aspect, final PrimitiveType type) {
+    StructuralView _structuralView = aspect.getStructuralView();
+    EList<Type> _types = _structuralView.getTypes();
+    Iterable<PrimitiveType> _filter = Iterables.<PrimitiveType>filter(_types, PrimitiveType.class);
+    final Function1<PrimitiveType,Boolean> _function = new Function1<PrimitiveType,Boolean>() {
+      public Boolean apply(final PrimitiveType t) {
+        String _name = t.getName();
+        String _name_1 = type.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    return IterableExtensions.<PrimitiveType>findFirst(_filter, _function);
+  }
+  
+  protected Type _getTypeReference(final Aspect aspect, final Type type) {
+    StructuralView _structuralView = aspect.getStructuralView();
+    EList<Classifier> _classes = _structuralView.getClasses();
+    final Function1<Classifier,Boolean> _function = new Function1<Classifier,Boolean>() {
+      public Boolean apply(final Classifier c) {
+        String _name = c.getName();
+        String _name_1 = type.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    return IterableExtensions.<Classifier>findFirst(_classes, _function);
+  }
+  
+  protected Type _getTypeReference(final Aspect aspect, final RVoid type) {
+    StructuralView _structuralView = aspect.getStructuralView();
+    EList<Type> _types = _structuralView.getTypes();
+    Iterable<RVoid> _filter = Iterables.<RVoid>filter(_types, RVoid.class);
+    final Function1<RVoid,Boolean> _function = new Function1<RVoid,Boolean>() {
+      public Boolean apply(final RVoid t) {
+        String _name = t.getName();
+        String _name_1 = type.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    return IterableExtensions.<RVoid>findFirst(_filter, _function);
+  }
+  
+  protected Type _getTypeReference(final Aspect aspect, final RSet type) {
+    StructuralView _structuralView = aspect.getStructuralView();
+    EList<Type> _types = _structuralView.getTypes();
+    Iterable<RSet> _filter = Iterables.<RSet>filter(_types, RSet.class);
+    final Function1<RSet,Boolean> _function = new Function1<RSet,Boolean>() {
+      public Boolean apply(final RSet t) {
+        String _name = t.getName();
+        String _name_1 = type.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    return IterableExtensions.<RSet>findFirst(_filter, _function);
+  }
+  
+  public Type getTypeReference(final Aspect aspect, final Type type) {
+    if (type instanceof RSet) {
+      return _getTypeReference(aspect, (RSet)type);
+    } else if (type instanceof PrimitiveType) {
+      return _getTypeReference(aspect, (PrimitiveType)type);
+    } else if (type instanceof RVoid) {
+      return _getTypeReference(aspect, (RVoid)type);
+    } else if (type != null) {
+      return _getTypeReference(aspect, type);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(aspect, type).toString());
     }
   }
 }
