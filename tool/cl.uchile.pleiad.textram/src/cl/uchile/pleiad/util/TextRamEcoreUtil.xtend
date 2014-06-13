@@ -3,20 +3,20 @@ package cl.uchile.pleiad.util
 import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.Operation
+import ca.mcgill.cs.sel.ram.PrimitiveType
+import ca.mcgill.cs.sel.ram.RSet
+import ca.mcgill.cs.sel.ram.RVoid
+import ca.mcgill.cs.sel.ram.Type
+import cl.uchile.pleiad.textRam.TAspect
+import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TClass
+import cl.uchile.pleiad.textRam.TInteractionMessage
+import cl.uchile.pleiad.textRam.TLifelineReferenceType
 import cl.uchile.pleiad.textRam.TOperation
-import cl.uchile.pleiad.textRam.TParameter
 import java.util.List
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
-import cl.uchile.pleiad.textRam.TInteractionMessage
-import cl.uchile.pleiad.textRam.TLifelineReferenceType
-import cl.uchile.pleiad.textRam.TAssociation
 import org.eclipse.xtext.EcoreUtil2
-import ca.mcgill.cs.sel.ram.Type
-import ca.mcgill.cs.sel.ram.PrimitiveType
-import ca.mcgill.cs.sel.ram.RVoid
-import ca.mcgill.cs.sel.ram.RSet
 
 final class TextRamEcoreUtil {
 	
@@ -166,7 +166,7 @@ final class TextRamEcoreUtil {
 	}
 	
 	def dispatch getTypeReference(Aspect aspect, Type type) {
-		aspect.structuralView.classes.findFirst( c | c.name == type.name) 
+		aspect.structuralView.classes.filter(Class).findFirst( c | c.name == type.name) 
 	}
 	
 	def dispatch getTypeReference(Aspect aspect, RVoid type) { 
@@ -177,6 +177,9 @@ final class TextRamEcoreUtil {
 		aspect.structuralView.types.filter(RSet).findFirst[ t | t.name == type.name ]
 	}
 	
+	def findClass(TAspect aspect, String name) {
+		aspect.structuralView.classes.filter(TClass).findFirst[ c | c.name == name ]
+	} 
 	
 //	def static getAllOperationsForClass(TClass clazz, String operationName) {
 //		val List<TOperation> result = newArrayList

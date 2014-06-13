@@ -7,6 +7,7 @@ import ca.mcgill.cs.sel.ram.Classifier
 import ca.mcgill.cs.sel.ram.Operation
 import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.PrimitiveType
+import ca.mcgill.cs.sel.ram.RSet
 import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import cl.uchile.pleiad.textRam.TAspect
@@ -27,7 +28,9 @@ class TextRAMTransform implements ITextRAMTransform {
 	}
 	
 	override TAspect transform(Aspect ramAspect) {
-		val textRamAspect = TextRamFactory.eINSTANCE.createTAspect
+		val textRamAspect = TextRamFactory.eINSTANCE.createTAspect => [
+			name = ramAspect.name
+		]
 		
 		ramAspect.structuralView.transformStructuralView( textRamAspect )
 				
@@ -38,9 +41,23 @@ class TextRAMTransform implements ITextRAMTransform {
 		to.structuralView = TextRamFactory.eINSTANCE.createTStructuralView
 		
 		//TODO: RSet
-		to.structuralView.types.addAll( from.types.copyTypes )
-		to.structuralView.classes.addAll( from.classes.transformClasses(to) )
+		// copy types
 		
+		to.structuralView.types.addAll( from.types.copyTypes )
+		transformClasses( from, to )
+		
+		
+	}
+	
+	def void convertRSetTypeClassFromTClass(Aspect aspect, EList<Type> types) {
+		types.filter(RSet).forEach [ rSetType |
+			//TODO: cleaning instanceClassName (It's pending the good setting of RSet's instanceClassName)
+			rSetType.instanceClassName = null
+
+			if (rSetType.type instanceof TClass) {
+				rSetType.type = aspect.structuralView.classes.findFirst[ c | c.name == rSetType.type.name ]
+			}
+		] 
 	}
 	
 	private def copyTypes(List<Type> ramTypes) {
@@ -48,11 +65,19 @@ class TextRAMTransform implements ITextRAMTransform {
 		result
 	}
 	
+	private def transformClasses( StructuralView from, TAspect to ) {
+		to.structuralView.classes.addAll( from.classes.transformClasses(to) )
+		
+		// add class's members
+		from.classes.transformClassMembers(to)
+	}
+	
 	private def transformClasses(EList<Classifier> ramClasses, TAspect to) {
 		val List<TClass> res = newArrayList
 		
 		ramClasses.forEach[ c |
-			res.add( c.transformClass(to) )
+			val textRamClass = c.transformClass(to) 
+			res.add( textRamClass )
 		]
 		
 		res
@@ -62,10 +87,9 @@ class TextRAMTransform implements ITextRAMTransform {
 		val ramClass = from as Class
 		
 		val res = TextRamFactory.eINSTANCE.createTClass => [
+			name = from.name
 			layoutX = 0
 			layoutY = 0
-			members.addAll( ramClass.operations.transformOperations(to) )
-			members.addAll( ramClass.attributes.transformAttributes(to) )
 		]
 		
 		if ( ramClass.superTypes.size > 1 ) {
@@ -77,6 +101,22 @@ class TextRAMTransform implements ITextRAMTransform {
 		}
 
 		res
+	}
+	
+	/**
+	 * Transform TextRam's class members after the {@link TClass class) itself were added to the TextRam's {@link TAspect aspect}
+	 * 
+	 * @ramClasses {@link EList<ca.mcgill.cs.sel.ram.Classifier> classes} that contains the members.
+	 * @textRamAsepect {@link TAspect aspect} that contains the classes that will receive the members.
+	 */
+	private def transformClassMembers(EList<Classifier> ramClasses, TAspect to) {
+		
+		ramClasses.forEach [ c |
+			val ramClass = c as Class
+			val textRamClass = to.findClass(ramClass.name)
+			textRamClass.members.addAll ( ramClass.operations.transformOperations(to) )
+			textRamClass.members.addAll( ramClass.attributes.transformAttributes(to) )	
+		]
 	}
 	
 	private def transformOperations(List<Operation> ramOperations, TAspect to) {
@@ -102,10 +142,16 @@ class TextRAMTransform implements ITextRAMTransform {
 			res.partialReturnType = (operation.returnType as Class).partial
 		}
 		
+//		if ( operation.parameters.empty == false ) {
+//			res.parameters.add( TextRamFactory.eINSTANCE.createTParameter => [ 
+//				type = to.getTypeReference( operation.parameters.get(0).type )
+//				name = "parm"
+//			] )
+//		}
 		operation.parameters.forEach[ p | 
 			res.parameters.add( p.transformParameter(to) )
 		]
-		
+
 		res
 	}
 	

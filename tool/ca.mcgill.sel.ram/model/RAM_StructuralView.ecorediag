@@ -162,7 +162,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_nqPxLFu0EeCbdr9CORjA_g" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EClass" href="RAM.ecore#//Operation"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_nqPxLVu0EeCbdr9CORjA_g" x="50" y="528"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_nqPxLVu0EeCbdr9CORjA_g" x="50" y="528" height="114"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_nqQ_QFu0EeCbdr9CORjA_g" type="1001">
     <children xmi:type="notation:Node" xmi:id="_nqQ_Q1u0EeCbdr9CORjA_g" type="4001"/>
@@ -332,7 +332,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_Qwwuoa5kEeGPsftILMcVVg" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EClass" href="RAM.ecore#//ImplementationClass"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Qwwuoq5kEeGPsftILMcVVg" x="288" y="765" width="171" height="57"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Qwwuoq5kEeGPsftILMcVVg" x="288" y="756" width="171" height="75"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_8fyx4K_6EeGlIY_NtPu4fw" type="1001">
     <children xmi:type="notation:Node" xmi:id="_8gD3oK_6EeGlIY_NtPu4fw" type="4001"/>
@@ -444,7 +444,7 @@
     <styles xmi:type="notation:TextStyle" xmi:id="_7kdBEcC7EeGChqaSgTbEfQ"/>
     <styles xmi:type="notation:LineTypeStyle" xmi:id="_7kdBEsC7EeGChqaSgTbEfQ"/>
     <element xsi:nil="true"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_7kdBE8C7EeGChqaSgTbEfQ" x="560" y="125" width="136" height="65"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_7kdBE8C7EeGChqaSgTbEfQ" x="495" y="81" width="208" height="109"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_vxnWELBfEeOS5vQ8ARZGoQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_vxn9ILBfEeOS5vQ8ARZGoQ" type="4001"/>

@@ -24,9 +24,9 @@ EString returns ecore::EString:
 EInt returns ecore::EInt:
     '-'? INT;
     
-AbstractStructuralView returns StructuralView:
-    TStructuralView
-;
+//AbstractStructuralView returns StructuralView:
+//    TStructuralView
+//;
 
 TAbstractMessageView returns AbstractMessageView:
 	{textRam::TAbstractMessageView}		
@@ -37,7 +37,7 @@ TAbstractMessageView returns AbstractMessageView:
 	messages+=TAbstractMessages (messages+=TAbstractMessages)*
 ;
 
-TStructuralView returns textRam::TStructuralView:
+TStructuralView returns StructuralView:
     {textRam::TStructuralView}
     'structure'
     '{'
@@ -48,8 +48,8 @@ TStructuralView returns textRam::TStructuralView:
 Classifier returns Classifier:
     TClass;
 
-Type returns Type:
-    TClass | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat | RSet;
+//Type returns Type:
+//    TClass | RVoid | RBoolean | RInt | RChar | RString | RAny |  RDouble | RFloat | RSet;
 
 ObjectType returns ObjectType:
     TClass | RBoolean | RInt | RChar | RString  | RDouble | RFloat | RSet;
@@ -98,6 +98,7 @@ TOperation returns textRam::TOperation:
     ')';
 
 TParameter returns textRam::TParameter:
+	{textRam::TParameter}
     (partialType?='|')?
     type=[Type|EString]
     name=EString;  

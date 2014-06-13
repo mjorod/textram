@@ -8,6 +8,7 @@ import ca.mcgill.cs.sel.ram.RSet;
 import ca.mcgill.cs.sel.ram.RVoid;
 import ca.mcgill.cs.sel.ram.StructuralView;
 import ca.mcgill.cs.sel.ram.Type;
+import cl.uchile.pleiad.textRam.TAspect;
 import cl.uchile.pleiad.textRam.TAssociation;
 import cl.uchile.pleiad.textRam.TAssociationEnd;
 import cl.uchile.pleiad.textRam.TClass;
@@ -292,14 +293,15 @@ public final class TextRamEcoreUtil {
   protected Type _getTypeReference(final Aspect aspect, final Type type) {
     StructuralView _structuralView = aspect.getStructuralView();
     EList<Classifier> _classes = _structuralView.getClasses();
-    final Function1<Classifier,Boolean> _function = new Function1<Classifier,Boolean>() {
-      public Boolean apply(final Classifier c) {
+    Iterable<ca.mcgill.cs.sel.ram.Class> _filter = Iterables.<ca.mcgill.cs.sel.ram.Class>filter(_classes, ca.mcgill.cs.sel.ram.Class.class);
+    final Function1<ca.mcgill.cs.sel.ram.Class,Boolean> _function = new Function1<ca.mcgill.cs.sel.ram.Class,Boolean>() {
+      public Boolean apply(final ca.mcgill.cs.sel.ram.Class c) {
         String _name = c.getName();
         String _name_1 = type.getName();
         return Boolean.valueOf(Objects.equal(_name, _name_1));
       }
     };
-    return IterableExtensions.<Classifier>findFirst(_classes, _function);
+    return IterableExtensions.<ca.mcgill.cs.sel.ram.Class>findFirst(_filter, _function);
   }
   
   protected Type _getTypeReference(final Aspect aspect, final RVoid type) {
@@ -328,6 +330,19 @@ public final class TextRamEcoreUtil {
       }
     };
     return IterableExtensions.<RSet>findFirst(_filter, _function);
+  }
+  
+  public TClass findClass(final TAspect aspect, final String name) {
+    StructuralView _structuralView = aspect.getStructuralView();
+    EList<Classifier> _classes = _structuralView.getClasses();
+    Iterable<TClass> _filter = Iterables.<TClass>filter(_classes, TClass.class);
+    final Function1<TClass,Boolean> _function = new Function1<TClass,Boolean>() {
+      public Boolean apply(final TClass c) {
+        String _name = c.getName();
+        return Boolean.valueOf(Objects.equal(_name, name));
+      }
+    };
+    return IterableExtensions.<TClass>findFirst(_filter, _function);
   }
   
   public Type getTypeReference(final Aspect aspect, final Type type) {

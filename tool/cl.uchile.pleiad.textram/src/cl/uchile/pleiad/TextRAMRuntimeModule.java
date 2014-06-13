@@ -4,9 +4,9 @@
 package cl.uchile.pleiad;
 
 import org.eclipse.xtext.conversion.IValueConverterService;
+import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
 
 import cl.uchile.pleiad.converter.TextRAMConverter;
-
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -17,5 +17,10 @@ public class TextRAMRuntimeModule extends cl.uchile.pleiad.AbstractTextRAMRuntim
     public Class<? extends IValueConverterService> bindIValueConverterService() {
         return TextRAMConverter.class;
     }
+	
+	@Override
+	public Class<? extends ITransientValueService> bindITransientValueService() {
+		return TextRAMTransientValueService.class;
+	}
 	
 }

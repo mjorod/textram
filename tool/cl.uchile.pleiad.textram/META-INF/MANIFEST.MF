@@ -25,16 +25,15 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: 
- cl.uchile.pleiad,
+Export-Package: cl.uchile.pleiad,
  cl.uchile.pleiad.formatting,
  cl.uchile.pleiad.generator,
  cl.uchile.pleiad.parser.antlr,
  cl.uchile.pleiad.parser.antlr.internal,
  cl.uchile.pleiad.scoping,
- cl.uchile.pleiad.serializer,
  cl.uchile.pleiad.services,
  cl.uchile.pleiad.textRam,
  cl.uchile.pleiad.textRam.impl,
  cl.uchile.pleiad.textRam.util,
- cl.uchile.pleiad.validation
+ cl.uchile.pleiad.validation,
+ cl.uchile.pleiad.serializer

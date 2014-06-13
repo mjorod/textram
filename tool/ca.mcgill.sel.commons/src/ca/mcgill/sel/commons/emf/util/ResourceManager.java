@@ -1,6 +1,8 @@
 package ca.mcgill.sel.commons.emf.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ import org.eclipse.ocl.examples.pivot.delegate.OCLInvocationDelegateFactory;
 import org.eclipse.ocl.examples.pivot.delegate.OCLSettingDelegateFactory;
 import org.eclipse.ocl.examples.pivot.delegate.OCLValidationDelegateFactory;
 import org.eclipse.ocl.examples.xtext.oclinecore.OCLinEcoreStandaloneSetup;
+import org.eclipse.xtext.resource.XtextResource;
 
 /**
  * ResourceManager is a helper class to load and save any model based on an Ecore metamodel.
@@ -116,6 +119,25 @@ public final class ResourceManager {
         }
         
         return true;
+    }
+    
+    public static void save(EObject aspect, String file) {
+    	HashMap saveOptions = new HashMap();
+    	saveOptions.put(XtextResource.OPTION_FORMAT, Boolean.TRUE);
+    	
+    	 // Create a resource        
+        Resource resource = resourceSet.createResource(URI.createFileURI(file));
+        
+        try {
+			resource.save(new FileOutputStream(file), saveOptions);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }
 
     /**
