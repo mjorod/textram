@@ -59,6 +59,11 @@ public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
     return Scopes.scopeFor(_primitiveTypes);
   }
   
+  public IScope scope_TParameter_type(final TStructuralView structuralView, final EReference reference) {
+    EList<Type> _typesFor = this.scopeProvider.getTypesFor(structuralView);
+    return Scopes.scopeFor(_typesFor);
+  }
+  
   public IScope scope_ClassifierMapping_fromElement(final Instantiation instantiation, final EReference reference) {
     IScope _xblockexpression = null;
     {

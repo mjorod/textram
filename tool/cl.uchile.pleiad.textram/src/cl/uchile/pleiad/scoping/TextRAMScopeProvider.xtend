@@ -41,6 +41,10 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	{
 		Scopes::scopeFor( structuralView.getPrimitiveTypes )
 	}
+	
+	def IScope scope_TParameter_type(TStructuralView structuralView, EReference reference ) {
+		Scopes::scopeFor( structuralView.getTypesFor )
+	}
 		
 	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
 		val classes = instantiation.getClasses

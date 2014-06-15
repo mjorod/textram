@@ -142,12 +142,6 @@ class TextRAMTransform implements ITextRAMTransform {
 			res.partialReturnType = (operation.returnType as Class).partial
 		}
 		
-//		if ( operation.parameters.empty == false ) {
-//			res.parameters.add( TextRamFactory.eINSTANCE.createTParameter => [ 
-//				type = to.getTypeReference( operation.parameters.get(0).type )
-//				name = "parm"
-//			] )
-//		}
 		operation.parameters.forEach[ p | 
 			res.parameters.add( p.transformParameter(to) )
 		]

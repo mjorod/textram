@@ -7,6 +7,7 @@ import org.eclipse.xtext.parsetree.reconstr.impl.DefaultTransientValueService;
 
 import cl.uchile.pleiad.textRam.TOperation;
 import cl.uchile.pleiad.textRam.TStructuralView;
+import cl.uchile.pleiad.textRam.TextRamPackage;
 import ca.mcgill.cs.sel.ram.RamPackage;
 
 public class TextRAMTransientValueService extends DefaultTransientValueService implements ITransientValueService {
@@ -14,11 +15,7 @@ public class TextRAMTransientValueService extends DefaultTransientValueService i
 	@Override
 	public boolean isCheckElementsIndividually(EObject owner,
 			EStructuralFeature feature) {
-		if (owner instanceof TOperation) {
-			return false;
-			
-		}
-				
+	
 		return false;
 	}
 
@@ -27,7 +24,11 @@ public class TextRAMTransientValueService extends DefaultTransientValueService i
 		if ( owner instanceof TStructuralView && RamPackage.STRUCTURAL_VIEW__TYPES == feature.getFeatureID() ) {
 			return true;
 		} 
-		
+
+		if ( owner instanceof TOperation && TextRamPackage.TPARAMETER == feature.getFeatureID() ) {
+			return true;
+		}
+
 		return super.isTransient(owner, feature, index);
 	}
 
