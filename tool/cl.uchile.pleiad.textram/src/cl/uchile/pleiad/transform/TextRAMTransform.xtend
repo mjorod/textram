@@ -18,6 +18,11 @@ import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
+import java.util.Collection
+import ca.mcgill.cs.sel.ram.Association
+import cl.uchile.pleiad.services.TextRAMGrammarAccess.AssociationDirectionMultplicityElements
+import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity
+import cl.uchile.pleiad.textRam.TStructuralView
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -33,6 +38,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		]
 		
 		ramAspect.structuralView.transformStructuralView( textRamAspect )
+		
 				
 		return textRamAspect
 	}
@@ -45,8 +51,35 @@ class TextRAMTransform implements ITextRAMTransform {
 		
 		to.structuralView.types.addAll( from.types.copyTypes )
 		transformClasses( from, to )
+		transformAssociations( from, to )
 		
 		
+	}
+	
+	private def transformAssociations(StructuralView from, TAspect to) {
+		from.associations.forEach[ a |
+			(to.structuralView as TStructuralView).TAssociations.add ( transformAssociation( a ) )
+		]
+	}
+	
+	private def transformAssociation( Association from ) {
+		val res = TextRamFactory.eINSTANCE.createTAssociation => [ name = from.name ]
+		
+		res.fromEnd = TextRamFactory.eINSTANCE.createTAssociationEnd => [
+			lowerBound     = from.ends.get(0).lowerBound
+			upperBound     = from.ends.get(0).upperBound
+			classReference = (from.eContainer as StructuralView).getClassifierFrom( from.ends.get(0).classifier.name ) as Class
+		]
+		
+		res.toEnd = TextRamFactory.eINSTANCE.createTAssociationEnd => [
+			lowerBound     = from.ends.get(1).lowerBound
+			upperBound     = from.ends.get(1).upperBound
+			classReference = (from.eContainer as StructuralView).getClassifierFrom( from.ends.get(1).classifier.name ) as Class
+		]
+		
+		res.directionMultplicity = AssociationDirectionMultiplicity.UNIDIRECTIONAL; 
+		
+		return res
 	}
 	
 	def void convertRSetTypeClassFromTClass(Aspect aspect, EList<Type> types) {
@@ -180,5 +213,7 @@ class TextRAMTransform implements ITextRAMTransform {
 
 		res
 	}
+	
+	
 		
 }

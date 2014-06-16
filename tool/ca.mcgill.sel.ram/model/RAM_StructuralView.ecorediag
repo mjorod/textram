@@ -99,7 +99,7 @@
   <children xmi:type="notation:Node" xmi:id="_nqN78Fu0EeCbdr9CORjA_g" type="1001">
     <children xmi:type="notation:Node" xmi:id="_nqN781u0EeCbdr9CORjA_g" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_nqN79Fu0EeCbdr9CORjA_g" type="5001">
-      <styles xmi:type="notation:DrawerStyle" xmi:id="_nqN79Vu0EeCbdr9CORjA_g"/>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_nqN79Vu0EeCbdr9CORjA_g" collapsed="true"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_nqN79lu0EeCbdr9CORjA_g"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_nqN791u0EeCbdr9CORjA_g"/>
     </children>

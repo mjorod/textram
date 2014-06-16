@@ -32,13 +32,11 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( aspect.getExternalAspectsFromHeader )
 	}
 	
-	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference)
-	{
+	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference) {
 		Scopes::scopeFor( structuralView.getTypesFor )
 	}
 	
-	def IScope scope_TAttribute_type(TStructuralView structuralView, EReference reference)
-	{
+	def IScope scope_TAttribute_type(TStructuralView structuralView, EReference reference) {
 		Scopes::scopeFor( structuralView.getPrimitiveTypes )
 	}
 	
@@ -100,10 +98,15 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_TMessageView_affectedBy(TAbstractMessageView abstractMessageView, EReference reference) {
 		Scopes::scopeFor ( abstractMessageView.getAspectMessageViews )
 	}
-		
 
 	def IScope scope_TAbstractMessages_arguments(TAbstractMessages messageView, EReference reference) {
 		Scopes::scopeFor( messageView.getArgumentsForAspectMessageViewOperation )
+	}
+	
+	def IScope scope_TAssociationEnd_classReference( Aspect aspect, EReference reference ) {
+		val tAspect = (aspect as TAspect)
+		
+		Scopes::scopeFor( tAspect.getExtendedClasses )
 	}
 	
 }

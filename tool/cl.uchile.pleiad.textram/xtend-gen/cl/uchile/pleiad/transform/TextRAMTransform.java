@@ -1,6 +1,8 @@
 package cl.uchile.pleiad.transform;
 
 import ca.mcgill.cs.sel.ram.Aspect;
+import ca.mcgill.cs.sel.ram.Association;
+import ca.mcgill.cs.sel.ram.AssociationEnd;
 import ca.mcgill.cs.sel.ram.Attribute;
 import ca.mcgill.cs.sel.ram.Classifier;
 import ca.mcgill.cs.sel.ram.ObjectType;
@@ -11,7 +13,10 @@ import ca.mcgill.cs.sel.ram.RSet;
 import ca.mcgill.cs.sel.ram.StructuralView;
 import ca.mcgill.cs.sel.ram.Type;
 import ca.mcgill.cs.sel.ram.Visibility;
+import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity;
 import cl.uchile.pleiad.textRam.TAspect;
+import cl.uchile.pleiad.textRam.TAssociation;
+import cl.uchile.pleiad.textRam.TAssociationEnd;
 import cl.uchile.pleiad.textRam.TAttribute;
 import cl.uchile.pleiad.textRam.TClass;
 import cl.uchile.pleiad.textRam.TClassMember;
@@ -26,6 +31,7 @@ import com.google.common.collect.Iterables;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -66,6 +72,77 @@ public class TextRAMTransform implements ITextRAMTransform {
     Collection<Type> _copyTypes = this.copyTypes(_types_1);
     _types.addAll(_copyTypes);
     this.transformClasses(from, to);
+    this.transformAssociations(from, to);
+  }
+  
+  private void transformAssociations(final StructuralView from, final TAspect to) {
+    EList<Association> _associations = from.getAssociations();
+    final Procedure1<Association> _function = new Procedure1<Association>() {
+      public void apply(final Association a) {
+        StructuralView _structuralView = to.getStructuralView();
+        EList<TAssociation> _tAssociations = ((TStructuralView) _structuralView).getTAssociations();
+        TAssociation _transformAssociation = TextRAMTransform.this.transformAssociation(a);
+        _tAssociations.add(_transformAssociation);
+      }
+    };
+    IterableExtensions.<Association>forEach(_associations, _function);
+  }
+  
+  private TAssociation transformAssociation(final Association from) {
+    TAssociation _createTAssociation = TextRamFactory.eINSTANCE.createTAssociation();
+    final Procedure1<TAssociation> _function = new Procedure1<TAssociation>() {
+      public void apply(final TAssociation it) {
+        String _name = from.getName();
+        it.setName(_name);
+      }
+    };
+    final TAssociation res = ObjectExtensions.<TAssociation>operator_doubleArrow(_createTAssociation, _function);
+    TAssociationEnd _createTAssociationEnd = TextRamFactory.eINSTANCE.createTAssociationEnd();
+    final Procedure1<TAssociationEnd> _function_1 = new Procedure1<TAssociationEnd>() {
+      public void apply(final TAssociationEnd it) {
+        EList<AssociationEnd> _ends = from.getEnds();
+        AssociationEnd _get = _ends.get(0);
+        int _lowerBound = _get.getLowerBound();
+        it.setLowerBound(_lowerBound);
+        EList<AssociationEnd> _ends_1 = from.getEnds();
+        AssociationEnd _get_1 = _ends_1.get(0);
+        int _upperBound = _get_1.getUpperBound();
+        it.setUpperBound(_upperBound);
+        EObject _eContainer = from.eContainer();
+        EList<AssociationEnd> _ends_2 = from.getEnds();
+        AssociationEnd _get_2 = _ends_2.get(0);
+        Classifier _classifier = _get_2.getClassifier();
+        String _name = _classifier.getName();
+        Classifier _classifierFrom = TextRAMTransform.this.textRamEcoreUtil.getClassifierFrom(((StructuralView) _eContainer), _name);
+        it.setClassReference(((ca.mcgill.cs.sel.ram.Class) _classifierFrom));
+      }
+    };
+    TAssociationEnd _doubleArrow = ObjectExtensions.<TAssociationEnd>operator_doubleArrow(_createTAssociationEnd, _function_1);
+    res.setFromEnd(_doubleArrow);
+    TAssociationEnd _createTAssociationEnd_1 = TextRamFactory.eINSTANCE.createTAssociationEnd();
+    final Procedure1<TAssociationEnd> _function_2 = new Procedure1<TAssociationEnd>() {
+      public void apply(final TAssociationEnd it) {
+        EList<AssociationEnd> _ends = from.getEnds();
+        AssociationEnd _get = _ends.get(1);
+        int _lowerBound = _get.getLowerBound();
+        it.setLowerBound(_lowerBound);
+        EList<AssociationEnd> _ends_1 = from.getEnds();
+        AssociationEnd _get_1 = _ends_1.get(1);
+        int _upperBound = _get_1.getUpperBound();
+        it.setUpperBound(_upperBound);
+        EObject _eContainer = from.eContainer();
+        EList<AssociationEnd> _ends_2 = from.getEnds();
+        AssociationEnd _get_2 = _ends_2.get(1);
+        Classifier _classifier = _get_2.getClassifier();
+        String _name = _classifier.getName();
+        Classifier _classifierFrom = TextRAMTransform.this.textRamEcoreUtil.getClassifierFrom(((StructuralView) _eContainer), _name);
+        it.setClassReference(((ca.mcgill.cs.sel.ram.Class) _classifierFrom));
+      }
+    };
+    TAssociationEnd _doubleArrow_1 = ObjectExtensions.<TAssociationEnd>operator_doubleArrow(_createTAssociationEnd_1, _function_2);
+    res.setToEnd(_doubleArrow_1);
+    res.setDirectionMultplicity(AssociationDirectionMultiplicity.UNIDIRECTIONAL);
+    return res;
   }
   
   public void convertRSetTypeClassFromTClass(final Aspect aspect, final EList<Type> types) {

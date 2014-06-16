@@ -17,6 +17,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
+import ca.mcgill.cs.sel.ram.StructuralView
 
 final class TextRamEcoreUtil {
 	
@@ -69,8 +70,16 @@ final class TextRamEcoreUtil {
 				}
 			}
 		}
-		
+			
 		return null
+	}
+	
+	def getClassifierFrom( StructuralView owner, String name ) {
+		if ( owner != null ) {
+			return owner.classes.findFirst[ c | c.name == name ]
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -179,7 +188,9 @@ final class TextRamEcoreUtil {
 	
 	def findClass(TAspect aspect, String name) {
 		aspect.structuralView.classes.filter(TClass).findFirst[ c | c.name == name ]
-	} 
+	}
+	
+	
 	
 //	def static getAllOperationsForClass(TClass clazz, String operationName) {
 //		val List<TOperation> result = newArrayList

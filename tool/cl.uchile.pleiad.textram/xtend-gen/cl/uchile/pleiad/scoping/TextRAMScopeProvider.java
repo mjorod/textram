@@ -150,4 +150,14 @@ public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
     Iterable<TParameter> _argumentsForAspectMessageViewOperation = this.scopeProvider.getArgumentsForAspectMessageViewOperation(messageView);
     return Scopes.scopeFor(_argumentsForAspectMessageViewOperation);
   }
+  
+  public IScope scope_TAssociationEnd_classReference(final Aspect aspect, final EReference reference) {
+    IScope _xblockexpression = null;
+    {
+      final TAspect tAspect = ((TAspect) aspect);
+      List<TClass> _extendedClasses = this.scopeProvider.getExtendedClasses(tAspect);
+      _xblockexpression = Scopes.scopeFor(_extendedClasses);
+    }
+    return _xblockexpression;
+  }
 }

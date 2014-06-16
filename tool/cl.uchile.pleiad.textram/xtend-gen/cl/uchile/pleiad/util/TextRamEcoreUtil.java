@@ -99,6 +99,21 @@ public final class TextRamEcoreUtil {
     return null;
   }
   
+  public Classifier getClassifierFrom(final StructuralView owner, final String name) {
+    boolean _notEquals = (!Objects.equal(owner, null));
+    if (_notEquals) {
+      EList<Classifier> _classes = owner.getClasses();
+      final Function1<Classifier,Boolean> _function = new Function1<Classifier,Boolean>() {
+        public Boolean apply(final Classifier c) {
+          String _name = c.getName();
+          return Boolean.valueOf(Objects.equal(_name, name));
+        }
+      };
+      return IterableExtensions.<Classifier>findFirst(_classes, _function);
+    }
+    return null;
+  }
+  
   /**
    * Returns all TextRAM's operations that match the given name from a {@link TClass class} and also its super type's operations.
    * 
