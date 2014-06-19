@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
 import ca.mcgill.cs.sel.ram.StructuralView
+import cl.uchile.pleiad.textRam.TStructuralView
 
 final class TextRamEcoreUtil {
 	
@@ -79,7 +80,15 @@ final class TextRamEcoreUtil {
 			return owner.classes.findFirst[ c | c.name == name ]
 		}
 		
-		return null;
+		return null
+	}
+	
+	def getTClassFrom( TStructuralView owner, String name ) {
+		if ( owner != null ) {
+			return owner.classes.filter(TClass).findFirst[ c | c.name == name ]
+		}
+		
+		return null
 	}
 	
 	/**

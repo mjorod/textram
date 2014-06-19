@@ -10,6 +10,7 @@ import ca.mcgill.cs.sel.ram.Operation;
 import ca.mcgill.cs.sel.ram.Parameter;
 import ca.mcgill.cs.sel.ram.PrimitiveType;
 import ca.mcgill.cs.sel.ram.RSet;
+import ca.mcgill.cs.sel.ram.ReferenceType;
 import ca.mcgill.cs.sel.ram.StructuralView;
 import ca.mcgill.cs.sel.ram.Type;
 import ca.mcgill.cs.sel.ram.Visibility;
@@ -81,14 +82,15 @@ public class TextRAMTransform implements ITextRAMTransform {
       public void apply(final Association a) {
         StructuralView _structuralView = to.getStructuralView();
         EList<TAssociation> _tAssociations = ((TStructuralView) _structuralView).getTAssociations();
-        TAssociation _transformAssociation = TextRAMTransform.this.transformAssociation(a);
+        StructuralView _structuralView_1 = to.getStructuralView();
+        TAssociation _transformAssociation = TextRAMTransform.this.transformAssociation(a, ((TStructuralView) _structuralView_1));
         _tAssociations.add(_transformAssociation);
       }
     };
     IterableExtensions.<Association>forEach(_associations, _function);
   }
   
-  private TAssociation transformAssociation(final Association from) {
+  private TAssociation transformAssociation(final Association from, final TStructuralView to) {
     TAssociation _createTAssociation = TextRamFactory.eINSTANCE.createTAssociation();
     final Procedure1<TAssociation> _function = new Procedure1<TAssociation>() {
       public void apply(final TAssociation it) {
@@ -108,13 +110,6 @@ public class TextRAMTransform implements ITextRAMTransform {
         AssociationEnd _get_1 = _ends_1.get(0);
         int _upperBound = _get_1.getUpperBound();
         it.setUpperBound(_upperBound);
-        EObject _eContainer = from.eContainer();
-        EList<AssociationEnd> _ends_2 = from.getEnds();
-        AssociationEnd _get_2 = _ends_2.get(0);
-        Classifier _classifier = _get_2.getClassifier();
-        String _name = _classifier.getName();
-        Classifier _classifierFrom = TextRAMTransform.this.textRamEcoreUtil.getClassifierFrom(((StructuralView) _eContainer), _name);
-        it.setClassReference(((ca.mcgill.cs.sel.ram.Class) _classifierFrom));
       }
     };
     TAssociationEnd _doubleArrow = ObjectExtensions.<TAssociationEnd>operator_doubleArrow(_createTAssociationEnd, _function_1);
@@ -130,17 +125,33 @@ public class TextRAMTransform implements ITextRAMTransform {
         AssociationEnd _get_1 = _ends_1.get(1);
         int _upperBound = _get_1.getUpperBound();
         it.setUpperBound(_upperBound);
-        EObject _eContainer = from.eContainer();
-        EList<AssociationEnd> _ends_2 = from.getEnds();
-        AssociationEnd _get_2 = _ends_2.get(1);
-        Classifier _classifier = _get_2.getClassifier();
-        String _name = _classifier.getName();
-        Classifier _classifierFrom = TextRAMTransform.this.textRamEcoreUtil.getClassifierFrom(((StructuralView) _eContainer), _name);
-        it.setClassReference(((ca.mcgill.cs.sel.ram.Class) _classifierFrom));
       }
     };
     TAssociationEnd _doubleArrow_1 = ObjectExtensions.<TAssociationEnd>operator_doubleArrow(_createTAssociationEnd_1, _function_2);
     res.setToEnd(_doubleArrow_1);
+    EObject _eContainer = from.eContainer();
+    EList<AssociationEnd> _ends = from.getEnds();
+    AssociationEnd _get = _ends.get(0);
+    Classifier _classifier = _get.getClassifier();
+    String _name = _classifier.getName();
+    Classifier _classifierFrom = this.textRamEcoreUtil.getClassifierFrom(((StructuralView) _eContainer), _name);
+    final ca.mcgill.cs.sel.ram.Class clazzFrom = ((ca.mcgill.cs.sel.ram.Class) _classifierFrom);
+    EObject _eContainer_1 = from.eContainer();
+    EList<AssociationEnd> _ends_1 = from.getEnds();
+    AssociationEnd _get_1 = _ends_1.get(0);
+    Classifier _classifier_1 = _get_1.getClassifier();
+    String _name_1 = _classifier_1.getName();
+    Classifier _classifierFrom_1 = this.textRamEcoreUtil.getClassifierFrom(((StructuralView) _eContainer_1), _name_1);
+    final ca.mcgill.cs.sel.ram.Class clazzTo = ((ca.mcgill.cs.sel.ram.Class) _classifierFrom_1);
+    TAssociationEnd _fromEnd = res.getFromEnd();
+    String _name_2 = clazzFrom.getName();
+    TClass _tClassFrom = this.textRamEcoreUtil.getTClassFrom(to, _name_2);
+    _fromEnd.setClassReference(_tClassFrom);
+    TAssociationEnd _toEnd = res.getToEnd();
+    String _name_3 = clazzTo.getName();
+    TClass _tClassFrom_1 = this.textRamEcoreUtil.getTClassFrom(to, _name_3);
+    _toEnd.setClassReference(_tClassFrom_1);
+    res.setReferenceType(ReferenceType.COMPOSITION);
     res.setDirectionMultplicity(AssociationDirectionMultiplicity.UNIDIRECTIONAL);
     return res;
   }

@@ -23,6 +23,7 @@ import ca.mcgill.cs.sel.ram.Association
 import cl.uchile.pleiad.services.TextRAMGrammarAccess.AssociationDirectionMultplicityElements
 import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity
 import cl.uchile.pleiad.textRam.TStructuralView
+import ca.mcgill.cs.sel.ram.ReferenceType
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -58,25 +59,30 @@ class TextRAMTransform implements ITextRAMTransform {
 	
 	private def transformAssociations(StructuralView from, TAspect to) {
 		from.associations.forEach[ a |
-			(to.structuralView as TStructuralView).TAssociations.add ( transformAssociation( a ) )
+			(to.structuralView as TStructuralView).TAssociations.add ( transformAssociation( a, to.structuralView as TStructuralView ) )
 		]
 	}
 	
-	private def transformAssociation( Association from ) {
+	private def transformAssociation( Association from, TStructuralView to ) {
 		val res = TextRamFactory.eINSTANCE.createTAssociation => [ name = from.name ]
 		
 		res.fromEnd = TextRamFactory.eINSTANCE.createTAssociationEnd => [
 			lowerBound     = from.ends.get(0).lowerBound
 			upperBound     = from.ends.get(0).upperBound
-			classReference = (from.eContainer as StructuralView).getClassifierFrom( from.ends.get(0).classifier.name ) as Class
 		]
 		
 		res.toEnd = TextRamFactory.eINSTANCE.createTAssociationEnd => [
 			lowerBound     = from.ends.get(1).lowerBound
 			upperBound     = from.ends.get(1).upperBound
-			classReference = (from.eContainer as StructuralView).getClassifierFrom( from.ends.get(1).classifier.name ) as Class
 		]
 		
+		val clazzFrom = (from.eContainer as StructuralView).getClassifierFrom( from.ends.get(0).classifier.name ) as Class
+		val clazzTo = (from.eContainer as StructuralView).getClassifierFrom( from.ends.get(0).classifier.name ) as Class
+		
+		res.fromEnd.classReference = to.getTClassFrom( clazzFrom.name )
+		res.toEnd.classReference = to.getTClassFrom( clazzTo.name )
+		
+		res.referenceType = ReferenceType.COMPOSITION;
 		res.directionMultplicity = AssociationDirectionMultiplicity.UNIDIRECTIONAL; 
 		
 		return res

@@ -1258,7 +1258,7 @@ public class MessageViewsGenerator {
     ca.mcgill.cs.sel.ram.Class _xblockexpression = null;
     {
       TAssociationEnd _toEnd = assoc.getToEnd();
-      ca.mcgill.cs.sel.ram.Class _classReference = _toEnd.getClassReference();
+      TClass _classReference = _toEnd.getClassReference();
       String _name = _classReference.getName();
       final ca.mcgill.cs.sel.ram.Class result = this.findClass(this.ramAspect, _name);
       _xblockexpression = result;

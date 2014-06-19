@@ -17,6 +17,7 @@ import cl.uchile.pleiad.textRam.TInteractionMessage;
 import cl.uchile.pleiad.textRam.TLifeline;
 import cl.uchile.pleiad.textRam.TLifelineReferenceType;
 import cl.uchile.pleiad.textRam.TOperation;
+import cl.uchile.pleiad.textRam.TStructuralView;
 import cl.uchile.pleiad.textRam.TTypedElement;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
@@ -110,6 +111,22 @@ public final class TextRamEcoreUtil {
         }
       };
       return IterableExtensions.<Classifier>findFirst(_classes, _function);
+    }
+    return null;
+  }
+  
+  public TClass getTClassFrom(final TStructuralView owner, final String name) {
+    boolean _notEquals = (!Objects.equal(owner, null));
+    if (_notEquals) {
+      EList<Classifier> _classes = owner.getClasses();
+      Iterable<TClass> _filter = Iterables.<TClass>filter(_classes, TClass.class);
+      final Function1<TClass,Boolean> _function = new Function1<TClass,Boolean>() {
+        public Boolean apply(final TClass c) {
+          String _name = c.getName();
+          return Boolean.valueOf(Objects.equal(_name, name));
+        }
+      };
+      return IterableExtensions.<TClass>findFirst(_filter, _function);
     }
     return null;
   }
@@ -274,7 +291,7 @@ public final class TextRamEcoreUtil {
           TLifeline _rightLifeline_3 = textRamInteraction.getRightLifeline();
           TTypedElement _represents_1 = _rightLifeline_3.getRepresents();
           TAssociationEnd _toEnd = ((TAssociation) _represents_1).getToEnd();
-          ca.mcgill.cs.sel.ram.Class _classReference = _toEnd.getClassReference();
+          TClass _classReference = _toEnd.getClassReference();
           result = ((TClass) _classReference);
         }
         TLifeline _rightLifeline_4 = textRamInteraction.getRightLifeline();

@@ -113,7 +113,7 @@ TAssociationEnd returns textRam::TAssociationEnd:
     (lowerBound=ElementBound
     '..')?
     (upperBound=ElementBound)?
-    classReference=[Class|EString]
+    classReference=[textRam::TClass|EString]
 ;
 
 ElementBound returns ecore::EInt:

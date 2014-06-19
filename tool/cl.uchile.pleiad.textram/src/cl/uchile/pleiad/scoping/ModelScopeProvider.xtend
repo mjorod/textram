@@ -119,7 +119,7 @@ class ModelScopeProvider {
 	 * @param aspect owner of the external aspects
 	 * @return a flatten list of the hierarchy of the extended classes for the given aspects   
 	 */
-	def getExtendedClasses(TAspect aspect) {
+	def List<TClass> getExtendedClasses(TAspect aspect) {
 		val List<TClass> result = newArrayList
 		
 		addExtendedClasses(aspect, result)

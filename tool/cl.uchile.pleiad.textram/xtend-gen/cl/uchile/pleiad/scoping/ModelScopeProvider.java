@@ -814,7 +814,7 @@ public class ModelScopeProvider {
     TClass _xblockexpression = null;
     {
       TAssociationEnd _toEnd = owner.getToEnd();
-      ca.mcgill.cs.sel.ram.Class _classReference = _toEnd.getClassReference();
+      TClass _classReference = _toEnd.getClassReference();
       final TClass result = ((TClass) _classReference);
       _xblockexpression = result;
     }

@@ -815,7 +815,7 @@ public class StructuralViewGenerator {
         public Boolean apply(final Classifier c) {
           String _name = c.getName();
           TAssociationEnd _fromEnd = textRamAssoc.getFromEnd();
-          ca.mcgill.cs.sel.ram.Class _classReference = _fromEnd.getClassReference();
+          TClass _classReference = _fromEnd.getClassReference();
           String _name_1 = _classReference.getName();
           return Boolean.valueOf(Objects.equal(_name, _name_1));
         }
@@ -828,7 +828,7 @@ public class StructuralViewGenerator {
         public Boolean apply(final Classifier c) {
           String _name = c.getName();
           TAssociationEnd _toEnd = textRamAssoc.getToEnd();
-          ca.mcgill.cs.sel.ram.Class _classReference = _toEnd.getClassReference();
+          TClass _classReference = _toEnd.getClassReference();
           String _name_1 = _classReference.getName();
           return Boolean.valueOf(Objects.equal(_name, _name_1));
         }
@@ -836,10 +836,10 @@ public class StructuralViewGenerator {
       Classifier _findFirst_1 = IterableExtensions.<Classifier>findFirst(_classes_1, _function_1);
       final ca.mcgill.cs.sel.ram.Class classTo = ((ca.mcgill.cs.sel.ram.Class) _findFirst_1);
       TAssociationEnd _fromEnd = textRamAssoc.getFromEnd();
-      ca.mcgill.cs.sel.ram.Class _classReference = _fromEnd.getClassReference();
+      TClass _classReference = _fromEnd.getClassReference();
       final String nameFrom = _classReference.getName();
       TAssociationEnd _toEnd = textRamAssoc.getToEnd();
-      ca.mcgill.cs.sel.ram.Class _classReference_1 = _toEnd.getClassReference();
+      TClass _classReference_1 = _toEnd.getClassReference();
       final String nameTo = _classReference_1.getName();
       result.setName(((nameFrom + "_") + nameTo));
       final AssociationEnd fromEnd = RamFactory.eINSTANCE.createAssociationEnd();
