@@ -1,34 +1,44 @@
 package cl.uchile.pleiad.transform;
 
+import ca.mcgill.cs.sel.ram.AbstractMessageView;
 import ca.mcgill.cs.sel.ram.Aspect;
+import ca.mcgill.cs.sel.ram.AspectMessageView;
 import ca.mcgill.cs.sel.ram.Association;
 import ca.mcgill.cs.sel.ram.AssociationEnd;
 import ca.mcgill.cs.sel.ram.Attribute;
 import ca.mcgill.cs.sel.ram.Classifier;
+import ca.mcgill.cs.sel.ram.Interaction;
+import ca.mcgill.cs.sel.ram.Lifeline;
 import ca.mcgill.cs.sel.ram.ObjectType;
 import ca.mcgill.cs.sel.ram.Operation;
 import ca.mcgill.cs.sel.ram.Parameter;
 import ca.mcgill.cs.sel.ram.PrimitiveType;
 import ca.mcgill.cs.sel.ram.RSet;
+import ca.mcgill.cs.sel.ram.Reference;
 import ca.mcgill.cs.sel.ram.ReferenceType;
 import ca.mcgill.cs.sel.ram.StructuralView;
 import ca.mcgill.cs.sel.ram.Type;
+import ca.mcgill.cs.sel.ram.TypedElement;
 import ca.mcgill.cs.sel.ram.Visibility;
 import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity;
+import cl.uchile.pleiad.textRam.TAbstractMessageView;
 import cl.uchile.pleiad.textRam.TAspect;
 import cl.uchile.pleiad.textRam.TAssociation;
 import cl.uchile.pleiad.textRam.TAssociationEnd;
 import cl.uchile.pleiad.textRam.TAttribute;
 import cl.uchile.pleiad.textRam.TClass;
 import cl.uchile.pleiad.textRam.TClassMember;
+import cl.uchile.pleiad.textRam.TLifeline;
 import cl.uchile.pleiad.textRam.TOperation;
 import cl.uchile.pleiad.textRam.TParameter;
 import cl.uchile.pleiad.textRam.TStructuralView;
+import cl.uchile.pleiad.textRam.TTypedElement;
 import cl.uchile.pleiad.textRam.TextRamFactory;
 import cl.uchile.pleiad.transform.ITextRAMTransform;
 import cl.uchile.pleiad.util.TextRamEcoreUtil;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
@@ -61,7 +71,90 @@ public class TextRAMTransform implements ITextRAMTransform {
     final TAspect textRamAspect = ObjectExtensions.<TAspect>operator_doubleArrow(_createTAspect, _function);
     StructuralView _structuralView = ramAspect.getStructuralView();
     this.transformStructuralView(_structuralView, textRamAspect);
+    this.transformMessageViews(ramAspect, textRamAspect);
     return textRamAspect;
+  }
+  
+  private boolean transformMessageViews(final Aspect from, final TAspect to) {
+    EList<AbstractMessageView> _messageViews = from.getMessageViews();
+    List<TAbstractMessageView> _transformedMessageViews = this.getTransformedMessageViews(from, to);
+    return _messageViews.addAll(_transformedMessageViews);
+  }
+  
+  private List<TAbstractMessageView> getTransformedMessageViews(final Aspect from, final TAspect to) {
+    final List<TAbstractMessageView> res = CollectionLiterals.<TAbstractMessageView>newArrayList();
+    final List<TLifeline> lifelines = CollectionLiterals.<TLifeline>newArrayList();
+    EList<AbstractMessageView> _messageViews = from.getMessageViews();
+    Iterable<AspectMessageView> _filter = Iterables.<AspectMessageView>filter(_messageViews, AspectMessageView.class);
+    final Procedure1<AspectMessageView> _function = new Procedure1<AspectMessageView>() {
+      public void apply(final AspectMessageView amv) {
+        Interaction _advice = amv.getAdvice();
+        EList<Lifeline> _lifelines = _advice.getLifelines();
+        final Procedure1<Lifeline> _function = new Procedure1<Lifeline>() {
+          public void apply(final Lifeline l) {
+            TLifeline _transformedLifeline = TextRAMTransform.this.getTransformedLifeline(l, to);
+            lifelines.add(_transformedLifeline);
+          }
+        };
+        IterableExtensions.<Lifeline>forEach(_lifelines, _function);
+      }
+    };
+    IterableExtensions.<AspectMessageView>forEach(_filter, _function);
+    return res;
+  }
+  
+  private TLifeline getTransformedLifeline(final Lifeline from, final Aspect to) {
+    TLifeline _xblockexpression = null;
+    {
+      TLifeline _createTLifeline = TextRamFactory.eINSTANCE.createTLifeline();
+      final Procedure1<TLifeline> _function = new Procedure1<TLifeline>() {
+        public void apply(final TLifeline it) {
+          TypedElement _represents = from.getRepresents();
+          TTypedElement _representsFrom = TextRAMTransform.this.getRepresentsFrom(_represents, to);
+          it.setRepresents(_representsFrom);
+        }
+      };
+      final TLifeline res = ObjectExtensions.<TLifeline>operator_doubleArrow(_createTLifeline, _function);
+      _xblockexpression = res;
+    }
+    return _xblockexpression;
+  }
+  
+  private TTypedElement _getRepresentsFrom(final AssociationEnd from, final Aspect to) {
+    String _name = from.getName();
+    return this.textRamEcoreUtil.getTAssociation(to, _name);
+  }
+  
+  private TTypedElement _getRepresentsFrom(final Reference from, final Aspect to) {
+    StructuralView _structuralView = to.getStructuralView();
+    String _name = from.getName();
+    return this.textRamEcoreUtil.getTClassFrom(((TStructuralView) _structuralView), _name);
+  }
+  
+  private TTypedElement _getRepresentsFrom(final Attribute from, final Aspect to) {
+    StructuralView _structuralView = to.getStructuralView();
+    EList<Classifier> _classes = _structuralView.getClasses();
+    Iterable<TClass> _filter = Iterables.<TClass>filter(_classes, TClass.class);
+    final Function1<TClass,EList<TClassMember>> _function = new Function1<TClass,EList<TClassMember>>() {
+      public EList<TClassMember> apply(final TClass it) {
+        return it.getMembers();
+      }
+    };
+    Iterable<EList<TClassMember>> _map = IterableExtensions.<TClass, EList<TClassMember>>map(_filter, _function);
+    Iterable<TClassMember> _flatten = Iterables.<TClassMember>concat(_map);
+    Iterable<TAttribute> _filter_1 = Iterables.<TAttribute>filter(_flatten, TAttribute.class);
+    final Function1<TAttribute,Boolean> _function_1 = new Function1<TAttribute,Boolean>() {
+      public Boolean apply(final TAttribute a) {
+        String _name = a.getName();
+        String _name_1 = from.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    return IterableExtensions.<TAttribute>findFirst(_filter_1, _function_1);
+  }
+  
+  private TTypedElement _getRepresentsFrom(final Parameter from, final Aspect to) {
+    throw new IllegalStateException("Parameter not supported in TTypedElement");
   }
   
   private void transformStructuralView(final StructuralView from, final TAspect to) {
@@ -378,5 +471,20 @@ public class TextRAMTransform implements ITextRAMTransform {
       _xblockexpression = res;
     }
     return _xblockexpression;
+  }
+  
+  private TTypedElement getRepresentsFrom(final TypedElement from, final Aspect to) {
+    if (from instanceof AssociationEnd) {
+      return _getRepresentsFrom((AssociationEnd)from, to);
+    } else if (from instanceof Reference) {
+      return _getRepresentsFrom((Reference)from, to);
+    } else if (from instanceof Attribute) {
+      return _getRepresentsFrom((Attribute)from, to);
+    } else if (from instanceof Parameter) {
+      return _getRepresentsFrom((Parameter)from, to);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(from, to).toString());
+    }
   }
 }

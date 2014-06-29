@@ -24,6 +24,18 @@ import cl.uchile.pleiad.services.TextRAMGrammarAccess.AssociationDirectionMultpl
 import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity
 import cl.uchile.pleiad.textRam.TStructuralView
 import ca.mcgill.cs.sel.ram.ReferenceType
+import cl.uchile.pleiad.textRam.TAbstractMessageView
+import ca.mcgill.cs.sel.ram.AspectMessageView
+import ca.mcgill.cs.sel.ram.MessageView
+import ca.mcgill.cs.sel.ram.MessageViewReference
+import cl.uchile.pleiad.textRam.TLifeline
+import cl.uchile.pleiad.textRam.TLifelineReferenceType
+import ca.mcgill.cs.sel.ram.Lifeline
+import ca.mcgill.cs.sel.ram.TypedElement
+import ca.mcgill.cs.sel.ram.AssociationEnd
+import ca.mcgill.cs.sel.ram.Reference
+import cl.uchile.pleiad.textRam.TAttribute
+import cl.uchile.pleiad.textRam.TTypedElement
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -40,9 +52,79 @@ class TextRAMTransform implements ITextRAMTransform {
 		
 		ramAspect.structuralView.transformStructuralView( textRamAspect )
 		
+		transformMessageViews( ramAspect, textRamAspect )
+		
 				
 		return textRamAspect
 	}
+	
+	private def transformMessageViews(Aspect from, TAspect to) {
+		from.messageViews.addAll( getTransformedMessageViews( from, to ) )		
+	}
+	
+	private def getTransformedMessageViews(Aspect from, TAspect to) {
+		val List<TAbstractMessageView> res = newArrayList
+		
+		// get lifelines
+		
+		val List<TLifeline> lifelines = newArrayList
+		from.messageViews.filter(AspectMessageView).forEach[ amv |
+			amv.advice.lifelines.forEach[ l | lifelines.add( getTransformedLifeline( l, to ) ) ]
+		]
+		
+		return res
+	}
+	
+	private def getTransformedLifeline(Lifeline from, Aspect to) {
+		val res = TextRamFactory.eINSTANCE.createTLifeline => [
+			represents = getRepresentsFrom( from.represents, to )
+		]
+		
+		res
+	}
+	
+	private def dispatch TTypedElement getRepresentsFrom(AssociationEnd from, Aspect to) {
+		return to.getTAssociation( from.name )
+	}
+	
+	private def dispatch TTypedElement getRepresentsFrom(Reference from, Aspect to) {
+		return (to.structuralView as TStructuralView).getTClassFrom( from.name )
+	}
+	
+	private def dispatch TTypedElement getRepresentsFrom(Attribute from, Aspect to) {
+		//TODO: class name must be defined for attribute
+		to.structuralView.classes.filter(TClass).map[members].flatten.filter(TAttribute).findFirst[ a | a.name == from.name ]
+	}
+	
+	private def dispatch TTypedElement getRepresentsFrom(Parameter from, Aspect to) {
+		throw new IllegalStateException("Parameter not supported in TTypedElement")
+	}
+	
+//	private def dispatch getTransformedLifeline(AspectMessageView view) {
+//		val res = TextRamFactory.eINSTANCE.createTLifeline
+//		
+//		res.referenceType = getTypedElement(view.)
+//		
+//		return res
+//	}
+//	
+//	private def dispatch getTransformedLifeline(MessageView view) {
+//		val res = TextRamFactory.eINSTANCE.createTLifeline
+//		
+//		return res
+//	}
+//	
+//	private def dispatch getTransformedMessageView(AspectMessageView from) {
+//		
+//	}
+//	
+//	private def dispatch getTransformedMessageView(MessageView from) {
+//		
+//	}
+//	
+//	private def dispatch getTransformedMessageView(MessageViewReference from) {
+//		
+//	}
 	
 	private def transformStructuralView(StructuralView from, TAspect to) {
 		to.structuralView = TextRamFactory.eINSTANCE.createTStructuralView

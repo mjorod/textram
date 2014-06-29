@@ -15,8 +15,8 @@ public class RamToTextRam {
 
 	public static void main(String[] args) {
 		
-		String file = "C:\\Users\\Desarrollo\\Downloads\\ZeroToMany-Ordered.ram";
-		String fileTo ="C:\\Users\\Desarrollo\\Downloads\\ZeroToMany-Ordered.xram";
+		String file = "/Users/moliva/touchram/touchram/ca.mcgill.sel.ram.gui/models/reusable_model_library/util/ZeroToMany-Ordered.ram";
+		String fileTo ="/Users/moliva/Desktop/ZeroToMany-Ordered.xram";
 		
 		if (!EPackage.Registry.INSTANCE.containsKey(RamPackage.eINSTANCE.getNsURI())) {
 			EPackage.Registry.INSTANCE.put(RamPackage.eINSTANCE.getNsURI(), ca.mcgill.cs.sel.ram.RamPackage.eINSTANCE);

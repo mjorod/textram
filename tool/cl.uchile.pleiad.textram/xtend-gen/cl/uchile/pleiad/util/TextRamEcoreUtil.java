@@ -308,6 +308,19 @@ public final class TextRamEcoreUtil {
     }
   }
   
+  public TAssociation getTAssociation(final Aspect aspect, final String name) {
+    StructuralView _structuralView = aspect.getStructuralView();
+    final TStructuralView tStructuralView = ((TStructuralView) _structuralView);
+    EList<TAssociation> _tAssociations = tStructuralView.getTAssociations();
+    final Function1<TAssociation,Boolean> _function = new Function1<TAssociation,Boolean>() {
+      public Boolean apply(final TAssociation a) {
+        String _name = a.getName();
+        return Boolean.valueOf(Objects.equal(_name, name));
+      }
+    };
+    return IterableExtensions.<TAssociation>findFirst(_tAssociations, _function);
+  }
+  
   protected Type _getTypeReference(final Aspect aspect, final PrimitiveType type) {
     StructuralView _structuralView = aspect.getStructuralView();
     EList<Type> _types = _structuralView.getTypes();

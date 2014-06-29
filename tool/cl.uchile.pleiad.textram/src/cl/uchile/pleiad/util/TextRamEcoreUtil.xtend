@@ -179,6 +179,12 @@ final class TextRamEcoreUtil {
 		result
 	}
 	
+	def getTAssociation(Aspect aspect, String name) {
+		val tStructuralView = aspect.structuralView as TStructuralView
+		
+		return tStructuralView.TAssociations.findFirst[ a | a.name == name ]
+	}
+	
 	def dispatch getTypeReference(Aspect aspect, PrimitiveType type) {
 		aspect.structuralView.types.filter(PrimitiveType).findFirst[ t | t.name == type.name ]
 	}
