@@ -22,7 +22,9 @@ import ca.mcgill.cs.sel.ram.TypedElement;
 import ca.mcgill.cs.sel.ram.Visibility;
 import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity;
 import cl.uchile.pleiad.textRam.TAbstractMessageView;
+import cl.uchile.pleiad.textRam.TAbstractMessages;
 import cl.uchile.pleiad.textRam.TAspect;
+import cl.uchile.pleiad.textRam.TAspectMessageView;
 import cl.uchile.pleiad.textRam.TAssociation;
 import cl.uchile.pleiad.textRam.TAssociationEnd;
 import cl.uchile.pleiad.textRam.TAttribute;
@@ -83,23 +85,44 @@ public class TextRAMTransform implements ITextRAMTransform {
   
   private List<TAbstractMessageView> getTransformedMessageViews(final Aspect from, final TAspect to) {
     final List<TAbstractMessageView> res = CollectionLiterals.<TAbstractMessageView>newArrayList();
-    final List<TLifeline> lifelines = CollectionLiterals.<TLifeline>newArrayList();
-    EList<AbstractMessageView> _messageViews = from.getMessageViews();
-    Iterable<AspectMessageView> _filter = Iterables.<AspectMessageView>filter(_messageViews, AspectMessageView.class);
+    final TAbstractMessageView textRamMessageView = TextRamFactory.eINSTANCE.createTAbstractMessageView();
+    EList<AbstractMessageView> _messageViews = to.getMessageViews();
+    _messageViews.add(textRamMessageView);
+    EList<AbstractMessageView> _messageViews_1 = from.getMessageViews();
+    Iterable<AspectMessageView> _filter = Iterables.<AspectMessageView>filter(_messageViews_1, AspectMessageView.class);
     final Procedure1<AspectMessageView> _function = new Procedure1<AspectMessageView>() {
       public void apply(final AspectMessageView amv) {
-        Interaction _advice = amv.getAdvice();
-        EList<Lifeline> _lifelines = _advice.getLifelines();
-        final Procedure1<Lifeline> _function = new Procedure1<Lifeline>() {
-          public void apply(final Lifeline l) {
-            TLifeline _transformedLifeline = TextRAMTransform.this.getTransformedLifeline(l, to);
-            lifelines.add(_transformedLifeline);
-          }
-        };
-        IterableExtensions.<Lifeline>forEach(_lifelines, _function);
+        EList<TAbstractMessages> _messages = textRamMessageView.getMessages();
+        TAspectMessageView _transformedAspectMessageView = TextRAMTransform.this.getTransformedAspectMessageView(amv, to);
+        _messages.add(_transformedAspectMessageView);
       }
     };
     IterableExtensions.<AspectMessageView>forEach(_filter, _function);
+    return res;
+  }
+  
+  private TAspectMessageView getTransformedAspectMessageView(final AspectMessageView from, final TAspect to) {
+    TAspectMessageView _createTAspectMessageView = TextRamFactory.eINSTANCE.createTAspectMessageView();
+    final Procedure1<TAspectMessageView> _function = new Procedure1<TAspectMessageView>() {
+      public void apply(final TAspectMessageView it) {
+        String _name = from.getName();
+        it.setName(_name);
+      }
+    };
+    final TAspectMessageView res = ObjectExtensions.<TAspectMessageView>operator_doubleArrow(_createTAspectMessageView, _function);
+    EList<AbstractMessageView> _messageViews = to.getMessageViews();
+    AbstractMessageView _get = _messageViews.get(0);
+    final TAbstractMessageView textRamMessageView = ((TAbstractMessageView) _get);
+    Interaction _advice = from.getAdvice();
+    EList<Lifeline> _lifelines = _advice.getLifelines();
+    final Procedure1<Lifeline> _function_1 = new Procedure1<Lifeline>() {
+      public void apply(final Lifeline l) {
+        EList<TLifeline> _lifelines = textRamMessageView.getLifelines();
+        TLifeline _transformedLifeline = TextRAMTransform.this.getTransformedLifeline(l, to);
+        _lifelines.add(_transformedLifeline);
+      }
+    };
+    IterableExtensions.<Lifeline>forEach(_lifelines, _function_1);
     return res;
   }
   
