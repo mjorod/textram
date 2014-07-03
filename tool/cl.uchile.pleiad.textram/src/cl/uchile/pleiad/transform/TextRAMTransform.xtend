@@ -65,19 +65,36 @@ class TextRAMTransform implements ITextRAMTransform {
 	private def getTransformedMessageViews(Aspect from, TAspect to) {
 		val List<TAbstractMessageView> res = newArrayList
 		
-		// get lifelines
+		val textRamMessageView = TextRamFactory.eINSTANCE.createTAbstractMessageView
+		to.messageViews.add( textRamMessageView )
 		
-		val List<TLifeline> lifelines = newArrayList
 		from.messageViews.filter(AspectMessageView).forEach[ amv |
-			amv.advice.lifelines.forEach[ l | lifelines.add( getTransformedLifeline( l, to ) ) ]
+			textRamMessageView.messages.add( getTransformedAspectMessageView( amv, to ) )
 		]
 		
 		return res
 	}
 	
+	private def getTransformedAspectMessageView( AspectMessageView from, TAspect to ) {
+		val res = TextRamFactory.eINSTANCE.createTAspectMessageView => [ name = from.name ]
+		
+		// gets the unique TAbstractMessageView of the Aspect
+		val textRamMessageView = to.messageViews.get(0) as TAbstractMessageView
+		
+		// add lifelines
+		from.advice.lifelines.forEach[ l | textRamMessageView.lifelines.add( getTransformedLifeline( l, to ) ) ]
+		
+		
+		
+		return res
+		
+	}
+	
+	
 	private def getTransformedLifeline(Lifeline from, Aspect to) {
 		val res = TextRamFactory.eINSTANCE.createTLifeline => [
 			represents = getRepresentsFrom( from.represents, to )
+			
 		]
 		
 		res
