@@ -17,6 +17,7 @@ xtend-gen/*.*
 
 # generated files
 tool/cl.uchile.pleiad.textram/plugin.xml_gen
+.java._trace
 
 # workbench
 runtime-EclipseApplication/
