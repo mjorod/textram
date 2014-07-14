@@ -3,6 +3,7 @@ package cl.uchile.pleiad.util;
 import ca.mcgill.cs.sel.ram.Aspect;
 import ca.mcgill.cs.sel.ram.Classifier;
 import ca.mcgill.cs.sel.ram.Operation;
+import ca.mcgill.cs.sel.ram.Parameter;
 import ca.mcgill.cs.sel.ram.PrimitiveType;
 import ca.mcgill.cs.sel.ram.RSet;
 import ca.mcgill.cs.sel.ram.RVoid;
@@ -17,6 +18,7 @@ import cl.uchile.pleiad.textRam.TInteractionMessage;
 import cl.uchile.pleiad.textRam.TLifeline;
 import cl.uchile.pleiad.textRam.TLifelineReferenceType;
 import cl.uchile.pleiad.textRam.TOperation;
+import cl.uchile.pleiad.textRam.TParameter;
 import cl.uchile.pleiad.textRam.TStructuralView;
 import cl.uchile.pleiad.textRam.TTypedElement;
 import com.google.common.base.Objects;
@@ -30,6 +32,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IntegerRange;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
@@ -169,6 +172,60 @@ public final class TextRamEcoreUtil {
       _xblockexpression = result;
     }
     return _xblockexpression;
+  }
+  
+  /**
+   * Return a {@link TOperation operation} from {@link TClass clazz}
+   * 
+   * @param clazz owner of the operation
+   * @param operation Ram's {@Operation operation} that contains the signature of the {@link TOperation textram's operation} to find
+   * return if founded it returns a {@link TOperation textram's operation}
+   */
+  public static TOperation findTextRamOperation(final TClass clazz, final Operation operation) {
+    String _name = operation.getName();
+    final List<TOperation> operations = TextRamEcoreUtil.findTextRamOperations(clazz, _name);
+    for (final TOperation o : operations) {
+      boolean _operationThatMatchSignature = TextRamEcoreUtil.operationThatMatchSignature(o, operation);
+      boolean _equals = (_operationThatMatchSignature == true);
+      if (_equals) {
+        return o;
+      }
+    }
+    return null;
+  }
+  
+  private static boolean operationThatMatchSignature(final TOperation current, final Operation toCompare) {
+    String _name = current.getName();
+    String _name_1 = toCompare.getName();
+    boolean _notEquals = (!Objects.equal(_name, _name_1));
+    if (_notEquals) {
+      return false;
+    }
+    EList<TParameter> _parameters = current.getParameters();
+    int _size = _parameters.size();
+    EList<Parameter> _parameters_1 = toCompare.getParameters();
+    int _size_1 = _parameters_1.size();
+    boolean _notEquals_1 = (_size != _size_1);
+    if (_notEquals_1) {
+      return false;
+    }
+    EList<Parameter> _parameters_2 = toCompare.getParameters();
+    int _size_2 = _parameters_2.size();
+    int _minus = (_size_2 - 1);
+    IntegerRange _upTo = new IntegerRange(0, _minus);
+    for (final Integer i : _upTo) {
+      EList<Parameter> _parameters_3 = toCompare.getParameters();
+      Parameter _get = _parameters_3.get((i).intValue());
+      Type _type = _get.getType();
+      EList<TParameter> _parameters_4 = current.getParameters();
+      TParameter _get_1 = _parameters_4.get((i).intValue());
+      Type _type_1 = _get_1.getType();
+      boolean _notEquals_2 = (!Objects.equal(_type, _type_1));
+      if (_notEquals_2) {
+        return false;
+      }
+    }
+    return true;
   }
   
   /**

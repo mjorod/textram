@@ -1,41 +1,48 @@
 package cl.uchile.pleiad.transform
 
 import ca.mcgill.cs.sel.ram.Aspect
+import ca.mcgill.cs.sel.ram.AspectMessageView
+import ca.mcgill.cs.sel.ram.Association
+import ca.mcgill.cs.sel.ram.AssociationEnd
 import ca.mcgill.cs.sel.ram.Attribute
 import ca.mcgill.cs.sel.ram.Class
 import ca.mcgill.cs.sel.ram.Classifier
+import ca.mcgill.cs.sel.ram.Lifeline
 import ca.mcgill.cs.sel.ram.Operation
 import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.PrimitiveType
 import ca.mcgill.cs.sel.ram.RSet
+import ca.mcgill.cs.sel.ram.Reference
+import ca.mcgill.cs.sel.ram.ReferenceType
 import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
+import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity
+import cl.uchile.pleiad.textRam.TAbstractMessageView
 import cl.uchile.pleiad.textRam.TAspect
+import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
+import cl.uchile.pleiad.textRam.TStructuralView
+import cl.uchile.pleiad.textRam.TTypedElement
 import cl.uchile.pleiad.textRam.TextRamFactory
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
-import java.util.Collection
-import ca.mcgill.cs.sel.ram.Association
-import cl.uchile.pleiad.services.TextRAMGrammarAccess.AssociationDirectionMultplicityElements
-import cl.uchile.pleiad.textRam.AssociationDirectionMultiplicity
-import cl.uchile.pleiad.textRam.TStructuralView
-import ca.mcgill.cs.sel.ram.ReferenceType
-import cl.uchile.pleiad.textRam.TAbstractMessageView
-import ca.mcgill.cs.sel.ram.AspectMessageView
-import ca.mcgill.cs.sel.ram.MessageView
-import ca.mcgill.cs.sel.ram.MessageViewReference
-import cl.uchile.pleiad.textRam.TLifeline
-import cl.uchile.pleiad.textRam.TLifelineReferenceType
-import ca.mcgill.cs.sel.ram.Lifeline
 import ca.mcgill.cs.sel.ram.TypedElement
-import ca.mcgill.cs.sel.ram.AssociationEnd
-import ca.mcgill.cs.sel.ram.Reference
-import cl.uchile.pleiad.textRam.TAttribute
-import cl.uchile.pleiad.textRam.TTypedElement
+import cl.uchile.pleiad.textRam.TLifelineReferenceType
+import cl.uchile.pleiad.textRam.TAssociation
+import cl.uchile.pleiad.textRam.TTemporaryProperty
+import ca.mcgill.cs.sel.ram.TemporaryProperty
+import ca.mcgill.cs.sel.ram.MessageView
+import ca.mcgill.cs.sel.ram.AbstractMessageView
+import ca.mcgill.cs.sel.ram.Interaction
+import cl.uchile.pleiad.textRam.TInteraction
+import ca.mcgill.cs.sel.ram.InteractionFragment
+import ca.mcgill.cs.sel.ram.MessageOccurrenceSpecification
+import ca.mcgill.cs.sel.ram.DestructionOccurrenceSpecification
+import ca.mcgill.cs.sel.ram.CombinedFragment
+import ca.mcgill.cs.sel.ram.OccurrenceSpecification
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -59,45 +66,158 @@ class TextRAMTransform implements ITextRAMTransform {
 	}
 	
 	private def transformMessageViews(Aspect from, TAspect to) {
-		from.messageViews.addAll( getTransformedMessageViews( from, to ) )		
+		if ( from.messageViews.size > 0 ) {
+			to.messageViews.add ( getTransformedMessageViews( from, to ) )
+		}
+		
 	}
 	
 	private def getTransformedMessageViews(Aspect from, TAspect to) {
-		val List<TAbstractMessageView> res = newArrayList
+		val res = TextRamFactory.eINSTANCE.createTAbstractMessageView
+	
+		res.addLifelinesfrom( from, to )
+			
+		from.messageViews.forEach[ mv | res.messages.add( getTransformedMessage( mv, to ) ) ]
 		
-		val textRamMessageView = TextRamFactory.eINSTANCE.createTAbstractMessageView
-		to.messageViews.add( textRamMessageView )
+		return res
+	}
+	
+	private def dispatch getTransformedMessage(AspectMessageView from, TAspect to) {
+		val res = TextRamFactory.eINSTANCE.createTAspectMessageView
+
+    	// pointcut
+		res.name = from.name
+		res.setClass( getClassFromPointCut( from.pointcut, to ) )
+		res.specifies = TextRamEcoreUtil.findTextRamOperation(  res.class_, from.pointcut )
+		res.partialClass = res.class_.partial
+		res.partialOperation = res.specifies.partial
+		res.arguments.addAll( res.specifies.parameters )
+			
 		
-		from.messageViews.filter(AspectMessageView).forEach[ amv |
-			textRamMessageView.messages.add( getTransformedAspectMessageView( amv, to ) )
+		// advice
+		res.interactionMessages.addAll( getTextRamInteractions( from.advice, to  ) )
+			
+		return res
+	}
+	
+	private def getTextRamInteractions(Interaction interaction, TAspect aspect) {
+		val List<TInteraction> res = newArrayList
+		
+		
+		//TODO: TReturnInteraction
+		interaction.fragments.forEach[ f | res.add( getTransformedFragment( f ) ) ]
+		
+		return res 
+	}
+	
+	private def dispatch getTransformedFragment(MessageOccurrenceSpecification from ) {
+		val res = TextRamFactory.eINSTANCE.createTInteractionMessage
+		
+		from.covered.forEach[]
+		
+		from.covered
+		
+		return res
+	}
+	
+	private def dispatch getTransformedFragment(OccurrenceSpecification from ) {
+		val res = TextRamFactory.eINSTANCE.createTOcurrence
+		
+		return res
+	}
+	
+	private def dispatch getTransformedFragment(CombinedFragment from ) {
+		val res = TextRamFactory.eINSTANCE.createTCombinedFragment
+		
+		return res
+	}
+	
+	private def getClassFromPointCut(Operation operation, TAspect to) {
+		val clazz = operation.eContainer as Class
+		
+		val res = to.findClass( clazz.name ) as TClass
+		
+		return res
+	}
+	
+	private def dispatch getTransformedMessage(MessageView from, TAspect to) {
+		val res = TextRamFactory.eINSTANCE.createTMessageView => []
+		
+		return res
+	}
+	
+	private def void addLifelinesfrom(TAbstractMessageView textRamMessageView, Aspect from, TAspect to) {
+		// lifelines from AspectMessageView
+		from.messageViews.filter(AspectMessageView).forEach [ amv | 
+			amv.advice.lifelines.forEach[ l | textRamMessageView.lifelines.add( getTransformedLifeline( l, to ) ) ]
 		]
 		
-		return res
-	}
-	
-	private def getTransformedAspectMessageView( AspectMessageView from, TAspect to ) {
-		val res = TextRamFactory.eINSTANCE.createTAspectMessageView => [ name = from.name ]
-		
-		// gets the unique TAbstractMessageView of the Aspect
-		val textRamMessageView = to.messageViews.get(0) as TAbstractMessageView
-		
-		// add lifelines
-		from.advice.lifelines.forEach[ l | textRamMessageView.lifelines.add( getTransformedLifeline( l, to ) ) ]
-		
-		
-		
-		return res
-		
+		// lifelines from MessageView
+		from.messageViews.filter(MessageView).forEach[ mv |
+			mv.specification.lifelines.forEach[ l | textRamMessageView.lifelines.add( getTransformedLifeline( l, to ) ) ]
+		]
 	}
 	
 	
-	private def getTransformedLifeline(Lifeline from, Aspect to) {
+	private def getTransformedLifeline(Lifeline from, TAspect to) {
 		val res = TextRamFactory.eINSTANCE.createTLifeline => [
 			represents = getRepresentsFrom( from.represents, to )
+			name = getNameFromLifeline( from )
+			referenceType = getReferenceTypeFrom ( from.represents )
+			localProperties.addAll( getLocalPropertiesFromLifeline( from, to ) )
 			
 		]
 		
 		res
+	}
+	
+	private def getLocalPropertiesFromLifeline( Lifeline from, TAspect to ) {
+		val List<TTemporaryProperty> res = newArrayList
+		
+		from.localProperties.forEach[ lp | res.add( getLocalProperty( lp, to ) ) ]
+		
+		return res
+	}
+	
+	private def dispatch TTemporaryProperty getLocalProperty( Reference from, TAspect to ) {
+		val res = TextRamFactory.eINSTANCE.createTReference => [
+			name = from.name
+			partialClass = (from.type as Class).partial
+			reference = to.findClass( from.type.name )
+		]
+		
+		return res
+	}
+	
+	private def dispatch TTemporaryProperty getLocalProperty(Attribute from, TAspect to ) {
+		val res = TextRamFactory.eINSTANCE.createTLocalAttribute => [
+			name = from.name
+			type = to.getTypeReference( from.type ) as PrimitiveType
+			//TODO: value is missing
+			// value = ?? StructuralFeatureValue
+		]
+		
+		return res
+	}
+	
+	private def dispatch TLifelineReferenceType getReferenceTypeFrom(AssociationEnd from) {
+		return TLifelineReferenceType.ASSOCIATION
+	}
+	
+	private def dispatch TLifelineReferenceType getReferenceTypeFrom( Attribute from ) {
+		return TLifelineReferenceType.ATTRIBUTE		
+	}
+	
+	private def dispatch TLifelineReferenceType getReferenceTypeFrom( Reference from ) {
+		return TLifelineReferenceType.REFERENCE
+	}
+	
+	private def dispatch TLifelineReferenceType getReferenceTypeFrom( Parameter from ) {
+		throw new IllegalStateException("Parameter is not supported as referenceType")
+	}	
+	
+	private def getNameFromLifeline(Lifeline lifeline) {
+		return lifeline.represents.name
 	}
 	
 	private def dispatch TTypedElement getRepresentsFrom(AssociationEnd from, Aspect to) {

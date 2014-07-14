@@ -7,9 +7,14 @@ import ca.mcgill.cs.sel.ram.Association;
 import ca.mcgill.cs.sel.ram.AssociationEnd;
 import ca.mcgill.cs.sel.ram.Attribute;
 import ca.mcgill.cs.sel.ram.Classifier;
+import ca.mcgill.cs.sel.ram.CombinedFragment;
 import ca.mcgill.cs.sel.ram.Interaction;
+import ca.mcgill.cs.sel.ram.InteractionFragment;
 import ca.mcgill.cs.sel.ram.Lifeline;
+import ca.mcgill.cs.sel.ram.MessageOccurrenceSpecification;
+import ca.mcgill.cs.sel.ram.MessageView;
 import ca.mcgill.cs.sel.ram.ObjectType;
+import ca.mcgill.cs.sel.ram.OccurrenceSpecification;
 import ca.mcgill.cs.sel.ram.Operation;
 import ca.mcgill.cs.sel.ram.Parameter;
 import ca.mcgill.cs.sel.ram.PrimitiveType;
@@ -17,6 +22,7 @@ import ca.mcgill.cs.sel.ram.RSet;
 import ca.mcgill.cs.sel.ram.Reference;
 import ca.mcgill.cs.sel.ram.ReferenceType;
 import ca.mcgill.cs.sel.ram.StructuralView;
+import ca.mcgill.cs.sel.ram.TemporaryProperty;
 import ca.mcgill.cs.sel.ram.Type;
 import ca.mcgill.cs.sel.ram.TypedElement;
 import ca.mcgill.cs.sel.ram.Visibility;
@@ -30,10 +36,19 @@ import cl.uchile.pleiad.textRam.TAssociationEnd;
 import cl.uchile.pleiad.textRam.TAttribute;
 import cl.uchile.pleiad.textRam.TClass;
 import cl.uchile.pleiad.textRam.TClassMember;
+import cl.uchile.pleiad.textRam.TCombinedFragment;
+import cl.uchile.pleiad.textRam.TInteraction;
+import cl.uchile.pleiad.textRam.TInteractionMessage;
 import cl.uchile.pleiad.textRam.TLifeline;
+import cl.uchile.pleiad.textRam.TLifelineReferenceType;
+import cl.uchile.pleiad.textRam.TLocalAttribute;
+import cl.uchile.pleiad.textRam.TMessageView;
+import cl.uchile.pleiad.textRam.TOcurrence;
 import cl.uchile.pleiad.textRam.TOperation;
 import cl.uchile.pleiad.textRam.TParameter;
+import cl.uchile.pleiad.textRam.TReference;
 import cl.uchile.pleiad.textRam.TStructuralView;
+import cl.uchile.pleiad.textRam.TTemporaryProperty;
 import cl.uchile.pleiad.textRam.TTypedElement;
 import cl.uchile.pleiad.textRam.TextRamFactory;
 import cl.uchile.pleiad.transform.ITextRAMTransform;
@@ -78,55 +93,153 @@ public class TextRAMTransform implements ITextRAMTransform {
   }
   
   private boolean transformMessageViews(final Aspect from, final TAspect to) {
+    boolean _xifexpression = false;
     EList<AbstractMessageView> _messageViews = from.getMessageViews();
-    List<TAbstractMessageView> _transformedMessageViews = this.getTransformedMessageViews(from, to);
-    return _messageViews.addAll(_transformedMessageViews);
+    int _size = _messageViews.size();
+    boolean _greaterThan = (_size > 0);
+    if (_greaterThan) {
+      EList<AbstractMessageView> _messageViews_1 = to.getMessageViews();
+      TAbstractMessageView _transformedMessageViews = this.getTransformedMessageViews(from, to);
+      _xifexpression = _messageViews_1.add(_transformedMessageViews);
+    }
+    return _xifexpression;
   }
   
-  private List<TAbstractMessageView> getTransformedMessageViews(final Aspect from, final TAspect to) {
-    final List<TAbstractMessageView> res = CollectionLiterals.<TAbstractMessageView>newArrayList();
-    final TAbstractMessageView textRamMessageView = TextRamFactory.eINSTANCE.createTAbstractMessageView();
-    EList<AbstractMessageView> _messageViews = to.getMessageViews();
-    _messageViews.add(textRamMessageView);
-    EList<AbstractMessageView> _messageViews_1 = from.getMessageViews();
-    Iterable<AspectMessageView> _filter = Iterables.<AspectMessageView>filter(_messageViews_1, AspectMessageView.class);
+  private TAbstractMessageView getTransformedMessageViews(final Aspect from, final TAspect to) {
+    final TAbstractMessageView res = TextRamFactory.eINSTANCE.createTAbstractMessageView();
+    this.addLifelinesfrom(res, from, to);
+    EList<AbstractMessageView> _messageViews = from.getMessageViews();
+    final Procedure1<AbstractMessageView> _function = new Procedure1<AbstractMessageView>() {
+      public void apply(final AbstractMessageView mv) {
+        EList<TAbstractMessages> _messages = res.getMessages();
+        TAbstractMessages _transformedMessage = TextRAMTransform.this.getTransformedMessage(mv, to);
+        _messages.add(_transformedMessage);
+      }
+    };
+    IterableExtensions.<AbstractMessageView>forEach(_messageViews, _function);
+    return res;
+  }
+  
+  private TAbstractMessages _getTransformedMessage(final AspectMessageView from, final TAspect to) {
+    final TAspectMessageView res = TextRamFactory.eINSTANCE.createTAspectMessageView();
+    String _name = from.getName();
+    res.setName(_name);
+    Operation _pointcut = from.getPointcut();
+    TClass _classFromPointCut = this.getClassFromPointCut(_pointcut, to);
+    res.setClass(_classFromPointCut);
+    TClass _class_ = res.getClass_();
+    Operation _pointcut_1 = from.getPointcut();
+    TOperation _findTextRamOperation = TextRamEcoreUtil.findTextRamOperation(_class_, _pointcut_1);
+    res.setSpecifies(_findTextRamOperation);
+    TClass _class__1 = res.getClass_();
+    boolean _isPartial = _class__1.isPartial();
+    res.setPartialClass(_isPartial);
+    TOperation _specifies = res.getSpecifies();
+    boolean _isPartial_1 = _specifies.isPartial();
+    res.setPartialOperation(_isPartial_1);
+    EList<TParameter> _arguments = res.getArguments();
+    TOperation _specifies_1 = res.getSpecifies();
+    EList<TParameter> _parameters = _specifies_1.getParameters();
+    _arguments.addAll(_parameters);
+    EList<TInteraction> _interactionMessages = res.getInteractionMessages();
+    Interaction _advice = from.getAdvice();
+    List<TInteraction> _textRamInteractions = this.getTextRamInteractions(_advice, to);
+    _interactionMessages.addAll(_textRamInteractions);
+    return res;
+  }
+  
+  private List<TInteraction> getTextRamInteractions(final Interaction interaction, final TAspect aspect) {
+    final List<TInteraction> res = CollectionLiterals.<TInteraction>newArrayList();
+    EList<InteractionFragment> _fragments = interaction.getFragments();
+    final Procedure1<InteractionFragment> _function = new Procedure1<InteractionFragment>() {
+      public void apply(final InteractionFragment f) {
+        TInteraction _transformedFragment = TextRAMTransform.this.getTransformedFragment(f);
+        res.add(_transformedFragment);
+      }
+    };
+    IterableExtensions.<InteractionFragment>forEach(_fragments, _function);
+    return res;
+  }
+  
+  private TInteraction _getTransformedFragment(final MessageOccurrenceSpecification from) {
+    final TInteractionMessage res = TextRamFactory.eINSTANCE.createTInteractionMessage();
+    EList<Lifeline> _covered = from.getCovered();
+    final Procedure1<Lifeline> _function = new Procedure1<Lifeline>() {
+      public void apply(final Lifeline it) {
+      }
+    };
+    IterableExtensions.<Lifeline>forEach(_covered, _function);
+    from.getCovered();
+    return res;
+  }
+  
+  private TInteraction _getTransformedFragment(final OccurrenceSpecification from) {
+    final TOcurrence res = TextRamFactory.eINSTANCE.createTOcurrence();
+    return res;
+  }
+  
+  private TInteraction _getTransformedFragment(final CombinedFragment from) {
+    final TCombinedFragment res = TextRamFactory.eINSTANCE.createTCombinedFragment();
+    return res;
+  }
+  
+  private TClass getClassFromPointCut(final Operation operation, final TAspect to) {
+    EObject _eContainer = operation.eContainer();
+    final ca.mcgill.cs.sel.ram.Class clazz = ((ca.mcgill.cs.sel.ram.Class) _eContainer);
+    String _name = clazz.getName();
+    TClass _findClass = this.textRamEcoreUtil.findClass(to, _name);
+    final TClass res = ((TClass) _findClass);
+    return res;
+  }
+  
+  private TAbstractMessages _getTransformedMessage(final MessageView from, final TAspect to) {
+    TMessageView _createTMessageView = TextRamFactory.eINSTANCE.createTMessageView();
+    final Procedure1<TMessageView> _function = new Procedure1<TMessageView>() {
+      public void apply(final TMessageView it) {
+      }
+    };
+    final TMessageView res = ObjectExtensions.<TMessageView>operator_doubleArrow(_createTMessageView, _function);
+    return res;
+  }
+  
+  private void addLifelinesfrom(final TAbstractMessageView textRamMessageView, final Aspect from, final TAspect to) {
+    EList<AbstractMessageView> _messageViews = from.getMessageViews();
+    Iterable<AspectMessageView> _filter = Iterables.<AspectMessageView>filter(_messageViews, AspectMessageView.class);
     final Procedure1<AspectMessageView> _function = new Procedure1<AspectMessageView>() {
       public void apply(final AspectMessageView amv) {
-        EList<TAbstractMessages> _messages = textRamMessageView.getMessages();
-        TAspectMessageView _transformedAspectMessageView = TextRAMTransform.this.getTransformedAspectMessageView(amv, to);
-        _messages.add(_transformedAspectMessageView);
+        Interaction _advice = amv.getAdvice();
+        EList<Lifeline> _lifelines = _advice.getLifelines();
+        final Procedure1<Lifeline> _function = new Procedure1<Lifeline>() {
+          public void apply(final Lifeline l) {
+            EList<TLifeline> _lifelines = textRamMessageView.getLifelines();
+            TLifeline _transformedLifeline = TextRAMTransform.this.getTransformedLifeline(l, to);
+            _lifelines.add(_transformedLifeline);
+          }
+        };
+        IterableExtensions.<Lifeline>forEach(_lifelines, _function);
       }
     };
     IterableExtensions.<AspectMessageView>forEach(_filter, _function);
-    return res;
-  }
-  
-  private TAspectMessageView getTransformedAspectMessageView(final AspectMessageView from, final TAspect to) {
-    TAspectMessageView _createTAspectMessageView = TextRamFactory.eINSTANCE.createTAspectMessageView();
-    final Procedure1<TAspectMessageView> _function = new Procedure1<TAspectMessageView>() {
-      public void apply(final TAspectMessageView it) {
-        String _name = from.getName();
-        it.setName(_name);
+    EList<AbstractMessageView> _messageViews_1 = from.getMessageViews();
+    Iterable<MessageView> _filter_1 = Iterables.<MessageView>filter(_messageViews_1, MessageView.class);
+    final Procedure1<MessageView> _function_1 = new Procedure1<MessageView>() {
+      public void apply(final MessageView mv) {
+        Interaction _specification = mv.getSpecification();
+        EList<Lifeline> _lifelines = _specification.getLifelines();
+        final Procedure1<Lifeline> _function = new Procedure1<Lifeline>() {
+          public void apply(final Lifeline l) {
+            EList<TLifeline> _lifelines = textRamMessageView.getLifelines();
+            TLifeline _transformedLifeline = TextRAMTransform.this.getTransformedLifeline(l, to);
+            _lifelines.add(_transformedLifeline);
+          }
+        };
+        IterableExtensions.<Lifeline>forEach(_lifelines, _function);
       }
     };
-    final TAspectMessageView res = ObjectExtensions.<TAspectMessageView>operator_doubleArrow(_createTAspectMessageView, _function);
-    EList<AbstractMessageView> _messageViews = to.getMessageViews();
-    AbstractMessageView _get = _messageViews.get(0);
-    final TAbstractMessageView textRamMessageView = ((TAbstractMessageView) _get);
-    Interaction _advice = from.getAdvice();
-    EList<Lifeline> _lifelines = _advice.getLifelines();
-    final Procedure1<Lifeline> _function_1 = new Procedure1<Lifeline>() {
-      public void apply(final Lifeline l) {
-        EList<TLifeline> _lifelines = textRamMessageView.getLifelines();
-        TLifeline _transformedLifeline = TextRAMTransform.this.getTransformedLifeline(l, to);
-        _lifelines.add(_transformedLifeline);
-      }
-    };
-    IterableExtensions.<Lifeline>forEach(_lifelines, _function_1);
-    return res;
+    IterableExtensions.<MessageView>forEach(_filter_1, _function_1);
   }
   
-  private TLifeline getTransformedLifeline(final Lifeline from, final Aspect to) {
+  private TLifeline getTransformedLifeline(final Lifeline from, final TAspect to) {
     TLifeline _xblockexpression = null;
     {
       TLifeline _createTLifeline = TextRamFactory.eINSTANCE.createTLifeline();
@@ -135,12 +248,88 @@ public class TextRAMTransform implements ITextRAMTransform {
           TypedElement _represents = from.getRepresents();
           TTypedElement _representsFrom = TextRAMTransform.this.getRepresentsFrom(_represents, to);
           it.setRepresents(_representsFrom);
+          String _nameFromLifeline = TextRAMTransform.this.getNameFromLifeline(from);
+          it.setName(_nameFromLifeline);
+          TypedElement _represents_1 = from.getRepresents();
+          TLifelineReferenceType _referenceTypeFrom = TextRAMTransform.this.getReferenceTypeFrom(_represents_1);
+          it.setReferenceType(_referenceTypeFrom);
+          EList<TTemporaryProperty> _localProperties = it.getLocalProperties();
+          List<TTemporaryProperty> _localPropertiesFromLifeline = TextRAMTransform.this.getLocalPropertiesFromLifeline(from, to);
+          _localProperties.addAll(_localPropertiesFromLifeline);
         }
       };
       final TLifeline res = ObjectExtensions.<TLifeline>operator_doubleArrow(_createTLifeline, _function);
       _xblockexpression = res;
     }
     return _xblockexpression;
+  }
+  
+  private List<TTemporaryProperty> getLocalPropertiesFromLifeline(final Lifeline from, final TAspect to) {
+    final List<TTemporaryProperty> res = CollectionLiterals.<TTemporaryProperty>newArrayList();
+    EList<TemporaryProperty> _localProperties = from.getLocalProperties();
+    final Procedure1<TemporaryProperty> _function = new Procedure1<TemporaryProperty>() {
+      public void apply(final TemporaryProperty lp) {
+        TTemporaryProperty _localProperty = TextRAMTransform.this.getLocalProperty(lp, to);
+        res.add(_localProperty);
+      }
+    };
+    IterableExtensions.<TemporaryProperty>forEach(_localProperties, _function);
+    return res;
+  }
+  
+  private TTemporaryProperty _getLocalProperty(final Reference from, final TAspect to) {
+    TReference _createTReference = TextRamFactory.eINSTANCE.createTReference();
+    final Procedure1<TReference> _function = new Procedure1<TReference>() {
+      public void apply(final TReference it) {
+        String _name = from.getName();
+        it.setName(_name);
+        ObjectType _type = from.getType();
+        boolean _isPartial = ((ca.mcgill.cs.sel.ram.Class) _type).isPartial();
+        it.setPartialClass(_isPartial);
+        ObjectType _type_1 = from.getType();
+        String _name_1 = _type_1.getName();
+        TClass _findClass = TextRAMTransform.this.textRamEcoreUtil.findClass(to, _name_1);
+        it.setReference(_findClass);
+      }
+    };
+    final TReference res = ObjectExtensions.<TReference>operator_doubleArrow(_createTReference, _function);
+    return res;
+  }
+  
+  private TTemporaryProperty _getLocalProperty(final Attribute from, final TAspect to) {
+    TLocalAttribute _createTLocalAttribute = TextRamFactory.eINSTANCE.createTLocalAttribute();
+    final Procedure1<TLocalAttribute> _function = new Procedure1<TLocalAttribute>() {
+      public void apply(final TLocalAttribute it) {
+        String _name = from.getName();
+        it.setName(_name);
+        PrimitiveType _type = from.getType();
+        Type _typeReference = TextRAMTransform.this.textRamEcoreUtil.getTypeReference(to, _type);
+        it.setType(((PrimitiveType) _typeReference));
+      }
+    };
+    final TLocalAttribute res = ObjectExtensions.<TLocalAttribute>operator_doubleArrow(_createTLocalAttribute, _function);
+    return res;
+  }
+  
+  private TLifelineReferenceType _getReferenceTypeFrom(final AssociationEnd from) {
+    return TLifelineReferenceType.ASSOCIATION;
+  }
+  
+  private TLifelineReferenceType _getReferenceTypeFrom(final Attribute from) {
+    return TLifelineReferenceType.ATTRIBUTE;
+  }
+  
+  private TLifelineReferenceType _getReferenceTypeFrom(final Reference from) {
+    return TLifelineReferenceType.REFERENCE;
+  }
+  
+  private TLifelineReferenceType _getReferenceTypeFrom(final Parameter from) {
+    throw new IllegalStateException("Parameter is not supported as referenceType");
+  }
+  
+  private String getNameFromLifeline(final Lifeline lifeline) {
+    TypedElement _represents = lifeline.getRepresents();
+    return _represents.getName();
   }
   
   private TTypedElement _getRepresentsFrom(final AssociationEnd from, final Aspect to) {
@@ -494,6 +683,56 @@ public class TextRAMTransform implements ITextRAMTransform {
       _xblockexpression = res;
     }
     return _xblockexpression;
+  }
+  
+  private TAbstractMessages getTransformedMessage(final AbstractMessageView from, final TAspect to) {
+    if (from instanceof AspectMessageView) {
+      return _getTransformedMessage((AspectMessageView)from, to);
+    } else if (from instanceof MessageView) {
+      return _getTransformedMessage((MessageView)from, to);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(from, to).toString());
+    }
+  }
+  
+  private TInteraction getTransformedFragment(final InteractionFragment from) {
+    if (from instanceof MessageOccurrenceSpecification) {
+      return _getTransformedFragment((MessageOccurrenceSpecification)from);
+    } else if (from instanceof CombinedFragment) {
+      return _getTransformedFragment((CombinedFragment)from);
+    } else if (from instanceof OccurrenceSpecification) {
+      return _getTransformedFragment((OccurrenceSpecification)from);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(from).toString());
+    }
+  }
+  
+  private TTemporaryProperty getLocalProperty(final EObject from, final TAspect to) {
+    if (from instanceof Reference) {
+      return _getLocalProperty((Reference)from, to);
+    } else if (from instanceof Attribute) {
+      return _getLocalProperty((Attribute)from, to);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(from, to).toString());
+    }
+  }
+  
+  private TLifelineReferenceType getReferenceTypeFrom(final TypedElement from) {
+    if (from instanceof AssociationEnd) {
+      return _getReferenceTypeFrom((AssociationEnd)from);
+    } else if (from instanceof Reference) {
+      return _getReferenceTypeFrom((Reference)from);
+    } else if (from instanceof Attribute) {
+      return _getReferenceTypeFrom((Attribute)from);
+    } else if (from instanceof Parameter) {
+      return _getReferenceTypeFrom((Parameter)from);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(from).toString());
+    }
   }
   
   private TTypedElement getRepresentsFrom(final TypedElement from, final Aspect to) {

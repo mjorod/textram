@@ -19,6 +19,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
 import ca.mcgill.cs.sel.ram.StructuralView
 import cl.uchile.pleiad.textRam.TStructuralView
+import ca.mcgill.cs.sel.ram.Parameter
+import static cl.uchile.pleiad.util.TextRamEcoreUtil.*
 
 final class TextRamEcoreUtil {
 	
@@ -110,6 +112,50 @@ final class TextRamEcoreUtil {
 		}
 		
 		result
+	}
+	
+	/**
+	 * Return a {@link TOperation operation} from {@link TClass clazz}
+	 * 
+	 * @param clazz owner of the operation
+	 * @param operation Ram's {@Operation operation} that contains the signature of the {@link TOperation textram's operation} to find 
+	 * return if founded it returns a {@link TOperation textram's operation}  
+	 */
+	def static TOperation findTextRamOperation( TClass clazz, Operation operation ) {
+
+		// first it looks for the operations that match its name
+		val operations = clazz.findTextRamOperations( operation.name )
+		
+		// match the signature
+		for ( TOperation o : operations ) {
+			if ( operationThatMatchSignature( o, operation ) == true ) {
+				return o
+			}	
+		
+		}
+		
+		return null
+	}
+	
+	private static def operationThatMatchSignature( TOperation current, Operation toCompare ) {
+		// check operation's name
+		if ( current.name != toCompare.name ) {
+			return false
+		}
+		
+		// check number of arguments
+		if ( current.parameters.size != toCompare.parameters.size ) {
+			return false
+		}
+		
+		// check each parameter's type
+		for ( Integer i: 0..toCompare.parameters.size -1 ) {
+			if ( toCompare.parameters.get(i).type != current.parameters.get(i).type ) {
+				return false
+			}
+		}
+		
+		return true
 	}
 	
 	/**
