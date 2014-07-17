@@ -140,7 +140,7 @@ TClassifierMapping returns textRam::TClassifierMapping:
 ;
 
 TAbstractMessages returns textRam::TAbstractMessages:
-	TMessageView | TAspectMessageView      
+	TMessageView | TAspectMessageView  
 ;
 
 TMessageView returns textRam::TMessageView:

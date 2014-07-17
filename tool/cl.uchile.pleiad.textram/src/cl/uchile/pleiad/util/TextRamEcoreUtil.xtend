@@ -6,6 +6,7 @@ import ca.mcgill.cs.sel.ram.Operation
 import ca.mcgill.cs.sel.ram.PrimitiveType
 import ca.mcgill.cs.sel.ram.RSet
 import ca.mcgill.cs.sel.ram.RVoid
+import ca.mcgill.cs.sel.ram.StructuralView
 import ca.mcgill.cs.sel.ram.Type
 import cl.uchile.pleiad.textRam.TAspect
 import cl.uchile.pleiad.textRam.TAssociation
@@ -13,14 +14,11 @@ import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TLifelineReferenceType
 import cl.uchile.pleiad.textRam.TOperation
+import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
-import ca.mcgill.cs.sel.ram.StructuralView
-import cl.uchile.pleiad.textRam.TStructuralView
-import ca.mcgill.cs.sel.ram.Parameter
-import static cl.uchile.pleiad.util.TextRamEcoreUtil.*
 
 final class TextRamEcoreUtil {
 	
@@ -149,9 +147,11 @@ final class TextRamEcoreUtil {
 		}
 		
 		// check each parameter's type
-		for ( Integer i: 0..toCompare.parameters.size -1 ) {
-			if ( toCompare.parameters.get(i).type != current.parameters.get(i).type ) {
-				return false
+		if ( current.parameters.size > 0 ) {
+			for ( Integer i: 0..toCompare.parameters.size -1 ) {
+				if ( toCompare.parameters.get(i).type != current.parameters.get(i).type ) {
+					return false
+				}
 			}
 		}
 		

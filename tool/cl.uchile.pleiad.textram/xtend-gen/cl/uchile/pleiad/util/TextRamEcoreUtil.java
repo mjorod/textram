@@ -209,20 +209,25 @@ public final class TextRamEcoreUtil {
     if (_notEquals_1) {
       return false;
     }
-    EList<Parameter> _parameters_2 = toCompare.getParameters();
+    EList<TParameter> _parameters_2 = current.getParameters();
     int _size_2 = _parameters_2.size();
-    int _minus = (_size_2 - 1);
-    IntegerRange _upTo = new IntegerRange(0, _minus);
-    for (final Integer i : _upTo) {
+    boolean _greaterThan = (_size_2 > 0);
+    if (_greaterThan) {
       EList<Parameter> _parameters_3 = toCompare.getParameters();
-      Parameter _get = _parameters_3.get((i).intValue());
-      Type _type = _get.getType();
-      EList<TParameter> _parameters_4 = current.getParameters();
-      TParameter _get_1 = _parameters_4.get((i).intValue());
-      Type _type_1 = _get_1.getType();
-      boolean _notEquals_2 = (!Objects.equal(_type, _type_1));
-      if (_notEquals_2) {
-        return false;
+      int _size_3 = _parameters_3.size();
+      int _minus = (_size_3 - 1);
+      IntegerRange _upTo = new IntegerRange(0, _minus);
+      for (final Integer i : _upTo) {
+        EList<Parameter> _parameters_4 = toCompare.getParameters();
+        Parameter _get = _parameters_4.get((i).intValue());
+        Type _type = _get.getType();
+        EList<TParameter> _parameters_5 = current.getParameters();
+        TParameter _get_1 = _parameters_5.get((i).intValue());
+        Type _type_1 = _get_1.getType();
+        boolean _notEquals_2 = (!Objects.equal(_type, _type_1));
+        if (_notEquals_2) {
+          return false;
+        }
       }
     }
     return true;
