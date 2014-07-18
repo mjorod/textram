@@ -17,6 +17,7 @@ import ca.mcgill.cs.sel.ram.MessageOccurrenceSpecification
 import ca.mcgill.cs.sel.ram.MessageView
 import ca.mcgill.cs.sel.ram.OccurrenceSpecification
 import ca.mcgill.cs.sel.ram.Operation
+import ca.mcgill.cs.sel.ram.OriginalBehaviorExecution
 import ca.mcgill.cs.sel.ram.Parameter
 import ca.mcgill.cs.sel.ram.ParameterValueMapping
 import ca.mcgill.cs.sel.ram.PrimitiveType
@@ -48,6 +49,7 @@ import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
+import cl.uchile.pleiad.textRam.OcurrenceType
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -64,7 +66,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		
 		ramAspect.structuralView.transformStructuralView( textRamAspect )
 		
-		transformMessageViews( ramAspect, textRamAspect )
+//		transformMessageViews( ramAspect, textRamAspect )
 		
 				
 		return textRamAspect
@@ -117,7 +119,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res 
 	}
 	
-	private def dispatch getTransformedFragment(MessageOccurrenceSpecification from, EList<InteractionFragment> fragments, TAspect to) {
+	private def dispatch TInteraction getTransformedFragment(MessageOccurrenceSpecification from, EList<InteractionFragment> fragments, TAspect to) {
 		val res = TextRamFactory.eINSTANCE.createTInteractionMessage
 		
 		// get the lifelines
@@ -136,6 +138,21 @@ class TextRAMTransform implements ITextRAMTransform {
 			// message
 			res.message = getTransformedTMessageFrom( from.message, to )
 		}
+		
+		return res
+	}
+	
+	
+	private def dispatch TInteraction getTransformedFragment(OriginalBehaviorExecution from, EList<InteractionFragment> fragments, TAspect to) {
+		val res = TextRamFactory.eINSTANCE.createTOcurrence
+		
+		// get the lifelines
+		val tLifelines = to.messageViews.filter(TAbstractMessageView).get(0).lifelines
+		
+		// gets the left side
+		res.leftLifeline = from.getTLifelineFrom ( tLifelines )
+			
+		res.ocurrenceType = OcurrenceType.ORIGINAL
 		
 		return res
 	}
@@ -222,7 +239,13 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res
 	}
 	
-	private def TLifeline getTLifelineFrom(MessageOccurrenceSpecification messageOcurrence, EList<TLifeline> list) {
+	private def dispatch TLifeline getTLifelineFrom(OriginalBehaviorExecution originalExecution, EList<TLifeline> list) {
+		val res = list.findFirst( tl | tl.nameFromTLifeline ==  originalExecution.covered.get(0).nameFromLifeline )
+		
+		return res
+	}
+	
+	private def dispatch TLifeline getTLifelineFrom(MessageOccurrenceSpecification messageOcurrence, EList<TLifeline> list) {
 		val res = list.findFirst( tl | tl.nameFromTLifeline == messageOcurrence.covered.get(0).nameFromLifeline )
 		
 		return res
@@ -393,12 +416,12 @@ class TextRAMTransform implements ITextRAMTransform {
 	}
 	
 	private def dispatch TTypedElement getRepresentsFrom(Reference from, Aspect to) {
-		return (to.structuralView as TStructuralView).getTClassFrom( from.name )
+		return (to.structuralView as TStructuralView).getTClassFrom( from.type.name )
 	}
 	
 	private def dispatch TTypedElement getRepresentsFrom(Attribute from, Aspect to) {
 		//TODO: class name must be defined for attribute
-		to.structuralView.classes.filter(TClass).map[members].flatten.filter(TAttribute).findFirst[ a | a.name == from.name ]
+		to.structuralView.classes.filter(TClass).map[members].flatten.filter(TAttribute).findFirst[ a | a.name == from.type.name ]
 	}
 	
 	private def dispatch TTypedElement getRepresentsFrom(Parameter from, Aspect to) {

@@ -19,6 +19,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
+import ca.mcgill.cs.sel.ram.RAny
 
 final class TextRamEcoreUtil {
 	
@@ -245,6 +246,10 @@ final class TextRamEcoreUtil {
 	
 	def dispatch getTypeReference(Aspect aspect, RSet type) {
 		aspect.structuralView.types.filter(RSet).findFirst[ t | t.name == type.name ]
+	}
+	
+	def dispatch getTypeReference(Aspect aspect, RAny type) {
+		aspect.structuralView.types.filter(RAny).findFirst[ t | t.name == type.name ]
 	}
 	
 	def findClass(TAspect aspect, String name) {

@@ -5,6 +5,7 @@ import ca.mcgill.cs.sel.ram.Classifier;
 import ca.mcgill.cs.sel.ram.Operation;
 import ca.mcgill.cs.sel.ram.Parameter;
 import ca.mcgill.cs.sel.ram.PrimitiveType;
+import ca.mcgill.cs.sel.ram.RAny;
 import ca.mcgill.cs.sel.ram.RSet;
 import ca.mcgill.cs.sel.ram.RVoid;
 import ca.mcgill.cs.sel.ram.StructuralView;
@@ -439,6 +440,20 @@ public final class TextRamEcoreUtil {
     return IterableExtensions.<RSet>findFirst(_filter, _function);
   }
   
+  protected Type _getTypeReference(final Aspect aspect, final RAny type) {
+    StructuralView _structuralView = aspect.getStructuralView();
+    EList<Type> _types = _structuralView.getTypes();
+    Iterable<RAny> _filter = Iterables.<RAny>filter(_types, RAny.class);
+    final Function1<RAny,Boolean> _function = new Function1<RAny,Boolean>() {
+      public Boolean apply(final RAny t) {
+        String _name = t.getName();
+        String _name_1 = type.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    return IterableExtensions.<RAny>findFirst(_filter, _function);
+  }
+  
   public TClass findClass(final TAspect aspect, final String name) {
     StructuralView _structuralView = aspect.getStructuralView();
     EList<Classifier> _classes = _structuralView.getClasses();
@@ -457,6 +472,8 @@ public final class TextRamEcoreUtil {
       return _getTypeReference(aspect, (RSet)type);
     } else if (type instanceof PrimitiveType) {
       return _getTypeReference(aspect, (PrimitiveType)type);
+    } else if (type instanceof RAny) {
+      return _getTypeReference(aspect, (RAny)type);
     } else if (type instanceof RVoid) {
       return _getTypeReference(aspect, (RVoid)type);
     } else if (type != null) {
