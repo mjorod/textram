@@ -50,6 +50,14 @@ import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
 import cl.uchile.pleiad.textRam.OcurrenceType
+import java.util.Map
+import ca.mcgill.cs.sel.ram.DestructionOccurrenceSpecification
+import ca.mcgill.cs.sel.ram.InteractionOperatorKind
+import ca.mcgill.cs.sel.ram.InteractionOperand
+import ca.mcgill.cs.sel.ram.OpaqueExpression
+import ca.mcgill.cs.sel.ram.LiteralString
+import ca.mcgill.cs.sel.ram.LiteralInteger
+import ca.mcgill.cs.sel.ram.ParameterValue
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -66,7 +74,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		
 		ramAspect.structuralView.transformStructuralView( textRamAspect )
 		
-//		transformMessageViews( ramAspect, textRamAspect )
+		transformMessageViews( ramAspect, textRamAspect )
 		
 				
 		return textRamAspect
@@ -119,25 +127,25 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res 
 	}
 	
+	
+	
 	private def dispatch TInteraction getTransformedFragment(MessageOccurrenceSpecification from, EList<InteractionFragment> fragments, TAspect to) {
 		val res = TextRamFactory.eINSTANCE.createTInteractionMessage
-		
-		// get the lifelines
 		val tLifelines = to.messageViews.filter(TAbstractMessageView).get(0).lifelines
 		
-		// get a pair of fragments according its message
-		val pair = fragments.filter(MessageOccurrenceSpecification).filter( f | f.message.signature.name == from.message.signature.name )
+		val ramMessage = from.message
+		
+		val pair = fragments.filter(MessageOccurrenceSpecification).filter( mos | mos.message == ramMessage ).toList
 		
 		if ( pair.size == 2 ) {
-			// left
-			res.leftLifeline = pair.get(0).getTLifelineFrom ( tLifelines )
 			
-			// right
+			res.leftLifeline =  pair.get(0).getTLifelineFrom ( tLifelines )
+			
 			res.rightLifeline = pair.get(1).getTLifelineFrom ( tLifelines )
 			
-			// message
-			res.message = getTransformedTMessageFrom( from.message, to )
+			res.message = ramMessage.getTransformedTMessageFrom( to )
 		}
+		
 		
 		return res
 	}
@@ -157,16 +165,70 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res
 	}
 	
+	private def dispatch TInteraction getTransformedFragment(OccurrenceSpecification from, EList<InteractionFragment> fragments, TAspect to ) {
+		val res = TextRamFactory.eINSTANCE.createTOcurrence
+		
+		return res
+	}
+	
+	private def dispatch TInteraction getTransformedFragment(ExecutionStatement from, EList<InteractionFragment> fragments, TAspect to ) {
+		val res = TextRamFactory.eINSTANCE.createTCombinedFragment
+		
+		return res
+	}
+	
+	private def dispatch TInteraction getTransformedFragment(DestructionOccurrenceSpecification from, EList<InteractionFragment> fragments, TAspect to) {
+		val res = TextRamFactory.eINSTANCE.createTOcurrence
+		
+		res.ocurrenceType = OcurrenceType.DESTRUCTION
+		
+		return res	
+	}
+	
+	private def dispatch TInteraction getTransformedFragment(CombinedFragment from, EList<InteractionFragment> fragments, TAspect to ) {
+		val res = TextRamFactory.eINSTANCE.createTCombinedFragment
+		
+		//loop
+		res.interactionOperator = from.interactionOperator
+    	res.interactionConstraint = from.operands.get(0).interactionConstraint.getTextRamInteractionConstraint
+		from.operands.get(0).fragments.forEach[ f | res.containers.add(  getTransformedFragment( f, from.operands.get(0).fragments, to )  )   ]
+		
+		if ( from.interactionOperator == InteractionOperatorKind.ALT ) {					
+			from.operands.get(1).fragments.forEach[ f | res.containers.add(  getTransformedFragment( f, from.operands.get(1).fragments, to )  )   ]
+		}
+		
+		return res
+	}
+	
+	private def dispatch String getTextRamInteractionConstraint(OpaqueExpression value) {
+		return value.body	
+	}
+	
+	private def dispatch String getTextRamInteractionConstraint(LiteralString value) {
+		return value.value
+	}
+	
+	private def dispatch String getTextRamInteractionConstraint(LiteralInteger value) { 
+		return String.valueOf( value.value )
+	}
+	
+	private def dispatch String getTextRamInteractionConstraint(ParameterValue value) {
+		return value.parameter.name
+	}
+	
+	
 	private def getTransformedTMessageFrom(Message message, TAspect to) {
 		val res = TextRamFactory.eINSTANCE.createTMessage
 		
 		val clazz = to.findClass( ( message.signature.eContainer as Class ).name )
 		
-		res.assignTo = message.assignTo.getAssignToFrom( to, clazz )
+		if ( message.assignTo != null ) {
+			res.assignTo = message.assignTo.getAssignToFrom( to, clazz )
+		}
 		
 		val tOperation = TextRamEcoreUtil.findTextRamOperation( clazz, message.signature )
 		res.signature = tOperation
-		res.arguments.addAll( getMessagesArguments( message, to, tOperation ) )
+		//res.arguments.addAll( getMessagesArguments( message, to, tOperation ) )
 		res.partialOperation = tOperation.partial
 
 		return res
@@ -182,6 +244,7 @@ class TextRAMTransform implements ITextRAMTransform {
 	
 	private def  transformTValueSpecification(ParameterValueMapping mapping, TAspect to, TOperation operation ) {
 		var res = mapping.value.resolveValueSpecification( to )
+		
 		
 		if ( mapping.parameter != null && res == null ) {
 			// return TParameter
@@ -251,23 +314,6 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res
 	}
 	
-	private def dispatch getTransformedFragment(OccurrenceSpecification from, EList<InteractionFragment> fragments, TAspect to ) {
-		val res = TextRamFactory.eINSTANCE.createTOcurrence
-		
-		return res
-	}
-	
-	private def dispatch getTransformedFragment(CombinedFragment from, EList<InteractionFragment> fragments, TAspect to ) {
-		val res = TextRamFactory.eINSTANCE.createTCombinedFragment
-		
-		return res
-	}
-	
-	private def dispatch getTransformedFragment(ExecutionStatement from, EList<InteractionFragment> fragments, TAspect to ) {
-		val res = TextRamFactory.eINSTANCE.createTCombinedFragment
-		
-		return res
-	}
 	
 	private def getClassFromPointCut(Operation operation, TAspect to) {
 		val clazz = operation.eContainer as Class
@@ -284,19 +330,30 @@ class TextRAMTransform implements ITextRAMTransform {
 	}
 	
 	private def void addLifelinesfrom(TAbstractMessageView textRamMessageView, Aspect from, TAspect to) {
+		
+		val Map<String, TLifeline> lifelines = newHashMap
+		
 		// lifelines from AspectMessageView
 		from.messageViews.filter(AspectMessageView).forEach [ amv |
-			amv.advice.lifelines.forEach[ l | 
-				textRamMessageView.lifelines.add( getTransformedLifeline( l, to ) )
+			amv.advice.lifelines.forEach[ l |
+				if ( lifelines.containsKey( l.nameFromLifeline ) == false ) {
+					lifelines.put ( l.nameFromLifeline,  getTransformedLifeline( l, to ) )
+				}
 			]
 		]
 		
 		// lifelines from MessageView
 		from.messageViews.filter(MessageView).forEach[ mv |
 			if ( mv.specification != null ) {
-				mv.specification.lifelines.forEach[ l | textRamMessageView.lifelines.add( getTransformedLifeline( l, to ) ) ]
+					mv.specification.lifelines.forEach[ l | 
+						if ( lifelines.containsKey( l.nameFromLifeline ) == false ) {
+							lifelines.put ( l.nameFromLifeline,  getTransformedLifeline( l, to ) )
+						}
+					]
 			}
 		]
+		
+		textRamMessageView.lifelines.addAll( lifelines.values )
 		
 	}
 	
@@ -396,7 +453,7 @@ class TextRAMTransform implements ITextRAMTransform {
 	}
 	
 	private def getNameFromTLifeline(TLifeline tLifeline) {
-		return tLifeline.represents.getNameFromRepresents
+		return tLifeline.name
 	}
 	
 	private def dispatch getNameFromRepresents(TClass clazz) {
@@ -474,7 +531,7 @@ class TextRAMTransform implements ITextRAMTransform {
 	}
 	
 	private def transformAssociation( Association from, TStructuralView to ) {
-		val res = TextRamFactory.eINSTANCE.createTAssociation => [ name = from.name ]
+		val res = TextRamFactory.eINSTANCE.createTAssociation => [ name = from.ends.get(0).name ]
 		
 		res.fromEnd = TextRamFactory.eINSTANCE.createTAssociationEnd => [
 			lowerBound     = from.ends.get(0).lowerBound

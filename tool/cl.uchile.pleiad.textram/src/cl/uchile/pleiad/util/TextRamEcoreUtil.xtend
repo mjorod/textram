@@ -150,7 +150,7 @@ final class TextRamEcoreUtil {
 		// check each parameter's type
 		if ( current.parameters.size > 0 ) {
 			for ( Integer i: 0..toCompare.parameters.size -1 ) {
-				if ( toCompare.parameters.get(i).type != current.parameters.get(i).type ) {
+				if ( toCompare.parameters.get(i).type.name != current.parameters.get(i).type.name ) {
 					return false
 				}
 			}

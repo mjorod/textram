@@ -222,10 +222,12 @@ public final class TextRamEcoreUtil {
         EList<Parameter> _parameters_4 = toCompare.getParameters();
         Parameter _get = _parameters_4.get((i).intValue());
         Type _type = _get.getType();
+        String _name_2 = _type.getName();
         EList<TParameter> _parameters_5 = current.getParameters();
         TParameter _get_1 = _parameters_5.get((i).intValue());
         Type _type_1 = _get_1.getType();
-        boolean _notEquals_2 = (!Objects.equal(_type, _type_1));
+        String _name_3 = _type_1.getName();
+        boolean _notEquals_2 = (!Objects.equal(_name_2, _name_3));
         if (_notEquals_2) {
           return false;
         }
