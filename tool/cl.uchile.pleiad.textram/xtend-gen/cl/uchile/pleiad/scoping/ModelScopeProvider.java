@@ -810,6 +810,13 @@ public class ModelScopeProvider {
     return _xblockexpression;
   }
   
+  public EList<TLifeline> getTLifelines(final TAspect aspect) {
+    EList<AbstractMessageView> _messageViews = aspect.getMessageViews();
+    AbstractMessageView _get = _messageViews.get(0);
+    final TAbstractMessageView tAbstractMessageView = ((TAbstractMessageView) _get);
+    return tAbstractMessageView.getLifelines();
+  }
+  
   private TClass _getClassOwner(final TAssociation owner, final Aspect aspect) {
     TClass _xblockexpression = null;
     {

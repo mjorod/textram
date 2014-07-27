@@ -341,6 +341,7 @@ public final class TextRamEcoreUtil {
       TClass _xblockexpression = null;
       {
         TClass result = null;
+        TClass result1 = null;
         TLifeline _rightLifeline = textRamInteraction.getRightLifeline();
         TLifelineReferenceType _referenceType = _rightLifeline.getReferenceType();
         boolean _equals = Objects.equal(_referenceType, TLifelineReferenceType.REFERENCE);

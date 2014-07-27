@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import cl.uchile.pleiad.textRam.TReference
 
 /**
  * This class contains custom scoping description.
@@ -32,6 +33,11 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( aspect.getExternalAspectsFromHeader )
 	}
 	
+	//???
+//	def IScope scope_TInstantiationHeader_externalAspects( TAspect aspect, EReference reference ) {
+//		
+//	}
+	
 	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference) {
 		Scopes::scopeFor( structuralView.getTypesFor )
 	}
@@ -42,6 +48,12 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	def IScope scope_TParameter_type(TStructuralView structuralView, EReference reference ) {
 		Scopes::scopeFor( structuralView.getTypesFor )
+	}
+	
+	def IScope scope_TClass_superTypes(Aspect aspect, EReference reference) {
+		val tAspect = aspect as TAspect
+		
+		Scopes::scopeFor( tAspect.getExtendedClasses )
 	}
 		
 	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
@@ -68,11 +80,14 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( tAspect.getExtendedClasses )
 	}
 	
-		
 	def IScope scope_TAbstractMessages_specifies(Aspect aspect, EReference reference ) {		
 		val tAspect = aspect as TAspect
 		
 		Scopes::scopeFor( tAspect.getExtendedOperations )
+	}
+	
+	def IScope scope_TAbstractMessages_arguments(TAbstractMessages messageView, EReference reference) {
+		Scopes::scopeFor( messageView.getArgumentsForAspectMessageViewOperation )
 	}
 	
 	def IScope scope_TLifeline_represents(Aspect aspect, EReference reference) {
@@ -95,12 +110,10 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor ( interaction.getTValueSpecificationList )
 	}
 	
-	def IScope scope_TMessageView_affectedBy(TAbstractMessageView abstractMessageView, EReference reference) {
+	def IScope scope_TMessageView_affectedBy(Aspect aspect, EReference reference) {
+		val abstractMessageView = aspect.messageViews.get(0) as TAbstractMessageView
+		
 		Scopes::scopeFor ( abstractMessageView.getAspectMessageViews )
-	}
-
-	def IScope scope_TAbstractMessages_arguments(TAbstractMessages messageView, EReference reference) {
-		Scopes::scopeFor( messageView.getArgumentsForAspectMessageViewOperation )
 	}
 	
 	def IScope scope_TAssociationEnd_classReference( Aspect aspect, EReference reference ) {
@@ -109,4 +122,38 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( tAspect.getExtendedClasses )
 	}
 	
+	def IScope scope_TInteractionMessage_leftLifeline( Aspect aspect, EReference reference ) {
+		val tAspect = (aspect as TAspect)
+		
+		Scopes::scopeFor( tAspect.getTLifelines )
+	}
+	
+	def IScope scope_TInteractionMessage_rightLifeline( Aspect aspect, EReference refenrece ) {
+		val tAspect = (aspect as TAspect)
+		
+		Scopes::scopeFor( tAspect.getTLifelines )		
+	}
+	
+	def IScope scope_TOcurrence_leftLifeline( Aspect aspect, EReference reference ) {
+		val tAspect = (aspect as TAspect)
+		
+		Scopes::scopeFor( tAspect.getTLifelines )
+	}
+	
+	def IScope scope_TReference_reference( Aspect aspect, EReference reference ) {
+		val tAspect = (aspect as TAspect)
+		
+		Scopes::scopeFor( tAspect.getExtendedClasses )
+	}
+	
+	def IScope scope_TLocalAttribute_type( Aspect aspect, EReference reference ) {
+		val tAspect = aspect as TAspect
+		
+		Scopes::scopeFor( tAspect.structuralView.getPrimitiveTypes )
+	}
+
+//TODO: pending TReturnInteraction	
+//	def IScope TReturnInteraction_return( Aspect aspect, EReference reference ) {
+//		
+//	}
 }

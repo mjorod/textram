@@ -210,6 +210,7 @@ final class TextRamEcoreUtil {
 	 */
 	def static getTextRamClass(TInteractionMessage textRamInteraction) {
 		var TClass result = null
+		var TClass result1 = null
 		
 		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.REFERENCE) {
 			result = textRamInteraction.rightLifeline.represents as TClass

@@ -3,6 +3,7 @@
  */
 package cl.uchile.pleiad.scoping;
 
+import ca.mcgill.cs.sel.ram.AbstractMessageView;
 import ca.mcgill.cs.sel.ram.Aspect;
 import ca.mcgill.cs.sel.ram.Classifier;
 import ca.mcgill.cs.sel.ram.Instantiation;
@@ -18,6 +19,7 @@ import cl.uchile.pleiad.textRam.TClass;
 import cl.uchile.pleiad.textRam.TClassMember;
 import cl.uchile.pleiad.textRam.TClassifierMapping;
 import cl.uchile.pleiad.textRam.TInteractionMessage;
+import cl.uchile.pleiad.textRam.TLifeline;
 import cl.uchile.pleiad.textRam.TMessageAssignableFeature;
 import cl.uchile.pleiad.textRam.TOperation;
 import cl.uchile.pleiad.textRam.TParameter;
@@ -62,6 +64,16 @@ public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
   public IScope scope_TParameter_type(final TStructuralView structuralView, final EReference reference) {
     EList<Type> _typesFor = this.scopeProvider.getTypesFor(structuralView);
     return Scopes.scopeFor(_typesFor);
+  }
+  
+  public IScope scope_TClass_superTypes(final Aspect aspect, final EReference reference) {
+    IScope _xblockexpression = null;
+    {
+      final TAspect tAspect = ((TAspect) aspect);
+      List<TClass> _extendedClasses = this.scopeProvider.getExtendedClasses(tAspect);
+      _xblockexpression = Scopes.scopeFor(_extendedClasses);
+    }
+    return _xblockexpression;
   }
   
   public IScope scope_ClassifierMapping_fromElement(final Instantiation instantiation, final EReference reference) {
@@ -116,6 +128,11 @@ public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
     return _xblockexpression;
   }
   
+  public IScope scope_TAbstractMessages_arguments(final TAbstractMessages messageView, final EReference reference) {
+    Iterable<TParameter> _argumentsForAspectMessageViewOperation = this.scopeProvider.getArgumentsForAspectMessageViewOperation(messageView);
+    return Scopes.scopeFor(_argumentsForAspectMessageViewOperation);
+  }
+  
   public IScope scope_TLifeline_represents(final Aspect aspect, final EReference reference) {
     List<TTypedElement> _tTypedElements = this.scopeProvider.getTTypedElements(((TAspect) aspect));
     return Scopes.scopeFor(_tTypedElements);
@@ -141,14 +158,16 @@ public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
     return Scopes.scopeFor(_tValueSpecificationList);
   }
   
-  public IScope scope_TMessageView_affectedBy(final TAbstractMessageView abstractMessageView, final EReference reference) {
-    List<TAspectMessageView> _aspectMessageViews = this.scopeProvider.getAspectMessageViews(abstractMessageView);
-    return Scopes.scopeFor(_aspectMessageViews);
-  }
-  
-  public IScope scope_TAbstractMessages_arguments(final TAbstractMessages messageView, final EReference reference) {
-    Iterable<TParameter> _argumentsForAspectMessageViewOperation = this.scopeProvider.getArgumentsForAspectMessageViewOperation(messageView);
-    return Scopes.scopeFor(_argumentsForAspectMessageViewOperation);
+  public IScope scope_TMessageView_affectedBy(final Aspect aspect, final EReference reference) {
+    IScope _xblockexpression = null;
+    {
+      EList<AbstractMessageView> _messageViews = aspect.getMessageViews();
+      AbstractMessageView _get = _messageViews.get(0);
+      final TAbstractMessageView abstractMessageView = ((TAbstractMessageView) _get);
+      List<TAspectMessageView> _aspectMessageViews = this.scopeProvider.getAspectMessageViews(abstractMessageView);
+      _xblockexpression = Scopes.scopeFor(_aspectMessageViews);
+    }
+    return _xblockexpression;
   }
   
   public IScope scope_TAssociationEnd_classReference(final Aspect aspect, final EReference reference) {
@@ -157,6 +176,57 @@ public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
       final TAspect tAspect = ((TAspect) aspect);
       List<TClass> _extendedClasses = this.scopeProvider.getExtendedClasses(tAspect);
       _xblockexpression = Scopes.scopeFor(_extendedClasses);
+    }
+    return _xblockexpression;
+  }
+  
+  public IScope scope_TInteractionMessage_leftLifeline(final Aspect aspect, final EReference reference) {
+    IScope _xblockexpression = null;
+    {
+      final TAspect tAspect = ((TAspect) aspect);
+      EList<TLifeline> _tLifelines = this.scopeProvider.getTLifelines(tAspect);
+      _xblockexpression = Scopes.scopeFor(_tLifelines);
+    }
+    return _xblockexpression;
+  }
+  
+  public IScope scope_TInteractionMessage_rightLifeline(final Aspect aspect, final EReference refenrece) {
+    IScope _xblockexpression = null;
+    {
+      final TAspect tAspect = ((TAspect) aspect);
+      EList<TLifeline> _tLifelines = this.scopeProvider.getTLifelines(tAspect);
+      _xblockexpression = Scopes.scopeFor(_tLifelines);
+    }
+    return _xblockexpression;
+  }
+  
+  public IScope scope_TOcurrence_leftLifeline(final Aspect aspect, final EReference reference) {
+    IScope _xblockexpression = null;
+    {
+      final TAspect tAspect = ((TAspect) aspect);
+      EList<TLifeline> _tLifelines = this.scopeProvider.getTLifelines(tAspect);
+      _xblockexpression = Scopes.scopeFor(_tLifelines);
+    }
+    return _xblockexpression;
+  }
+  
+  public IScope scope_TReference_reference(final Aspect aspect, final EReference reference) {
+    IScope _xblockexpression = null;
+    {
+      final TAspect tAspect = ((TAspect) aspect);
+      List<TClass> _extendedClasses = this.scopeProvider.getExtendedClasses(tAspect);
+      _xblockexpression = Scopes.scopeFor(_extendedClasses);
+    }
+    return _xblockexpression;
+  }
+  
+  public IScope scope_TLocalAttribute_type(final Aspect aspect, final EReference reference) {
+    IScope _xblockexpression = null;
+    {
+      final TAspect tAspect = ((TAspect) aspect);
+      StructuralView _structuralView = tAspect.getStructuralView();
+      List<PrimitiveType> _primitiveTypes = this.scopeProvider.getPrimitiveTypes(_structuralView);
+      _xblockexpression = Scopes.scopeFor(_primitiveTypes);
     }
     return _xblockexpression;
   }

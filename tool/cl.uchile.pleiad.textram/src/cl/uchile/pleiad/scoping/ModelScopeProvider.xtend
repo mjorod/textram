@@ -457,6 +457,12 @@ class ModelScopeProvider {
 		result
 	}
 	
+	def getTLifelines ( TAspect aspect ) {
+		val tAbstractMessageView = (aspect.messageViews.get(0) as TAbstractMessageView)
+		
+		return tAbstractMessageView.lifelines
+	} 	
+	
 	private def dispatch getClassOwner(TAssociation owner, Aspect aspect) {
 		val result = owner.toEnd.classReference as TClass
 		result
@@ -470,5 +476,6 @@ class ModelScopeProvider {
 	private def dispatch getClassOwner(TClass owner, Aspect aspect) {
 		val result = owner
 		result
-	}	
+	}
+		
 }
