@@ -5,9 +5,11 @@ package cl.uchile.pleiad.formatting
 
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter
 import org.eclipse.xtext.formatting.impl.FormattingConfig
+import com.google.inject.Inject
+import cl.uchile.pleiad.services.TextRAMGrammarAccess
+
 // import com.google.inject.Inject;
 // import cl.uchile.pleiad.services.TextRAMGrammarAccess
-
 /**
  * This class contains custom formatting description.
  * 
@@ -18,13 +20,125 @@ import org.eclipse.xtext.formatting.impl.FormattingConfig
  */
 class TextRAMFormatter extends AbstractDeclarativeFormatter {
 
-//	@Inject extension TextRAMGrammarAccess
-	
+	@Inject TextRAMGrammarAccess g
+
 	override protected void configureFormatting(FormattingConfig c) {
-// It's usually a good idea to activate the following three statements.
-// They will add and preserve newlines around comments
-//		c.setLinewrap(0, 1, 2).before(SL_COMMENTRule)
-//		c.setLinewrap(0, 1, 2).before(ML_COMMENTRule)
-//		c.setLinewrap(0, 1, 1).after(ML_COMMENTRule)
+
+		//val e = g.getTextRAMAccess
+		val f = grammarAccess
+        
+        // curly braces
+		f.findKeywords("{").forEach[ k | c.setLinewrap.after(k) ]
+		f.findKeywords("}").forEach[ k | 
+			c.setLinewrap.before(k)
+			c.setLinewrap.after(k)
+		]
+		
+		// remove space between parenthesis
+		f.findKeywordPairs("(",")").forEach[ pair |
+			c.setNoSpace.after(pair.first);
+			c.setNoSpace.before(pair.first)
+      		c.setNoSpace.before(pair.second);
+      		
+		]
+		
+		// remove space after partial keyword
+		f.findKeywords("|").forEach[ k |
+			c.setNoSpace.after(k)
+		]
+		
+		// remove space between dot
+		f.findKeywords(".").forEach[ k |
+			c.setNoSpace.after(k)
+			c.setNoSpace.before(k)
+		]
+		
+		// root indentation
+		c.setIndentation( g.TAspectAccess.leftCurlyBracketKeyword_3, g.TAspectAccess.rightCurlyBracketKeyword_5_4 )
+		
+		// structural view's indent
+		c.setIndentation( g.TStructuralViewAccess.leftCurlyBracketKeyword_2, g.TStructuralViewAccess.rightCurlyBracketKeyword_4_4 )
+		
+		// class's section indent
+		c.setIndentation( g.TClassAccess.leftCurlyBracketKeyword_8,  g.TClassAccess.rightCurlyBracketKeyword_10 )
+		
+		// linewrap to TClass's members
+		c.setLinewrap.before( g.TClassMemberAccess.TAttributeParserRuleCall_0 )
+		c.setLinewrap.before( g.TClassMemberAccess.TOperationParserRuleCall_1 )
+		
+		// no linewrap for associations's curly braces
+		c.setNoLinewrap.after( g.TAssociationAccess.leftCurlyBracketKeyword_5 )
+		c.setNoLinewrap.before( g.TAssociationAccess.rightCurlyBracketKeyword_7 )
+		
+		// indent TAssociation's block
+		c.setIndentation( g.TStructuralViewAccess.leftCurlyBracketKeyword_4_1, g.TStructuralViewAccess.rightCurlyBracketKeyword_5 )
+		
+		
+		// indent message view's block
+		c.setIndentation( g.TAspectAccess.leftCurlyBracketKeyword_6_1, g.TAspectAccess.rightCurlyBracketKeyword_7 )
+		c.setIndentation( g.TAbstractMessageViewAccess.leftCurlyBracketKeyword_2, g.TAbstractMessageViewAccess.rightCurlyBracketKeyword_5 )
+		
+		// indent life line's block
+		c.setIndentation( g.TLifelineAccess.leftCurlyBracketKeyword_5_0, g.TLifelineAccess.rightCurlyBracketKeyword_5_3 )
+		
+		// removes space between TLifeline's colon
+		g.TLifelineAccess.findKeywords(":").forEach[ k | 
+			c.setNoSpace.before(k)
+			c.setNoSpace.after(k)
+		]
+		
+		// set  linewrap before each TLifeline
+		c.setLinewrap.before( g.TLifelineAccess.referenceTypeAssignment_1 )
+		
+		// set linewrapp before each local attribute
+		c.setLinewrap.before( g.TLifelineAccess.localPropertiesAssignment_5_2_1 )
+		
+		// remove spaces, between local property's colon
+		g.TReferenceAccess.findKeywords(":").forEach[ k | 
+			c.setNoSpace.before(k)
+			c.setNoSpace.after(k)
+		]
+		
+		// linewrap before TAspectMessageView's name
+		
+		
+		// indent TAspectMessageView's block
+		c.setIndentation( g.TAspectMessageViewAccess.leftCurlyBracketKeyword_3, g.TAspectMessageViewAccess.rightCurlyBracketKeyword_17 )
+		c.setIndentation( g.TAspectMessageViewAccess.leftCurlyBracketKeyword_13, g.TAspectMessageViewAccess.rightCurlyBracketKeyword_16 )
+		
+		// linewrap before advice keyword
+		c.setLinewrap.before( g.TAspectMessageViewAccess.adviceKeyword_12 )
+		
+		// set linewrap to each TInteraction's type
+		c.setLinewrap.before( g.TOcurrenceAccess.leftLifelineAssignment_0 )
+		c.setLinewrap.before( g.TInteractionMessageAccess.leftLifelineAssignment_0 )
+		c.setLinewrap.before( g.TCombinedFragmentAccess.interactionOperatorAssignment_0 )
+		c.setLinewrap.before( g.TReturnInteractionAccess.returnKeyword_0 )
+		
+		// remove linewrap in messages
+		c.setNoLinewrap.after( g.TInteractionMessageAccess.leftCurlyBracketKeyword_4_0 )
+		c.setNoLinewrap.before( g.TInteractionMessageAccess.rightCurlyBracketKeyword_4_2 )
+		
+		// indent combined fragment's content
+		g.TCombinedFragmentAccess.findKeywordPairs("{","}").forEach[ pair | 
+			c.setIndentation( pair.first, pair.second )
+		]
+		
+		// removes space before occurrence type
+		c.setNoSpace.before( g.TOcurrenceAccess.ocurrenceTypeAssignment_2 )
+		
+		// indent message view's content
+		c.setIndentation( g.TMessageViewAccess.leftCurlyBracketKeyword_12_0, g.TMessageViewAccess.rightCurlyBracketKeyword_12_3)
+		
+		
+		
+		
+		// It's usually a good idea to activate the following three statements.
+        // They will add and preserve newlines around comments
+        c.setLinewrap(0, 1, 2).before(g.getSL_COMMENTRule())
+        c.setLinewrap(0, 1, 2).before(g.getML_COMMENTRule())
+        c.setLinewrap(0, 1, 1).after(g.getML_COMMENTRule())
 	}
+	
+	
 }
