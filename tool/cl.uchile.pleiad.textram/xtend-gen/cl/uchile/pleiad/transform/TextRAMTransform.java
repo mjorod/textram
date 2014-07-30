@@ -232,10 +232,36 @@ public class TextRAMTransform implements ITextRAMTransform {
           if (_equals) {
             throw new IllegalStateException("TAspectMessageView has not been found");
           }
+          EList<TAspectMessageView> _affectedBy = res.getAffectedBy();
+          _affectedBy.add(textRamAspectMessage);
         }
       };
       IterableExtensions.<AspectMessageView>forEach(_filter, _function);
     }
+    return res;
+  }
+  
+  private List<TAspectMessageView> transformAffectedBy(final List<AspectMessageView> list, final TAspect aspect) {
+    final List<TAspectMessageView> res = CollectionLiterals.<TAspectMessageView>newArrayList();
+    EList<AbstractMessageView> _messageViews = aspect.getMessageViews();
+    AbstractMessageView _get = _messageViews.get(0);
+    final TAbstractMessageView tAbstractMessageView = ((TAbstractMessageView) _get);
+    final Procedure1<AspectMessageView> _function = new Procedure1<AspectMessageView>() {
+      public void apply(final AspectMessageView amv) {
+        EList<TAbstractMessages> _messages = tAbstractMessageView.getMessages();
+        Iterable<TAspectMessageView> _filter = Iterables.<TAspectMessageView>filter(_messages, TAspectMessageView.class);
+        final Function1<TAspectMessageView,Boolean> _function = new Function1<TAspectMessageView,Boolean>() {
+          public Boolean apply(final TAspectMessageView q) {
+            String _name = q.getName();
+            String _name_1 = amv.getName();
+            return Boolean.valueOf(Objects.equal(_name, _name_1));
+          }
+        };
+        TAspectMessageView _findFirst = IterableExtensions.<TAspectMessageView>findFirst(_filter, _function);
+        res.add(_findFirst);
+      }
+    };
+    IterableExtensions.<AspectMessageView>forEach(list, _function);
     return res;
   }
   

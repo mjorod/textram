@@ -59,6 +59,7 @@ import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
+import java.util.Collection
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -76,7 +77,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		ramAspect.structuralView.transformStructuralView( textRamAspect )
 		
 		transformMessageViews( ramAspect, textRamAspect )
-		
+
 				
 		return textRamAspect
 	}
@@ -133,7 +134,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		res.arguments.addAll( res.specifies.parameters ) 
 		
 		if ( from.affectedBy.size == 0 ) {
-			// right now we don't know if all AspectMessageView has been transformed. 
+			// right now we don't know whether all AspectMessageView has been transformed. 
 			// Therefore the affectedBy property is set at the end of the MessageView and AspectView's transformation.
 			res.interactionMessages.addAll( getTextRamInteractions( from.specification, to ) )
 		} else {
@@ -147,8 +148,22 @@ class TextRAMTransform implements ITextRAMTransform {
 			 	if ( textRamAspectMessage == null ) {
 			 		throw new IllegalStateException("TAspectMessageView has not been found")
 			 	}
+			 	
+			 	res.affectedBy.add( textRamAspectMessage )
 			 ]
 		}
+		
+		return res
+	}
+	
+	private def transformAffectedBy(List<AspectMessageView> list, TAspect aspect) {
+		val List<TAspectMessageView> res = newArrayList
+		
+		val tAbstractMessageView =  aspect.messageViews.get(0) as TAbstractMessageView
+		
+		list.forEach[ amv |
+			res.add(tAbstractMessageView.messages.filter(TAspectMessageView).findFirst( q | q.name == amv.name ))	
+		]
 		
 		return res
 	}
