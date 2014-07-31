@@ -66,6 +66,7 @@ import cl.uchile.pleiad.textRam.TOcurrence;
 import cl.uchile.pleiad.textRam.TOperation;
 import cl.uchile.pleiad.textRam.TParameter;
 import cl.uchile.pleiad.textRam.TReference;
+import cl.uchile.pleiad.textRam.TReturnInteraction;
 import cl.uchile.pleiad.textRam.TStructuralView;
 import cl.uchile.pleiad.textRam.TTemporaryProperty;
 import cl.uchile.pleiad.textRam.TTypedElement;
@@ -241,30 +242,6 @@ public class TextRAMTransform implements ITextRAMTransform {
     return res;
   }
   
-  private List<TAspectMessageView> transformAffectedBy(final List<AspectMessageView> list, final TAspect aspect) {
-    final List<TAspectMessageView> res = CollectionLiterals.<TAspectMessageView>newArrayList();
-    EList<AbstractMessageView> _messageViews = aspect.getMessageViews();
-    AbstractMessageView _get = _messageViews.get(0);
-    final TAbstractMessageView tAbstractMessageView = ((TAbstractMessageView) _get);
-    final Procedure1<AspectMessageView> _function = new Procedure1<AspectMessageView>() {
-      public void apply(final AspectMessageView amv) {
-        EList<TAbstractMessages> _messages = tAbstractMessageView.getMessages();
-        Iterable<TAspectMessageView> _filter = Iterables.<TAspectMessageView>filter(_messages, TAspectMessageView.class);
-        final Function1<TAspectMessageView,Boolean> _function = new Function1<TAspectMessageView,Boolean>() {
-          public Boolean apply(final TAspectMessageView q) {
-            String _name = q.getName();
-            String _name_1 = amv.getName();
-            return Boolean.valueOf(Objects.equal(_name, _name_1));
-          }
-        };
-        TAspectMessageView _findFirst = IterableExtensions.<TAspectMessageView>findFirst(_filter, _function);
-        res.add(_findFirst);
-      }
-    };
-    IterableExtensions.<AspectMessageView>forEach(list, _function);
-    return res;
-  }
-  
   private List<TInteraction> getTextRamInteractions(final Interaction interaction, final TAspect to) {
     final List<TInteraction> res = CollectionLiterals.<TInteraction>newArrayList();
     EList<InteractionFragment> _fragments = interaction.getFragments();
@@ -272,13 +249,91 @@ public class TextRAMTransform implements ITextRAMTransform {
       public void apply(final InteractionFragment f) {
         EList<InteractionFragment> _fragments = interaction.getFragments();
         final TInteraction transformed = TextRAMTransform.this.getTransformedFragment(f, _fragments, to);
+        boolean _and = false;
         boolean _notEquals = (!Objects.equal(transformed, null));
-        if (_notEquals) {
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          boolean _containsFragment = TextRAMTransform.this.containsFragment(res, transformed);
+          boolean _equals = (_containsFragment == false);
+          _and = _equals;
+        }
+        if (_and) {
           res.add(transformed);
         }
       }
     };
     IterableExtensions.<InteractionFragment>forEach(_fragments, _function);
+    return res;
+  }
+  
+  private boolean _containsFragment(final List<TInteraction> interactions, final TInteractionMessage interaction) {
+    Iterable<TInteractionMessage> _filter = Iterables.<TInteractionMessage>filter(interactions, TInteractionMessage.class);
+    final Function1<TInteractionMessage,Boolean> _function = new Function1<TInteractionMessage,Boolean>() {
+      public Boolean apply(final TInteractionMessage i) {
+        boolean _and = false;
+        boolean _and_1 = false;
+        TLifeline _leftLifeline = i.getLeftLifeline();
+        String _nameFromTLifeline = TextRAMTransform.this.getNameFromTLifeline(_leftLifeline);
+        TLifeline _leftLifeline_1 = interaction.getLeftLifeline();
+        String _nameFromTLifeline_1 = TextRAMTransform.this.getNameFromTLifeline(_leftLifeline_1);
+        boolean _equals = Objects.equal(_nameFromTLifeline, _nameFromTLifeline_1);
+        if (!_equals) {
+          _and_1 = false;
+        } else {
+          TLifeline _rightLifeline = i.getRightLifeline();
+          String _nameFromTLifeline_2 = TextRAMTransform.this.getNameFromTLifeline(_rightLifeline);
+          TLifeline _rightLifeline_1 = interaction.getRightLifeline();
+          String _nameFromTLifeline_3 = TextRAMTransform.this.getNameFromTLifeline(_rightLifeline_1);
+          boolean _equals_1 = Objects.equal(_nameFromTLifeline_2, _nameFromTLifeline_3);
+          _and_1 = _equals_1;
+        }
+        if (!_and_1) {
+          _and = false;
+        } else {
+          TMessage _message = i.getMessage();
+          TOperation _signature = _message.getSignature();
+          String _name = _signature.getName();
+          TMessage _message_1 = interaction.getMessage();
+          TOperation _signature_1 = _message_1.getSignature();
+          String _name_1 = _signature_1.getName();
+          boolean _equals_2 = Objects.equal(_name, _name_1);
+          _and = _equals_2;
+        }
+        return Boolean.valueOf(_and);
+      }
+    };
+    final boolean res = IterableExtensions.<TInteractionMessage>exists(_filter, _function);
+    return res;
+  }
+  
+  private boolean _containsFragment(final List<TInteraction> interactions, final TCombinedFragment interaction) {
+    return false;
+  }
+  
+  private boolean _containsFragment(final List<TInteraction> interactions, final TReturnInteraction interaction) {
+    return false;
+  }
+  
+  private boolean _containsFragment(final List<TInteraction> interactions, final TOcurrence interaction) {
+    Iterable<TOcurrence> _filter = Iterables.<TOcurrence>filter(interactions, TOcurrence.class);
+    final Function1<TOcurrence,Boolean> _function = new Function1<TOcurrence,Boolean>() {
+      public Boolean apply(final TOcurrence i) {
+        boolean _xblockexpression = false;
+        {
+          TLifeline _leftLifeline = i.getLeftLifeline();
+          String _nameFromTLifeline = TextRAMTransform.this.getNameFromTLifeline(_leftLifeline);
+          TLifeline _leftLifeline_1 = interaction.getLeftLifeline();
+          String _nameFromTLifeline_1 = TextRAMTransform.this.getNameFromTLifeline(_leftLifeline_1);
+          /* Objects.equal(_nameFromTLifeline, _nameFromTLifeline_1); */
+          OcurrenceType _ocurrenceType = i.getOcurrenceType();
+          OcurrenceType _ocurrenceType_1 = interaction.getOcurrenceType();
+          _xblockexpression = Objects.equal(_ocurrenceType, _ocurrenceType_1);
+        }
+        return Boolean.valueOf(_xblockexpression);
+      }
+    };
+    final boolean res = IterableExtensions.<TOcurrence>exists(_filter, _function);
     return res;
   }
   
@@ -377,20 +432,34 @@ public class TextRAMTransform implements ITextRAMTransform {
     ValueSpecification _interactionConstraint = _get.getInteractionConstraint();
     String _textRamInteractionConstraint = this.getTextRamInteractionConstraint(_interactionConstraint);
     res.setInteractionConstraint(_textRamInteractionConstraint);
+    final List<TInteraction> tInteractions = CollectionLiterals.<TInteraction>newArrayList();
+    final List<TInteraction> tInteractionsForAlt = CollectionLiterals.<TInteraction>newArrayList();
     EList<InteractionOperand> _operands_1 = from.getOperands();
     InteractionOperand _get_1 = _operands_1.get(0);
     EList<InteractionFragment> _fragments = _get_1.getFragments();
     final Procedure1<InteractionFragment> _function = new Procedure1<InteractionFragment>() {
       public void apply(final InteractionFragment f) {
-        EList<TInteraction> _containers = res.getContainers();
         EList<InteractionOperand> _operands = from.getOperands();
         InteractionOperand _get = _operands.get(0);
         EList<InteractionFragment> _fragments = _get.getFragments();
-        TInteraction _transformedFragment = TextRAMTransform.this.getTransformedFragment(f, _fragments, to);
-        _containers.add(_transformedFragment);
+        final TInteraction transformed = TextRAMTransform.this.getTransformedFragment(f, _fragments, to);
+        boolean _and = false;
+        boolean _notEquals = (!Objects.equal(transformed, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          boolean _containsFragment = TextRAMTransform.this.containsFragment(tInteractions, transformed);
+          boolean _equals = (_containsFragment == false);
+          _and = _equals;
+        }
+        if (_and) {
+          tInteractions.add(transformed);
+        }
       }
     };
     IterableExtensions.<InteractionFragment>forEach(_fragments, _function);
+    EList<TInteraction> _containers = res.getContainers();
+    _containers.addAll(tInteractions);
     InteractionOperatorKind _interactionOperator_1 = from.getInteractionOperator();
     boolean _equals = Objects.equal(_interactionOperator_1, InteractionOperatorKind.ALT);
     if (_equals) {
@@ -399,16 +468,28 @@ public class TextRAMTransform implements ITextRAMTransform {
       EList<InteractionFragment> _fragments_1 = _get_2.getFragments();
       final Procedure1<InteractionFragment> _function_1 = new Procedure1<InteractionFragment>() {
         public void apply(final InteractionFragment f) {
-          EList<TInteraction> _containers = res.getContainers();
           EList<InteractionOperand> _operands = from.getOperands();
           InteractionOperand _get = _operands.get(1);
           EList<InteractionFragment> _fragments = _get.getFragments();
-          TInteraction _transformedFragment = TextRAMTransform.this.getTransformedFragment(f, _fragments, to);
-          _containers.add(_transformedFragment);
+          final TInteraction transformed = TextRAMTransform.this.getTransformedFragment(f, _fragments, to);
+          boolean _and = false;
+          boolean _notEquals = (!Objects.equal(transformed, null));
+          if (!_notEquals) {
+            _and = false;
+          } else {
+            boolean _containsFragment = TextRAMTransform.this.containsFragment(tInteractions, transformed);
+            boolean _equals = (_containsFragment == false);
+            _and = _equals;
+          }
+          if (_and) {
+            tInteractionsForAlt.add(transformed);
+          }
         }
       };
       IterableExtensions.<InteractionFragment>forEach(_fragments_1, _function_1);
     }
+    EList<TInteraction> _elseContainers = res.getElseContainers();
+    _elseContainers.addAll(tInteractionsForAlt);
     return res;
   }
   
@@ -591,6 +672,9 @@ public class TextRAMTransform implements ITextRAMTransform {
     return res;
   }
   
+  /**
+   * Reference can be transformed to TLifeline or to TReference
+   */
   private TMessageAssignableFeature _getAssignToFrom(final Reference feature, final TAspect to, final TClass clazz) {
     EList<AbstractMessageView> _messageViews = to.getMessageViews();
     AbstractMessageView _get = _messageViews.get(0);
@@ -617,6 +701,28 @@ public class TextRAMTransform implements ITextRAMTransform {
       };
       TLifeline _findFirst = IterableExtensions.<TLifeline>findFirst(_lifelines_1, _function_1);
       res = _findFirst;
+    }
+    boolean _equals_1 = Objects.equal(res, null);
+    if (_equals_1) {
+      EList<TLifeline> _lifelines_2 = mv.getLifelines();
+      final Function1<TLifeline,EList<TTemporaryProperty>> _function_2 = new Function1<TLifeline,EList<TTemporaryProperty>>() {
+        public EList<TTemporaryProperty> apply(final TLifeline it) {
+          return it.getLocalProperties();
+        }
+      };
+      List<EList<TTemporaryProperty>> _map = ListExtensions.<TLifeline, EList<TTemporaryProperty>>map(_lifelines_2, _function_2);
+      Iterable<TTemporaryProperty> _flatten = Iterables.<TTemporaryProperty>concat(_map);
+      Iterable<TReference> _filter = Iterables.<TReference>filter(_flatten, TReference.class);
+      final Function1<TReference,Boolean> _function_3 = new Function1<TReference,Boolean>() {
+        public Boolean apply(final TReference la) {
+          String _name = la.getName();
+          String _name_1 = feature.getName();
+          return Boolean.valueOf(Objects.equal(_name, _name_1));
+        }
+      };
+      TReference _findFirst_1 = IterableExtensions.<TReference>findFirst(_filter, _function_3);
+      final TReference tReference = ((TReference) _findFirst_1);
+      return tReference;
     }
     return res;
   }
@@ -756,8 +862,19 @@ public class TextRAMTransform implements ITextRAMTransform {
     EList<TemporaryProperty> _localProperties = from.getLocalProperties();
     final Procedure1<TemporaryProperty> _function = new Procedure1<TemporaryProperty>() {
       public void apply(final TemporaryProperty lp) {
-        TTemporaryProperty _localProperty = TextRAMTransform.this.getLocalProperty(lp, to);
-        res.add(_localProperty);
+        final TTemporaryProperty localProperty = TextRAMTransform.this.getLocalProperty(lp, to);
+        final Function1<TTemporaryProperty,Boolean> _function = new Function1<TTemporaryProperty,Boolean>() {
+          public Boolean apply(final TTemporaryProperty q) {
+            String _name = q.getName();
+            String _name_1 = localProperty.getName();
+            return Boolean.valueOf(Objects.equal(_name, _name_1));
+          }
+        };
+        boolean _exists = IterableExtensions.<TTemporaryProperty>exists(res, _function);
+        boolean _equals = (_exists == false);
+        if (_equals) {
+          res.add(localProperty);
+        }
       }
     };
     IterableExtensions.<TemporaryProperty>forEach(_localProperties, _function);
@@ -768,7 +885,8 @@ public class TextRAMTransform implements ITextRAMTransform {
     ObjectType _type = from.getType();
     if ((_type instanceof ca.mcgill.cs.sel.ram.Class)) {
       ObjectType _type_1 = from.getType();
-      return this.transformLocalPropertyFromReference(((ca.mcgill.cs.sel.ram.Class) _type_1), to);
+      String _name = from.getName();
+      return this.transformLocalPropertyFromReference(((ca.mcgill.cs.sel.ram.Class) _type_1), _name, to);
     }
     ObjectType _type_2 = from.getType();
     if ((_type_2 instanceof RSet)) {
@@ -777,7 +895,8 @@ public class TextRAMTransform implements ITextRAMTransform {
       ObjectType _type_4 = rSet.getType();
       if ((_type_4 instanceof ca.mcgill.cs.sel.ram.Class)) {
         ObjectType _type_5 = rSet.getType();
-        return this.transformLocalPropertyFromReference(((ca.mcgill.cs.sel.ram.Class) _type_5), to);
+        String _name_1 = from.getName();
+        return this.transformLocalPropertyFromReference(((ca.mcgill.cs.sel.ram.Class) _type_5), _name_1, to);
       } else {
         ObjectType _type_6 = from.getType();
         if ((_type_6 instanceof PrimitiveType)) {
@@ -803,20 +922,14 @@ public class TextRAMTransform implements ITextRAMTransform {
     return res;
   }
   
-  private TTemporaryProperty transformLocalPropertyFromReference(final ca.mcgill.cs.sel.ram.Class clazz, final TAspect aspect) {
+  private TTemporaryProperty transformLocalPropertyFromReference(final ca.mcgill.cs.sel.ram.Class clazz, final String name, final TAspect aspect) {
     String _name = clazz.getName();
     final TClass tClass = this.textRamEcoreUtil.findClass(aspect, _name);
-    TReference _createTReference = TextRamFactory.eINSTANCE.createTReference();
-    final Procedure1<TReference> _function = new Procedure1<TReference>() {
-      public void apply(final TReference it) {
-        String _name = clazz.getName();
-        it.setName(_name);
-        boolean _isPartial = tClass.isPartial();
-        it.setPartialClass(_isPartial);
-        it.setReference(tClass);
-      }
-    };
-    final TReference res = ObjectExtensions.<TReference>operator_doubleArrow(_createTReference, _function);
+    final TReference res = TextRamFactory.eINSTANCE.createTReference();
+    res.setName(name);
+    boolean _isPartial = tClass.isPartial();
+    res.setPartialClass(_isPartial);
+    res.setReference(tClass);
     return res;
   }
   
@@ -1254,6 +1367,21 @@ public class TextRAMTransform implements ITextRAMTransform {
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
         Arrays.<Object>asList(from, to).toString());
+    }
+  }
+  
+  private boolean containsFragment(final List<TInteraction> interactions, final TInteraction interaction) {
+    if (interaction instanceof TCombinedFragment) {
+      return _containsFragment(interactions, (TCombinedFragment)interaction);
+    } else if (interaction instanceof TInteractionMessage) {
+      return _containsFragment(interactions, (TInteractionMessage)interaction);
+    } else if (interaction instanceof TOcurrence) {
+      return _containsFragment(interactions, (TOcurrence)interaction);
+    } else if (interaction instanceof TReturnInteraction) {
+      return _containsFragment(interactions, (TReturnInteraction)interaction);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(interactions, interaction).toString());
     }
   }
   

@@ -60,6 +60,11 @@ import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
 import java.util.Collection
+import cl.uchile.pleiad.textRam.TInteractionMessage
+import cl.uchile.pleiad.textRam.TCombinedFragment
+import cl.uchile.pleiad.textRam.TOcurrence
+import cl.uchile.pleiad.textRam.TReturnInteraction
+import ca.mcgill.sel.commons.StringUtil
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -156,18 +161,6 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res
 	}
 	
-	private def transformAffectedBy(List<AspectMessageView> list, TAspect aspect) {
-		val List<TAspectMessageView> res = newArrayList
-		
-		val tAbstractMessageView =  aspect.messageViews.get(0) as TAbstractMessageView
-		
-		list.forEach[ amv |
-			res.add(tAbstractMessageView.messages.filter(TAspectMessageView).findFirst( q | q.name == amv.name ))	
-		]
-		
-		return res
-	}
-	
 	private def getTextRamInteractions(Interaction interaction, TAspect to) {
 		val List<TInteraction> res = newArrayList
 		
@@ -175,12 +168,39 @@ class TextRAMTransform implements ITextRAMTransform {
 		interaction.fragments.forEach[ f | 
 			val transformed = getTransformedFragment( f, interaction.fragments, to )
 			
-			if ( transformed != null ) {
+			if ( transformed != null && res.containsFragment( transformed ) == false ) {
 				res.add( transformed )
 			} 
 		]
 		
 		return res 
+	}
+	
+	private def dispatch boolean containsFragment(List<TInteraction> interactions, TInteractionMessage interaction) {
+		val res = interactions.filter(TInteractionMessage).exists[ i | 
+			i.leftLifeline.nameFromTLifeline == interaction.leftLifeline.nameFromTLifeline &&
+			i.rightLifeline.nameFromTLifeline == interaction.rightLifeline.nameFromTLifeline &&
+			i.message.signature.name == interaction.message.signature.name
+		]
+		
+		return res
+	}
+	
+	private def dispatch boolean containsFragment(List<TInteraction> interactions, TCombinedFragment interaction) {
+		return false
+	}
+	
+	private def dispatch boolean containsFragment(List<TInteraction> interactions, TReturnInteraction interaction) {
+		return false
+	}
+	
+	private def dispatch boolean containsFragment(List<TInteraction> interactions, TOcurrence interaction) {
+		val res = interactions.filter(TOcurrence).exists[ i | 
+			i.leftLifeline.nameFromTLifeline == interaction.leftLifeline.nameFromTLifeline
+			i.ocurrenceType == interaction.ocurrenceType
+		]
+		
+		return res
 	}
 	
 	private def dispatch TInteraction getTransformedFragment(MessageOccurrenceSpecification from, EList<InteractionFragment> fragments, TAspect to) {
@@ -258,11 +278,32 @@ class TextRAMTransform implements ITextRAMTransform {
 		//loop
 		res.interactionOperator = from.interactionOperator
     	res.interactionConstraint = from.operands.get(0).interactionConstraint.getTextRamInteractionConstraint
-		from.operands.get(0).fragments.forEach[ f | res.containers.add(  getTransformedFragment( f, from.operands.get(0).fragments, to )  )   ]
+    	
+    	val List<TInteraction> tInteractions = newArrayList
+    	val List<TInteraction> tInteractionsForAlt = newArrayList
+    	
+		from.operands.get(0).fragments.forEach[ f |
+			val transformed = getTransformedFragment( f, from.operands.get(0).fragments, to )
+			
+			if ( transformed != null && tInteractions.containsFragment( transformed ) == false ) {
+				tInteractions.add( transformed )
+			} 
+			
+		]
+		
+		res.containers.addAll( tInteractions )
 		
 		if ( from.interactionOperator == InteractionOperatorKind.ALT ) {					
-			from.operands.get(1).fragments.forEach[ f | res.containers.add(  getTransformedFragment( f, from.operands.get(1).fragments, to )  )   ]
+			from.operands.get(1).fragments.forEach[ f | 
+				val transformed = getTransformedFragment( f, from.operands.get(1).fragments, to )
+			
+				if ( transformed != null && tInteractions.containsFragment( transformed ) == false ) {
+					tInteractionsForAlt.add( transformed )
+				} 				
+			]
 		}
+		
+		res.elseContainers.addAll( tInteractionsForAlt )
 		
 		return res
 	}
@@ -357,6 +398,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res
 	}
 	
+	/* Reference can be transformed to TLifeline or to TReference */
 	private def dispatch TMessageAssignableFeature getAssignToFrom(Reference feature, TAspect to, TClass clazz) {
 		val mv = to.messageViews.get(0) as TAbstractMessageView
 		
@@ -364,6 +406,12 @@ class TextRAMTransform implements ITextRAMTransform {
 		
 		if ( res == null ) {
 			res = mv.lifelines.findFirst[ l | l.represents.nameFromRepresents == feature.name ]
+		}
+		
+		if (res == null) {
+			// if Refence cannot be transformed to TLifeline, the it must be a local property (TReference)
+			val tReference =  mv.lifelines.map[ localProperties ].flatten.filter(TReference).findFirst[ la | la.name == feature.name ] as TReference
+			return tReference
 		}
 		
 		return res
@@ -445,7 +493,13 @@ class TextRAMTransform implements ITextRAMTransform {
 	private def getLocalPropertiesFromLifeline( Lifeline from, TAspect to ) {
 		val List<TTemporaryProperty> res = newArrayList
 		
-		from.localProperties.forEach[ lp | res.add( getLocalProperty( lp, to ) ) ]
+		from.localProperties.forEach[ lp | 
+			val localProperty = getLocalProperty( lp, to )
+			
+			if ( res.exists[ q | q.name == localProperty.name ] == false ) {
+				res.add(localProperty)
+			}
+		]
 		
 		return res
 	}
@@ -453,14 +507,14 @@ class TextRAMTransform implements ITextRAMTransform {
 	private def dispatch TTemporaryProperty getLocalProperty( Reference from, TAspect to ) {
 				
 		if ( from.type instanceof Class ) {
-			return transformLocalPropertyFromReference( from.type as Class, to )
+			return transformLocalPropertyFromReference( from.type as Class, from.name, to )
 		}
 		
 		if ( from.type instanceof RSet ) {
 			val rSet = ( from.type as RSet )
 			
 			if ( rSet.type instanceof Class ) {
-				return transformLocalPropertyFromReference( rSet.type as Class, to )
+				return transformLocalPropertyFromReference( rSet.type as Class, from.name, to )
 			} else if ( from.type instanceof PrimitiveType ) {
 				return transformLocalPropertyFromPrimitiveType( rSet.type as PrimitiveType, from, to )
 			}
@@ -473,7 +527,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		return null
 	}
 	
-	private def transformLocalPropertyFromPrimitiveType(PrimitiveType type, Reference from,  TAspect to) {
+	private def transformLocalPropertyFromPrimitiveType(PrimitiveType type, Reference from, TAspect to) {
 		val res = TextRamFactory.eINSTANCE.createTLocalAttribute 
 		
 		res.name = from.name
@@ -482,14 +536,13 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res
 	}
 	
-	private def TTemporaryProperty transformLocalPropertyFromReference(Class clazz, TAspect aspect) {
+	private def TTemporaryProperty transformLocalPropertyFromReference(Class clazz, String name, TAspect aspect) {
 		val tClass = aspect.findClass( clazz.name )
 		
-		val res = TextRamFactory.eINSTANCE.createTReference => [
-			name = clazz.name
-			partialClass = tClass.partial
-			reference = tClass
-		]
+		val res = TextRamFactory.eINSTANCE.createTReference 
+		res.name = name
+		res.partialClass = tClass.partial
+		res.reference = tClass
 		
 		return res
 	}
