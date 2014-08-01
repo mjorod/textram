@@ -284,7 +284,7 @@ class ModelScopeProvider {
 	 * Gets all assignable features from TInteractionMessage, according the following rules:
 	 * 1. Only local properties defined in the left lifeline
 	 * 2. All aspect's associations
-	 * 3. The right lifeline 
+	 * 3. Right lifeline
 	 * 
 	 * @param textRamInteractionMessage current interaction
 	 */
@@ -293,9 +293,15 @@ class ModelScopeProvider {
 		
 		result.addAll ( textRamInteractionMessage.leftLifeline.localProperties )
 		result.addAll ( textRamInteractionMessage.getAspect.getAllAssociations )
-		result.addAll ( textRamInteractionMessage.rightLifeline )
+		result.add ( textRamInteractionMessage.rightLifeline )
 		
 		result
+	}
+	
+	private def allLifelines(Aspect aspect) {
+		val view = aspect.messageViews.get(0) as TAbstractMessageView
+		
+		return view.lifelines 
 	}
 	
 	private def getAspect(TInteractionMessage textRamInteractionMessage) {

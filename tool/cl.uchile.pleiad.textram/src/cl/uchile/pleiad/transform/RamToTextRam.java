@@ -1,5 +1,15 @@
 package cl.uchile.pleiad.transform;
 
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.xtext.serializer.impl.Serializer;
 
@@ -15,28 +25,61 @@ public class RamToTextRam {
 
 	public static void main(String[] args) {
 		
-		String file = "/Users/moliva/touchram/touchram/ca.mcgill.sel.ram.gui/models/reusable_model_library/design_patterns/Observer.ram";
+		File[] files = new File("/Users/moliva/touchram/touchram/ca.mcgill.sel.ram.gui/models/SlotMachine").listFiles();
+		Map<String,String> res = new HashMap<String, String>();
 		
-		if (!EPackage.Registry.INSTANCE.containsKey(RamPackage.eINSTANCE.getNsURI())) {
-			EPackage.Registry.INSTANCE.put(RamPackage.eINSTANCE.getNsURI(), ca.mcgill.cs.sel.ram.RamPackage.eINSTANCE);
+		process( files, res );
+		
+		for ( String s: res.keySet() ) {
+		
+			BufferedWriter writer = null;
+		    try {
+		        writer = new BufferedWriter(new FileWriter("/Users/moliva/textramTemp/" + s ));
+		        writer.write( res.get(s) );
+		    } catch (IOException e) {
+		        System.err.println(e);
+		    } finally {
+		        if (writer != null) {
+		            try {
+		                writer.close();
+		            } catch (IOException e) {
+		                System.err.println(e);
+		            }
+		        }
+		    }
 		}
-		
-		Aspect ramAspect = (Aspect)ResourceManager.loadModel(file); 
+						
+	}
+	
+	public static void process(File[] files, Map<String,String> sb) {
+		for ( File file : files ) {
+			if ( file.isDirectory() ) {
+				process( file.listFiles() , sb);
+			} else {
 				
-		ITextRAMTransform transformer = new TextRAMTransform();
+				if ( file.getName().endsWith(".ram") == false ) {
+					continue;
+				}
 				
-		TAspect res =  transformer.transform(ramAspect);
-		
-		Injector injector = Guice.createInjector(new  cl.uchile.pleiad.TextRAMRuntimeModule());  
-		Serializer serializer = injector.getInstance(Serializer.class);  
-		
-		String str = serializer.serialize(res);
-		
-		System.out.print(str);
-		
-//		ResourceManager.save(ramAspect, fileTo);
-		
-		
+				if (!EPackage.Registry.INSTANCE.containsKey(RamPackage.eINSTANCE.getNsURI())) {
+					EPackage.Registry.INSTANCE.put(RamPackage.eINSTANCE.getNsURI(), ca.mcgill.cs.sel.ram.RamPackage.eINSTANCE);
+				}
+				
+				Aspect ramAspect = (Aspect)ResourceManager.loadModel(file); 
+						
+				ITextRAMTransform transformer = new TextRAMTransform();
+						
+				TAspect res =  transformer.transform(ramAspect);
+				
+				Injector injector = Guice.createInjector(new  cl.uchile.pleiad.TextRAMRuntimeModule());  
+				Serializer serializer = injector.getInstance(Serializer.class);  
+				
+				String str = serializer.serialize(res);
+				
+				sb.put( ramAspect.getName() + ".xram", str);
+				
+			}
+		}
 		
 	}
 

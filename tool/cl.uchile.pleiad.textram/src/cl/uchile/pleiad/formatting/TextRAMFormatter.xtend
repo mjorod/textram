@@ -90,6 +90,9 @@ class TextRAMFormatter extends AbstractDeclarativeFormatter {
 		// set  linewrap before each TLifeline
 		c.setLinewrap.before( g.TLifelineAccess.referenceTypeAssignment_1 )
 		
+		// remove linewrape after TLifeline's static keyword
+		c.setNoLinewrap.after( g.TLifelineAccess.staticAssignment_0 )
+		
 		// set linewrapp before each local attribute
 		c.setLinewrap.before( g.TLifelineAccess.localPropertiesAssignment_5_2_1 )
 		

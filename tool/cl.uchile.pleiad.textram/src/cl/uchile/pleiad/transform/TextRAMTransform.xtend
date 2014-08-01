@@ -65,6 +65,7 @@ import cl.uchile.pleiad.textRam.TCombinedFragment
 import cl.uchile.pleiad.textRam.TOcurrence
 import cl.uchile.pleiad.textRam.TReturnInteraction
 import ca.mcgill.sel.commons.StringUtil
+import ca.mcgill.cs.sel.ram.TypedElement
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -398,20 +399,19 @@ class TextRAMTransform implements ITextRAMTransform {
 		return res
 	}
 	
-	/* Reference can be transformed to TLifeline or to TReference */
 	private def dispatch TMessageAssignableFeature getAssignToFrom(Reference feature, TAspect to, TClass clazz) {
 		val mv = to.messageViews.get(0) as TAbstractMessageView
 		
-		var res = mv.lifelines.findFirst[ l | l.name == feature.name ]
+		//TReference has precedence over TLifeline
+		var TMessageAssignableFeature res =  mv.lifelines.map[ localProperties ].flatten.filter(TReference).findFirst[ la | la.name == feature.name ] as TReference
+		
+		// lookups lifelines
+		if ( res == null ) { 
+		 	res = mv.lifelines.findFirst[ l | l.name == feature.name ]
+		}
 		
 		if ( res == null ) {
 			res = mv.lifelines.findFirst[ l | l.represents.nameFromRepresents == feature.name ]
-		}
-		
-		if (res == null) {
-			// if Refence cannot be transformed to TLifeline, the it must be a local property (TReference)
-			val tReference =  mv.lifelines.map[ localProperties ].flatten.filter(TReference).findFirst[ la | la.name == feature.name ] as TReference
-			return tReference
 		}
 		
 		return res
@@ -481,7 +481,8 @@ class TextRAMTransform implements ITextRAMTransform {
 	
 	private def getTransformedLifeline(Lifeline from, TAspect to) {
 		val res = TextRamFactory.eINSTANCE.createTLifeline
-
+		
+		res.static = resolveStaticFromReference( from.represents )
 		res.represents = getRepresentsFrom( from.represents, to )
 		res.name = getNameFromLifeline( from )
 		res.referenceType = getReferenceTypeFrom ( from.represents )
@@ -515,7 +516,7 @@ class TextRAMTransform implements ITextRAMTransform {
 			
 			if ( rSet.type instanceof Class ) {
 				return transformLocalPropertyFromReference( rSet.type as Class, from.name, to )
-			} else if ( from.type instanceof PrimitiveType ) {
+			} else if ( rSet.type instanceof PrimitiveType ) {
 				return transformLocalPropertyFromPrimitiveType( rSet.type as PrimitiveType, from, to )
 			}
 		}
@@ -624,6 +625,23 @@ class TextRAMTransform implements ITextRAMTransform {
 	}
 	
 	private def dispatch TTypedElement getRepresentsFrom(Parameter from, Aspect to) {
+		throw new IllegalStateException("Parameter not supported in TTypedElement")
+	}
+	
+	private def dispatch boolean resolveStaticFromReference(AssociationEnd from) {
+		return false
+	}
+	
+	private def dispatch boolean resolveStaticFromReference(Reference from) {
+		return from.static
+	}
+	
+	private def dispatch boolean resolveStaticFromReference(Attribute from) {
+		//TODO: class name must be defined for attribute
+		return false
+	}
+	
+	private def dispatch boolean resolveStaticFromReference(Parameter from) {
 		throw new IllegalStateException("Parameter not supported in TTypedElement")
 	}
 	
@@ -741,7 +759,8 @@ class TextRAMTransform implements ITextRAMTransform {
 		]
 		
 		if ( ramClass.superTypes.size > 1 ) {
-			throw new IllegalStateException('TextRam classes can have only one super type')
+			ramClass.superTypes.get(0)
+			//throw new IllegalStateException('TextRam classes can have only one super type')
 		}
 		
 		if ( ramClass.superTypes.size == 1 ) {

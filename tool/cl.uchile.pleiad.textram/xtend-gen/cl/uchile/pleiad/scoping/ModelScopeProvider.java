@@ -57,7 +57,6 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.xbase.lib.CollectionExtensions;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
@@ -498,7 +497,7 @@ public class ModelScopeProvider {
    * Gets all assignable features from TInteractionMessage, according the following rules:
    * 1. Only local properties defined in the left lifeline
    * 2. All aspect's associations
-   * 3. The right lifeline
+   * 3. Right lifeline
    * 
    * @param textRamInteractionMessage current interaction
    */
@@ -513,10 +512,17 @@ public class ModelScopeProvider {
       List<TAssociation> _allAssociations = this.getAllAssociations(_aspect);
       result.addAll(_allAssociations);
       TLifeline _rightLifeline = textRamInteractionMessage.getRightLifeline();
-      CollectionExtensions.<TLifeline>addAll(result, _rightLifeline);
+      result.add(_rightLifeline);
       _xblockexpression = result;
     }
     return _xblockexpression;
+  }
+  
+  private EList<TLifeline> allLifelines(final Aspect aspect) {
+    EList<AbstractMessageView> _messageViews = aspect.getMessageViews();
+    AbstractMessageView _get = _messageViews.get(0);
+    final TAbstractMessageView view = ((TAbstractMessageView) _get);
+    return view.getLifelines();
   }
   
   private Aspect getAspect(final TInteractionMessage textRamInteractionMessage) {

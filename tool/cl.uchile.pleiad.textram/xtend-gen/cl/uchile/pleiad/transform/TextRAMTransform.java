@@ -1229,14 +1229,15 @@ public class TextRAMTransform implements ITextRAMTransform {
       int _size = _superTypes.size();
       boolean _greaterThan = (_size > 1);
       if (_greaterThan) {
-        throw new IllegalStateException("TextRam classes can have only one super type");
+        EList<Classifier> _superTypes_1 = ramClass.getSuperTypes();
+        _superTypes_1.get(0);
       }
-      EList<Classifier> _superTypes_1 = ramClass.getSuperTypes();
-      int _size_1 = _superTypes_1.size();
+      EList<Classifier> _superTypes_2 = ramClass.getSuperTypes();
+      int _size_1 = _superTypes_2.size();
       boolean _equals = (_size_1 == 1);
       if (_equals) {
-        EList<Classifier> _superTypes_2 = ramClass.getSuperTypes();
-        Classifier _get = _superTypes_2.get(0);
+        EList<Classifier> _superTypes_3 = ramClass.getSuperTypes();
+        Classifier _get = _superTypes_3.get(0);
         boolean _isPartial = ((ca.mcgill.cs.sel.ram.Class) _get).isPartial();
         res.setPartialSuperType(_isPartial);
       }

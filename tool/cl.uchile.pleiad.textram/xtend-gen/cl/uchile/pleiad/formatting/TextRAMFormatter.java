@@ -149,9 +149,13 @@ public class TextRAMFormatter extends AbstractDeclarativeFormatter {
     TextRAMGrammarAccess.TLifelineElements _tLifelineAccess_3 = this.g.getTLifelineAccess();
     Assignment _referenceTypeAssignment_1 = _tLifelineAccess_3.getReferenceTypeAssignment_1();
     _setLinewrap_2.before(_referenceTypeAssignment_1);
-    FormattingConfig.LinewrapLocator _setLinewrap_3 = c.setLinewrap();
+    FormattingConfig.NoLinewrapLocator _setNoLinewrap_2 = c.setNoLinewrap();
     TextRAMGrammarAccess.TLifelineElements _tLifelineAccess_4 = this.g.getTLifelineAccess();
-    Assignment _localPropertiesAssignment_5_2_1 = _tLifelineAccess_4.getLocalPropertiesAssignment_5_2_1();
+    Assignment _staticAssignment_0 = _tLifelineAccess_4.getStaticAssignment_0();
+    _setNoLinewrap_2.after(_staticAssignment_0);
+    FormattingConfig.LinewrapLocator _setLinewrap_3 = c.setLinewrap();
+    TextRAMGrammarAccess.TLifelineElements _tLifelineAccess_5 = this.g.getTLifelineAccess();
+    Assignment _localPropertiesAssignment_5_2_1 = _tLifelineAccess_5.getLocalPropertiesAssignment_5_2_1();
     _setLinewrap_3.before(_localPropertiesAssignment_5_2_1);
     TextRAMGrammarAccess.TReferenceElements _tReferenceAccess = this.g.getTReferenceAccess();
     List<Keyword> _findKeywords_5 = _tReferenceAccess.findKeywords(":");
@@ -194,14 +198,14 @@ public class TextRAMFormatter extends AbstractDeclarativeFormatter {
     TextRAMGrammarAccess.TReturnInteractionElements _tReturnInteractionAccess = this.g.getTReturnInteractionAccess();
     Keyword _returnKeyword_0 = _tReturnInteractionAccess.getReturnKeyword_0();
     _setLinewrap_8.before(_returnKeyword_0);
-    FormattingConfig.NoLinewrapLocator _setNoLinewrap_2 = c.setNoLinewrap();
+    FormattingConfig.NoLinewrapLocator _setNoLinewrap_3 = c.setNoLinewrap();
     TextRAMGrammarAccess.TInteractionMessageElements _tInteractionMessageAccess_1 = this.g.getTInteractionMessageAccess();
     Keyword _leftCurlyBracketKeyword_4_0 = _tInteractionMessageAccess_1.getLeftCurlyBracketKeyword_4_0();
-    _setNoLinewrap_2.after(_leftCurlyBracketKeyword_4_0);
-    FormattingConfig.NoLinewrapLocator _setNoLinewrap_3 = c.setNoLinewrap();
+    _setNoLinewrap_3.after(_leftCurlyBracketKeyword_4_0);
+    FormattingConfig.NoLinewrapLocator _setNoLinewrap_4 = c.setNoLinewrap();
     TextRAMGrammarAccess.TInteractionMessageElements _tInteractionMessageAccess_2 = this.g.getTInteractionMessageAccess();
     Keyword _rightCurlyBracketKeyword_4_2 = _tInteractionMessageAccess_2.getRightCurlyBracketKeyword_4_2();
-    _setNoLinewrap_3.before(_rightCurlyBracketKeyword_4_2);
+    _setNoLinewrap_4.before(_rightCurlyBracketKeyword_4_2);
     TextRAMGrammarAccess.TCombinedFragmentElements _tCombinedFragmentAccess_1 = this.g.getTCombinedFragmentAccess();
     List<Pair<Keyword,Keyword>> _findKeywordPairs_1 = _tCombinedFragmentAccess_1.findKeywordPairs("{", "}");
     final Procedure1<Pair<Keyword,Keyword>> _function_7 = new Procedure1<Pair<Keyword,Keyword>>() {
