@@ -672,26 +672,45 @@ public class TextRAMTransform implements ITextRAMTransform {
     return res;
   }
   
-  /**
-   * Reference can be transformed to TLifeline or to TReference
-   */
   private TMessageAssignableFeature _getAssignToFrom(final Reference feature, final TAspect to, final TClass clazz) {
     EList<AbstractMessageView> _messageViews = to.getMessageViews();
     AbstractMessageView _get = _messageViews.get(0);
     final TAbstractMessageView mv = ((TAbstractMessageView) _get);
     EList<TLifeline> _lifelines = mv.getLifelines();
-    final Function1<TLifeline,Boolean> _function = new Function1<TLifeline,Boolean>() {
-      public Boolean apply(final TLifeline l) {
-        String _name = l.getName();
+    final Function1<TLifeline,EList<TTemporaryProperty>> _function = new Function1<TLifeline,EList<TTemporaryProperty>>() {
+      public EList<TTemporaryProperty> apply(final TLifeline it) {
+        return it.getLocalProperties();
+      }
+    };
+    List<EList<TTemporaryProperty>> _map = ListExtensions.<TLifeline, EList<TTemporaryProperty>>map(_lifelines, _function);
+    Iterable<TTemporaryProperty> _flatten = Iterables.<TTemporaryProperty>concat(_map);
+    Iterable<TReference> _filter = Iterables.<TReference>filter(_flatten, TReference.class);
+    final Function1<TReference,Boolean> _function_1 = new Function1<TReference,Boolean>() {
+      public Boolean apply(final TReference la) {
+        String _name = la.getName();
         String _name_1 = feature.getName();
         return Boolean.valueOf(Objects.equal(_name, _name_1));
       }
     };
-    TLifeline res = IterableExtensions.<TLifeline>findFirst(_lifelines, _function);
+    TReference _findFirst = IterableExtensions.<TReference>findFirst(_filter, _function_1);
+    TMessageAssignableFeature res = ((TReference) _findFirst);
     boolean _equals = Objects.equal(res, null);
     if (_equals) {
       EList<TLifeline> _lifelines_1 = mv.getLifelines();
-      final Function1<TLifeline,Boolean> _function_1 = new Function1<TLifeline,Boolean>() {
+      final Function1<TLifeline,Boolean> _function_2 = new Function1<TLifeline,Boolean>() {
+        public Boolean apply(final TLifeline l) {
+          String _name = l.getName();
+          String _name_1 = feature.getName();
+          return Boolean.valueOf(Objects.equal(_name, _name_1));
+        }
+      };
+      TLifeline _findFirst_1 = IterableExtensions.<TLifeline>findFirst(_lifelines_1, _function_2);
+      res = _findFirst_1;
+    }
+    boolean _equals_1 = Objects.equal(res, null);
+    if (_equals_1) {
+      EList<TLifeline> _lifelines_2 = mv.getLifelines();
+      final Function1<TLifeline,Boolean> _function_3 = new Function1<TLifeline,Boolean>() {
         public Boolean apply(final TLifeline l) {
           TTypedElement _represents = l.getRepresents();
           String _nameFromRepresents = TextRAMTransform.this.getNameFromRepresents(_represents);
@@ -699,30 +718,8 @@ public class TextRAMTransform implements ITextRAMTransform {
           return Boolean.valueOf(Objects.equal(_nameFromRepresents, _name));
         }
       };
-      TLifeline _findFirst = IterableExtensions.<TLifeline>findFirst(_lifelines_1, _function_1);
-      res = _findFirst;
-    }
-    boolean _equals_1 = Objects.equal(res, null);
-    if (_equals_1) {
-      EList<TLifeline> _lifelines_2 = mv.getLifelines();
-      final Function1<TLifeline,EList<TTemporaryProperty>> _function_2 = new Function1<TLifeline,EList<TTemporaryProperty>>() {
-        public EList<TTemporaryProperty> apply(final TLifeline it) {
-          return it.getLocalProperties();
-        }
-      };
-      List<EList<TTemporaryProperty>> _map = ListExtensions.<TLifeline, EList<TTemporaryProperty>>map(_lifelines_2, _function_2);
-      Iterable<TTemporaryProperty> _flatten = Iterables.<TTemporaryProperty>concat(_map);
-      Iterable<TReference> _filter = Iterables.<TReference>filter(_flatten, TReference.class);
-      final Function1<TReference,Boolean> _function_3 = new Function1<TReference,Boolean>() {
-        public Boolean apply(final TReference la) {
-          String _name = la.getName();
-          String _name_1 = feature.getName();
-          return Boolean.valueOf(Objects.equal(_name, _name_1));
-        }
-      };
-      TReference _findFirst_1 = IterableExtensions.<TReference>findFirst(_filter, _function_3);
-      final TReference tReference = ((TReference) _findFirst_1);
-      return tReference;
+      TLifeline _findFirst_2 = IterableExtensions.<TLifeline>findFirst(_lifelines_2, _function_3);
+      res = _findFirst_2;
     }
     return res;
   }
@@ -844,12 +841,15 @@ public class TextRAMTransform implements ITextRAMTransform {
   private TLifeline getTransformedLifeline(final Lifeline from, final TAspect to) {
     final TLifeline res = TextRamFactory.eINSTANCE.createTLifeline();
     TypedElement _represents = from.getRepresents();
-    TTypedElement _representsFrom = this.getRepresentsFrom(_represents, to);
+    boolean _resolveStaticFromReference = this.resolveStaticFromReference(_represents);
+    res.setStatic(_resolveStaticFromReference);
+    TypedElement _represents_1 = from.getRepresents();
+    TTypedElement _representsFrom = this.getRepresentsFrom(_represents_1, to);
     res.setRepresents(_representsFrom);
     String _nameFromLifeline = this.getNameFromLifeline(from);
     res.setName(_nameFromLifeline);
-    TypedElement _represents_1 = from.getRepresents();
-    TLifelineReferenceType _referenceTypeFrom = this.getReferenceTypeFrom(_represents_1);
+    TypedElement _represents_2 = from.getRepresents();
+    TLifelineReferenceType _referenceTypeFrom = this.getReferenceTypeFrom(_represents_2);
     res.setReferenceType(_referenceTypeFrom);
     EList<TTemporaryProperty> _localProperties = res.getLocalProperties();
     List<TTemporaryProperty> _localPropertiesFromLifeline = this.getLocalPropertiesFromLifeline(from, to);
@@ -898,7 +898,7 @@ public class TextRAMTransform implements ITextRAMTransform {
         String _name_1 = from.getName();
         return this.transformLocalPropertyFromReference(((ca.mcgill.cs.sel.ram.Class) _type_5), _name_1, to);
       } else {
-        ObjectType _type_6 = from.getType();
+        ObjectType _type_6 = rSet.getType();
         if ((_type_6 instanceof PrimitiveType)) {
           ObjectType _type_7 = rSet.getType();
           return this.transformLocalPropertyFromPrimitiveType(((PrimitiveType) _type_7), from, to);
@@ -1038,6 +1038,22 @@ public class TextRAMTransform implements ITextRAMTransform {
   }
   
   private TTypedElement _getRepresentsFrom(final Parameter from, final Aspect to) {
+    throw new IllegalStateException("Parameter not supported in TTypedElement");
+  }
+  
+  private boolean _resolveStaticFromReference(final AssociationEnd from) {
+    return false;
+  }
+  
+  private boolean _resolveStaticFromReference(final Reference from) {
+    return from.isStatic();
+  }
+  
+  private boolean _resolveStaticFromReference(final Attribute from) {
+    return false;
+  }
+  
+  private boolean _resolveStaticFromReference(final Parameter from) {
     throw new IllegalStateException("Parameter not supported in TTypedElement");
   }
   
@@ -1520,6 +1536,21 @@ public class TextRAMTransform implements ITextRAMTransform {
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
         Arrays.<Object>asList(from, to).toString());
+    }
+  }
+  
+  private boolean resolveStaticFromReference(final TypedElement from) {
+    if (from instanceof AssociationEnd) {
+      return _resolveStaticFromReference((AssociationEnd)from);
+    } else if (from instanceof Reference) {
+      return _resolveStaticFromReference((Reference)from);
+    } else if (from instanceof Attribute) {
+      return _resolveStaticFromReference((Attribute)from);
+    } else if (from instanceof Parameter) {
+      return _resolveStaticFromReference((Parameter)from);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(from).toString());
     }
   }
 }
