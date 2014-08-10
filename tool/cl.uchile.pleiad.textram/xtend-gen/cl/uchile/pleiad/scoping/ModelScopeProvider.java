@@ -68,17 +68,17 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 @SuppressWarnings("all")
 public class ModelScopeProvider {
-  public Iterable<Aspect> getExternalAspectsFromHeader(final TAspect aspect) {
-    Iterable<Aspect> _xblockexpression = null;
+  public Iterable<TAspect> getExternalAspectsFromHeader(final TAspect aspect) {
+    Iterable<TAspect> _xblockexpression = null;
     {
       EList<TInstantiationHeader> _headerInstantiations = aspect.getHeaderInstantiations();
-      final Function1<TInstantiationHeader,EList<Aspect>> _function = new Function1<TInstantiationHeader,EList<Aspect>>() {
-        public EList<Aspect> apply(final TInstantiationHeader it) {
+      final Function1<TInstantiationHeader,EList<TAspect>> _function = new Function1<TInstantiationHeader,EList<TAspect>>() {
+        public EList<TAspect> apply(final TInstantiationHeader it) {
           return it.getExternalAspects();
         }
       };
-      List<EList<Aspect>> _map = ListExtensions.<TInstantiationHeader, EList<Aspect>>map(_headerInstantiations, _function);
-      final Iterable<Aspect> validExternalAspects = Iterables.<Aspect>concat(_map);
+      List<EList<TAspect>> _map = ListExtensions.<TInstantiationHeader, EList<TAspect>>map(_headerInstantiations, _function);
+      final Iterable<TAspect> validExternalAspects = Iterables.<TAspect>concat(_map);
       _xblockexpression = validExternalAspects;
     }
     return _xblockexpression;
@@ -305,13 +305,13 @@ public class ModelScopeProvider {
       }
     };
     Iterable<TInstantiationHeader> _filter = IterableExtensions.<TInstantiationHeader>filter(_headerInstantiations, _function);
-    final Function1<TInstantiationHeader,EList<Aspect>> _function_1 = new Function1<TInstantiationHeader,EList<Aspect>>() {
-      public EList<Aspect> apply(final TInstantiationHeader it) {
+    final Function1<TInstantiationHeader,EList<TAspect>> _function_1 = new Function1<TInstantiationHeader,EList<TAspect>>() {
+      public EList<TAspect> apply(final TInstantiationHeader it) {
         return it.getExternalAspects();
       }
     };
-    Iterable<EList<Aspect>> _map = IterableExtensions.<TInstantiationHeader, EList<Aspect>>map(_filter, _function_1);
-    Iterable<Aspect> _flatten = Iterables.<Aspect>concat(_map);
+    Iterable<EList<TAspect>> _map = IterableExtensions.<TInstantiationHeader, EList<TAspect>>map(_filter, _function_1);
+    Iterable<TAspect> _flatten = Iterables.<TAspect>concat(_map);
     return Iterables.<TAspect>filter(_flatten, TAspect.class);
   }
   

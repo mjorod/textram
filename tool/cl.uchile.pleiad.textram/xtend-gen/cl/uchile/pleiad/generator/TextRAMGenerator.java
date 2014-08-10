@@ -43,14 +43,14 @@ public class TextRAMGenerator implements IGenerator {
         EList<TInstantiationHeader> _headerInstantiations = textRamAspect.getHeaderInstantiations();
         final Procedure1<TInstantiationHeader> _function = new Procedure1<TInstantiationHeader>() {
           public void apply(final TInstantiationHeader instantiation) {
-            EList<Aspect> _externalAspects = instantiation.getExternalAspects();
-            final Procedure1<Aspect> _function = new Procedure1<Aspect>() {
-              public void apply(final Aspect externalAspect) {
+            EList<TAspect> _externalAspects = instantiation.getExternalAspects();
+            final Procedure1<TAspect> _function = new Procedure1<TAspect>() {
+              public void apply(final TAspect externalAspect) {
                 d.addNode(externalAspect);
                 d.addEdge(externalAspect, aspect);
               }
             };
-            IterableExtensions.<Aspect>forEach(_externalAspects, _function);
+            IterableExtensions.<TAspect>forEach(_externalAspects, _function);
           }
         };
         IterableExtensions.<TInstantiationHeader>forEach(_headerInstantiations, _function);

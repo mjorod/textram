@@ -99,6 +99,12 @@ class TextRAMTransform implements ITextRAMTransform {
 		if ( headerExtend != null ) {
 			to.headerInstantiations.add( headerExtend )
 		}
+		
+		// transform depends type
+		val headerDepends = transformHeaderInstantiationOfDependsType ( from, extendedTextRamAspects )
+		if ( headerDepends != null ) {
+			to.headerInstantiations.add( headerDepends )
+		}
 	}
 	
 	private def transformHeaderInstantiationOfExtendType(Aspect from, Set<TAspect> extendedExternalTextRamAspects) {
@@ -117,14 +123,14 @@ class TextRAMTransform implements ITextRAMTransform {
 		return null
 	}
 	
-	private def transformHeaderInstantiationOfDependsType(Aspect from) {
+	private def transformHeaderInstantiationOfDependsType(Aspect from, Set<TAspect> extendedExternalTextRamAspects) {
 		if ( from.instantiations.exists[ i | i.type == InstantiationType.DEPENDS ] ) {
 			// 	transform header instantiations
 			val header = TextRamFactory.eINSTANCE.createTInstantiationHeader
 			
 			header.type = InstantiationType.DEPENDS
 			from.instantiations.filter( ins | ins.type == InstantiationType.DEPENDS).forEach[ ins |
-				header.externalAspects.add( ins.externalAspect )
+				header.externalAspects.add( extendedExternalTextRamAspects.findFirst[ e | e.name == ins.externalAspect.name ] )
 			]
 			
 			return header
@@ -141,8 +147,8 @@ class TextRAMTransform implements ITextRAMTransform {
 				val tClass = to.findClass( (v.key as Class).name )
 				
 				if ( tClass != null ) {
-					tClass.layoutX = v.value.x
-					tClass.layoutY = v.value.y
+//					tClass.layoutX = v.value.x
+//					tClass.layoutY = v.value.y
 				}
 			}
 

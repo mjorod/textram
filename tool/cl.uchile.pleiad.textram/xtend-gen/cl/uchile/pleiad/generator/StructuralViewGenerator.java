@@ -151,9 +151,9 @@ public class StructuralViewGenerator {
         if (_notEquals) {
           throw new Exception("Only instantiation of type DEPENDS can be processed in this method");
         }
-        EList<Aspect> _externalAspects = instantiationHeader.getExternalAspects();
-        final Procedure1<Aspect> _function = new Procedure1<Aspect>() {
-          public void apply(final Aspect ea) {
+        EList<TAspect> _externalAspects = instantiationHeader.getExternalAspects();
+        final Procedure1<TAspect> _function = new Procedure1<TAspect>() {
+          public void apply(final TAspect ea) {
             EList<Instantiation> _instantiations = StructuralViewGenerator.this.textRamAspect.getInstantiations();
             final Function1<Instantiation,Boolean> _function = new Function1<Instantiation,Boolean>() {
               public Boolean apply(final Instantiation ins) {
@@ -178,7 +178,7 @@ public class StructuralViewGenerator {
             result.add(_generateInstantiation);
           }
         };
-        IterableExtensions.<Aspect>forEach(_externalAspects, _function);
+        IterableExtensions.<TAspect>forEach(_externalAspects, _function);
         _xblockexpression = result;
       }
       return _xblockexpression;
@@ -197,9 +197,9 @@ public class StructuralViewGenerator {
           throw new Exception("Only instantiation of type EXTENDS can be processed in this method");
         }
         final List<Instantiation> result = CollectionLiterals.<Instantiation>newArrayList();
-        EList<Aspect> _externalAspects = instantiationHeader.getExternalAspects();
-        final Procedure1<Aspect> _function = new Procedure1<Aspect>() {
-          public void apply(final Aspect ea) {
+        EList<TAspect> _externalAspects = instantiationHeader.getExternalAspects();
+        final Procedure1<TAspect> _function = new Procedure1<TAspect>() {
+          public void apply(final TAspect ea) {
             Instantiation _createInstantiation = RamFactory.eINSTANCE.createInstantiation();
             final Procedure1<Instantiation> _function = new Procedure1<Instantiation>() {
               public void apply(final Instantiation it) {
@@ -238,7 +238,7 @@ public class StructuralViewGenerator {
             result.add(instantiation);
           }
         };
-        IterableExtensions.<Aspect>forEach(_externalAspects, _function);
+        IterableExtensions.<TAspect>forEach(_externalAspects, _function);
         _xblockexpression = result;
       }
       return _xblockexpression;
@@ -277,16 +277,16 @@ public class StructuralViewGenerator {
       EList<TInstantiationHeader> _headerInstantiations = tAspect.getHeaderInstantiations();
       final Function1<TInstantiationHeader,Boolean> _function = new Function1<TInstantiationHeader,Boolean>() {
         public Boolean apply(final TInstantiationHeader hi) {
-          EList<Aspect> _externalAspects = hi.getExternalAspects();
-          final Function1<Aspect,Boolean> _function = new Function1<Aspect,Boolean>() {
-            public Boolean apply(final Aspect ea) {
+          EList<TAspect> _externalAspects = hi.getExternalAspects();
+          final Function1<TAspect,Boolean> _function = new Function1<TAspect,Boolean>() {
+            public Boolean apply(final TAspect ea) {
               String _name = ea.getName();
               Aspect _externalAspect = instantiation.getExternalAspect();
               String _name_1 = _externalAspect.getName();
               return Boolean.valueOf(Objects.equal(_name, _name_1));
             }
           };
-          return Boolean.valueOf(IterableExtensions.<Aspect>exists(_externalAspects, _function));
+          return Boolean.valueOf(IterableExtensions.<TAspect>exists(_externalAspects, _function));
         }
       };
       final TInstantiationHeader headerInstantiation = IterableExtensions.<TInstantiationHeader>findFirst(_headerInstantiations, _function);

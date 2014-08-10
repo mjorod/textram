@@ -54,13 +54,30 @@ public class TextRamModelUtil {
 		Set<TAspect> res = new HashSet<TAspect>();
 		
 		for ( Instantiation instantiation : aspect.getInstantiations()) {
-			if ( instantiation.getType() == InstantiationType.EXTENDS ) {
+			//if ( instantiation.getType() == InstantiationType.EXTENDS ) {
 				Aspect externalAspect = instantiation.getExternalAspect();
 				
 				// If it was already added, it not necessary to search for extended aspects of that aspect again
 				// this prevents infinite loops in case of cyclic dependencies between aspects
 				if (res.add( transformToTextRamAspect( externalAspect )) ) {
 					res.addAll(  transformExtendedAspects( externalAspect ) );
+				}
+			//}
+		}
+		
+		return res;
+	}
+	
+	public static Set<TAspect> collectExtendedAspects( TAspect aspect ) {
+		Set<TAspect> res = new HashSet<TAspect>();
+		
+		for ( TInstantiationHeader instantiation : aspect.getHeaderInstantiations() ) {
+			for ( TAspect externalAspect : instantiation.getExternalAspects() ) {
+				
+				// If it was already added, it not necessary to search for extended aspects of that aspect again
+				// this prevents infinite loops in case of cyclic dependencies between aspects
+				if (res.add( externalAspect ) ) {
+					res.addAll(  collectExtendedAspects( externalAspect ) );
 				}
 			}
 		}

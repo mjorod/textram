@@ -17,6 +17,7 @@ import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import cl.uchile.pleiad.textRam.TReference
+import cl.uchile.pleiad.util.TextRamModelUtil
 
 /**
  * This class contains custom scoping description.
@@ -33,10 +34,11 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( aspect.getExternalAspectsFromHeader )
 	}
 	
-	//???
-//	def IScope scope_TInstantiationHeader_externalAspects( TAspect aspect, EReference reference ) {
-//		
-//	}
+	def IScope scope_TInstantiationHeader_externalAspects( TAspect aspect, EReference reference ) {
+		val externalAspects = TextRamModelUtil::collectExtendedAspects( aspect ) 
+		 
+		Scopes::scopeFor( externalAspects ) 
+	}
 	
 	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference) {
 		Scopes::scopeFor( structuralView.getTypesFor )

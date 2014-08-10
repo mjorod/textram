@@ -121,7 +121,7 @@ ElementBound returns ecore::EInt:
 
 TInstantiationHeader returns textRam::TInstantiationHeader:
 	type = InstantiationType
-	externalAspects+=[Aspect|EString] ("," externalAspects+=[Aspect|EString])*
+	externalAspects+=[textRam::TAspect|EString] ("," externalAspects+=[textRam::TAspect|EString])*
 ;
 	
 Instantiation returns Instantiation:

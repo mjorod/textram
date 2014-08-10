@@ -57,7 +57,7 @@ public class RamToTextRam {
 				process( file.listFiles() , sb);
 			} else {
 				
-				if ( file.getName().endsWith(".ram") == false ) {
+				if ( file.getName().endsWith("Metering.ram") == false ) {
 					continue;
 				}
 				
@@ -75,6 +75,8 @@ public class RamToTextRam {
 				Serializer serializer = injector.getInstance(Serializer.class);  
 				
 				String str = serializer.serialize(res);
+				
+				System.out.println(str);
 				
 				sb.put( ramAspect.getName() + ".xram", str);
 				

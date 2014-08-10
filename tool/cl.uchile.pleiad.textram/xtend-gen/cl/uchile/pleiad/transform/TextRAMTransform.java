@@ -10,10 +10,14 @@ import ca.mcgill.cs.sel.ram.Classifier;
 import ca.mcgill.cs.sel.ram.CombinedFragment;
 import ca.mcgill.cs.sel.ram.DestructionOccurrenceSpecification;
 import ca.mcgill.cs.sel.ram.ExecutionStatement;
+import ca.mcgill.cs.sel.ram.Instantiation;
+import ca.mcgill.cs.sel.ram.InstantiationType;
 import ca.mcgill.cs.sel.ram.Interaction;
 import ca.mcgill.cs.sel.ram.InteractionFragment;
 import ca.mcgill.cs.sel.ram.InteractionOperand;
 import ca.mcgill.cs.sel.ram.InteractionOperatorKind;
+import ca.mcgill.cs.sel.ram.Layout;
+import ca.mcgill.cs.sel.ram.LayoutElement;
 import ca.mcgill.cs.sel.ram.Lifeline;
 import ca.mcgill.cs.sel.ram.LiteralInteger;
 import ca.mcgill.cs.sel.ram.LiteralString;
@@ -54,6 +58,7 @@ import cl.uchile.pleiad.textRam.TAttribute;
 import cl.uchile.pleiad.textRam.TClass;
 import cl.uchile.pleiad.textRam.TClassMember;
 import cl.uchile.pleiad.textRam.TCombinedFragment;
+import cl.uchile.pleiad.textRam.TInstantiationHeader;
 import cl.uchile.pleiad.textRam.TInteraction;
 import cl.uchile.pleiad.textRam.TInteractionMessage;
 import cl.uchile.pleiad.textRam.TLifeline;
@@ -74,12 +79,16 @@ import cl.uchile.pleiad.textRam.TValueSpecification;
 import cl.uchile.pleiad.textRam.TextRamFactory;
 import cl.uchile.pleiad.transform.ITextRAMTransform;
 import cl.uchile.pleiad.util.TextRamEcoreUtil;
+import cl.uchile.pleiad.util.TextRamModelUtil;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -112,8 +121,135 @@ public class TextRAMTransform implements ITextRAMTransform {
     final TAspect textRamAspect = ObjectExtensions.<TAspect>operator_doubleArrow(_createTAspect, _function);
     StructuralView _structuralView = ramAspect.getStructuralView();
     this.transformStructuralView(_structuralView, textRamAspect);
+    final Set<TAspect> extendedTextRamAspects = TextRamModelUtil.transformExtendedAspects(ramAspect);
+    this.transformInstantiations(ramAspect, textRamAspect, extendedTextRamAspects);
     this.transformMessageViews(ramAspect, textRamAspect);
+    this.transformLayout(ramAspect, textRamAspect);
     return textRamAspect;
+  }
+  
+  private boolean transformInstantiations(final Aspect from, final TAspect to, final Set<TAspect> extendedTextRamAspects) {
+    boolean _xblockexpression = false;
+    {
+      final TInstantiationHeader headerExtend = this.transformHeaderInstantiationOfExtendType(from, extendedTextRamAspects);
+      boolean _notEquals = (!Objects.equal(headerExtend, null));
+      if (_notEquals) {
+        EList<TInstantiationHeader> _headerInstantiations = to.getHeaderInstantiations();
+        _headerInstantiations.add(headerExtend);
+      }
+      final TInstantiationHeader headerDepends = this.transformHeaderInstantiationOfDependsType(from, extendedTextRamAspects);
+      boolean _xifexpression = false;
+      boolean _notEquals_1 = (!Objects.equal(headerDepends, null));
+      if (_notEquals_1) {
+        EList<TInstantiationHeader> _headerInstantiations_1 = to.getHeaderInstantiations();
+        _xifexpression = _headerInstantiations_1.add(headerDepends);
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+  
+  private TInstantiationHeader transformHeaderInstantiationOfExtendType(final Aspect from, final Set<TAspect> extendedExternalTextRamAspects) {
+    EList<Instantiation> _instantiations = from.getInstantiations();
+    final Function1<Instantiation,Boolean> _function = new Function1<Instantiation,Boolean>() {
+      public Boolean apply(final Instantiation i) {
+        InstantiationType _type = i.getType();
+        return Boolean.valueOf(Objects.equal(_type, InstantiationType.EXTENDS));
+      }
+    };
+    boolean _exists = IterableExtensions.<Instantiation>exists(_instantiations, _function);
+    if (_exists) {
+      final TInstantiationHeader header = TextRamFactory.eINSTANCE.createTInstantiationHeader();
+      header.setType(InstantiationType.EXTENDS);
+      EList<Instantiation> _instantiations_1 = from.getInstantiations();
+      final Function1<Instantiation,Boolean> _function_1 = new Function1<Instantiation,Boolean>() {
+        public Boolean apply(final Instantiation ins) {
+          InstantiationType _type = ins.getType();
+          return Boolean.valueOf(Objects.equal(_type, InstantiationType.EXTENDS));
+        }
+      };
+      Iterable<Instantiation> _filter = IterableExtensions.<Instantiation>filter(_instantiations_1, _function_1);
+      final Procedure1<Instantiation> _function_2 = new Procedure1<Instantiation>() {
+        public void apply(final Instantiation ins) {
+          EList<TAspect> _externalAspects = header.getExternalAspects();
+          final Function1<TAspect,Boolean> _function = new Function1<TAspect,Boolean>() {
+            public Boolean apply(final TAspect e) {
+              String _name = e.getName();
+              Aspect _externalAspect = ins.getExternalAspect();
+              String _name_1 = _externalAspect.getName();
+              return Boolean.valueOf(Objects.equal(_name, _name_1));
+            }
+          };
+          TAspect _findFirst = IterableExtensions.<TAspect>findFirst(extendedExternalTextRamAspects, _function);
+          _externalAspects.add(_findFirst);
+        }
+      };
+      IterableExtensions.<Instantiation>forEach(_filter, _function_2);
+      return header;
+    }
+    return null;
+  }
+  
+  private TInstantiationHeader transformHeaderInstantiationOfDependsType(final Aspect from, final Set<TAspect> extendedExternalTextRamAspects) {
+    EList<Instantiation> _instantiations = from.getInstantiations();
+    final Function1<Instantiation,Boolean> _function = new Function1<Instantiation,Boolean>() {
+      public Boolean apply(final Instantiation i) {
+        InstantiationType _type = i.getType();
+        return Boolean.valueOf(Objects.equal(_type, InstantiationType.DEPENDS));
+      }
+    };
+    boolean _exists = IterableExtensions.<Instantiation>exists(_instantiations, _function);
+    if (_exists) {
+      final TInstantiationHeader header = TextRamFactory.eINSTANCE.createTInstantiationHeader();
+      header.setType(InstantiationType.DEPENDS);
+      EList<Instantiation> _instantiations_1 = from.getInstantiations();
+      final Function1<Instantiation,Boolean> _function_1 = new Function1<Instantiation,Boolean>() {
+        public Boolean apply(final Instantiation ins) {
+          InstantiationType _type = ins.getType();
+          return Boolean.valueOf(Objects.equal(_type, InstantiationType.DEPENDS));
+        }
+      };
+      Iterable<Instantiation> _filter = IterableExtensions.<Instantiation>filter(_instantiations_1, _function_1);
+      final Procedure1<Instantiation> _function_2 = new Procedure1<Instantiation>() {
+        public void apply(final Instantiation ins) {
+          EList<TAspect> _externalAspects = header.getExternalAspects();
+          final Function1<TAspect,Boolean> _function = new Function1<TAspect,Boolean>() {
+            public Boolean apply(final TAspect e) {
+              String _name = e.getName();
+              Aspect _externalAspect = ins.getExternalAspect();
+              String _name_1 = _externalAspect.getName();
+              return Boolean.valueOf(Objects.equal(_name, _name_1));
+            }
+          };
+          TAspect _findFirst = IterableExtensions.<TAspect>findFirst(extendedExternalTextRamAspects, _function);
+          _externalAspects.add(_findFirst);
+        }
+      };
+      IterableExtensions.<Instantiation>forEach(_filter, _function_2);
+      return header;
+    }
+    return null;
+  }
+  
+  private void transformLayout(final Aspect from, final TAspect to) {
+    Layout _layout = from.getLayout();
+    EMap<EObject,EMap<EObject,LayoutElement>> _containers = _layout.getContainers();
+    Map.Entry<EObject,EMap<EObject,LayoutElement>> _get = _containers.get(0);
+    EMap<EObject,LayoutElement> _value = _get.getValue();
+    final Procedure1<Map.Entry<EObject,LayoutElement>> _function = new Procedure1<Map.Entry<EObject,LayoutElement>>() {
+      public void apply(final Map.Entry<EObject,LayoutElement> v) {
+        EObject _key = v.getKey();
+        if ((_key instanceof ca.mcgill.cs.sel.ram.Class)) {
+          EObject _key_1 = v.getKey();
+          String _name = ((ca.mcgill.cs.sel.ram.Class) _key_1).getName();
+          final TClass tClass = TextRAMTransform.this.textRamEcoreUtil.findClass(to, _name);
+          boolean _notEquals = (!Objects.equal(tClass, null));
+          if (_notEquals) {
+          }
+        }
+      }
+    };
+    IterableExtensions.<Map.Entry<EObject,LayoutElement>>forEach(_value, _function);
   }
   
   private TAbstractMessageView transformMessageViews(final Aspect from, final TAspect to) {
