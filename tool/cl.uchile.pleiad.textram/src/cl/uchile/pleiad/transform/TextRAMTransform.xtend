@@ -10,6 +10,7 @@ import ca.mcgill.cs.sel.ram.Classifier
 import ca.mcgill.cs.sel.ram.CombinedFragment
 import ca.mcgill.cs.sel.ram.DestructionOccurrenceSpecification
 import ca.mcgill.cs.sel.ram.ExecutionStatement
+import ca.mcgill.cs.sel.ram.InstantiationType
 import ca.mcgill.cs.sel.ram.Interaction
 import ca.mcgill.cs.sel.ram.InteractionFragment
 import ca.mcgill.cs.sel.ram.InteractionOperatorKind
@@ -43,29 +44,28 @@ import cl.uchile.pleiad.textRam.TAssociation
 import cl.uchile.pleiad.textRam.TAttribute
 import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassMember
+import cl.uchile.pleiad.textRam.TCombinedFragment
 import cl.uchile.pleiad.textRam.TInteraction
+import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TLifeline
 import cl.uchile.pleiad.textRam.TLifelineReferenceType
 import cl.uchile.pleiad.textRam.TLocalAttribute
 import cl.uchile.pleiad.textRam.TMessageAssignableFeature
+import cl.uchile.pleiad.textRam.TOcurrence
 import cl.uchile.pleiad.textRam.TOperation
 import cl.uchile.pleiad.textRam.TReference
+import cl.uchile.pleiad.textRam.TReturnInteraction
 import cl.uchile.pleiad.textRam.TStructuralView
 import cl.uchile.pleiad.textRam.TTemporaryProperty
 import cl.uchile.pleiad.textRam.TTypedElement
 import cl.uchile.pleiad.textRam.TValueSpecification
 import cl.uchile.pleiad.textRam.TextRamFactory
 import cl.uchile.pleiad.util.TextRamEcoreUtil
+import cl.uchile.pleiad.util.TextRamModelUtil
 import java.util.List
+import java.util.Set
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
-import java.util.Collection
-import cl.uchile.pleiad.textRam.TInteractionMessage
-import cl.uchile.pleiad.textRam.TCombinedFragment
-import cl.uchile.pleiad.textRam.TOcurrence
-import cl.uchile.pleiad.textRam.TReturnInteraction
-import ca.mcgill.sel.commons.StringUtil
-import ca.mcgill.cs.sel.ram.TypedElement
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -82,17 +82,77 @@ class TextRAMTransform implements ITextRAMTransform {
 		
 		ramAspect.structuralView.transformStructuralView( textRamAspect )
 		
+		val extendedTextRamAspects = TextRamModelUtil::transformExtendedAspects( ramAspect )
+		
+		transformInstantiations( ramAspect, textRamAspect, extendedTextRamAspects )
+		
 		transformMessageViews( ramAspect, textRamAspect )
-
+		
+		transformLayout( ramAspect, textRamAspect )
 				
 		return textRamAspect
+	}
+	
+	private def transformInstantiations(Aspect from, TAspect to, Set<TAspect> extendedTextRamAspects) {
+		// transform extends type
+		val headerExtend = transformHeaderInstantiationOfExtendType( from, extendedTextRamAspects )
+		if ( headerExtend != null ) {
+			to.headerInstantiations.add( headerExtend )
+		}
+	}
+	
+	private def transformHeaderInstantiationOfExtendType(Aspect from, Set<TAspect> extendedExternalTextRamAspects) {
+		if ( from.instantiations.exists[ i | i.type == InstantiationType.EXTENDS ] ) {
+			// 	transform header instantiations
+			val header = TextRamFactory.eINSTANCE.createTInstantiationHeader
+						
+			header.type = InstantiationType.EXTENDS
+			from.instantiations.filter( ins | ins.type == InstantiationType.EXTENDS ).forEach[ ins |
+				header.externalAspects.add( extendedExternalTextRamAspects.findFirst[ e | e.name == ins.externalAspect.name ] )
+			]
+			
+			return header
+		}
+		
+		return null
+	}
+	
+	private def transformHeaderInstantiationOfDependsType(Aspect from) {
+		if ( from.instantiations.exists[ i | i.type == InstantiationType.DEPENDS ] ) {
+			// 	transform header instantiations
+			val header = TextRamFactory.eINSTANCE.createTInstantiationHeader
+			
+			header.type = InstantiationType.DEPENDS
+			from.instantiations.filter( ins | ins.type == InstantiationType.DEPENDS).forEach[ ins |
+				header.externalAspects.add( ins.externalAspect )
+			]
+			
+			return header
+		}
+		
+		return null
+	}
+	
+		
+	private def transformLayout(Aspect from, TAspect to) {
+		
+		from.layout.containers.get(0).value.forEach[ v |
+			if ( v.key instanceof Class ) {
+				val tClass = to.findClass( (v.key as Class).name )
+				
+				if ( tClass != null ) {
+					tClass.layoutX = v.value.x
+					tClass.layoutY = v.value.y
+				}
+			}
+
+		]
 	}
 	
 	private def transformMessageViews(Aspect from, TAspect to) {
 		if ( from.messageViews.size > 0 ) {
 			getTransformedMessageViews( from, to )
 		}
-		
 	}
 	
 	private def getTransformedMessageViews(Aspect from, TAspect to) {
@@ -644,32 +704,6 @@ class TextRAMTransform implements ITextRAMTransform {
 	private def dispatch boolean resolveStaticFromReference(Parameter from) {
 		throw new IllegalStateException("Parameter not supported in TTypedElement")
 	}
-	
-//	private def dispatch getTransformedLifeline(AspectMessageView view) {
-//		val res = TextRamFactory.eINSTANCE.createTLifeline
-//		
-//		res.referenceType = getTypedElement(view.)
-//		
-//		return res
-//	}
-//	
-//	private def dispatch getTransformedLifeline(MessageView view) {
-//		val res = TextRamFactory.eINSTANCE.createTLifeline
-//		
-//		return res
-//	}
-//	
-//	private def dispatch getTransformedMessageView(AspectMessageView from) {
-//		
-//	}
-//	
-//	private def dispatch getTransformedMessageView(MessageView from) {
-//		
-//	}
-//	
-//	private def dispatch getTransformedMessageView(MessageViewReference from) {
-//		
-//	}
 	
 	private def transformStructuralView(StructuralView from, TAspect to) {
 		to.structuralView = TextRamFactory.eINSTANCE.createTStructuralView
