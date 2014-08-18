@@ -233,6 +233,18 @@
           </visibleWhen>
 	</command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="TextRAM">
+            <command
+                  commandId="cl.uchile.pleiad.textram.ui.cmdgenerate"
+                  label="Load RAM model..."
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
     </extension>
     <extension point="org.eclipse.ui.handlers">
           <handler
@@ -287,12 +299,12 @@
           <persistent value="true"/>
 </extension>
 
-   <extension
+   <!--<extension
          point="org.eclipse.xtext.builder.participant">
       <participant
             class="cl.uchile.pleiad.ui.TextRAMExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant">
       </participant>
-   </extension>
+   </extension>-->
    <extension
             point="org.eclipse.ui.preferencePages">
         <page
@@ -342,6 +354,12 @@
 	  id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
 	  name="Quick Outline">
       </command>
+      <command
+            defaultHandler="cl.uchile.pleiad.ui.GenerationHandler"
+            description="Yo te hize juan carlos"
+            id="cl.uchile.pleiad.textram.ui.generate_2"
+            name="SeparateMierda">
+      </command>
     </extension>
     <extension point="org.eclipse.ui.menus">
       <menuContribution
@@ -355,6 +373,16 @@
 		definitionId="cl.uchile.pleiad.TextRAM.Editor.opened"/>
 	  </visibleWhen>
 	</command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <command
+               commandId="cl.uchile.pleiad.textram.ui.cmdgenerate"
+               icon="resources/run_obj.gif"
+               label="GenerameMierda"
+               style="push">
+         </command>
       </menuContribution>
     </extension>
     <!-- quickfix marker resolution generator for
@@ -440,6 +468,17 @@
             class="cl.uchile.pleiad.ui.TextRAMExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
             extensions="xram">
   </provider>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
+     <command
+           defaultHandler="cl.uchile.pleiad.ui.GenerationHandler"
+           id="cl.uchile.pleiad.textram.ui.cmdgenerate"
+           name="button_generate">
+     </command>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
   </extension>
 
   </plugin>

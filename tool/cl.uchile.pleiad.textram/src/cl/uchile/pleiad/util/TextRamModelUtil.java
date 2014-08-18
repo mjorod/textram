@@ -23,7 +23,7 @@ public class TextRamModelUtil {
 
 	private TextRamModelUtil() {}
 	
-	private static Aspect loadModelFromFile(String file) {
+	public static Aspect loadModelFromFile(String file) {
 		if (!EPackage.Registry.INSTANCE.containsKey(RamPackage.eINSTANCE.getNsURI())) {
 			EPackage.Registry.INSTANCE.put(RamPackage.eINSTANCE.getNsURI(), ca.mcgill.cs.sel.ram.RamPackage.eINSTANCE);
 		}

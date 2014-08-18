@@ -6,7 +6,9 @@ import ca.mcgill.cs.sel.ram.AspectMessageView;
 import ca.mcgill.cs.sel.ram.Association;
 import ca.mcgill.cs.sel.ram.AssociationEnd;
 import ca.mcgill.cs.sel.ram.Attribute;
+import ca.mcgill.cs.sel.ram.AttributeMapping;
 import ca.mcgill.cs.sel.ram.Classifier;
+import ca.mcgill.cs.sel.ram.ClassifierMapping;
 import ca.mcgill.cs.sel.ram.CombinedFragment;
 import ca.mcgill.cs.sel.ram.DestructionOccurrenceSpecification;
 import ca.mcgill.cs.sel.ram.ExecutionStatement;
@@ -29,12 +31,14 @@ import ca.mcgill.cs.sel.ram.ObjectType;
 import ca.mcgill.cs.sel.ram.OccurrenceSpecification;
 import ca.mcgill.cs.sel.ram.OpaqueExpression;
 import ca.mcgill.cs.sel.ram.Operation;
+import ca.mcgill.cs.sel.ram.OperationMapping;
 import ca.mcgill.cs.sel.ram.OriginalBehaviorExecution;
 import ca.mcgill.cs.sel.ram.Parameter;
 import ca.mcgill.cs.sel.ram.ParameterValue;
 import ca.mcgill.cs.sel.ram.ParameterValueMapping;
 import ca.mcgill.cs.sel.ram.PrimitiveType;
 import ca.mcgill.cs.sel.ram.RSet;
+import ca.mcgill.cs.sel.ram.RamFactory;
 import ca.mcgill.cs.sel.ram.RamPackage;
 import ca.mcgill.cs.sel.ram.Reference;
 import ca.mcgill.cs.sel.ram.ReferenceType;
@@ -57,6 +61,7 @@ import cl.uchile.pleiad.textRam.TAssociationEnd;
 import cl.uchile.pleiad.textRam.TAttribute;
 import cl.uchile.pleiad.textRam.TClass;
 import cl.uchile.pleiad.textRam.TClassMember;
+import cl.uchile.pleiad.textRam.TClassifierMapping;
 import cl.uchile.pleiad.textRam.TCombinedFragment;
 import cl.uchile.pleiad.textRam.TInstantiationHeader;
 import cl.uchile.pleiad.textRam.TInteraction;
@@ -128,25 +133,172 @@ public class TextRAMTransform implements ITextRAMTransform {
     return textRamAspect;
   }
   
-  private boolean transformInstantiations(final Aspect from, final TAspect to, final Set<TAspect> extendedTextRamAspects) {
-    boolean _xblockexpression = false;
-    {
-      final TInstantiationHeader headerExtend = this.transformHeaderInstantiationOfExtendType(from, extendedTextRamAspects);
-      boolean _notEquals = (!Objects.equal(headerExtend, null));
-      if (_notEquals) {
-        EList<TInstantiationHeader> _headerInstantiations = to.getHeaderInstantiations();
-        _headerInstantiations.add(headerExtend);
-      }
-      final TInstantiationHeader headerDepends = this.transformHeaderInstantiationOfDependsType(from, extendedTextRamAspects);
-      boolean _xifexpression = false;
-      boolean _notEquals_1 = (!Objects.equal(headerDepends, null));
-      if (_notEquals_1) {
-        EList<TInstantiationHeader> _headerInstantiations_1 = to.getHeaderInstantiations();
-        _xifexpression = _headerInstantiations_1.add(headerDepends);
-      }
-      _xblockexpression = _xifexpression;
+  private void transformInstantiations(final Aspect from, final TAspect to, final Set<TAspect> extendedTextRamAspects) {
+    final TInstantiationHeader headerExtend = this.transformHeaderInstantiationOfExtendType(from, extendedTextRamAspects);
+    boolean _notEquals = (!Objects.equal(headerExtend, null));
+    if (_notEquals) {
+      EList<TInstantiationHeader> _headerInstantiations = to.getHeaderInstantiations();
+      _headerInstantiations.add(headerExtend);
     }
-    return _xblockexpression;
+    final TInstantiationHeader headerDepends = this.transformHeaderInstantiationOfDependsType(from, extendedTextRamAspects);
+    boolean _notEquals_1 = (!Objects.equal(headerDepends, null));
+    if (_notEquals_1) {
+      EList<TInstantiationHeader> _headerInstantiations_1 = to.getHeaderInstantiations();
+      _headerInstantiations_1.add(headerDepends);
+    }
+    EList<Instantiation> _instantiations = from.getInstantiations();
+    final Procedure1<Instantiation> _function = new Procedure1<Instantiation>() {
+      public void apply(final Instantiation i) {
+        EList<Instantiation> _instantiations = to.getInstantiations();
+        Instantiation _transformInstantiationBody = TextRAMTransform.this.transformInstantiationBody(i, to, extendedTextRamAspects);
+        _instantiations.add(_transformInstantiationBody);
+      }
+    };
+    IterableExtensions.<Instantiation>forEach(_instantiations, _function);
+  }
+  
+  private Instantiation transformInstantiationBody(final Instantiation instantiation, final TAspect to, final Set<TAspect> extendedAspects) {
+    EList<Instantiation> _instantiations = to.getInstantiations();
+    final Function1<Instantiation,Boolean> _function = new Function1<Instantiation,Boolean>() {
+      public Boolean apply(final Instantiation a) {
+        Aspect _externalAspect = a.getExternalAspect();
+        String _name = _externalAspect.getName();
+        Aspect _externalAspect_1 = instantiation.getExternalAspect();
+        String _name_1 = _externalAspect_1.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    Instantiation res = IterableExtensions.<Instantiation>findFirst(_instantiations, _function);
+    boolean _equals = Objects.equal(res, null);
+    if (_equals) {
+      Instantiation _createInstantiation = RamFactory.eINSTANCE.createInstantiation();
+      res = _createInstantiation;
+    }
+    final Function1<TAspect,Boolean> _function_1 = new Function1<TAspect,Boolean>() {
+      public Boolean apply(final TAspect a) {
+        String _name = a.getName();
+        Aspect _externalAspect = instantiation.getExternalAspect();
+        String _name_1 = _externalAspect.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    TAspect _findFirst = IterableExtensions.<TAspect>findFirst(extendedAspects, _function_1);
+    res.setExternalAspect(_findFirst);
+    EList<ClassifierMapping> _mappings = instantiation.getMappings();
+    for (final ClassifierMapping m : _mappings) {
+      EList<ClassifierMapping> _mappings_1 = res.getMappings();
+      Aspect _externalAspect = res.getExternalAspect();
+      TClassifierMapping _transformMappings = this.transformMappings(m, _externalAspect, to, extendedAspects);
+      _mappings_1.add(_transformMappings);
+    }
+    return res;
+  }
+  
+  private TClassifierMapping transformMappings(final ClassifierMapping mapping, final Aspect fromAspect, final TAspect toAspect, final Set<TAspect> extendedAspects) {
+    TClassifierMapping res = null;
+    TClassifierMapping _createTClassifierMapping = TextRamFactory.eINSTANCE.createTClassifierMapping();
+    res = _createTClassifierMapping;
+    final Set<TClass> extendedClasses = this.textRamEcoreUtil.getInstantiationsClasses(toAspect);
+    final Function1<TClass,Boolean> _function = new Function1<TClass,Boolean>() {
+      public Boolean apply(final TClass c) {
+        String _name = c.getName();
+        Classifier _fromElement = mapping.getFromElement();
+        String _name_1 = _fromElement.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    TClass _findFirst = IterableExtensions.<TClass>findFirst(extendedClasses, _function);
+    res.setFromElement(_findFirst);
+    Classifier _toElement = mapping.getToElement();
+    String _name = _toElement.getName();
+    Classifier classTo = this.textRamEcoreUtil.findClass(toAspect, _name);
+    boolean _equals = Objects.equal(classTo, null);
+    if (_equals) {
+      Classifier _toElement_1 = mapping.getToElement();
+      if ((_toElement_1 instanceof PrimitiveType)) {
+        StructuralView _structuralView = toAspect.getStructuralView();
+        EList<Type> _types = _structuralView.getTypes();
+        Iterable<PrimitiveType> _filter = Iterables.<PrimitiveType>filter(_types, PrimitiveType.class);
+        final Function1<PrimitiveType,Boolean> _function_1 = new Function1<PrimitiveType,Boolean>() {
+          public Boolean apply(final PrimitiveType e) {
+            String _name = e.getName();
+            Classifier _toElement = mapping.getToElement();
+            String _name_1 = _toElement.getName();
+            return Boolean.valueOf(Objects.equal(_name, _name_1));
+          }
+        };
+        PrimitiveType type = IterableExtensions.<PrimitiveType>findFirst(_filter, _function_1);
+        classTo = type;
+      }
+    }
+    res.setToElement(classTo);
+    EList<AttributeMapping> _attributeMappings = mapping.getAttributeMappings();
+    for (final AttributeMapping a : _attributeMappings) {
+      {
+        EList<TClassMember> _fromMembers = res.getFromMembers();
+        Classifier _fromElement = res.getFromElement();
+        TAttribute _transformAttributeMemberFromElement = this.transformAttributeMemberFromElement(((TClass) _fromElement), a);
+        _fromMembers.add(_transformAttributeMemberFromElement);
+        EList<TClassMember> _toMembers = res.getToMembers();
+        Classifier _toElement_2 = res.getToElement();
+        TAttribute _transformAttributeMemberToElement = this.transformAttributeMemberToElement(((TClass) _toElement_2), a);
+        _toMembers.add(_transformAttributeMemberToElement);
+      }
+    }
+    EList<OperationMapping> _operationMappings = mapping.getOperationMappings();
+    for (final OperationMapping o : _operationMappings) {
+      {
+        EList<TClassMember> _fromMembers = res.getFromMembers();
+        Classifier _fromElement = res.getFromElement();
+        TClassMember _transfomOperationMemberFromElement = this.transfomOperationMemberFromElement(((TClass) _fromElement), o);
+        _fromMembers.add(_transfomOperationMemberFromElement);
+        EList<TClassMember> _toMembers = res.getToMembers();
+        Classifier _toElement_2 = res.getToElement();
+        TOperation _transformOperationsMemberToElement = this.transformOperationsMemberToElement(((TClass) _toElement_2), o);
+        _toMembers.add(_transformOperationsMemberToElement);
+      }
+    }
+    return res;
+  }
+  
+  private TOperation transformOperationsMemberToElement(final TClass clazz, final OperationMapping mapping) {
+    Operation _toElement = mapping.getToElement();
+    final TOperation res = TextRamEcoreUtil.findTextRamOperation(clazz, _toElement);
+    return res;
+  }
+  
+  private TAttribute transformAttributeMemberToElement(final TClass clazz, final AttributeMapping mapping) {
+    EList<TClassMember> _members = clazz.getMembers();
+    Iterable<TAttribute> _filter = Iterables.<TAttribute>filter(_members, TAttribute.class);
+    final Function1<TAttribute,Boolean> _function = new Function1<TAttribute,Boolean>() {
+      public Boolean apply(final TAttribute a) {
+        String _name = a.getName();
+        Attribute _toElement = mapping.getToElement();
+        String _name_1 = _toElement.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    return IterableExtensions.<TAttribute>findFirst(_filter, _function);
+  }
+  
+  private TClassMember transfomOperationMemberFromElement(final TClass clazz, final OperationMapping mapping) {
+    Operation _fromElement = mapping.getFromElement();
+    final TOperation res = TextRamEcoreUtil.findTextRamOperation(clazz, _fromElement);
+    return res;
+  }
+  
+  private TAttribute transformAttributeMemberFromElement(final TClass clazz, final AttributeMapping mapping) {
+    EList<TClassMember> _members = clazz.getMembers();
+    Iterable<TAttribute> _filter = Iterables.<TAttribute>filter(_members, TAttribute.class);
+    final Function1<TAttribute,Boolean> _function = new Function1<TAttribute,Boolean>() {
+      public Boolean apply(final TAttribute a) {
+        String _name = a.getName();
+        Attribute _fromElement = mapping.getFromElement();
+        String _name_1 = _fromElement.getName();
+        return Boolean.valueOf(Objects.equal(_name, _name_1));
+      }
+    };
+    return IterableExtensions.<TAttribute>findFirst(_filter, _function);
   }
   
   private TInstantiationHeader transformHeaderInstantiationOfExtendType(final Aspect from, final Set<TAspect> extendedExternalTextRamAspects) {
@@ -245,6 +397,12 @@ public class TextRAMTransform implements ITextRAMTransform {
           final TClass tClass = TextRAMTransform.this.textRamEcoreUtil.findClass(to, _name);
           boolean _notEquals = (!Objects.equal(tClass, null));
           if (_notEquals) {
+            LayoutElement _value = v.getValue();
+            float _x = _value.getX();
+            tClass.setLayoutX(_x);
+            LayoutElement _value_1 = v.getValue();
+            float _y = _value_1.getY();
+            tClass.setLayoutY(_y);
           }
         }
       }

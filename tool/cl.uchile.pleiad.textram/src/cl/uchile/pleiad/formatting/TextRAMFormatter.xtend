@@ -24,7 +24,6 @@ class TextRAMFormatter extends AbstractDeclarativeFormatter {
 
 	override protected void configureFormatting(FormattingConfig c) {
 
-		//val e = g.getTextRAMAccess
 		val f = grammarAccess
         
         // curly braces
@@ -42,6 +41,14 @@ class TextRAMFormatter extends AbstractDeclarativeFormatter {
       		
 		]
 		
+		// remove space between lt, gt
+		f.findKeywordPairs("<",">").forEach[ pair |
+			c.setNoSpace.after(pair.first);
+			c.setNoSpace.before(pair.first)
+      		c.setNoSpace.before(pair.second);
+      		
+		]
+		
 		// remove space after partial keyword
 		f.findKeywords("|").forEach[ k |
 			c.setNoSpace.after(k)
@@ -53,18 +60,27 @@ class TextRAMFormatter extends AbstractDeclarativeFormatter {
 			c.setNoSpace.before(k)
 		]
 		
+		// remove space before comma on header instantiations
+		c.setNoSpace.before( g.TInstantiationHeaderAccess.commaKeyword_2_0 )
+		
 		// root indentation
 		c.setIndentation( g.TAspectAccess.leftCurlyBracketKeyword_3, g.TAspectAccess.rightCurlyBracketKeyword_5_4 )
 		
 		// structural view's indent
 		c.setIndentation( g.TStructuralViewAccess.leftCurlyBracketKeyword_2, g.TStructuralViewAccess.rightCurlyBracketKeyword_4_4 )
 		
+		// linewrap after layout
+		c.setLinewrap.before( g.TClassAccess.classKeyword_4 )
+				
 		// class's section indent
 		c.setIndentation( g.TClassAccess.leftCurlyBracketKeyword_8,  g.TClassAccess.rightCurlyBracketKeyword_10 )
 		
 		// linewrap to TClass's members
 		c.setLinewrap.before( g.TClassMemberAccess.TAttributeParserRuleCall_0 )
 		c.setLinewrap.before( g.TClassMemberAccess.TOperationParserRuleCall_1 )
+		
+		// instantiations's indentation
+		c.setIndentation( g.instantiationAccess.leftCurlyBracketKeyword_1_0, g.instantiationAccess.rightCurlyBracketKeyword_1_3 )
 		
 		// no linewrap for associations's curly braces
 		c.setNoLinewrap.after( g.TAssociationAccess.leftCurlyBracketKeyword_5 )
@@ -101,8 +117,6 @@ class TextRAMFormatter extends AbstractDeclarativeFormatter {
 			c.setNoSpace.before(k)
 			c.setNoSpace.after(k)
 		]
-		
-		// linewrap before TAspectMessageView's name
 		
 		
 		// indent TAspectMessageView's block

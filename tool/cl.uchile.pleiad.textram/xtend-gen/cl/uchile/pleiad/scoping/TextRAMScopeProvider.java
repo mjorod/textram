@@ -6,11 +6,9 @@ package cl.uchile.pleiad.scoping;
 import ca.mcgill.cs.sel.ram.AbstractMessageView;
 import ca.mcgill.cs.sel.ram.Aspect;
 import ca.mcgill.cs.sel.ram.Classifier;
-import ca.mcgill.cs.sel.ram.Instantiation;
 import ca.mcgill.cs.sel.ram.PrimitiveType;
 import ca.mcgill.cs.sel.ram.StructuralView;
 import ca.mcgill.cs.sel.ram.Type;
-import cl.uchile.pleiad.scoping.ModelScopeProvider;
 import cl.uchile.pleiad.textRam.TAbstractMessageView;
 import cl.uchile.pleiad.textRam.TAbstractMessages;
 import cl.uchile.pleiad.textRam.TAspect;
@@ -26,6 +24,7 @@ import cl.uchile.pleiad.textRam.TParameter;
 import cl.uchile.pleiad.textRam.TStructuralView;
 import cl.uchile.pleiad.textRam.TTypedElement;
 import cl.uchile.pleiad.textRam.TValueSpecification;
+import cl.uchile.pleiad.util.TextRamEcoreUtil;
 import cl.uchile.pleiad.util.TextRamModelUtil;
 import com.google.common.collect.Iterables;
 import java.util.List;
@@ -36,6 +35,7 @@ import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 /**
  * This class contains custom scoping description.
@@ -46,7 +46,7 @@ import org.eclipse.xtext.xbase.lib.Extension;
 @SuppressWarnings("all")
 public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
   @Extension
-  private ModelScopeProvider scopeProvider = new ModelScopeProvider();
+  private TextRamEcoreUtil scopeProvider = new TextRamEcoreUtil();
   
   public IScope scope_Instantiation_externalAspect(final TAspect aspect, final EReference reference) {
     Iterable<TAspect> _externalAspectsFromHeader = this.scopeProvider.getExternalAspectsFromHeader(aspect);
@@ -87,25 +87,39 @@ public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
     return _xblockexpression;
   }
   
-  public IScope scope_ClassifierMapping_fromElement(final Instantiation instantiation, final EReference reference) {
+  public IScope scope_ClassifierMapping_fromElement(final TAspect aspect, final EReference reference) {
     IScope _xblockexpression = null;
     {
-      final List<Classifier> classes = this.scopeProvider.getClasses(instantiation);
+      final Set<TClass> classes = this.scopeProvider.getInstantiationsClasses(aspect);
       _xblockexpression = Scopes.scopeFor(classes);
     }
     return _xblockexpression;
   }
   
   public IScope scope_ClassifierMapping_toElement(final Aspect aspect, final EReference reference) {
-    StructuralView _structuralView = aspect.getStructuralView();
-    EList<Classifier> _classes = ((TStructuralView) _structuralView).getClasses();
-    Iterable<TClass> _filter = Iterables.<TClass>filter(_classes, TClass.class);
-    return Scopes.scopeFor(_filter);
+    IScope _xblockexpression = null;
+    {
+      StructuralView _structuralView = aspect.getStructuralView();
+      EList<Classifier> _classes = ((TStructuralView) _structuralView).getClasses();
+      Iterable<Classifier> _filter = Iterables.<Classifier>filter(_classes, Classifier.class);
+      final List<Classifier> res = IterableExtensions.<Classifier>toList(_filter);
+      StructuralView _structuralView_1 = aspect.getStructuralView();
+      EList<Type> _types = _structuralView_1.getTypes();
+      Iterable<Classifier> _filter_1 = Iterables.<Classifier>filter(_types, Classifier.class);
+      List<Classifier> _list = IterableExtensions.<Classifier>toList(_filter_1);
+      res.addAll(_list);
+      _xblockexpression = Scopes.scopeFor(res);
+    }
+    return _xblockexpression;
   }
   
   public IScope scope_TClassifierMapping_fromMembers(final TClassifierMapping classifierMapping, final EReference reference) {
-    List<TClassMember> _membersFrom = this.scopeProvider.getMembersFrom(classifierMapping);
-    return Scopes.scopeFor(_membersFrom);
+    IScope _xblockexpression = null;
+    {
+      final List<TOperation> o = this.scopeProvider.getMembersFrom(classifierMapping);
+      _xblockexpression = Scopes.scopeFor(o);
+    }
+    return _xblockexpression;
   }
   
   public IScope scope_TClassifierMapping_toMembers(final TClassifierMapping classifierMapping, final EReference reference) {

@@ -18,11 +18,18 @@ TAspect returns textRam::TAspect:
 '}';
 
 terminal TEMPLATE: (ID'<' ID '>')*;
+terminal FLOAT returns ecore::EFloat: ('+'|'-')? (INT '.' INT? | '.' INT);    
+
 EString returns ecore::EString:
     STRING | ID | TEMPLATE;
 
 EInt returns ecore::EInt:
     '-'? INT;
+
+EFloat returns ecore::EFloat:
+	FLOAT
+;
+
     
 //AbstractStructuralView returns StructuralView:
 //    TStructuralView
@@ -69,8 +76,8 @@ TClassMember returns textRam::TClassMember:
   
 TClass returns textRam::TClass:
     {textRam::TClass}
-    ('@@x=' layoutX=EInt)?
-    ('@@y=' layoutY=EInt)?
+    ('@@x=' layoutX=EFloat)?
+    ('@@y=' layoutY=EFloat)?
     (abstract?='abstract')?
     'class'
     (partial?='|')?

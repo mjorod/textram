@@ -12,12 +12,15 @@ import cl.uchile.pleiad.textRam.TClass
 import cl.uchile.pleiad.textRam.TClassifierMapping
 import cl.uchile.pleiad.textRam.TInteractionMessage
 import cl.uchile.pleiad.textRam.TStructuralView
+import cl.uchile.pleiad.util.TextRamEcoreUtil
+import cl.uchile.pleiad.util.TextRamModelUtil
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
-import cl.uchile.pleiad.textRam.TReference
-import cl.uchile.pleiad.util.TextRamModelUtil
+import ca.mcgill.cs.sel.ram.Classifier
+import java.util.List
+import ca.mcgill.cs.sel.ram.PrimitiveType
 
 /**
  * This class contains custom scoping description.
@@ -28,7 +31,7 @@ import cl.uchile.pleiad.util.TextRamModelUtil
  */
 class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
-	extension ModelScopeProvider scopeProvider = new ModelScopeProvider
+	extension TextRamEcoreUtil scopeProvider = new TextRamEcoreUtil
 	
 	def IScope scope_Instantiation_externalAspect(TAspect aspect, EReference reference) {
 		Scopes::scopeFor( aspect.getExternalAspectsFromHeader )
@@ -58,17 +61,22 @@ class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes::scopeFor( tAspect.getExtendedClasses )
 	}
 		
-	def IScope scope_ClassifierMapping_fromElement(Instantiation instantiation, EReference reference) {
-		val classes = instantiation.getClasses
+	def IScope scope_ClassifierMapping_fromElement(TAspect aspect, EReference reference) {
+		val classes = aspect.getInstantiationsClasses
 		Scopes::scopeFor( classes )
 	}
 	
 	def IScope scope_ClassifierMapping_toElement(Aspect aspect, EReference reference) {
-		Scopes::scopeFor( (aspect.structuralView as TStructuralView).classes.filter(TClass) )
+		val List<Classifier> res = (aspect.structuralView as TStructuralView).classes.filter(Classifier).toList
+		
+		res.addAll( aspect.structuralView.types.filter(Classifier).toList )
+		
+		Scopes::scopeFor( res )
 	}
 	
 	def IScope scope_TClassifierMapping_fromMembers(TClassifierMapping classifierMapping, EReference reference) {
-		Scopes::scopeFor( classifierMapping.getMembersFrom )
+		val o =  classifierMapping.getMembersFrom
+		Scopes::scopeFor(o)
 	}
 	
 	def IScope scope_TClassifierMapping_toMembers(TClassifierMapping classifierMapping, EReference reference ) {

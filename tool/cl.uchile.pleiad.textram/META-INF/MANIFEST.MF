@@ -31,9 +31,10 @@ Export-Package: cl.uchile.pleiad,
  cl.uchile.pleiad.parser.antlr,
  cl.uchile.pleiad.parser.antlr.internal,
  cl.uchile.pleiad.scoping,
+ cl.uchile.pleiad.serializer,
  cl.uchile.pleiad.services,
  cl.uchile.pleiad.textRam,
  cl.uchile.pleiad.textRam.impl,
  cl.uchile.pleiad.textRam.util,
- cl.uchile.pleiad.validation,
- cl.uchile.pleiad.serializer
+ cl.uchile.pleiad.util,
+ cl.uchile.pleiad.validation

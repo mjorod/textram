@@ -66,6 +66,12 @@ import java.util.List
 import java.util.Set
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
+import ca.mcgill.cs.sel.ram.Instantiation
+import ca.mcgill.cs.sel.ram.RamFactory
+import ca.mcgill.cs.sel.ram.ClassifierMapping
+import ca.mcgill.cs.sel.ram.AttributeMapping
+import ca.mcgill.cs.sel.ram.OperationMapping
+import cl.uchile.pleiad.textRam.TClassifierMapping
 
 class TextRAMTransform implements ITextRAMTransform {
 	
@@ -105,6 +111,85 @@ class TextRAMTransform implements ITextRAMTransform {
 		if ( headerDepends != null ) {
 			to.headerInstantiations.add( headerDepends )
 		}
+		
+		// transform instantiation's body
+		from.instantiations.forEach[ i |
+			to.instantiations.add( transformInstantiationBody( i, to, extendedTextRamAspects ) )
+		]
+	}
+	
+	
+	
+	private def transformInstantiationBody(Instantiation instantiation, TAspect to, Set<TAspect> extendedAspects) {
+		// it looks for an existing instantiation
+		var Instantiation res = to.instantiations.findFirst[ a | a.externalAspect.name == instantiation.externalAspect.name ]
+		
+		if ( res == null ) {
+			res = RamFactory.eINSTANCE.createInstantiation
+		}
+		
+		res.externalAspect = extendedAspects.findFirst[ a | a.name == instantiation.externalAspect.name ]
+		 
+		// transform mappings
+		
+		for ( ClassifierMapping m : instantiation.mappings ) {
+			res.mappings.add( transformMappings( m, res.externalAspect, to, extendedAspects ) ) 
+		}
+		
+		return res
+	}
+	
+	private def transformMappings(ClassifierMapping mapping, Aspect fromAspect, TAspect toAspect, Set<TAspect> extendedAspects) {
+		var TClassifierMapping res = null
+		
+		res = TextRamFactory.eINSTANCE.createTClassifierMapping
+		val extendedClasses = toAspect.getInstantiationsClasses
+		
+		// transform from element
+		res.fromElement = extendedClasses.findFirst[ c | c.name == mapping.fromElement.name ]
+	
+		// transform to element
+		var Classifier classTo = toAspect.findClass( mapping.toElement.name )
+		if (classTo == null) {
+			if ( mapping.toElement instanceof PrimitiveType ) {
+				var type = toAspect.structuralView.types.filter(PrimitiveType).findFirst( e | e.name == mapping.toElement.name )
+				classTo = type
+			}
+		}
+		res.toElement = classTo
+		
+		// transform attributes
+		for ( AttributeMapping a : mapping.attributeMappings ) { 
+			res.fromMembers.add( transformAttributeMemberFromElement( res.fromElement as TClass, a ))
+			res.toMembers.add( transformAttributeMemberToElement( res.toElement as TClass, a ) )			
+		}
+		
+		for ( OperationMapping o : mapping.operationMappings ) {
+			res.fromMembers.add( transfomOperationMemberFromElement( res.fromElement as TClass, o))
+			res.toMembers.add( transformOperationsMemberToElement( res.toElement as TClass, o ) )
+		}
+		
+		return res
+	}
+	
+	private def transformOperationsMemberToElement(TClass clazz, OperationMapping mapping) {
+		val res = TextRamEcoreUtil::findTextRamOperation( clazz, mapping.toElement ) 
+		return res
+	}
+
+	
+	private def transformAttributeMemberToElement(TClass clazz, AttributeMapping mapping) {
+		return clazz.members.filter(TAttribute).findFirst[ a | a.name == mapping.toElement.name ]
+	}
+	
+	private def TClassMember transfomOperationMemberFromElement(TClass clazz, OperationMapping mapping) {
+		val res = TextRamEcoreUtil::findTextRamOperation( clazz, mapping.fromElement )
+		
+		return res
+	}
+	
+	private def transformAttributeMemberFromElement(TClass clazz, AttributeMapping mapping) {
+		return clazz.members.filter(TAttribute).findFirst[ a | a.name == mapping.fromElement.name ]
 	}
 	
 	private def transformHeaderInstantiationOfExtendType(Aspect from, Set<TAspect> extendedExternalTextRamAspects) {
@@ -147,8 +232,8 @@ class TextRAMTransform implements ITextRAMTransform {
 				val tClass = to.findClass( (v.key as Class).name )
 				
 				if ( tClass != null ) {
-//					tClass.layoutX = v.value.x
-//					tClass.layoutY = v.value.y
+					tClass.layoutX = v.value.x
+					tClass.layoutY = v.value.y
 				}
 			}
 

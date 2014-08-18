@@ -57,7 +57,7 @@ public class RamToTextRam {
 				process( file.listFiles() , sb);
 			} else {
 				
-				if ( file.getName().endsWith("Metering.ram") == false ) {
+				if ( file.getName().endsWith("Game.ram") == true ) {
 					continue;
 				}
 				
