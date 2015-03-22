@@ -42,14 +42,15 @@ import cl.uchile.pleiad.textRam.TextRamPackage
 import cl.uchile.pleiad.util.TextRamEcoreUtil
 import java.util.ArrayList
 import java.util.List
+import cl.uchile.pleiad.textRam.TAspect
 
 //TODO: toLowerCaseFirst is missing
 class MessageViewsGenerator {
 	
-	private var Aspect textRamAspect
+	private var TAspect textRamAspect
 	private var Aspect ramAspect
 	
-	new( Aspect from, Aspect to) {
+	new( TAspect from, Aspect to) {
 		this.textRamAspect = from
 		this.ramAspect = to
 		
@@ -133,7 +134,6 @@ class MessageViewsGenerator {
 		
 		classOperations.addAll(ramAspect.structuralView.classes.map[operations].flatten.filter( a | a.name == textRamOperation.name))
 		
-		//TODO: repeated code -> findOperationWithSameSignature
 		for ( o : classOperations ) {
 			// check parameter's length
 			if ( o.parameters.length == arguments.length ) {
@@ -143,7 +143,7 @@ class MessageViewsGenerator {
 				try {
 					if (o.parameters.empty == false && arguments.empty == false) {
 						for ( Integer i: 0..o.parameters.size - 1) {
-							if ( o.parameters.get(i).type.name == arguments.get(i).typeNameForTValueSpecification == false) {
+							if ( (o.parameters.get(i).type.name != arguments.get(i).typeNameForTValueSpecification) && matchParameterType == true) {
 								matchParameterType = false;
 							}
 						}
@@ -211,7 +211,7 @@ class MessageViewsGenerator {
 				
 				if (o.parameters.empty == false && arguments.empty == false) {
 					for ( Integer i: 0..o.parameters.size - 1 ) {
-						if ( o.parameters.get(i).type.name == arguments.get(i).type.name == false) {
+						if ( (o.parameters.get(i).type.name != arguments.get(i).type.name) && matchParameterType == true) {
 							matchParameterType = false;
 						}
 					}
@@ -246,6 +246,10 @@ class MessageViewsGenerator {
 	}
 	
 	private def dispatch void generateInteractionMessages( TOcurrence textRamOcurrenceMessage, FragmentContainer fragmentContainer, TAbstractMessages textRamMessage ) {
+		if (fragmentContainer instanceof InteractionOperand) {
+			return;
+		}
+		
 		val interaction = fragmentContainer as Interaction
 		val lifeline= interaction.lifelines.findFirst( l | l.represents.name == textRamOcurrenceMessage.leftLifeline.name )
 		
@@ -302,12 +306,19 @@ class MessageViewsGenerator {
 	
 	private def dispatch void generateInteractionMessages ( TReturnInteraction textRamReturnInteraction, FragmentContainer fragmentContainer, TAbstractMessages textRamMessage) {
 		// gets the previous interaction
-		val TInteractionMessage prev = TextRamEcoreUtil.getPrev( textRamReturnInteraction, TextRamPackage.Literals.TINTERACTION_MESSAGE )
+		var TInteractionMessage prevInteractionMessage = TextRamEcoreUtil.getPrev( textRamReturnInteraction, TextRamPackage.Literals.TINTERACTION_MESSAGE )
 		
-		if ( prev == null ) {
+		if (prevInteractionMessage == null) {
+			val TCombinedFragment prevCombinedFragment = TextRamEcoreUtil.getPrev( textRamReturnInteraction, TextRamPackage.Literals.TCOMBINED_FRAGMENT )
+			
+			prevInteractionMessage = prevCombinedFragment.containers.filter(TInteractionMessage).last
+		}
+		
+		if ( prevInteractionMessage == null ) {
 			throw new NullPointerException("Previous element of type TInteractionMessage cannot be found")
 		}
 		
+		val prev = prevInteractionMessage
 		val interaction = fragmentContainer as Interaction
 		val lifeLineFrom = interaction.lifelines.findFirst( l | l.represents.name == prev.rightLifeline.name )
 		val lifeLineTo =  prev.getFirstLifeline(interaction)
@@ -550,6 +561,10 @@ class MessageViewsGenerator {
 		result
 	}
 	
+	private def dispatch Lifeline getFirstLifeline(TCombinedFragment combinedFragment, Interaction interaction) {
+		return combinedFragment.containers.head.getFirstLifeline(interaction)
+	}
+	
 	private def dispatch Lifeline getFirstLifeline(TOcurrence interactionMessage, Interaction interaction) { 
 		val firstLifeline = interactionMessage.leftLifeline
 		val result = interaction.lifelines.findFirst( l | l.represents.name == firstLifeline.name)
@@ -558,6 +573,16 @@ class MessageViewsGenerator {
 	}
 	
 	private def getMessageReturn(TReturnInteraction interaction, Lifeline lifeline) {
+		if (interaction.^return instanceof TAssociation) {
+			val assoc = interaction.^return as TAssociation
+			
+			val result = RamFactory.eINSTANCE.createStructuralFeatureValue => [
+				value = ramAspect.findAssociationEnd( assoc.name )
+			]
+			
+			return result
+		}
+	
 		val result =  interaction.^return.createValueSpecification(lifeline)
 		
 		result

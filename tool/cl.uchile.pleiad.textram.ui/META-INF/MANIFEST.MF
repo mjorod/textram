@@ -21,7 +21,7 @@ Require-Bundle: cl.uchile.pleiad.textram;visibility:=reexport,
  org.eclipse.ui.workbench
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: cl.uchile.pleiad.ui.quickfix,
  cl.uchile.pleiad.ui.contentassist,
  cl.uchile.pleiad.ui.contentassist.antlr,

@@ -25,7 +25,6 @@ import cl.uchile.pleiad.textRam.TStructuralView;
 import cl.uchile.pleiad.textRam.TTypedElement;
 import cl.uchile.pleiad.textRam.TValueSpecification;
 import cl.uchile.pleiad.util.TextRamEcoreUtil;
-import cl.uchile.pleiad.util.TextRamModelUtil;
 import com.google.common.collect.Iterables;
 import java.util.List;
 import java.util.Set;
@@ -47,20 +46,6 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 public class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
   @Extension
   private TextRamEcoreUtil scopeProvider = new TextRamEcoreUtil();
-  
-  public IScope scope_Instantiation_externalAspect(final TAspect aspect, final EReference reference) {
-    Iterable<TAspect> _externalAspectsFromHeader = this.scopeProvider.getExternalAspectsFromHeader(aspect);
-    return Scopes.scopeFor(_externalAspectsFromHeader);
-  }
-  
-  public IScope scope_TInstantiationHeader_externalAspects(final TAspect aspect, final EReference reference) {
-    IScope _xblockexpression = null;
-    {
-      final Set<TAspect> externalAspects = TextRamModelUtil.collectExtendedAspects(aspect);
-      _xblockexpression = Scopes.scopeFor(externalAspects);
-    }
-    return _xblockexpression;
-  }
   
   public IScope scope_TOperation_returnType(final TStructuralView structuralView, final EReference reference) {
     EList<Type> _typesFor = this.scopeProvider.getTypesFor(structuralView);

@@ -32,16 +32,16 @@ import ca.mcgill.cs.sel.ram.PrimitiveType
 class TextRAMScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	extension TextRamEcoreUtil scopeProvider = new TextRamEcoreUtil
+//	
+//	def IScope scope_Instantiation_externalAspect(TAspect aspect, EReference reference) {
+//		Scopes::scopeFor( aspect.getExternalAspectsFromHeader )
+//	}
 	
-	def IScope scope_Instantiation_externalAspect(TAspect aspect, EReference reference) {
-		Scopes::scopeFor( aspect.getExternalAspectsFromHeader )
-	}
-	
-	def IScope scope_TInstantiationHeader_externalAspects( TAspect aspect, EReference reference ) {
-		val externalAspects = TextRamModelUtil::collectExtendedAspects( aspect ) 
-		 
-		Scopes::scopeFor( externalAspects ) 
-	}
+//	def IScope scope_TInstantiationHeader_externalAspects( TAspect aspect, EReference reference ) {
+//		val externalAspects = TextRamModelUtil::collectExtendedAspects( aspect ) 
+//		 
+//		Scopes::scopeFor( externalAspects ) 
+//	}
 	
 	def IScope scope_TOperation_returnType(TStructuralView structuralView, EReference reference) {
 		Scopes::scopeFor( structuralView.getTypesFor )

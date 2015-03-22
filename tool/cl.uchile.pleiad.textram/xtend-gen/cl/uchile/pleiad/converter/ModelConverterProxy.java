@@ -2,6 +2,7 @@ package cl.uchile.pleiad.converter;
 
 import ca.mcgill.cs.sel.ram.Aspect;
 import cl.uchile.pleiad.generator.RamGenerator;
+import cl.uchile.pleiad.textRam.TAspect;
 import java.util.Map;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 
@@ -22,7 +23,7 @@ public class ModelConverterProxy {
     this.aspects.clear();
   }
   
-  public Aspect convertTextRAMModelToRAMModel(final Aspect textRamAspect) {
+  public Aspect convertTextRAMModelToRAMModel(final TAspect textRamAspect) {
     Aspect _xblockexpression = null;
     {
       String _name = textRamAspect.getName();

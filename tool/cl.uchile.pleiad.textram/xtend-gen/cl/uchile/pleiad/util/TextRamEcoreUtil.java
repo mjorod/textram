@@ -375,7 +375,6 @@ public final class TextRamEcoreUtil {
       TClass _xblockexpression = null;
       {
         TClass result = null;
-        TClass result1 = null;
         TLifeline _rightLifeline = textRamInteraction.getRightLifeline();
         TLifelineReferenceType _referenceType = _rightLifeline.getReferenceType();
         boolean _equals = Objects.equal(_referenceType, TLifelineReferenceType.REFERENCE);
@@ -550,7 +549,7 @@ public final class TextRamEcoreUtil {
     return _xblockexpression;
   }
   
-  public EList<Type> getTypesFor(final StructuralView structuralView) {
+  public EList<Type> getTypesFor(final TStructuralView structuralView) {
     EList<Type> _types = structuralView.getTypes();
     TextRamEcoreUtil.appendPrimitiveTypes(_types);
     EList<Type> _types_1 = structuralView.getTypes();
@@ -812,7 +811,7 @@ public final class TextRamEcoreUtil {
     return IterableExtensions.<TAssociation>toList(_tAssociations);
   }
   
-  private static EList<Type> getAllTypes(final StructuralView structuralView) {
+  private static EList<Type> getAllTypes(final TStructuralView structuralView) {
     EList<Type> _xblockexpression = null;
     {
       final EList<Type> typeList = new BasicEList<Type>();
@@ -1155,10 +1154,7 @@ public final class TextRamEcoreUtil {
       }
       if (_and) {
         TMessageAssignableFeature _assignTo_1 = message.getAssignTo();
-        if (((_assignTo_1 instanceof TAssociation) == false)) {
-          TMessageAssignableFeature _assignTo_2 = message.getAssignTo();
-          result.add(((TValueSpecification) _assignTo_2));
-        }
+        result.add(((TValueSpecification) _assignTo_1));
       }
       TOperation _signature = message.getSignature();
       EList<TParameter> _parameters = _signature.getParameters();

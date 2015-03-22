@@ -31,37 +31,46 @@ import cl.uchile.pleiad.textRam.TStructuralView
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
+import cl.uchile.pleiad.util.TextRamEcoreUtil
 
 class StructuralViewGenerator {
 	
-	Aspect textRamAspect
+	TAspect textRamAspect
 	Aspect ramAspect
 	
-	new( Aspect from, Aspect to) {
+	val List<Aspect> externalAspects = newArrayList
+	
+	extension TextRamEcoreUtil scopeProvider = new TextRamEcoreUtil
+	
+	new( TAspect from, Aspect to) {
 		this.textRamAspect = from
 		this.ramAspect = to
 		
 		ramAspect.structuralView = RamFactory.eINSTANCE.createStructuralView
 		
-		ramAspect.structuralView.types.addAll(generateTypes)
+		if (from.structuralView.types.empty == true) {
+			 (textRamAspect.structuralView as TStructuralView).typesFor
+		}
+		
 		ramAspect.structuralView.classes.addAll(createClasses)
-		ramAspect.structuralView.types.convertRSetTypeClassFromTClass
+		ramAspect.structuralView.types.generateTypes
 
 		generateClasses()
 		ramAspect.structuralView.associations.addAll(generateAssociations)
 		
 		ramAspect.instantiations.addAll(generateInstantiations)
 	}
-	
-	def void convertRSetTypeClassFromTClass(EList<Type> types) {
-		types.filter(RSet).forEach [ rSetType |
-			//TODO: cleaning instanceClassName (It's pending the good setting of RSet's instanceClassName)
+		
+	private def void generateTypes(EList<Type> ramTypes) {
+		ramTypes.addAll( EcoreUtil.copyAll( this.textRamAspect.structuralView.types ) ) 
+
+		ramTypes.filter(RSet).forEach [ rSetType |
 			rSetType.instanceClassName = null
 
 			if (rSetType.type instanceof TClass) {
 				rSetType.type = this.ramAspect.structuralView.classes.findFirst[ c | c.name == rSetType.type.name ]
 			}
-		] 
+		]
 	}
 	
 	def getStructuralView() {
@@ -109,15 +118,24 @@ class StructuralViewGenerator {
 		
 		instantiationHeader.externalAspects.forEach[ ea | 
 			
-			val instantiation = RamFactory.eINSTANCE.createInstantiation => [
-				externalAspect = ea
-				type = instantiationHeader.type
-			]
+			var Aspect externalAspect
+			
+			if (this.externalAspects.exists[ e | e.name == ea.name ]) {
+				externalAspect = this.externalAspects.findFirst[ e | e.name == ea.name ]
+			}
+			else {
+				externalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(ea)
+				this.externalAspects.add(externalAspect)
+			}
+			
+			val instantiation = RamFactory.eINSTANCE.createInstantiation
+			instantiation.externalAspect = externalAspect
+			instantiation.type = instantiationHeader.type
 			
 			// check mappings
 			val instantiationMapped = this.textRamAspect.instantiations.findFirst[ ins | ins.externalAspect.name == ea.name && ins.mappings.length > 0];
 			if (instantiationMapped != null) {
-				instantiation.mappings.addAll( instantiationMapped.generateMappings(ea) )
+				instantiation.mappings.addAll( instantiationMapped.generateMappings(externalAspect) )
 			}
 			
 			// add instantiation to result
@@ -128,7 +146,7 @@ class StructuralViewGenerator {
 	}
 	
 	private def generateInstantiation(Instantiation from) {
-		val Aspect myExternalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(from.externalAspect)
+		val Aspect myExternalAspect = ModelConverterProxy::instance.convertTextRAMModelToRAMModel(from.externalAspect as TAspect)
 
 		val result = RamFactory.eINSTANCE.createInstantiation => [
 			externalAspect = myExternalAspect
@@ -158,10 +176,9 @@ class StructuralViewGenerator {
 	}
 	
 	private def generateMapping(TClassifierMapping textRamClassifierMapping, Aspect externalAspect) {
-		val result = RamFactory.eINSTANCE.createClassifierMapping => [
-			fromElement = externalAspect.structuralView.classes.findFirst( c | c.name == textRamClassifierMapping.fromElement.name )
-			toElement = this.ramAspect.structuralView.classes.findFirst( c | c.name == textRamClassifierMapping.toElement.name )
-		]
+		val result = RamFactory.eINSTANCE.createClassifierMapping
+		result.fromElement = externalAspect.structuralView.classes.filter(Class).findFirst( c | c.name == textRamClassifierMapping.fromElement.name )
+		result.toElement = this.ramAspect.structuralView.classes.filter(Class).findFirst( c | c.name == textRamClassifierMapping.toElement.name )
 		
 		if (textRamClassifierMapping.fromMembers.size > 0) {
 			for ( Integer i: 0..textRamClassifierMapping.fromMembers.size - 1) {
@@ -185,23 +202,21 @@ class StructuralViewGenerator {
 	}
 	
 	private def dispatch generateMemberMapping(TOperation fromMember, TClassMember toMember, Aspect externalAspect, ClassifierMapping classifierMapping) {
-		val operationMapping = RamFactory.eINSTANCE.createOperationMapping => [
-			fromElement = externalAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( o | o.name == fromMember.name)
-			toElement = ramAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( a | a.name == toMember.name )
-			parameterMappings.addAll( generateParameterMapping(fromElement, toElement) )
-		]
+		val operationMapping = RamFactory.eINSTANCE.createOperationMapping
+		operationMapping.fromElement = externalAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( o | o.name == fromMember.name)
+		operationMapping.toElement = ramAspect.structuralView.classes.filter(Class).map[operations].flatten.findFirst( a | a.name == toMember.name )
+		operationMapping.parameterMappings.addAll( generateParameterMapping(operationMapping.fromElement, operationMapping.toElement) )
 		
 		classifierMapping.operationMappings.add(operationMapping)
 	}
 	
 	private def generateParameterMapping(Operation fromOperation, Operation toOperation) {
-		val List<ParameterMapping> result = newArrayList  
+		val List<ParameterMapping> result = newArrayList   
 
 		fromOperation.parameters.forEach[ fromParm |
-			val parameterMapping = RamFactory.eINSTANCE.createParameterMapping => [
-				fromElement = fromParm
-				toElement = toOperation.parameters.get( fromOperation.parameters.indexOf(fromParm)  )
-			]
+			val parameterMapping = RamFactory.eINSTANCE.createParameterMapping 
+			parameterMapping.fromElement = fromParm
+			parameterMapping.toElement = toOperation.parameters.get( fromOperation.parameters.indexOf(fromParm)  )
 			
 			result.add(parameterMapping)
 		]
@@ -331,7 +346,9 @@ class StructuralViewGenerator {
 	}
 	
 	private def dispatch transformType(RSet type) {
-		ramAspect.structuralView.types.filter(RSet).findFirst[ t | t.name == type.name ]
+		val res = ramAspect.structuralView.types.filter(RSet).findFirst[ t | t.name == type.name ]
+		
+		return res
 	}
 	
 	private def generateAssociations() {
@@ -395,11 +412,6 @@ class StructuralViewGenerator {
 			classTo.associationEnds.add(fromEnd)
 		}
 					
-		result
-	}
-	
-	private def generateTypes() {
-		val result = EcoreUtil.copyAll(textRamAspect.structuralView.types) 
 		result
 	}
 	

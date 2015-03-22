@@ -2,33 +2,34 @@ package cl.uchile.pleiad.generator
 
 import ca.mcgill.cs.sel.ram.Aspect
 import ca.mcgill.cs.sel.ram.RamFactory
+import cl.uchile.pleiad.textRam.TAspect
 
 class RamGenerator {
 	
 	private Aspect ramAspect
-	private Aspect textRamAspect
+	private TAspect textRamAspect
 	
-	new(Aspect textRamAspect) {
+	new(TAspect textRamAspect) {
 		this.textRamAspect = textRamAspect
 		
 		ramAspect = RamFactory.eINSTANCE.createAspect => [
 			name = textRamAspect.name
 		]
 		
-		ramAspect.structuralView = generateStructuralView(this.ramAspect, this.textRamAspect)
-		ramAspect.messageViews.addAll(generateMessageView(this.ramAspect, this.textRamAspect))
+		ramAspect.structuralView = generateStructuralView(this.textRamAspect, ramAspect)
+		ramAspect.messageViews.addAll(generateMessageView(this.textRamAspect, this.ramAspect))
 	}
 	
-	def generateMessageView(Aspect aspect, Aspect aspect2) {
-		new MessageViewsGenerator( this.textRamAspect, this.ramAspect  ).messagesView
+	def generateMessageView(TAspect from, Aspect to) {
+		new MessageViewsGenerator( from, to ).messagesView
 	}
 	
 	def getRamAspect() {
 		ramAspect
-	}
+	} 
 	
-	private def generateStructuralView(Aspect aspect, Aspect aspect2) {
-		new StructuralViewGenerator( this.textRamAspect, this.ramAspect ).structuralView
+	private def generateStructuralView(TAspect from, Aspect to) {
+		new StructuralViewGenerator(from, to).structuralView
 	}
 	
 	

@@ -299,12 +299,12 @@
           <persistent value="true"/>
 </extension>
 
-   <!--<extension
+   <extension
          point="org.eclipse.xtext.builder.participant">
       <participant
             class="cl.uchile.pleiad.ui.TextRAMExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant">
       </participant>
-   </extension>-->
+   </extension>
    <extension
             point="org.eclipse.ui.preferencePages">
         <page
@@ -356,9 +356,9 @@
       </command>
       <command
             defaultHandler="cl.uchile.pleiad.ui.GenerationHandler"
-            description="Yo te hize juan carlos"
+            description="Lectura de un modelo de RAM"
             id="cl.uchile.pleiad.textram.ui.generate_2"
-            name="SeparateMierda">
+            name="RAM2TextRAM">
       </command>
     </extension>
     <extension point="org.eclipse.ui.menus">
@@ -380,7 +380,7 @@
          <command
                commandId="cl.uchile.pleiad.textram.ui.cmdgenerate"
                icon="resources/run_obj.gif"
-               label="GenerameMierda"
+               label="Generacion de RAM a TextRAM"
                style="push">
          </command>
       </menuContribution>

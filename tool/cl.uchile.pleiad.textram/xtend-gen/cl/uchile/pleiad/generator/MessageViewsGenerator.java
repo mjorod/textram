@@ -37,6 +37,7 @@ import ca.mcgill.cs.sel.ram.TypedElement;
 import ca.mcgill.cs.sel.ram.ValueSpecification;
 import cl.uchile.pleiad.textRam.TAbstractMessageView;
 import cl.uchile.pleiad.textRam.TAbstractMessages;
+import cl.uchile.pleiad.textRam.TAspect;
 import cl.uchile.pleiad.textRam.TAspectMessageView;
 import cl.uchile.pleiad.textRam.TAssociation;
 import cl.uchile.pleiad.textRam.TAssociationEnd;
@@ -80,11 +81,11 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 @SuppressWarnings("all")
 public class MessageViewsGenerator {
-  private Aspect textRamAspect;
+  private TAspect textRamAspect;
   
   private Aspect ramAspect;
   
-  public MessageViewsGenerator(final Aspect from, final Aspect to) {
+  public MessageViewsGenerator(final TAspect from, final Aspect to) {
     this.textRamAspect = from;
     this.ramAspect = to;
     EList<AbstractMessageView> _messageViews = this.textRamAspect.getMessageViews();
@@ -276,15 +277,20 @@ public class MessageViewsGenerator {
             int _minus = (_size - 1);
             IntegerRange _upTo = new IntegerRange(0, _minus);
             for (final Integer i : _upTo) {
+              boolean _and_1 = false;
               EList<Parameter> _parameters_3 = o.getParameters();
               Parameter _get = _parameters_3.get((i).intValue());
               Type _type = _get.getType();
               String _name = _type.getName();
               TValueSpecification _get_1 = arguments.get((i).intValue());
               String _typeNameForTValueSpecification = this.getTypeNameForTValueSpecification(_get_1);
-              boolean _equals_3 = Objects.equal(_name, _typeNameForTValueSpecification);
-              boolean _equals_4 = (_equals_3 == false);
-              if (_equals_4) {
+              boolean _notEquals = (!Objects.equal(_name, _typeNameForTValueSpecification));
+              if (!_notEquals) {
+                _and_1 = false;
+              } else {
+                _and_1 = (matchParameterType == true);
+              }
+              if (_and_1) {
                 matchParameterType = false;
               }
             }
@@ -401,6 +407,7 @@ public class MessageViewsGenerator {
           int _minus = (_size - 1);
           IntegerRange _upTo = new IntegerRange(0, _minus);
           for (final Integer i : _upTo) {
+            boolean _and_1 = false;
             EList<Parameter> _parameters_3 = o.getParameters();
             Parameter _get = _parameters_3.get((i).intValue());
             Type _type = _get.getType();
@@ -408,9 +415,13 @@ public class MessageViewsGenerator {
             TParameter _get_1 = arguments.get((i).intValue());
             Type _type_1 = _get_1.getType();
             String _name_3 = _type_1.getName();
-            boolean _equals_3 = Objects.equal(_name_2, _name_3);
-            boolean _equals_4 = (_equals_3 == false);
-            if (_equals_4) {
+            boolean _notEquals_2 = (!Objects.equal(_name_2, _name_3));
+            if (!_notEquals_2) {
+              _and_1 = false;
+            } else {
+              _and_1 = (matchParameterType == true);
+            }
+            if (_and_1) {
               matchParameterType = false;
             }
           }
@@ -457,6 +468,9 @@ public class MessageViewsGenerator {
   }
   
   private void _generateInteractionMessages(final TOcurrence textRamOcurrenceMessage, final FragmentContainer fragmentContainer, final TAbstractMessages textRamMessage) {
+    if ((fragmentContainer instanceof InteractionOperand)) {
+      return;
+    }
     final Interaction interaction = ((Interaction) fragmentContainer);
     EList<Lifeline> _lifelines = interaction.getLifelines();
     final Function1<Lifeline,Boolean> _function = new Function1<Lifeline,Boolean>() {
@@ -553,11 +567,20 @@ public class MessageViewsGenerator {
   }
   
   private void _generateInteractionMessages(final TReturnInteraction textRamReturnInteraction, final FragmentContainer fragmentContainer, final TAbstractMessages textRamMessage) {
-    final TInteractionMessage prev = TextRamEcoreUtil.<TInteractionMessage>getPrev(textRamReturnInteraction, TextRamPackage.Literals.TINTERACTION_MESSAGE);
-    boolean _equals = Objects.equal(prev, null);
+    TInteractionMessage prevInteractionMessage = TextRamEcoreUtil.<TInteractionMessage>getPrev(textRamReturnInteraction, TextRamPackage.Literals.TINTERACTION_MESSAGE);
+    boolean _equals = Objects.equal(prevInteractionMessage, null);
     if (_equals) {
+      final TCombinedFragment prevCombinedFragment = TextRamEcoreUtil.<TCombinedFragment>getPrev(textRamReturnInteraction, TextRamPackage.Literals.TCOMBINED_FRAGMENT);
+      EList<TInteraction> _containers = prevCombinedFragment.getContainers();
+      Iterable<TInteractionMessage> _filter = Iterables.<TInteractionMessage>filter(_containers, TInteractionMessage.class);
+      TInteractionMessage _last = IterableExtensions.<TInteractionMessage>last(_filter);
+      prevInteractionMessage = _last;
+    }
+    boolean _equals_1 = Objects.equal(prevInteractionMessage, null);
+    if (_equals_1) {
       throw new NullPointerException("Previous element of type TInteractionMessage cannot be found");
     }
+    final TInteractionMessage prev = prevInteractionMessage;
     final Interaction interaction = ((Interaction) fragmentContainer);
     EList<Lifeline> _lifelines = interaction.getLifelines();
     final Function1<Lifeline,Boolean> _function = new Function1<Lifeline,Boolean>() {
@@ -981,6 +1004,12 @@ public class MessageViewsGenerator {
     return _xblockexpression;
   }
   
+  private Lifeline _getFirstLifeline(final TCombinedFragment combinedFragment, final Interaction interaction) {
+    EList<TInteraction> _containers = combinedFragment.getContainers();
+    TInteraction _head = IterableExtensions.<TInteraction>head(_containers);
+    return this.getFirstLifeline(_head, interaction);
+  }
+  
   private Lifeline _getFirstLifeline(final TOcurrence interactionMessage, final Interaction interaction) {
     Lifeline _xblockexpression = null;
     {
@@ -1004,8 +1033,23 @@ public class MessageViewsGenerator {
     ValueSpecification _xblockexpression = null;
     {
       TValueSpecification _return = interaction.getReturn();
-      final ValueSpecification result = this.createValueSpecification(_return, lifeline);
-      _xblockexpression = result;
+      if ((_return instanceof TAssociation)) {
+        TValueSpecification _return_1 = interaction.getReturn();
+        final TAssociation assoc = ((TAssociation) _return_1);
+        StructuralFeatureValue _createStructuralFeatureValue = RamFactory.eINSTANCE.createStructuralFeatureValue();
+        final Procedure1<StructuralFeatureValue> _function = new Procedure1<StructuralFeatureValue>() {
+          public void apply(final StructuralFeatureValue it) {
+            String _name = assoc.getName();
+            AssociationEnd _findAssociationEnd = MessageViewsGenerator.this.findAssociationEnd(MessageViewsGenerator.this.ramAspect, _name);
+            it.setValue(_findAssociationEnd);
+          }
+        };
+        final StructuralFeatureValue result = ObjectExtensions.<StructuralFeatureValue>operator_doubleArrow(_createStructuralFeatureValue, _function);
+        return result;
+      }
+      TValueSpecification _return_2 = interaction.getReturn();
+      final ValueSpecification result_1 = this.createValueSpecification(_return_2, lifeline);
+      _xblockexpression = result_1;
     }
     return _xblockexpression;
   }
@@ -1502,7 +1546,7 @@ public class MessageViewsGenerator {
     }
   }
   
-  private StructuralFeature createStructuralFeature(final TMessageAssignableFeature feature, final Lifeline lifeline) {
+  private StructuralFeature createStructuralFeature(final EObject feature, final Lifeline lifeline) {
     if (feature instanceof TLocalAttribute) {
       return _createStructuralFeature((TLocalAttribute)feature, lifeline);
     } else if (feature instanceof TReference) {
@@ -1541,14 +1585,16 @@ public class MessageViewsGenerator {
     }
   }
   
-  private Lifeline getFirstLifeline(final TInteraction interactionMessage, final Interaction interaction) {
-    if (interactionMessage instanceof TInteractionMessage) {
-      return _getFirstLifeline((TInteractionMessage)interactionMessage, interaction);
-    } else if (interactionMessage instanceof TOcurrence) {
-      return _getFirstLifeline((TOcurrence)interactionMessage, interaction);
+  private Lifeline getFirstLifeline(final TInteraction combinedFragment, final Interaction interaction) {
+    if (combinedFragment instanceof TCombinedFragment) {
+      return _getFirstLifeline((TCombinedFragment)combinedFragment, interaction);
+    } else if (combinedFragment instanceof TInteractionMessage) {
+      return _getFirstLifeline((TInteractionMessage)combinedFragment, interaction);
+    } else if (combinedFragment instanceof TOcurrence) {
+      return _getFirstLifeline((TOcurrence)combinedFragment, interaction);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
-        Arrays.<Object>asList(interactionMessage, interaction).toString());
+        Arrays.<Object>asList(combinedFragment, interaction).toString());
     }
   }
   

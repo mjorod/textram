@@ -429,4 +429,22 @@ class TextRAMValidator extends AbstractTextRAMValidator {
 		}
 	}
 	
+//	@Check
+//	def checkSameParametersOnInstantiationsOperations(TClassifierMapping cm) {
+//		val fromOperationList = cm.fromMembers.filter(TOperation).toList
+//		val toOperationList = cm.toMembers.filter(TOperation).toList
+//		
+//		if (fromOperationList.length > 0 && fromOperationList.length != toOperationList.length) {
+//			error('Different number of operations on' + cm.fromElement, TextRamPackage.Literals.TCLASSIFIER_MAPPING__FROM_MEMBERS )
+//		}
+//		
+//		for ( Integer i: 0..fromOperationList.length - 1) {
+//			if ( fromOperationList.get(i).parameters.length != toOperationList.get(i).parameters.length ) {
+//				error('Methods members have not the same number arguments on mapping class' + cm.fromElement + ' and ' + cm.toElement, TextRamPackage.Literals.TCLASSIFIER_MAPPING__FROM_MEMBERS )
+//			}
+//			
+//		} 
+//		
+//	}
+	
 }

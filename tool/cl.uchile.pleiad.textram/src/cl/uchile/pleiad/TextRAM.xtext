@@ -184,7 +184,7 @@ TLifeline returns textRam::TLifeline:
 ;
 
 TValueSpecification returns textRam::TValueSpecification:
-	TTemporaryProperty | TParameter | TLifeline | TDummyValueSpecification
+	TAssociation | TTemporaryProperty | TParameter | TLifeline | TDummyValueSpecification
 ;
 
 TDummyValueSpecification returns textRam::TDummyValueSpecification:

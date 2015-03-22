@@ -71,6 +71,8 @@ public class RamToTextRam {
 						
 				TAspect res =  transformer.transform(ramAspect);
 				
+				System.out.println("Aspecto serializado: " + res.getName());
+				
 				Injector injector = Guice.createInjector(new  cl.uchile.pleiad.TextRAMRuntimeModule());  
 				Serializer serializer = injector.getInstance(Serializer.class);  
 				

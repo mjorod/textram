@@ -3,6 +3,7 @@ package cl.uchile.pleiad.converter
 import ca.mcgill.cs.sel.ram.Aspect
 import cl.uchile.pleiad.generator.RamGenerator
 import java.util.Map
+import cl.uchile.pleiad.textRam.TAspect
 
 class ModelConverterProxy {
 	
@@ -19,7 +20,7 @@ class ModelConverterProxy {
 		aspects.clear
 	}
 	
-	def Aspect convertTextRAMModelToRAMModel(Aspect textRamAspect) {
+	def Aspect convertTextRAMModelToRAMModel(TAspect textRamAspect) {
 		if (aspects.containsKey(textRamAspect.name) == false) {
 			val generator = new RamGenerator( textRamAspect )
 			

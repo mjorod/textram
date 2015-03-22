@@ -19,55 +19,55 @@ class TextRAMStructuralViewValidatorTest {
 	@Inject extension ParseHelper<Aspect>
 	@Inject extension ValidationTestHelper
 	
-	@Test
-	public def testDuplicateAttributes() {
-		'''	
-		aspect A {
-			structure {
-				class C {
-					int attribute
-					boolean attribute
-				}
-			}
-		}
-		'''.parse.assertError(
-				TextRamPackage.eINSTANCE.TClassMember,
-				TextRAMValidator::DUPLICATE_ELEMENT,
-				"Duplicate member 'attribute'")				
-	}
-	
-	@Test
-	public def testDuplicateClasses() {
-		'''
-		aspect A {
-			structure {
-				class C {}
-				class C {}
-			}
-		}
-		'''.parse.assertError(
-			TextRamPackage.eINSTANCE.TClass,
-			TextRAMValidator::DUPLICATE_CLASS,
-			"Duplicate class 'C'"
-		)
-	}
-	
-	@Test
-	public def testDuplicateOperations() {
-		'''
-		aspect A {
-			structure {
-				class C {
-					+ void operation(int a)
-					+ int  operation(int b)
-				}	
-			}
-		}
-		'''.parse.assertError(
-			TextRamPackage.eINSTANCE.TOperation,
-			TextRAMValidator::DUPLICATE_ELEMENT,
-			"Duplicate member 'operation'")
-	}
+//	@Test
+//	public def testDuplicateAttributes() {
+//		'''	
+//		aspect A {
+//			structure {
+//				class C {
+//					int attribute
+//					boolean attribute
+//				}
+//			}
+//		}
+//		'''.parse.assertError(
+//				TextRamPackage.eINSTANCE.TClassMember,
+//				TextRAMValidator::DUPLICATE_ELEMENT,
+//				"Duplicate member 'attribute'")				
+//	}
+//	
+//	@Test
+//	public def testDuplicateClasses() {
+//		'''
+//		aspect A {
+//			structure {
+//				class C {}
+//				class C {}
+//			}
+//		}
+//		'''.parse.assertError(
+//			TextRamPackage.eINSTANCE.TClass,
+//			TextRAMValidator::DUPLICATE_CLASS,
+//			"Duplicate class 'C'"
+//		)
+//	}
+//	
+//	@Test
+//	public def testDuplicateOperations() {
+//		'''
+//		aspect A {
+//			structure {
+//				class C {
+//					+ void operation(int a)
+//					+ int  operation(int b)
+//				}	
+//			}
+//		}
+//		'''.parse.assertError(
+//			TextRamPackage.eINSTANCE.TOperation,
+//			TextRAMValidator::DUPLICATE_ELEMENT,
+//			"Duplicate member 'operation'")
+//	}
 	
 	
 }

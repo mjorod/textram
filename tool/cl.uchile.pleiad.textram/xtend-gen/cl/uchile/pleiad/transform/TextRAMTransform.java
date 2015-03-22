@@ -120,7 +120,8 @@ public class TextRAMTransform implements ITextRAMTransform {
     final Procedure1<TAspect> _function = new Procedure1<TAspect>() {
       public void apply(final TAspect it) {
         String _name = ramAspect.getName();
-        it.setName(_name);
+        String _replace = _name.replace("-", "_");
+        it.setName(_replace);
       }
     };
     final TAspect textRamAspect = ObjectExtensions.<TAspect>operator_doubleArrow(_createTAspect, _function);
@@ -158,23 +159,37 @@ public class TextRAMTransform implements ITextRAMTransform {
   }
   
   private Instantiation transformInstantiationBody(final Instantiation instantiation, final TAspect to, final Set<TAspect> extendedAspects) {
+    Instantiation res = null;
     EList<Instantiation> _instantiations = to.getInstantiations();
-    final Function1<Instantiation,Boolean> _function = new Function1<Instantiation,Boolean>() {
-      public Boolean apply(final Instantiation a) {
-        Aspect _externalAspect = a.getExternalAspect();
-        String _name = _externalAspect.getName();
-        Aspect _externalAspect_1 = instantiation.getExternalAspect();
-        String _name_1 = _externalAspect_1.getName();
-        return Boolean.valueOf(Objects.equal(_name, _name_1));
-      }
-    };
-    Instantiation res = IterableExtensions.<Instantiation>findFirst(_instantiations, _function);
+    int _size = _instantiations.size();
+    boolean _greaterThan = (_size > 0);
+    if (_greaterThan) {
+      EList<Instantiation> _instantiations_1 = to.getInstantiations();
+      final Function1<Instantiation,Boolean> _function = new Function1<Instantiation,Boolean>() {
+        public Boolean apply(final Instantiation q) {
+          Aspect _externalAspect = q.getExternalAspect();
+          return Boolean.valueOf((!Objects.equal(_externalAspect, null)));
+        }
+      };
+      Iterable<Instantiation> _filter = IterableExtensions.<Instantiation>filter(_instantiations_1, _function);
+      final Function1<Instantiation,Boolean> _function_1 = new Function1<Instantiation,Boolean>() {
+        public Boolean apply(final Instantiation a) {
+          Aspect _externalAspect = a.getExternalAspect();
+          String _name = _externalAspect.getName();
+          Aspect _externalAspect_1 = instantiation.getExternalAspect();
+          String _name_1 = _externalAspect_1.getName();
+          return Boolean.valueOf(Objects.equal(_name, _name_1));
+        }
+      };
+      Instantiation _findFirst = IterableExtensions.<Instantiation>findFirst(_filter, _function_1);
+      res = _findFirst;
+    }
     boolean _equals = Objects.equal(res, null);
     if (_equals) {
       Instantiation _createInstantiation = RamFactory.eINSTANCE.createInstantiation();
       res = _createInstantiation;
     }
-    final Function1<TAspect,Boolean> _function_1 = new Function1<TAspect,Boolean>() {
+    final Function1<TAspect,Boolean> _function_2 = new Function1<TAspect,Boolean>() {
       public Boolean apply(final TAspect a) {
         String _name = a.getName();
         Aspect _externalAspect = instantiation.getExternalAspect();
@@ -182,8 +197,8 @@ public class TextRAMTransform implements ITextRAMTransform {
         return Boolean.valueOf(Objects.equal(_name, _name_1));
       }
     };
-    TAspect _findFirst = IterableExtensions.<TAspect>findFirst(extendedAspects, _function_1);
-    res.setExternalAspect(_findFirst);
+    TAspect _findFirst_1 = IterableExtensions.<TAspect>findFirst(extendedAspects, _function_2);
+    res.setExternalAspect(_findFirst_1);
     EList<ClassifierMapping> _mappings = instantiation.getMappings();
     for (final ClassifierMapping m : _mappings) {
       EList<ClassifierMapping> _mappings_1 = res.getMappings();
@@ -323,13 +338,14 @@ public class TextRAMTransform implements ITextRAMTransform {
       Iterable<Instantiation> _filter = IterableExtensions.<Instantiation>filter(_instantiations_1, _function_1);
       final Procedure1<Instantiation> _function_2 = new Procedure1<Instantiation>() {
         public void apply(final Instantiation ins) {
+          Aspect _externalAspect = ins.getExternalAspect();
+          String _name = _externalAspect.getName();
+          final String name = _name.replace("-", "_");
           EList<TAspect> _externalAspects = header.getExternalAspects();
           final Function1<TAspect,Boolean> _function = new Function1<TAspect,Boolean>() {
             public Boolean apply(final TAspect e) {
               String _name = e.getName();
-              Aspect _externalAspect = ins.getExternalAspect();
-              String _name_1 = _externalAspect.getName();
-              return Boolean.valueOf(Objects.equal(_name, _name_1));
+              return Boolean.valueOf(Objects.equal(_name, name));
             }
           };
           TAspect _findFirst = IterableExtensions.<TAspect>findFirst(extendedExternalTextRamAspects, _function);
@@ -364,17 +380,18 @@ public class TextRAMTransform implements ITextRAMTransform {
       Iterable<Instantiation> _filter = IterableExtensions.<Instantiation>filter(_instantiations_1, _function_1);
       final Procedure1<Instantiation> _function_2 = new Procedure1<Instantiation>() {
         public void apply(final Instantiation ins) {
-          EList<TAspect> _externalAspects = header.getExternalAspects();
+          Aspect _externalAspect = ins.getExternalAspect();
+          String _name = _externalAspect.getName();
+          final String name = _name.replace("-", "_");
           final Function1<TAspect,Boolean> _function = new Function1<TAspect,Boolean>() {
             public Boolean apply(final TAspect e) {
               String _name = e.getName();
-              Aspect _externalAspect = ins.getExternalAspect();
-              String _name_1 = _externalAspect.getName();
-              return Boolean.valueOf(Objects.equal(_name, _name_1));
+              return Boolean.valueOf(Objects.equal(_name, name));
             }
           };
-          TAspect _findFirst = IterableExtensions.<TAspect>findFirst(extendedExternalTextRamAspects, _function);
-          _externalAspects.add(_findFirst);
+          final TAspect externalAspect = IterableExtensions.<TAspect>findFirst(extendedExternalTextRamAspects, _function);
+          EList<TAspect> _externalAspects = header.getExternalAspects();
+          _externalAspects.add(externalAspect);
         }
       };
       IterableExtensions.<Instantiation>forEach(_filter, _function_2);
@@ -1516,6 +1533,8 @@ public class TextRAMTransform implements ITextRAMTransform {
           it.setName(_name);
           it.setLayoutX(0);
           it.setLayoutY(0);
+          boolean _isPartial = ramClass.isPartial();
+          it.setPartial(_isPartial);
         }
       };
       final TClass res = ObjectExtensions.<TClass>operator_doubleArrow(_createTClass, _function);
@@ -1571,8 +1590,8 @@ public class TextRAMTransform implements ITextRAMTransform {
       final List<TClassMember> res = CollectionLiterals.<TClassMember>newArrayList();
       final Procedure1<Operation> _function = new Procedure1<Operation>() {
         public void apply(final Operation o) {
-          TOperation _transforOperation = TextRAMTransform.this.transforOperation(o, to);
-          res.add(_transforOperation);
+          TOperation _transformOperation = TextRAMTransform.this.transformOperation(o, to);
+          res.add(_transformOperation);
         }
       };
       IterableExtensions.<Operation>forEach(ramOperations, _function);
@@ -1581,7 +1600,7 @@ public class TextRAMTransform implements ITextRAMTransform {
     return _xblockexpression;
   }
   
-  private TOperation transforOperation(final Operation operation, final TAspect to) {
+  private TOperation transformOperation(final Operation operation, final TAspect to) {
     TOperation _xblockexpression = null;
     {
       final TOperation res = TextRamFactory.eINSTANCE.createTOperation();
@@ -1599,11 +1618,8 @@ public class TextRAMTransform implements ITextRAMTransform {
       Type _typeReference = this.textRamEcoreUtil.getTypeReference(to, _returnType);
       res.setReturnType(_typeReference);
       Type _returnType_1 = operation.getReturnType();
-      if ((_returnType_1 instanceof ca.mcgill.cs.sel.ram.Class)) {
-        Type _returnType_2 = operation.getReturnType();
-        boolean _isPartial_1 = ((ca.mcgill.cs.sel.ram.Class) _returnType_2).isPartial();
-        res.setPartialReturnType(_isPartial_1);
-      }
+      boolean _partialReturnType = this.getPartialReturnType(_returnType_1);
+      res.setPartialReturnType(_partialReturnType);
       EList<Parameter> _parameters = operation.getParameters();
       final Procedure1<Parameter> _function = new Procedure1<Parameter>() {
         public void apply(final Parameter p) {
@@ -1616,6 +1632,17 @@ public class TextRAMTransform implements ITextRAMTransform {
       _xblockexpression = res;
     }
     return _xblockexpression;
+  }
+  
+  private boolean _getPartialReturnType(final Type type) {
+    if ((type instanceof ca.mcgill.cs.sel.ram.Class)) {
+      return ((ca.mcgill.cs.sel.ram.Class) type).isPartial();
+    }
+    return false;
+  }
+  
+  private boolean _getPartialReturnType(final RSet rset) {
+    return false;
   }
   
   private TParameter transformParameter(final Parameter parameter, final TAspect to) {
@@ -1846,6 +1873,17 @@ public class TextRAMTransform implements ITextRAMTransform {
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
         Arrays.<Object>asList(from).toString());
+    }
+  }
+  
+  private boolean getPartialReturnType(final Type rset) {
+    if (rset instanceof RSet) {
+      return _getPartialReturnType((RSet)rset);
+    } else if (rset != null) {
+      return _getPartialReturnType(rset);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(rset).toString());
     }
   }
 }

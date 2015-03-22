@@ -83,7 +83,7 @@ class TextRAMTransform implements ITextRAMTransform {
 	
 	override TAspect transform(Aspect ramAspect) {
 		val textRamAspect = TextRamFactory.eINSTANCE.createTAspect => [
-			name = ramAspect.name
+			name = ramAspect.name.replace('-', '_')
 		]
 		
 		ramAspect.structuralView.transformStructuralView( textRamAspect )
@@ -122,7 +122,11 @@ class TextRAMTransform implements ITextRAMTransform {
 	
 	private def transformInstantiationBody(Instantiation instantiation, TAspect to, Set<TAspect> extendedAspects) {
 		// it looks for an existing instantiation
-		var Instantiation res = to.instantiations.findFirst[ a | a.externalAspect.name == instantiation.externalAspect.name ]
+		var Instantiation res = null 
+		
+		if (to.instantiations.size > 0) {
+			res = to.instantiations.filter(q | q.externalAspect != null).findFirst[ a | a.externalAspect.name == instantiation.externalAspect.name ]
+		} 
 		
 		if ( res == null ) {
 			res = RamFactory.eINSTANCE.createInstantiation
@@ -199,7 +203,8 @@ class TextRAMTransform implements ITextRAMTransform {
 						
 			header.type = InstantiationType.EXTENDS
 			from.instantiations.filter( ins | ins.type == InstantiationType.EXTENDS ).forEach[ ins |
-				header.externalAspects.add( extendedExternalTextRamAspects.findFirst[ e | e.name == ins.externalAspect.name ] )
+				val name = ins.externalAspect.name.replace("-","_")
+				header.externalAspects.add( extendedExternalTextRamAspects.findFirst[ e | e.name == name ] )
 			]
 			
 			return header
@@ -215,7 +220,9 @@ class TextRAMTransform implements ITextRAMTransform {
 			
 			header.type = InstantiationType.DEPENDS
 			from.instantiations.filter( ins | ins.type == InstantiationType.DEPENDS).forEach[ ins |
-				header.externalAspects.add( extendedExternalTextRamAspects.findFirst[ e | e.name == ins.externalAspect.name ] )
+				val name = ins.externalAspect.name.replace("-","_")
+				val externalAspect = extendedExternalTextRamAspects.findFirst[ e | e.name == name ] 
+				header.externalAspects.add(externalAspect)
 			]
 			
 			return header
@@ -881,6 +888,7 @@ class TextRAMTransform implements ITextRAMTransform {
 			name = from.name
 			layoutX = 0
 			layoutY = 0
+			partial = ramClass.partial
 		]
 		
 		if ( ramClass.superTypes.size > 1 ) {
@@ -891,7 +899,7 @@ class TextRAMTransform implements ITextRAMTransform {
 		if ( ramClass.superTypes.size == 1 ) {
 			res.partialSuperType = (ramClass.superTypes.get(0) as Class).partial
 		}
-
+		
 		res
 	}
 	
@@ -915,13 +923,13 @@ class TextRAMTransform implements ITextRAMTransform {
 		val List<TClassMember> res = newArrayList
 		
 		ramOperations.forEach [ o |
-			res.add( o.transforOperation(to) )
+			res.add( o.transformOperation(to) )
 		]
 		
 		res
 	}
 	
-	private def transforOperation(Operation operation, TAspect to) {
+	private def transformOperation(Operation operation, TAspect to) {
 		val res = TextRamFactory.eINSTANCE.createTOperation
 		res.static = operation.static
 		res.partial = operation.partial
@@ -929,16 +937,25 @@ class TextRAMTransform implements ITextRAMTransform {
 		res.abstract = operation.abstract
 		res.visibility = operation.visibility
 		res.returnType = to.getTypeReference( operation.returnType )
-		
-		if ( operation.returnType instanceof Class ) {
-			res.partialReturnType = (operation.returnType as Class).partial
-		}
+		res.partialReturnType = getPartialReturnType(operation.returnType)
 		
 		operation.parameters.forEach[ p | 
 			res.parameters.add( p.transformParameter(to) )
 		]
 
 		res
+	}
+	
+	private def dispatch getPartialReturnType(Type type) {
+		if (type instanceof Class) {
+			return (type as Class).partial
+		}
+		
+		return false
+	}
+	
+	private def dispatch getPartialReturnType(RSet rset) {
+		return false;
 	}
 	
 	private def transformParameter(Parameter parameter, TAspect to) {

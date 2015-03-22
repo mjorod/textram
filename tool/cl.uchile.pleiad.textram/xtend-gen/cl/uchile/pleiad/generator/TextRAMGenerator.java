@@ -11,7 +11,6 @@ import cl.uchile.pleiad.util.DirectedGraph;
 import cl.uchile.pleiad.util.TextRAMPersistence;
 import cl.uchile.pleiad.util.TopologicalSort;
 import com.google.common.collect.Iterables;
-import java.util.Calendar;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -32,60 +31,57 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 @SuppressWarnings("all")
 public class TextRAMGenerator implements IGenerator {
   public void doGenerate(final Resource resource, final IFileSystemAccess fsa) {
-    final DirectedGraph<Aspect> d = new DirectedGraph<Aspect>();
+    final DirectedGraph<TAspect> d = new DirectedGraph<TAspect>();
     TreeIterator<EObject> _allContents = resource.getAllContents();
     Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
-    Iterable<Aspect> _filter = Iterables.<Aspect>filter(_iterable, Aspect.class);
-    for (final Aspect aspect : _filter) {
-      {
-        d.addNode(aspect);
-        final TAspect textRamAspect = ((TAspect) aspect);
-        EList<TInstantiationHeader> _headerInstantiations = textRamAspect.getHeaderInstantiations();
-        final Procedure1<TInstantiationHeader> _function = new Procedure1<TInstantiationHeader>() {
-          public void apply(final TInstantiationHeader instantiation) {
-            EList<TAspect> _externalAspects = instantiation.getExternalAspects();
-            final Procedure1<TAspect> _function = new Procedure1<TAspect>() {
-              public void apply(final TAspect externalAspect) {
-                d.addNode(externalAspect);
-                d.addEdge(externalAspect, aspect);
-              }
-            };
-            IterableExtensions.<TAspect>forEach(_externalAspects, _function);
-          }
-        };
-        IterableExtensions.<TInstantiationHeader>forEach(_headerInstantiations, _function);
-      }
+    Iterable<TAspect> _filter = Iterables.<TAspect>filter(_iterable, TAspect.class);
+    for (final TAspect aspect : _filter) {
+      this.addNode(d, ((TAspect) aspect));
     }
     ModelConverterProxy _instance = ModelConverterProxy.getInstance();
     _instance.reset();
-    List<Aspect> _sort = TopologicalSort.<Aspect>sort(d);
-    final Procedure1<Aspect> _function = new Procedure1<Aspect>() {
-      public void apply(final Aspect aspect) {
-        Calendar _instance = Calendar.getInstance();
-        String _string = _instance.toString();
-        String _plus = (_string + "-");
-        String _name = aspect.getName();
-        String _plus_1 = (_plus + _name);
-        System.out.println(_plus_1);
+    List<TAspect> _sort = TopologicalSort.<TAspect>sort(d);
+    final Procedure1<TAspect> _function = new Procedure1<TAspect>() {
+      public void apply(final TAspect aspect) {
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("aspects/");
-        String _name_1 = aspect.getName();
-        _builder.append(_name_1, "");
+        String _name = aspect.getName();
+        _builder.append(_name, "");
         _builder.append(".ram");
         final String relativePath = _builder.toString();
         StringConcatenation _builder_1 = new StringConcatenation();
         _builder_1.append("../aspects/");
-        String _name_2 = aspect.getName();
-        _builder_1.append(_name_2, "");
+        String _name_1 = aspect.getName();
+        _builder_1.append(_name_1, "");
         _builder_1.append(".ram");
         final String path = _builder_1.toString();
-        ModelConverterProxy _instance_1 = ModelConverterProxy.getInstance();
-        final Aspect ramAspect = _instance_1.convertTextRAMModelToRAMModel(aspect);
-        TextRAMPersistence _instance_2 = TextRAMPersistence.getInstance();
-        final String content = _instance_2.serializeModel(ramAspect, path);
+        ModelConverterProxy _instance = ModelConverterProxy.getInstance();
+        final Aspect ramAspect = _instance.convertTextRAMModelToRAMModel(aspect);
+        TextRAMPersistence _instance_1 = TextRAMPersistence.getInstance();
+        final String content = _instance_1.serializeModel(ramAspect, path);
         fsa.generateFile(relativePath, content);
       }
     };
-    IterableExtensions.<Aspect>forEach(_sort, _function);
+    IterableExtensions.<TAspect>forEach(_sort, _function);
+  }
+  
+  public void addNode(final DirectedGraph<TAspect> d, final TAspect aspect) {
+    d.addNode(aspect);
+    final TAspect textRamAspect = ((TAspect) aspect);
+    EList<TInstantiationHeader> _headerInstantiations = textRamAspect.getHeaderInstantiations();
+    final Procedure1<TInstantiationHeader> _function = new Procedure1<TInstantiationHeader>() {
+      public void apply(final TInstantiationHeader instantiation) {
+        EList<TAspect> _externalAspects = instantiation.getExternalAspects();
+        final Procedure1<TAspect> _function = new Procedure1<TAspect>() {
+          public void apply(final TAspect externalAspect) {
+            d.addNode(externalAspect);
+            d.addEdge(externalAspect, aspect);
+            TextRAMGenerator.this.addNode(d, externalAspect);
+          }
+        };
+        IterableExtensions.<TAspect>forEach(_externalAspects, _function);
+      }
+    };
+    IterableExtensions.<TInstantiationHeader>forEach(_headerInstantiations, _function);
   }
 }

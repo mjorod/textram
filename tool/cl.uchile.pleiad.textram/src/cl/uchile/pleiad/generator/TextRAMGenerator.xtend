@@ -27,26 +27,25 @@ class TextRAMGenerator implements IGenerator {
         
     override void doGenerate(Resource resource, IFileSystemAccess fsa) {
         
-        val d = new DirectedGraph<Aspect>()
+        val d = new DirectedGraph<TAspect>()
         
-        for (aspect : resource.allContents.toIterable.filter(Aspect)){
-    		d.addNode(aspect)
-    		
-    		val textRamAspect = aspect as TAspect
-    		
-    		textRamAspect.headerInstantiations.forEach[ instantiation |
-    			instantiation.externalAspects.forEach[  externalAspect |
-    				d.addNode(externalAspect)
-    				d.addEdge(externalAspect, aspect)	
-    			]
-    		]
+        for (aspect : resource.allContents.toIterable.filter(TAspect)){
+//    		d.addNode(aspect)
+//    		
+//    		val textRamAspect = aspect as TAspect
+//    		
+//    		textRamAspect.headerInstantiations.forEach[ instantiation |
+//    			instantiation.externalAspects.forEach[  externalAspect |
+//    				d.addNode(externalAspect)
+//    				d.addEdge(externalAspect, aspect)	
+//    			]
+//    		]
+			this.addNode(d, aspect as TAspect)
 	    }
 	    
 	    ModelConverterProxy::instance.reset
 	    
 	    TopologicalSort::sort(d).forEach[ aspect | 
-	    	System.out.println(Calendar.instance.toString + "-" +  aspect.name)
-		
 			val relativePath = '''aspects/«aspect.name».ram'''
             val path = '''../aspects/«aspect.name».ram'''
                 
@@ -57,6 +56,21 @@ class TextRAMGenerator implements IGenerator {
             fsa.generateFile(relativePath, content)
 	    ]
   	}
+  	
+  	def void addNode(DirectedGraph<TAspect> d, TAspect aspect) {
+  		d.addNode(aspect)
+  		
+  		val textRamAspect = aspect as TAspect
+    		
+    		textRamAspect.headerInstantiations.forEach[ instantiation |
+    			instantiation.externalAspects.forEach[  externalAspect |
+    				d.addNode(externalAspect)
+    				d.addEdge(externalAspect, aspect)
+    				
+    				this.addNode(d, externalAspect)	
+    			]
+    		]
+  		
+  	}
 }
-
          

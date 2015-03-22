@@ -232,7 +232,6 @@ final class TextRamEcoreUtil {
 	 */
 	def static getTextRamClass(TInteractionMessage textRamInteraction) {
 		var TClass result = null
-		var TClass result1 = null
 		
 		if (textRamInteraction.rightLifeline.referenceType == TLifelineReferenceType.REFERENCE) {
 			result = textRamInteraction.rightLifeline.represents as TClass
@@ -306,7 +305,7 @@ final class TextRamEcoreUtil {
 		validExternalAspects						
 	}
 	
-	def getTypesFor(StructuralView structuralView) {
+	def getTypesFor(TStructuralView structuralView) {
 		structuralView.types.appendPrimitiveTypes
 		
 		structuralView.types.addAll(addRSetPrimitiveTypes( structuralView.types ))
@@ -457,7 +456,7 @@ final class TextRamEcoreUtil {
 		return tStructuralView.TAssociations.toList 
 	}
 	
-	private static def getAllTypes(StructuralView structuralView) {
+	private static def getAllTypes(TStructuralView structuralView) {
 		val EList<Type>  typeList = new BasicEList<Type> 
 		for ( clazz : structuralView.classes ) {
 			typeList.add(clazz)
@@ -655,9 +654,9 @@ final class TextRamEcoreUtil {
 		// adds assignTo
 		if (message != null && message.assignTo != null) {
 			//TODO: why TAssociation is not a TValueSpecification?
-			if ( message.assignTo instanceof TAssociation == false ) {
+			//if ( message.assignTo instanceof TAssociation == false ) {
 				result.add( message.assignTo as TValueSpecification )
-			}
+			//}
 		}
 		
 		// adds operation's parameters

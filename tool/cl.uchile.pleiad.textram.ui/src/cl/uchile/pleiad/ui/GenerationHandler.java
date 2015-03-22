@@ -74,17 +74,6 @@ public class GenerationHandler extends AbstractHandler implements IHandler {
 			return null;
 		}
 
-		// IWorkspace ws = ResourcesPlugin.getWorkspace();
-		// IProject project = ws.getRoot().getProject("External Files");
-		// IPath location = new Path( result );
-		// IFile file = project.getFile(location.lastSegment());
-		// file.createLink(location, IResource.NONE, null);
-		// IWorkbenchPage page
-		// =PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		//
-		// if (page != null)
-		// page.openEditor(file);
-
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 		IStorage storage = new StringStorage( textRamAspect.getName(), content);

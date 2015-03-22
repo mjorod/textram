@@ -35,6 +35,7 @@ import cl.uchile.pleiad.textRam.TInstantiationHeader;
 import cl.uchile.pleiad.textRam.TOperation;
 import cl.uchile.pleiad.textRam.TParameter;
 import cl.uchile.pleiad.textRam.TStructuralView;
+import cl.uchile.pleiad.util.TextRamEcoreUtil;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -53,29 +55,38 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 @SuppressWarnings("all")
 public class StructuralViewGenerator {
-  private Aspect textRamAspect;
+  private TAspect textRamAspect;
   
   private Aspect ramAspect;
   
-  public StructuralViewGenerator(final Aspect from, final Aspect to) {
+  private final List<Aspect> externalAspects = CollectionLiterals.<Aspect>newArrayList();
+  
+  @Extension
+  private TextRamEcoreUtil scopeProvider = new TextRamEcoreUtil();
+  
+  public StructuralViewGenerator(final TAspect from, final Aspect to) {
     this.textRamAspect = from;
     this.ramAspect = to;
     StructuralView _createStructuralView = RamFactory.eINSTANCE.createStructuralView();
     this.ramAspect.setStructuralView(_createStructuralView);
-    StructuralView _structuralView = this.ramAspect.getStructuralView();
+    StructuralView _structuralView = from.getStructuralView();
     EList<Type> _types = _structuralView.getTypes();
-    Collection<Type> _generateTypes = this.generateTypes();
-    _types.addAll(_generateTypes);
-    StructuralView _structuralView_1 = this.ramAspect.getStructuralView();
-    EList<Classifier> _classes = _structuralView_1.getClasses();
+    boolean _isEmpty = _types.isEmpty();
+    boolean _equals = (_isEmpty == true);
+    if (_equals) {
+      StructuralView _structuralView_1 = this.textRamAspect.getStructuralView();
+      this.scopeProvider.getTypesFor(((TStructuralView) _structuralView_1));
+    }
+    StructuralView _structuralView_2 = this.ramAspect.getStructuralView();
+    EList<Classifier> _classes = _structuralView_2.getClasses();
     List<Classifier> _createClasses = this.createClasses();
     _classes.addAll(_createClasses);
-    StructuralView _structuralView_2 = this.ramAspect.getStructuralView();
-    EList<Type> _types_1 = _structuralView_2.getTypes();
-    this.convertRSetTypeClassFromTClass(_types_1);
-    this.generateClasses();
     StructuralView _structuralView_3 = this.ramAspect.getStructuralView();
-    EList<Association> _associations = _structuralView_3.getAssociations();
+    EList<Type> _types_1 = _structuralView_3.getTypes();
+    this.generateTypes(_types_1);
+    this.generateClasses();
+    StructuralView _structuralView_4 = this.ramAspect.getStructuralView();
+    EList<Association> _associations = _structuralView_4.getAssociations();
     List<Association> _generateAssociations = this.generateAssociations();
     _associations.addAll(_generateAssociations);
     EList<Instantiation> _instantiations = this.ramAspect.getInstantiations();
@@ -83,8 +94,12 @@ public class StructuralViewGenerator {
     _instantiations.addAll(_generateInstantiations);
   }
   
-  public void convertRSetTypeClassFromTClass(final EList<Type> types) {
-    Iterable<RSet> _filter = Iterables.<RSet>filter(types, RSet.class);
+  private void generateTypes(final EList<Type> ramTypes) {
+    StructuralView _structuralView = this.textRamAspect.getStructuralView();
+    EList<Type> _types = _structuralView.getTypes();
+    Collection<Type> _copyAll = EcoreUtil.<Type>copyAll(_types);
+    ramTypes.addAll(_copyAll);
+    Iterable<RSet> _filter = Iterables.<RSet>filter(ramTypes, RSet.class);
     final Procedure1<RSet> _function = new Procedure1<RSet>() {
       public void apply(final RSet rSetType) {
         rSetType.setInstanceClassName(null);
@@ -200,17 +215,37 @@ public class StructuralViewGenerator {
         EList<TAspect> _externalAspects = instantiationHeader.getExternalAspects();
         final Procedure1<TAspect> _function = new Procedure1<TAspect>() {
           public void apply(final TAspect ea) {
-            Instantiation _createInstantiation = RamFactory.eINSTANCE.createInstantiation();
-            final Procedure1<Instantiation> _function = new Procedure1<Instantiation>() {
-              public void apply(final Instantiation it) {
-                it.setExternalAspect(ea);
-                InstantiationType _type = instantiationHeader.getType();
-                it.setType(_type);
+            Aspect externalAspect = null;
+            final Function1<Aspect,Boolean> _function = new Function1<Aspect,Boolean>() {
+              public Boolean apply(final Aspect e) {
+                String _name = e.getName();
+                String _name_1 = ea.getName();
+                return Boolean.valueOf(Objects.equal(_name, _name_1));
               }
             };
-            final Instantiation instantiation = ObjectExtensions.<Instantiation>operator_doubleArrow(_createInstantiation, _function);
+            boolean _exists = IterableExtensions.<Aspect>exists(StructuralViewGenerator.this.externalAspects, _function);
+            if (_exists) {
+              final Function1<Aspect,Boolean> _function_1 = new Function1<Aspect,Boolean>() {
+                public Boolean apply(final Aspect e) {
+                  String _name = e.getName();
+                  String _name_1 = ea.getName();
+                  return Boolean.valueOf(Objects.equal(_name, _name_1));
+                }
+              };
+              Aspect _findFirst = IterableExtensions.<Aspect>findFirst(StructuralViewGenerator.this.externalAspects, _function_1);
+              externalAspect = _findFirst;
+            } else {
+              ModelConverterProxy _instance = ModelConverterProxy.getInstance();
+              Aspect _convertTextRAMModelToRAMModel = _instance.convertTextRAMModelToRAMModel(ea);
+              externalAspect = _convertTextRAMModelToRAMModel;
+              StructuralViewGenerator.this.externalAspects.add(externalAspect);
+            }
+            final Instantiation instantiation = RamFactory.eINSTANCE.createInstantiation();
+            instantiation.setExternalAspect(externalAspect);
+            InstantiationType _type = instantiationHeader.getType();
+            instantiation.setType(_type);
             EList<Instantiation> _instantiations = StructuralViewGenerator.this.textRamAspect.getInstantiations();
-            final Function1<Instantiation,Boolean> _function_1 = new Function1<Instantiation,Boolean>() {
+            final Function1<Instantiation,Boolean> _function_2 = new Function1<Instantiation,Boolean>() {
               public Boolean apply(final Instantiation ins) {
                 boolean _and = false;
                 Aspect _externalAspect = ins.getExternalAspect();
@@ -228,11 +263,11 @@ public class StructuralViewGenerator {
                 return Boolean.valueOf(_and);
               }
             };
-            final Instantiation instantiationMapped = IterableExtensions.<Instantiation>findFirst(_instantiations, _function_1);
+            final Instantiation instantiationMapped = IterableExtensions.<Instantiation>findFirst(_instantiations, _function_2);
             boolean _notEquals = (!Objects.equal(instantiationMapped, null));
             if (_notEquals) {
               EList<ClassifierMapping> _mappings = instantiation.getMappings();
-              List<ClassifierMapping> _generateMappings = StructuralViewGenerator.this.generateMappings(instantiationMapped, ea);
+              List<ClassifierMapping> _generateMappings = StructuralViewGenerator.this.generateMappings(instantiationMapped, externalAspect);
               _mappings.addAll(_generateMappings);
             }
             result.add(instantiation);
@@ -252,7 +287,7 @@ public class StructuralViewGenerator {
     {
       ModelConverterProxy _instance = ModelConverterProxy.getInstance();
       Aspect _externalAspect = from.getExternalAspect();
-      final Aspect myExternalAspect = _instance.convertTextRAMModelToRAMModel(_externalAspect);
+      final Aspect myExternalAspect = _instance.convertTextRAMModelToRAMModel(((TAspect) _externalAspect));
       Instantiation _createInstantiation = RamFactory.eINSTANCE.createInstantiation();
       final Procedure1<Instantiation> _function = new Procedure1<Instantiation>() {
         public void apply(final Instantiation it) {
@@ -317,36 +352,33 @@ public class StructuralViewGenerator {
   private ClassifierMapping generateMapping(final TClassifierMapping textRamClassifierMapping, final Aspect externalAspect) {
     ClassifierMapping _xblockexpression = null;
     {
-      ClassifierMapping _createClassifierMapping = RamFactory.eINSTANCE.createClassifierMapping();
-      final Procedure1<ClassifierMapping> _function = new Procedure1<ClassifierMapping>() {
-        public void apply(final ClassifierMapping it) {
-          StructuralView _structuralView = externalAspect.getStructuralView();
-          EList<Classifier> _classes = _structuralView.getClasses();
-          final Function1<Classifier,Boolean> _function = new Function1<Classifier,Boolean>() {
-            public Boolean apply(final Classifier c) {
-              String _name = c.getName();
-              Classifier _fromElement = textRamClassifierMapping.getFromElement();
-              String _name_1 = _fromElement.getName();
-              return Boolean.valueOf(Objects.equal(_name, _name_1));
-            }
-          };
-          Classifier _findFirst = IterableExtensions.<Classifier>findFirst(_classes, _function);
-          it.setFromElement(_findFirst);
-          StructuralView _structuralView_1 = StructuralViewGenerator.this.ramAspect.getStructuralView();
-          EList<Classifier> _classes_1 = _structuralView_1.getClasses();
-          final Function1<Classifier,Boolean> _function_1 = new Function1<Classifier,Boolean>() {
-            public Boolean apply(final Classifier c) {
-              String _name = c.getName();
-              Classifier _toElement = textRamClassifierMapping.getToElement();
-              String _name_1 = _toElement.getName();
-              return Boolean.valueOf(Objects.equal(_name, _name_1));
-            }
-          };
-          Classifier _findFirst_1 = IterableExtensions.<Classifier>findFirst(_classes_1, _function_1);
-          it.setToElement(_findFirst_1);
+      final ClassifierMapping result = RamFactory.eINSTANCE.createClassifierMapping();
+      StructuralView _structuralView = externalAspect.getStructuralView();
+      EList<Classifier> _classes = _structuralView.getClasses();
+      Iterable<ca.mcgill.cs.sel.ram.Class> _filter = Iterables.<ca.mcgill.cs.sel.ram.Class>filter(_classes, ca.mcgill.cs.sel.ram.Class.class);
+      final Function1<ca.mcgill.cs.sel.ram.Class,Boolean> _function = new Function1<ca.mcgill.cs.sel.ram.Class,Boolean>() {
+        public Boolean apply(final ca.mcgill.cs.sel.ram.Class c) {
+          String _name = c.getName();
+          Classifier _fromElement = textRamClassifierMapping.getFromElement();
+          String _name_1 = _fromElement.getName();
+          return Boolean.valueOf(Objects.equal(_name, _name_1));
         }
       };
-      final ClassifierMapping result = ObjectExtensions.<ClassifierMapping>operator_doubleArrow(_createClassifierMapping, _function);
+      ca.mcgill.cs.sel.ram.Class _findFirst = IterableExtensions.<ca.mcgill.cs.sel.ram.Class>findFirst(_filter, _function);
+      result.setFromElement(_findFirst);
+      StructuralView _structuralView_1 = this.ramAspect.getStructuralView();
+      EList<Classifier> _classes_1 = _structuralView_1.getClasses();
+      Iterable<ca.mcgill.cs.sel.ram.Class> _filter_1 = Iterables.<ca.mcgill.cs.sel.ram.Class>filter(_classes_1, ca.mcgill.cs.sel.ram.Class.class);
+      final Function1<ca.mcgill.cs.sel.ram.Class,Boolean> _function_1 = new Function1<ca.mcgill.cs.sel.ram.Class,Boolean>() {
+        public Boolean apply(final ca.mcgill.cs.sel.ram.Class c) {
+          String _name = c.getName();
+          Classifier _toElement = textRamClassifierMapping.getToElement();
+          String _name_1 = _toElement.getName();
+          return Boolean.valueOf(Objects.equal(_name, _name_1));
+        }
+      };
+      ca.mcgill.cs.sel.ram.Class _findFirst_1 = IterableExtensions.<ca.mcgill.cs.sel.ram.Class>findFirst(_filter_1, _function_1);
+      result.setToElement(_findFirst_1);
       EList<TClassMember> _fromMembers = textRamClassifierMapping.getFromMembers();
       int _size = _fromMembers.size();
       boolean _greaterThan = (_size > 0);
@@ -426,55 +458,50 @@ public class StructuralViewGenerator {
   private boolean _generateMemberMapping(final TOperation fromMember, final TClassMember toMember, final Aspect externalAspect, final ClassifierMapping classifierMapping) {
     boolean _xblockexpression = false;
     {
-      OperationMapping _createOperationMapping = RamFactory.eINSTANCE.createOperationMapping();
-      final Procedure1<OperationMapping> _function = new Procedure1<OperationMapping>() {
-        public void apply(final OperationMapping it) {
-          StructuralView _structuralView = externalAspect.getStructuralView();
-          EList<Classifier> _classes = _structuralView.getClasses();
-          Iterable<ca.mcgill.cs.sel.ram.Class> _filter = Iterables.<ca.mcgill.cs.sel.ram.Class>filter(_classes, ca.mcgill.cs.sel.ram.Class.class);
-          final Function1<ca.mcgill.cs.sel.ram.Class,EList<Operation>> _function = new Function1<ca.mcgill.cs.sel.ram.Class,EList<Operation>>() {
-            public EList<Operation> apply(final ca.mcgill.cs.sel.ram.Class it) {
-              return it.getOperations();
-            }
-          };
-          Iterable<EList<Operation>> _map = IterableExtensions.<ca.mcgill.cs.sel.ram.Class, EList<Operation>>map(_filter, _function);
-          Iterable<Operation> _flatten = Iterables.<Operation>concat(_map);
-          final Function1<Operation,Boolean> _function_1 = new Function1<Operation,Boolean>() {
-            public Boolean apply(final Operation o) {
-              String _name = o.getName();
-              String _name_1 = fromMember.getName();
-              return Boolean.valueOf(Objects.equal(_name, _name_1));
-            }
-          };
-          Operation _findFirst = IterableExtensions.<Operation>findFirst(_flatten, _function_1);
-          it.setFromElement(_findFirst);
-          StructuralView _structuralView_1 = StructuralViewGenerator.this.ramAspect.getStructuralView();
-          EList<Classifier> _classes_1 = _structuralView_1.getClasses();
-          Iterable<ca.mcgill.cs.sel.ram.Class> _filter_1 = Iterables.<ca.mcgill.cs.sel.ram.Class>filter(_classes_1, ca.mcgill.cs.sel.ram.Class.class);
-          final Function1<ca.mcgill.cs.sel.ram.Class,EList<Operation>> _function_2 = new Function1<ca.mcgill.cs.sel.ram.Class,EList<Operation>>() {
-            public EList<Operation> apply(final ca.mcgill.cs.sel.ram.Class it) {
-              return it.getOperations();
-            }
-          };
-          Iterable<EList<Operation>> _map_1 = IterableExtensions.<ca.mcgill.cs.sel.ram.Class, EList<Operation>>map(_filter_1, _function_2);
-          Iterable<Operation> _flatten_1 = Iterables.<Operation>concat(_map_1);
-          final Function1<Operation,Boolean> _function_3 = new Function1<Operation,Boolean>() {
-            public Boolean apply(final Operation a) {
-              String _name = a.getName();
-              String _name_1 = toMember.getName();
-              return Boolean.valueOf(Objects.equal(_name, _name_1));
-            }
-          };
-          Operation _findFirst_1 = IterableExtensions.<Operation>findFirst(_flatten_1, _function_3);
-          it.setToElement(_findFirst_1);
-          EList<ParameterMapping> _parameterMappings = it.getParameterMappings();
-          Operation _fromElement = it.getFromElement();
-          Operation _toElement = it.getToElement();
-          List<ParameterMapping> _generateParameterMapping = StructuralViewGenerator.this.generateParameterMapping(_fromElement, _toElement);
-          _parameterMappings.addAll(_generateParameterMapping);
+      final OperationMapping operationMapping = RamFactory.eINSTANCE.createOperationMapping();
+      StructuralView _structuralView = externalAspect.getStructuralView();
+      EList<Classifier> _classes = _structuralView.getClasses();
+      Iterable<ca.mcgill.cs.sel.ram.Class> _filter = Iterables.<ca.mcgill.cs.sel.ram.Class>filter(_classes, ca.mcgill.cs.sel.ram.Class.class);
+      final Function1<ca.mcgill.cs.sel.ram.Class,EList<Operation>> _function = new Function1<ca.mcgill.cs.sel.ram.Class,EList<Operation>>() {
+        public EList<Operation> apply(final ca.mcgill.cs.sel.ram.Class it) {
+          return it.getOperations();
         }
       };
-      final OperationMapping operationMapping = ObjectExtensions.<OperationMapping>operator_doubleArrow(_createOperationMapping, _function);
+      Iterable<EList<Operation>> _map = IterableExtensions.<ca.mcgill.cs.sel.ram.Class, EList<Operation>>map(_filter, _function);
+      Iterable<Operation> _flatten = Iterables.<Operation>concat(_map);
+      final Function1<Operation,Boolean> _function_1 = new Function1<Operation,Boolean>() {
+        public Boolean apply(final Operation o) {
+          String _name = o.getName();
+          String _name_1 = fromMember.getName();
+          return Boolean.valueOf(Objects.equal(_name, _name_1));
+        }
+      };
+      Operation _findFirst = IterableExtensions.<Operation>findFirst(_flatten, _function_1);
+      operationMapping.setFromElement(_findFirst);
+      StructuralView _structuralView_1 = this.ramAspect.getStructuralView();
+      EList<Classifier> _classes_1 = _structuralView_1.getClasses();
+      Iterable<ca.mcgill.cs.sel.ram.Class> _filter_1 = Iterables.<ca.mcgill.cs.sel.ram.Class>filter(_classes_1, ca.mcgill.cs.sel.ram.Class.class);
+      final Function1<ca.mcgill.cs.sel.ram.Class,EList<Operation>> _function_2 = new Function1<ca.mcgill.cs.sel.ram.Class,EList<Operation>>() {
+        public EList<Operation> apply(final ca.mcgill.cs.sel.ram.Class it) {
+          return it.getOperations();
+        }
+      };
+      Iterable<EList<Operation>> _map_1 = IterableExtensions.<ca.mcgill.cs.sel.ram.Class, EList<Operation>>map(_filter_1, _function_2);
+      Iterable<Operation> _flatten_1 = Iterables.<Operation>concat(_map_1);
+      final Function1<Operation,Boolean> _function_3 = new Function1<Operation,Boolean>() {
+        public Boolean apply(final Operation a) {
+          String _name = a.getName();
+          String _name_1 = toMember.getName();
+          return Boolean.valueOf(Objects.equal(_name, _name_1));
+        }
+      };
+      Operation _findFirst_1 = IterableExtensions.<Operation>findFirst(_flatten_1, _function_3);
+      operationMapping.setToElement(_findFirst_1);
+      EList<ParameterMapping> _parameterMappings = operationMapping.getParameterMappings();
+      Operation _fromElement = operationMapping.getFromElement();
+      Operation _toElement = operationMapping.getToElement();
+      List<ParameterMapping> _generateParameterMapping = this.generateParameterMapping(_fromElement, _toElement);
+      _parameterMappings.addAll(_generateParameterMapping);
       EList<OperationMapping> _operationMappings = classifierMapping.getOperationMappings();
       _xblockexpression = _operationMappings.add(operationMapping);
     }
@@ -488,18 +515,13 @@ public class StructuralViewGenerator {
       EList<Parameter> _parameters = fromOperation.getParameters();
       final Procedure1<Parameter> _function = new Procedure1<Parameter>() {
         public void apply(final Parameter fromParm) {
-          ParameterMapping _createParameterMapping = RamFactory.eINSTANCE.createParameterMapping();
-          final Procedure1<ParameterMapping> _function = new Procedure1<ParameterMapping>() {
-            public void apply(final ParameterMapping it) {
-              it.setFromElement(fromParm);
-              EList<Parameter> _parameters = toOperation.getParameters();
-              EList<Parameter> _parameters_1 = fromOperation.getParameters();
-              int _indexOf = _parameters_1.indexOf(fromParm);
-              Parameter _get = _parameters.get(_indexOf);
-              it.setToElement(_get);
-            }
-          };
-          final ParameterMapping parameterMapping = ObjectExtensions.<ParameterMapping>operator_doubleArrow(_createParameterMapping, _function);
+          final ParameterMapping parameterMapping = RamFactory.eINSTANCE.createParameterMapping();
+          parameterMapping.setFromElement(fromParm);
+          EList<Parameter> _parameters = toOperation.getParameters();
+          EList<Parameter> _parameters_1 = fromOperation.getParameters();
+          int _indexOf = _parameters_1.indexOf(fromParm);
+          Parameter _get = _parameters.get(_indexOf);
+          parameterMapping.setToElement(_get);
           result.add(parameterMapping);
         }
       };
@@ -783,7 +805,8 @@ public class StructuralViewGenerator {
         return Boolean.valueOf(Objects.equal(_name, _name_1));
       }
     };
-    return IterableExtensions.<RSet>findFirst(_filter, _function);
+    final RSet res = IterableExtensions.<RSet>findFirst(_filter, _function);
+    return res;
   }
   
   private List<Association> generateAssociations() {
@@ -899,17 +922,6 @@ public class StructuralViewGenerator {
         EList<AssociationEnd> _associationEnds_3 = classTo.getAssociationEnds();
         _associationEnds_3.add(fromEnd);
       }
-      _xblockexpression = result;
-    }
-    return _xblockexpression;
-  }
-  
-  private Collection<Type> generateTypes() {
-    Collection<Type> _xblockexpression = null;
-    {
-      StructuralView _structuralView = this.textRamAspect.getStructuralView();
-      EList<Type> _types = _structuralView.getTypes();
-      final Collection<Type> result = EcoreUtil.<Type>copyAll(_types);
       _xblockexpression = result;
     }
     return _xblockexpression;
