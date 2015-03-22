@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_1jn2gNCtEeSnF8hbwamEsg" name="DemoNetworkResolution">
+  <structuralView xmi:id="_1jn2gdCtEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_1jn2gtCtEeSnF8hbwamEsg" name="Result"/>
+    <classes xsi:type="ram:Class" xmi:id="_1jn2g9CtEeSnF8hbwamEsg" name="OutOfServiceResult" superTypes="_1jn2gtCtEeSnF8hbwamEsg">
+      <operations xmi:id="_1jn2hNCtEeSnF8hbwamEsg" name="create" returnType="_1jn2g9CtEeSnF8hbwamEsg"/>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_1jn2hdCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_1jn2htCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_1jn2h9CtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_1jn2iNCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_1jn2idCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_1jn2itCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_1jn2i9CtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_1jn2jNCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1jn2jdCtEeSnF8hbwamEsg" type="_1jn2htCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1jn2jtCtEeSnF8hbwamEsg" type="_1jn2h9CtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1jn2j9CtEeSnF8hbwamEsg" type="_1jn2iNCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1jn2kNCtEeSnF8hbwamEsg" type="_1jn2idCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1jn2kdCtEeSnF8hbwamEsg" type="_1jn2i9CtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1jn2ktCtEeSnF8hbwamEsg" type="_1jn2jNCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1jn2k9CtEeSnF8hbwamEsg" type="_1jn2gtCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1jn2lNCtEeSnF8hbwamEsg" type="_1jn2g9CtEeSnF8hbwamEsg"/>
+  </structuralView>
+</ram:Aspect>

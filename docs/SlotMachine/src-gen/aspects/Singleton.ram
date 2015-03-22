@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_LPmlUNCvEeSnF8hbwamEsg" name="Singleton">
+  <structuralView xmi:id="_LPmlUdCvEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_LPmlUtCvEeSnF8hbwamEsg" name="Singleton" partial="true">
+      <operations xmi:id="_LPmlU9CvEeSnF8hbwamEsg" name="getInstance" returnType="_LPmlUtCvEeSnF8hbwamEsg" partial="true"/>
+      <operations xmi:id="_LPmlVNCvEeSnF8hbwamEsg" name="create" visibility="private" returnType="_LPmlUtCvEeSnF8hbwamEsg"/>
+      <associationEnds xmi:id="_LPmlVdCvEeSnF8hbwamEsg" name="instance" referenceType="Composition" assoc="_LPmlV9CvEeSnF8hbwamEsg"/>
+      <associationEnds xmi:id="_LPmlVtCvEeSnF8hbwamEsg" name="singleton" navigable="false" assoc="_LPmlV9CvEeSnF8hbwamEsg"/>
+    </classes>
+    <associations xmi:id="_LPmlV9CvEeSnF8hbwamEsg" name="Singleton_Singleton" ends="_LPmlVdCvEeSnF8hbwamEsg _LPmlVtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RVoid" xmi:id="_LPmlWNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_LPmlWdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_LPmlWtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_LPmlW9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_LPmlXNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_LPmlXdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_LPmlXtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_LPmlX9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_LPmlYNCvEeSnF8hbwamEsg" type="_LPmlWdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_LPmlYdCvEeSnF8hbwamEsg" type="_LPmlWtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_LPmlYtCvEeSnF8hbwamEsg" type="_LPmlW9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_LPmlY9CvEeSnF8hbwamEsg" type="_LPmlXNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_LPmlZNCvEeSnF8hbwamEsg" type="_LPmlXtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_LPmlZdCvEeSnF8hbwamEsg" type="_LPmlX9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_LPmlZtCvEeSnF8hbwamEsg" type="_LPmlUtCvEeSnF8hbwamEsg"/>
+  </structuralView>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_LPmlZ9CvEeSnF8hbwamEsg" specifies="_LPmlU9CvEeSnF8hbwamEsg">
+    <specification xmi:id="_LPmlaNCvEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:CombinedFragment" xmi:id="_LPmladCvEeSnF8hbwamEsg" covered="_LPmlcNCvEeSnF8hbwamEsg _LPmlcdCvEeSnF8hbwamEsg" interactionOperator="opt">
+        <operands xmi:id="_LPmlatCvEeSnF8hbwamEsg">
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LPmla9CvEeSnF8hbwamEsg" covered="_LPmlcNCvEeSnF8hbwamEsg" message="_LPmlctCvEeSnF8hbwamEsg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LPmlbNCvEeSnF8hbwamEsg" covered="_LPmlcdCvEeSnF8hbwamEsg" message="_LPmlctCvEeSnF8hbwamEsg"/>
+          <interactionConstraint xsi:type="ram:OpaqueExpression" xmi:id="_LPmlbdCvEeSnF8hbwamEsg" body="&quot;instance == null&quot;" language="java"/>
+        </operands>
+      </fragments>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LPmlbtCvEeSnF8hbwamEsg" covered="_LPmlcdCvEeSnF8hbwamEsg" message="_LPmlc9CvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LPmlb9CvEeSnF8hbwamEsg" covered="_LPmlcNCvEeSnF8hbwamEsg" message="_LPmlc9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_LPmlcNCvEeSnF8hbwamEsg" represents="_LPmlddCvEeSnF8hbwamEsg" coveredBy="_LPmla9CvEeSnF8hbwamEsg _LPmladCvEeSnF8hbwamEsg _LPmlb9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_LPmlcdCvEeSnF8hbwamEsg" represents="_LPmldtCvEeSnF8hbwamEsg" coveredBy="_LPmlbNCvEeSnF8hbwamEsg _LPmladCvEeSnF8hbwamEsg _LPmlbtCvEeSnF8hbwamEsg"/>
+      <messages xmi:id="_LPmlctCvEeSnF8hbwamEsg" sendEvent="_LPmla9CvEeSnF8hbwamEsg" receiveEvent="_LPmlbNCvEeSnF8hbwamEsg" signature="_LPmlVNCvEeSnF8hbwamEsg" assignTo="_LPmlVdCvEeSnF8hbwamEsg" messageSort="createMessage"/>
+      <messages xmi:id="_LPmlc9CvEeSnF8hbwamEsg" sendEvent="_LPmlbtCvEeSnF8hbwamEsg" receiveEvent="_LPmlb9CvEeSnF8hbwamEsg" messageSort="reply">
+        <returns xsi:type="ram:StructuralFeatureValue" xmi:id="_LPmldNCvEeSnF8hbwamEsg" value="_LPmlVdCvEeSnF8hbwamEsg"/>
+      </messages>
+      <properties xmi:id="_LPmlddCvEeSnF8hbwamEsg" name="singleton" static="true" lowerBound="1" type="_LPmlUtCvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_LPmldtCvEeSnF8hbwamEsg" name="instance" lowerBound="1" type="_LPmlUtCvEeSnF8hbwamEsg"/>
+    </specification>
+  </messageViews>
+</ram:Aspect>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_3GgToNCvEeSnF8hbwamEsg" name="Named">
+  <structuralView xmi:id="_3GgTodCvEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_3GgTotCvEeSnF8hbwamEsg" name="Named" partial="true">
+      <operations xmi:id="_3GgTo9CvEeSnF8hbwamEsg" name="getName" returnType="_3GgTq9CvEeSnF8hbwamEsg"/>
+      <operations xmi:id="_3GgTpNCvEeSnF8hbwamEsg" name="setName" returnType="_3GgTp9CvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3GgTpdCvEeSnF8hbwamEsg" name="name" type="_3GgTq9CvEeSnF8hbwamEsg"/>
+      </operations>
+      <attributes xmi:id="_3GgTptCvEeSnF8hbwamEsg" name="name" type="_3GgTq9CvEeSnF8hbwamEsg"/>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_3GgTp9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_3GgTqNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_3GgTqdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_3GgTqtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_3GgTq9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_3GgTrNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_3GgTrdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_3GgTrtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3GgTr9CvEeSnF8hbwamEsg" type="_3GgTqNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3GgTsNCvEeSnF8hbwamEsg" type="_3GgTqdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3GgTsdCvEeSnF8hbwamEsg" type="_3GgTqtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3GgTstCvEeSnF8hbwamEsg" type="_3GgTq9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3GgTs9CvEeSnF8hbwamEsg" type="_3GgTrdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3GgTtNCvEeSnF8hbwamEsg" type="_3GgTrtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3GgTtdCvEeSnF8hbwamEsg" type="_3GgTotCvEeSnF8hbwamEsg"/>
+  </structuralView>
+</ram:Aspect>

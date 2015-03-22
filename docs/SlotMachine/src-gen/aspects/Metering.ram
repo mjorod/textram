@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_3HLCANCvEeSnF8hbwamEsg" name="Metering">
+  <structuralView xmi:id="_3HLCAdCvEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_3HLCAtCvEeSnF8hbwamEsg" name="InterceptStateChange" partial="true">
+      <operations xmi:id="_3HLCA9CvEeSnF8hbwamEsg" name="getData" returnType="_3HLCINCvEeSnF8hbwamEsg"/>
+      <operations xmi:id="_3HLCBNCvEeSnF8hbwamEsg" name="modifyData" returnType="_3HLCHdCvEeSnF8hbwamEsg" partial="true">
+        <parameters xmi:id="_3HLCBdCvEeSnF8hbwamEsg" name="value" type="_3HLCINCvEeSnF8hbwamEsg"/>
+      </operations>
+      <attributes xmi:id="_3HLCBtCvEeSnF8hbwamEsg" name="data" type="_3HLCINCvEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_3HLCB9CvEeSnF8hbwamEsg" name="Meter">
+      <operations xmi:id="_3HLCCNCvEeSnF8hbwamEsg" name="create" returnType="_3HLCB9CvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HLCCdCvEeSnF8hbwamEsg" name="name" type="_3HLCIdCvEeSnF8hbwamEsg"/>
+        <parameters xmi:id="_3HLCCtCvEeSnF8hbwamEsg" name="initialValue" type="_3HLCINCvEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_3HLCC9CvEeSnF8hbwamEsg" name="setValue" returnType="_3HLCHdCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HLCDNCvEeSnF8hbwamEsg" name="newValue" type="_3HLCINCvEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_3HLCDdCvEeSnF8hbwamEsg" name="attachMeter" returnType="_3HLCHdCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HLCDtCvEeSnF8hbwamEsg" name="s" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_3HLCD9CvEeSnF8hbwamEsg" name="notifyChange" returnType="_3HLCHdCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HLCENCvEeSnF8hbwamEsg" name="s" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_3HLCEdCvEeSnF8hbwamEsg" name="updateMeter" visibility="package" returnType="_3HLCHdCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HLCEtCvEeSnF8hbwamEsg" name="s" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+      </operations>
+      <attributes xmi:id="_3HLCE9CvEeSnF8hbwamEsg" name="value" type="_3HLCINCvEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_3HLCFNCvEeSnF8hbwamEsg" name="StandardMeter" superTypes="_3HLCB9CvEeSnF8hbwamEsg">
+      <operations xmi:id="_3HLCFdCvEeSnF8hbwamEsg" name="updateMeter" returnType="_3HLCHdCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HLCFtCvEeSnF8hbwamEsg" name="s" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+      </operations>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_3HLCF9CvEeSnF8hbwamEsg" name="AdditiveMeter" superTypes="_3HLCB9CvEeSnF8hbwamEsg">
+      <operations xmi:id="_3HLCGNCvEeSnF8hbwamEsg" name="updateMeter" visibility="package" returnType="_3HLCHdCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HLCGdCvEeSnF8hbwamEsg" name="s" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+      </operations>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_3HLCGtCvEeSnF8hbwamEsg" name="CountingMeter" superTypes="_3HLCB9CvEeSnF8hbwamEsg">
+      <operations xmi:id="_3HLCG9CvEeSnF8hbwamEsg" name="updateMeter" visibility="package" returnType="_3HLCHdCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HLCHNCvEeSnF8hbwamEsg" name="s" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+      </operations>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_3HLCHdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_3HLCHtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_3HLCH9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_3HLCINCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_3HLCIdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_3HLCItCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_3HLCI9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_3HLCJNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCJdCvEeSnF8hbwamEsg" type="_3HLCHtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCJtCvEeSnF8hbwamEsg" type="_3HLCH9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCJ9CvEeSnF8hbwamEsg" type="_3HLCINCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCKNCvEeSnF8hbwamEsg" type="_3HLCIdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCKdCvEeSnF8hbwamEsg" type="_3HLCI9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCKtCvEeSnF8hbwamEsg" type="_3HLCJNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCK9CvEeSnF8hbwamEsg" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCLNCvEeSnF8hbwamEsg" type="_3HLCB9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCLdCvEeSnF8hbwamEsg" type="_3HLCFNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCLtCvEeSnF8hbwamEsg" type="_3HLCF9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HLCL9CvEeSnF8hbwamEsg" type="_3HLCGtCvEeSnF8hbwamEsg"/>
+  </structuralView>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_3HLCMNCvEeSnF8hbwamEsg" specifies="_3HLCD9CvEeSnF8hbwamEsg">
+    <specification xmi:id="_3HLCMdCvEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3HLCMtCvEeSnF8hbwamEsg" covered="_3HLCNtCvEeSnF8hbwamEsg" message="_3HLCO9CvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3HLCM9CvEeSnF8hbwamEsg" covered="_3HLCONCvEeSnF8hbwamEsg" message="_3HLCO9CvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3HLCNNCvEeSnF8hbwamEsg" covered="_3HLCNtCvEeSnF8hbwamEsg" message="_3HLCPNCvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3HLCNdCvEeSnF8hbwamEsg" covered="_3HLCNtCvEeSnF8hbwamEsg" message="_3HLCPNCvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3HLCNtCvEeSnF8hbwamEsg" represents="_3HLCP9CvEeSnF8hbwamEsg" coveredBy="_3HLCMtCvEeSnF8hbwamEsg _3HLCNNCvEeSnF8hbwamEsg _3HLCNdCvEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_3HLCN9CvEeSnF8hbwamEsg" name="v">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Metering.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <lifelines xmi:id="_3HLCONCvEeSnF8hbwamEsg" represents="_3HLCQNCvEeSnF8hbwamEsg" coveredBy="_3HLCM9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3HLCOdCvEeSnF8hbwamEsg" represents="_3HLCQdCvEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_3HLCOtCvEeSnF8hbwamEsg" name="n">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Metering.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <messages xmi:id="_3HLCO9CvEeSnF8hbwamEsg" sendEvent="_3HLCMtCvEeSnF8hbwamEsg" receiveEvent="_3HLCM9CvEeSnF8hbwamEsg" signature="_3HLCA9CvEeSnF8hbwamEsg"/>
+      <messages xmi:id="_3HLCPNCvEeSnF8hbwamEsg" sendEvent="_3HLCNNCvEeSnF8hbwamEsg" receiveEvent="_3HLCNdCvEeSnF8hbwamEsg" signature="_3HLCEdCvEeSnF8hbwamEsg">
+        <arguments xmi:id="_3HLCPdCvEeSnF8hbwamEsg" parameter="_3HLCEtCvEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_3HLCPtCvEeSnF8hbwamEsg" value="_3HLCQNCvEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_3HLCP9CvEeSnF8hbwamEsg" name="target" lowerBound="1" type="_3HLCB9CvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_3HLCQNCvEeSnF8hbwamEsg" name="intercetpStateChange" lowerBound="1" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_3HLCQdCvEeSnF8hbwamEsg" name="standardMeter" lowerBound="1" type="_3HLCFNCvEeSnF8hbwamEsg"/>
+    </specification>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_3HLCQtCvEeSnF8hbwamEsg" specifies="_3HLCFdCvEeSnF8hbwamEsg">
+    <specification xmi:id="_3HLCQ9CvEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3HLCRNCvEeSnF8hbwamEsg" covered="_3HLCSdCvEeSnF8hbwamEsg" message="_3HLCS9CvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3HLCRdCvEeSnF8hbwamEsg" covered="_3HLCSdCvEeSnF8hbwamEsg" message="_3HLCS9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3HLCRtCvEeSnF8hbwamEsg" represents="_3HLCTtCvEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_3HLCR9CvEeSnF8hbwamEsg" name="v">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Metering.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <lifelines xmi:id="_3HLCSNCvEeSnF8hbwamEsg" represents="_3HLCT9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3HLCSdCvEeSnF8hbwamEsg" represents="_3HLCUNCvEeSnF8hbwamEsg" coveredBy="_3HLCRNCvEeSnF8hbwamEsg _3HLCRdCvEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_3HLCStCvEeSnF8hbwamEsg" name="n">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Metering.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <messages xmi:id="_3HLCS9CvEeSnF8hbwamEsg" sendEvent="_3HLCRNCvEeSnF8hbwamEsg" receiveEvent="_3HLCRdCvEeSnF8hbwamEsg" signature="_3HLCEdCvEeSnF8hbwamEsg">
+        <arguments xmi:id="_3HLCTNCvEeSnF8hbwamEsg" parameter="_3HLCEtCvEeSnF8hbwamEsg">
+          <value xsi:type="ram:ParameterValue" xmi:id="_3HLCTdCvEeSnF8hbwamEsg" parameter="_3HLCEtCvEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_3HLCTtCvEeSnF8hbwamEsg" name="target" lowerBound="1" type="_3HLCB9CvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_3HLCT9CvEeSnF8hbwamEsg" name="intercetpStateChange" lowerBound="1" type="_3HLCAtCvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_3HLCUNCvEeSnF8hbwamEsg" name="standardMeter" lowerBound="1" type="_3HLCFNCvEeSnF8hbwamEsg"/>
+    </specification>
+  </messageViews>
+  <instantiations xmi:id="_3HLCUdCvEeSnF8hbwamEsg">
+    <mappings xmi:id="_3HLCUtCvEeSnF8hbwamEsg" toElement="_3HLCAtCvEeSnF8hbwamEsg">
+      <operationMappings xmi:id="_3HLCU9CvEeSnF8hbwamEsg" toElement="_3HLCBNCvEeSnF8hbwamEsg">
+        <fromElement href="../aspects/Observer.ram#_3G-0xdCvEeSnF8hbwamEsg"/>
+      </operationMappings>
+      <fromElement xsi:type="ram:Class" href="../aspects/Observer.ram#_3G-0wtCvEeSnF8hbwamEsg"/>
+    </mappings>
+    <mappings xmi:id="_3HLCVNCvEeSnF8hbwamEsg" toElement="_3HLCB9CvEeSnF8hbwamEsg">
+      <operationMappings xmi:id="_3HLCVdCvEeSnF8hbwamEsg" toElement="_3HLCD9CvEeSnF8hbwamEsg">
+        <parameterMappings xmi:id="_3HLCVtCvEeSnF8hbwamEsg" toElement="_3HLCENCvEeSnF8hbwamEsg">
+          <fromElement href="../aspects/Observer.ram#_3G-00NCvEeSnF8hbwamEsg"/>
+        </parameterMappings>
+        <fromElement href="../aspects/Observer.ram#_3G-0z9CvEeSnF8hbwamEsg"/>
+      </operationMappings>
+      <operationMappings xmi:id="_3HLCV9CvEeSnF8hbwamEsg" toElement="_3HLCDdCvEeSnF8hbwamEsg">
+        <parameterMappings xmi:id="_3HLCWNCvEeSnF8hbwamEsg" toElement="_3HLCDtCvEeSnF8hbwamEsg">
+          <fromElement href="../aspects/Observer.ram#_3G-0zdCvEeSnF8hbwamEsg"/>
+        </parameterMappings>
+        <fromElement href="../aspects/Observer.ram#_3G-0zNCvEeSnF8hbwamEsg"/>
+      </operationMappings>
+      <fromElement xsi:type="ram:Class" href="../aspects/Observer.ram#_3G-0y9CvEeSnF8hbwamEsg"/>
+    </mappings>
+    <externalAspect href="../aspects/Observer.ram#_3G-0wNCvEeSnF8hbwamEsg"/>
+  </instantiations>
+  <instantiations xmi:id="_3HLCWdCvEeSnF8hbwamEsg">
+    <mappings xmi:id="_3HLCWtCvEeSnF8hbwamEsg" toElement="_3HLCB9CvEeSnF8hbwamEsg">
+      <fromElement xsi:type="ram:Class" href="../aspects/Named.ram#_3GgTotCvEeSnF8hbwamEsg"/>
+    </mappings>
+    <externalAspect href="../aspects/Named.ram#_3GgToNCvEeSnF8hbwamEsg"/>
+  </instantiations>
+</ram:Aspect>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_3G-0wNCvEeSnF8hbwamEsg" name="Observer">
+  <structuralView xmi:id="_3G-0wdCvEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_3G-0wtCvEeSnF8hbwamEsg" name="Subject" partial="true">
+      <operations xmi:id="_3G-0w9CvEeSnF8hbwamEsg" name="create" returnType="_3G-0wtCvEeSnF8hbwamEsg"/>
+      <operations xmi:id="_3G-0xNCvEeSnF8hbwamEsg" name="getObservers" visibility="package"/>
+      <operations xmi:id="_3G-0xdCvEeSnF8hbwamEsg" name="modify" returnType="_3G-009CvEeSnF8hbwamEsg" partial="true"/>
+      <operations xmi:id="_3G-0xtCvEeSnF8hbwamEsg" name="addObserver" returnType="_3G-009CvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3G-0x9CvEeSnF8hbwamEsg" name="a" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_3G-0yNCvEeSnF8hbwamEsg" name="removeObserver" returnType="_3G-009CvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3G-0ydCvEeSnF8hbwamEsg" name="a" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+      </operations>
+      <associationEnds xmi:id="_3G-0ytCvEeSnF8hbwamEsg" name="observer" navigable="false" assoc="_3G-00tCvEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_3G-0y9CvEeSnF8hbwamEsg" name="Observer" partial="true">
+      <operations xmi:id="_3G-0zNCvEeSnF8hbwamEsg" name="startObserving" returnType="_3G-009CvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3G-0zdCvEeSnF8hbwamEsg" name="a" type="_3G-0wtCvEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_3G-0ztCvEeSnF8hbwamEsg" name="stopObserving" returnType="_3G-009CvEeSnF8hbwamEsg"/>
+      <operations xmi:id="_3G-0z9CvEeSnF8hbwamEsg" name="update" returnType="_3G-009CvEeSnF8hbwamEsg" partial="true">
+        <parameters xmi:id="_3G-00NCvEeSnF8hbwamEsg" name="s" type="_3G-0wtCvEeSnF8hbwamEsg"/>
+      </operations>
+      <associationEnds xmi:id="_3G-00dCvEeSnF8hbwamEsg" name="mySubject" referenceType="Composition" assoc="_3G-00tCvEeSnF8hbwamEsg"/>
+    </classes>
+    <associations xmi:id="_3G-00tCvEeSnF8hbwamEsg" name="Observer_Subject" ends="_3G-00dCvEeSnF8hbwamEsg _3G-0ytCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RVoid" xmi:id="_3G-009CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_3G-01NCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_3G-01dCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_3G-01tCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_3G-019CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_3G-02NCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_3G-02dCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_3G-02tCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3G-029CvEeSnF8hbwamEsg" type="_3G-01NCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3G-03NCvEeSnF8hbwamEsg" type="_3G-01dCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3G-03dCvEeSnF8hbwamEsg" type="_3G-01tCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3G-03tCvEeSnF8hbwamEsg" type="_3G-019CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3G-039CvEeSnF8hbwamEsg" type="_3G-02dCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3G-04NCvEeSnF8hbwamEsg" type="_3G-02tCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3G-04dCvEeSnF8hbwamEsg" type="_3G-0wtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3G-04tCvEeSnF8hbwamEsg" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+  </structuralView>
+  <messageViews xsi:type="ram:AspectMessageView" xmi:id="_3G-049CvEeSnF8hbwamEsg" name="notification" pointcut="_3G-0xdCvEeSnF8hbwamEsg">
+    <advice xmi:id="_3G-05NCvEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G-05dCvEeSnF8hbwamEsg" covered="_3G-079CvEeSnF8hbwamEsg" message="_3G-08dCvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:OriginalBehaviorExecution" xmi:id="_3G-05tCvEeSnF8hbwamEsg" covered="_3G-079CvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G-059CvEeSnF8hbwamEsg" covered="_3G-079CvEeSnF8hbwamEsg" message="_3G-08tCvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G-06NCvEeSnF8hbwamEsg" covered="_3G-079CvEeSnF8hbwamEsg" message="_3G-08tCvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:CombinedFragment" xmi:id="_3G-06dCvEeSnF8hbwamEsg" covered="_3G-079CvEeSnF8hbwamEsg _3G-07tCvEeSnF8hbwamEsg" interactionOperator="loop">
+        <operands xmi:id="_3G-06tCvEeSnF8hbwamEsg">
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G-069CvEeSnF8hbwamEsg" covered="_3G-079CvEeSnF8hbwamEsg" message="_3G-089CvEeSnF8hbwamEsg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G-07NCvEeSnF8hbwamEsg" covered="_3G-07tCvEeSnF8hbwamEsg" message="_3G-089CvEeSnF8hbwamEsg"/>
+          <interactionConstraint xsi:type="ram:OpaqueExpression" xmi:id="_3G-07dCvEeSnF8hbwamEsg" body="&quot;Observer o : observers&quot;" language="java"/>
+        </operands>
+      </fragments>
+      <lifelines xmi:id="_3G-07tCvEeSnF8hbwamEsg" represents="_3G-09tCvEeSnF8hbwamEsg" coveredBy="_3G-07NCvEeSnF8hbwamEsg _3G-06dCvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3G-079CvEeSnF8hbwamEsg" represents="_3G-099CvEeSnF8hbwamEsg" coveredBy="_3G-05dCvEeSnF8hbwamEsg _3G-05tCvEeSnF8hbwamEsg _3G-059CvEeSnF8hbwamEsg _3G-06NCvEeSnF8hbwamEsg _3G-069CvEeSnF8hbwamEsg _3G-06dCvEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_3G-08NCvEeSnF8hbwamEsg" name="observers" lowerBound="1" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+      </lifelines>
+      <messages xmi:id="_3G-08dCvEeSnF8hbwamEsg" sendEvent="_3G-0-NCvEeSnF8hbwamEsg" receiveEvent="_3G-05dCvEeSnF8hbwamEsg" signature="_3G-0xdCvEeSnF8hbwamEsg"/>
+      <messages xmi:id="_3G-08tCvEeSnF8hbwamEsg" sendEvent="_3G-059CvEeSnF8hbwamEsg" receiveEvent="_3G-06NCvEeSnF8hbwamEsg" signature="_3G-0xNCvEeSnF8hbwamEsg" assignTo="_3G-08NCvEeSnF8hbwamEsg"/>
+      <messages xmi:id="_3G-089CvEeSnF8hbwamEsg" sendEvent="_3G-069CvEeSnF8hbwamEsg" receiveEvent="_3G-07NCvEeSnF8hbwamEsg" signature="_3G-0z9CvEeSnF8hbwamEsg">
+        <arguments xmi:id="_3G-09NCvEeSnF8hbwamEsg" parameter="_3G-00NCvEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_3G-09dCvEeSnF8hbwamEsg" value="_3G-099CvEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_3G-09tCvEeSnF8hbwamEsg" name="observer" lowerBound="1" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_3G-099CvEeSnF8hbwamEsg" name="subject" lowerBound="1" type="_3G-0wtCvEeSnF8hbwamEsg"/>
+      <formalGates xmi:id="_3G-0-NCvEeSnF8hbwamEsg" message="_3G-08dCvEeSnF8hbwamEsg" name="in_modify"/>
+    </advice>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_3G_b0NCvEeSnF8hbwamEsg" specifies="_3G-0zNCvEeSnF8hbwamEsg">
+    <specification xmi:id="_3G_b0dCvEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G_b0tCvEeSnF8hbwamEsg" covered="_3G_b1NCvEeSnF8hbwamEsg" message="_3G_b19CvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G_b09CvEeSnF8hbwamEsg" covered="_3G_b1dCvEeSnF8hbwamEsg" message="_3G_b19CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3G_b1NCvEeSnF8hbwamEsg" represents="_3G_b2tCvEeSnF8hbwamEsg" coveredBy="_3G_b0tCvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3G_b1dCvEeSnF8hbwamEsg" represents="_3G_b29CvEeSnF8hbwamEsg" coveredBy="_3G_b09CvEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_3G_b1tCvEeSnF8hbwamEsg" name="observers" lowerBound="1" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+      </lifelines>
+      <messages xmi:id="_3G_b19CvEeSnF8hbwamEsg" sendEvent="_3G_b0tCvEeSnF8hbwamEsg" receiveEvent="_3G_b09CvEeSnF8hbwamEsg" signature="_3G-0xtCvEeSnF8hbwamEsg">
+        <arguments xmi:id="_3G_b2NCvEeSnF8hbwamEsg" parameter="_3G-0x9CvEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_3G_b2dCvEeSnF8hbwamEsg" value="_3G_b2tCvEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_3G_b2tCvEeSnF8hbwamEsg" name="observer" lowerBound="1" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_3G_b29CvEeSnF8hbwamEsg" name="subject" lowerBound="1" type="_3G-0wtCvEeSnF8hbwamEsg"/>
+    </specification>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_3G_b3NCvEeSnF8hbwamEsg" specifies="_3G-0ztCvEeSnF8hbwamEsg">
+    <specification xmi:id="_3G_b3dCvEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G_b3tCvEeSnF8hbwamEsg" covered="_3G_b4NCvEeSnF8hbwamEsg" message="_3G_b49CvEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_3G_b39CvEeSnF8hbwamEsg" covered="_3G_b4dCvEeSnF8hbwamEsg" message="_3G_b49CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3G_b4NCvEeSnF8hbwamEsg" represents="_3G_b5tCvEeSnF8hbwamEsg" coveredBy="_3G_b3tCvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_3G_b4dCvEeSnF8hbwamEsg" represents="_3G_b59CvEeSnF8hbwamEsg" coveredBy="_3G_b39CvEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_3G_b4tCvEeSnF8hbwamEsg" name="observers" lowerBound="1" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+      </lifelines>
+      <messages xmi:id="_3G_b49CvEeSnF8hbwamEsg" sendEvent="_3G_b3tCvEeSnF8hbwamEsg" receiveEvent="_3G_b39CvEeSnF8hbwamEsg" signature="_3G-0yNCvEeSnF8hbwamEsg">
+        <arguments xmi:id="_3G_b5NCvEeSnF8hbwamEsg" parameter="_3G-0ydCvEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_3G_b5dCvEeSnF8hbwamEsg" value="_3G_b5tCvEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_3G_b5tCvEeSnF8hbwamEsg" name="observer" lowerBound="1" type="_3G-0y9CvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_3G_b59CvEeSnF8hbwamEsg" name="subject" lowerBound="1" type="_3G-0wtCvEeSnF8hbwamEsg"/>
+    </specification>
+  </messageViews>
+</ram:Aspect>

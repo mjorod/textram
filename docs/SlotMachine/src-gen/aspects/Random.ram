@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_rLGHANCuEeSnF8hbwamEsg" name="Random">
+  <structuralView xmi:id="_rLGHAdCuEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_rLGHAtCuEeSnF8hbwamEsg" name="RandomGenerator">
+      <operations xmi:id="_rLGHA9CuEeSnF8hbwamEsg" name="nextRandom" returnType="_rLGHCdCuEeSnF8hbwamEsg"/>
+      <operations xmi:id="_rLGHBNCuEeSnF8hbwamEsg" name="create" returnType="_rLGHAtCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLGHBdCuEeSnF8hbwamEsg" name="range" type="_rLGHCdCuEeSnF8hbwamEsg"/>
+      </operations>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_rLGHBtCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_rLGHB9CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_rLGHCNCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_rLGHCdCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_rLGHCtCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_rLGHC9CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_rLGHDNCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_rLGHDdCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLGHDtCuEeSnF8hbwamEsg" type="_rLGHB9CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLGHD9CuEeSnF8hbwamEsg" type="_rLGHCNCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLGHENCuEeSnF8hbwamEsg" type="_rLGHCdCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLGHEdCuEeSnF8hbwamEsg" type="_rLGHCtCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLGHEtCuEeSnF8hbwamEsg" type="_rLGHDNCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLGHE9CuEeSnF8hbwamEsg" type="_rLGHDdCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLGHFNCuEeSnF8hbwamEsg" type="_rLGHAtCuEeSnF8hbwamEsg"/>
+  </structuralView>
+</ram:Aspect>

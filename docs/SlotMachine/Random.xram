@@ -1,0 +1,8 @@
+aspect Random {
+	structure {
+		class RandomGenerator {
+			+ int nextRandom()
+			+ RandomGenerator create(int range)
+		}  
+	} 
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_M8choNCvEeSnF8hbwamEsg" name="ReturningCommand">
+  <structuralView xmi:id="_M8chodCvEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_M8chotCvEeSnF8hbwamEsg" name="Command" partial="true">
+      <operations xmi:id="_M8cho9CvEeSnF8hbwamEsg" name="execute" returnType="_M8chpNCvEeSnF8hbwamEsg"/>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_M8chpNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_M8chpdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_M8chptCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_M8chp9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_M8chqNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_M8chqdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_M8chqtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_M8chq9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_M8chrNCvEeSnF8hbwamEsg" type="_M8chpdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_M8chrdCvEeSnF8hbwamEsg" type="_M8chptCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_M8chrtCvEeSnF8hbwamEsg" type="_M8chp9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_M8chr9CvEeSnF8hbwamEsg" type="_M8chqNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_M8chsNCvEeSnF8hbwamEsg" type="_M8chqtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_M8chsdCvEeSnF8hbwamEsg" type="_M8chq9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_M8chstCvEeSnF8hbwamEsg" type="_M8chotCvEeSnF8hbwamEsg"/>
+  </structuralView>
+</ram:Aspect>

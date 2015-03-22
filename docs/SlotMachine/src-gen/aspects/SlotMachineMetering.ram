@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_3HOFUNCvEeSnF8hbwamEsg" name="SlotMachineMetering">
+  <structuralView xmi:id="_3HOFUdCvEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_3HOFUtCvEeSnF8hbwamEsg" name="Machine">
+      <operations xmi:id="_3HOFU9CvEeSnF8hbwamEsg" name="play" returnType="_3HOFZNCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HOFVNCvEeSnF8hbwamEsg" name="i" type="_3HOFZ9CvEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_3HOFVdCvEeSnF8hbwamEsg" name="getCredits" visibility="package" returnType="_3HOFZ9CvEeSnF8hbwamEsg"/>
+      <operations xmi:id="_3HOFVtCvEeSnF8hbwamEsg" name="depositCredits" returnType="_3HOFZNCvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HOFV9CvEeSnF8hbwamEsg" name="amount" type="_3HOFZ9CvEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_3HOFWNCvEeSnF8hbwamEsg" name="initializeSlotMachineMeters" returnType="_3HOFZNCvEeSnF8hbwamEsg"/>
+      <operations xmi:id="_3HOFWdCvEeSnF8hbwamEsg" name="attachMeterToPlay" returnType="_3HOFZNCvEeSnF8hbwamEsg"/>
+      <attributes xmi:id="_3HOFWtCvEeSnF8hbwamEsg" name="credits" type="_3HOFZ9CvEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_3HOFW9CvEeSnF8hbwamEsg" name="Symbol"/>
+    <classes xsi:type="ram:Class" xmi:id="_3HOFXNCvEeSnF8hbwamEsg" name="PayTable">
+      <operations xmi:id="_3HOFXdCvEeSnF8hbwamEsg" name="payout" returnType="_3HOFZ9CvEeSnF8hbwamEsg">
+        <parameters xmi:id="_3HOFXtCvEeSnF8hbwamEsg" name="first" type="_3HOFW9CvEeSnF8hbwamEsg"/>
+        <parameters xmi:id="_3HOFX9CvEeSnF8hbwamEsg" name="second" type="_3HOFW9CvEeSnF8hbwamEsg"/>
+        <parameters xmi:id="_3HOFYNCvEeSnF8hbwamEsg" name="third" type="_3HOFW9CvEeSnF8hbwamEsg"/>
+        <parameters xmi:id="_3HOFYdCvEeSnF8hbwamEsg" name="fourth" type="_3HOFW9CvEeSnF8hbwamEsg"/>
+        <parameters xmi:id="_3HOFYtCvEeSnF8hbwamEsg" name="fifth" type="_3HOFW9CvEeSnF8hbwamEsg"/>
+      </operations>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_3HOFY9CvEeSnF8hbwamEsg" name="InterceptSM"/>
+    <types xsi:type="ram:RVoid" xmi:id="_3HOFZNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_3HOFZdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_3HOFZtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_3HOFZ9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_3HOFaNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_3HOFadCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_3HOFatCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_3HOFa9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFbNCvEeSnF8hbwamEsg" type="_3HOFZdCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFbdCvEeSnF8hbwamEsg" type="_3HOFZtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFbtCvEeSnF8hbwamEsg" type="_3HOFZ9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFb9CvEeSnF8hbwamEsg" type="_3HOFaNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFcNCvEeSnF8hbwamEsg" type="_3HOFatCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFcdCvEeSnF8hbwamEsg" type="_3HOFa9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFctCvEeSnF8hbwamEsg" type="_3HOFUtCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFc9CvEeSnF8hbwamEsg" type="_3HOFW9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFdNCvEeSnF8hbwamEsg" type="_3HOFXNCvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_3HOFddCvEeSnF8hbwamEsg" type="_3HOFY9CvEeSnF8hbwamEsg"/>
+  </structuralView>
+  <instantiations xmi:id="_3HOFdtCvEeSnF8hbwamEsg">
+    <mappings xmi:id="_3HOFd9CvEeSnF8hbwamEsg" toElement="_3HOFUtCvEeSnF8hbwamEsg">
+      <operationMappings xmi:id="_3HOFeNCvEeSnF8hbwamEsg" toElement="_3HOFVdCvEeSnF8hbwamEsg">
+        <fromElement href="../aspects/Metering.ram#_3HLCA9CvEeSnF8hbwamEsg"/>
+      </operationMappings>
+      <operationMappings xmi:id="_3HOFedCvEeSnF8hbwamEsg" toElement="_3HOFU9CvEeSnF8hbwamEsg">
+        <parameterMappings xmi:id="_3HOFetCvEeSnF8hbwamEsg" toElement="_3HOFVNCvEeSnF8hbwamEsg">
+          <fromElement href="../aspects/Metering.ram#_3HLCBdCvEeSnF8hbwamEsg"/>
+        </parameterMappings>
+        <fromElement href="../aspects/Metering.ram#_3HLCBNCvEeSnF8hbwamEsg"/>
+      </operationMappings>
+      <fromElement xsi:type="ram:Class" href="../aspects/Metering.ram#_3HLCAtCvEeSnF8hbwamEsg"/>
+    </mappings>
+    <externalAspect href="../aspects/Metering.ram#_3HLCANCvEeSnF8hbwamEsg"/>
+  </instantiations>
+</ram:Aspect>

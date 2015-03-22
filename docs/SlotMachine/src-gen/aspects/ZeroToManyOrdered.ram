@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_rLOC0NCuEeSnF8hbwamEsg" name="ZeroToManyOrdered">
+  <structuralView xmi:id="_rLOC0dCuEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_rLOC0tCuEeSnF8hbwamEsg" name="Associated" partial="true">
+      <associationEnds xmi:id="_rLOC09CuEeSnF8hbwamEsg" name="sequence" upperBound="-1" navigable="false" assoc="_rLOC9dCuEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_rLOC1NCuEeSnF8hbwamEsg" name="Data" partial="true">
+      <operations xmi:id="_rLOC1dCuEeSnF8hbwamEsg" name="removeAll" returnType="_rLOC9tCuEeSnF8hbwamEsg"/>
+      <operations xmi:id="_rLOC1tCuEeSnF8hbwamEsg" name="create" returnType="_rLOC1NCuEeSnF8hbwamEsg"/>
+      <operations xmi:id="_rLOC19CuEeSnF8hbwamEsg" name="add" returnType="_rLOC9tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC2NCuEeSnF8hbwamEsg" name="a" type="_rLOC0tCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rLOC2dCuEeSnF8hbwamEsg" name="getAssociated"/>
+      <operations xmi:id="_rLOC2tCuEeSnF8hbwamEsg" name="remove" returnType="_rLOC9tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC29CuEeSnF8hbwamEsg" name="index" type="_rLOC-dCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rLOC3NCuEeSnF8hbwamEsg" name="contains" returnType="_rLOC99CuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC3dCuEeSnF8hbwamEsg" name="a" type="_rLOC0tCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rLOC3tCuEeSnF8hbwamEsg" name="get" returnType="_rLOC0tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC39CuEeSnF8hbwamEsg" name="index" type="_rLOC-dCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rLOC4NCuEeSnF8hbwamEsg" name="add" returnType="_rLOC9tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC4dCuEeSnF8hbwamEsg" name="index" type="_rLOC-dCuEeSnF8hbwamEsg"/>
+        <parameters xmi:id="_rLOC4tCuEeSnF8hbwamEsg" name="a" type="_rLOC0tCuEeSnF8hbwamEsg"/>
+      </operations>
+      <associationEnds xmi:id="_rLOC49CuEeSnF8hbwamEsg" name="mySet" referenceType="Composition" assoc="_rLOC9NCuEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_rLOC5NCuEeSnF8hbwamEsg" name="Sequence">
+      <operations xmi:id="_rLOC5dCuEeSnF8hbwamEsg" name="create" visibility="package" returnType="_rLOC5NCuEeSnF8hbwamEsg"/>
+      <operations xmi:id="_rLOC5tCuEeSnF8hbwamEsg" name="add" visibility="package" returnType="_rLOC9tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC59CuEeSnF8hbwamEsg" name="a" type="_rLOC0tCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rLOC6NCuEeSnF8hbwamEsg" name="remove" visibility="package" returnType="_rLOC9tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC6dCuEeSnF8hbwamEsg" name="a" type="_rLOC0tCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rLOC6tCuEeSnF8hbwamEsg" name="delete" visibility="package" returnType="_rLOC9tCuEeSnF8hbwamEsg"/>
+      <operations xmi:id="_rLOC69CuEeSnF8hbwamEsg" name="get" visibility="package" returnType="_rLOC0tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC7NCuEeSnF8hbwamEsg" name="i" type="_rLOC-dCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rLOC7dCuEeSnF8hbwamEsg" name="remove" visibility="package" returnType="_rLOC9tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC7tCuEeSnF8hbwamEsg" name="i" type="_rLOC-dCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rLOC79CuEeSnF8hbwamEsg" name="contains" visibility="package" returnType="_rLOC99CuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rLOC8NCuEeSnF8hbwamEsg" name="a" type="_rLOC0tCuEeSnF8hbwamEsg"/>
+      </operations>
+      <associationEnds xmi:id="_rLOC8dCuEeSnF8hbwamEsg" name="data" navigable="false" assoc="_rLOC9NCuEeSnF8hbwamEsg"/>
+      <associationEnds xmi:id="_rLOC8tCuEeSnF8hbwamEsg" name="myAssociated" referenceType="Aggregation" assoc="_rLOC9dCuEeSnF8hbwamEsg"/>
+      <attributes xmi:id="_rLOC89CuEeSnF8hbwamEsg" name="size" type="_rLOC-dCuEeSnF8hbwamEsg"/>
+    </classes>
+    <associations xmi:id="_rLOC9NCuEeSnF8hbwamEsg" name="Data_Sequence" ends="_rLOC49CuEeSnF8hbwamEsg _rLOC8dCuEeSnF8hbwamEsg"/>
+    <associations xmi:id="_rLOC9dCuEeSnF8hbwamEsg" name="Sequence_Associated" ends="_rLOC8tCuEeSnF8hbwamEsg _rLOC09CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RVoid" xmi:id="_rLOC9tCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_rLOC99CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_rLOC-NCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_rLOC-dCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_rLOC-tCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_rLOC-9CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_rLOC_NCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_rLOC_dCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLOC_tCuEeSnF8hbwamEsg" type="_rLOC99CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLOC_9CuEeSnF8hbwamEsg" type="_rLOC-NCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLODANCuEeSnF8hbwamEsg" type="_rLOC-dCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLODAdCuEeSnF8hbwamEsg" type="_rLOC-tCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLODAtCuEeSnF8hbwamEsg" type="_rLOC_NCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLODA9CuEeSnF8hbwamEsg" type="_rLOC_dCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLODBNCuEeSnF8hbwamEsg" type="_rLOC0tCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLODBdCuEeSnF8hbwamEsg" type="_rLOC1NCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rLODBtCuEeSnF8hbwamEsg" type="_rLOC5NCuEeSnF8hbwamEsg"/>
+  </structuralView>
+</ram:Aspect>

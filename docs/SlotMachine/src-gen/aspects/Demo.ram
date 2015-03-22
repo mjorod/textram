@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_rMJ28NCuEeSnF8hbwamEsg" name="Demo">
+  <structuralView xmi:id="_rMJ28dCuEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_rMJ28tCuEeSnF8hbwamEsg" name="ArrayOfInt"/>
+    <classes xsi:type="ram:Class" xmi:id="_rMJ289CuEeSnF8hbwamEsg" name="Symbol"/>
+    <classes xsi:type="ram:Class" xmi:id="_rMJ29NCuEeSnF8hbwamEsg" name="RandomReels">
+      <operations xmi:id="_rMJ29dCuEeSnF8hbwamEsg" name="spinOfReels" returnType="_rMJ28tCuEeSnF8hbwamEsg"/>
+      <operations xmi:id="_rMJ29tCuEeSnF8hbwamEsg" name="getMyReelConfiguration" returnType="_rMJ3AtCuEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_rMJ299CuEeSnF8hbwamEsg" name="Machine">
+      <operations xmi:id="_rMJ2-NCuEeSnF8hbwamEsg" name="setDemo" returnType="_rMJ3BtCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rMJ2-dCuEeSnF8hbwamEsg" name="on" type="_rMJ3B9CuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rMJ2-tCuEeSnF8hbwamEsg" name="getNextOutCome" returnType="_rMJ28tCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rMJ2-9CuEeSnF8hbwamEsg" name="Symbol" type="_rMJ28tCuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rMJ2_NCuEeSnF8hbwamEsg" name="setNextOutCome" returnType="_rMJ3BtCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rMJ2_dCuEeSnF8hbwamEsg" name="s" type="_rMJ289CuEeSnF8hbwamEsg"/>
+      </operations>
+      <operations xmi:id="_rMJ2_tCuEeSnF8hbwamEsg" name="getMachine" returnType="_rMJ299CuEeSnF8hbwamEsg"/>
+      <operations xmi:id="_rMJ2_9CuEeSnF8hbwamEsg" name="currentCredits" returnType="_rMJ3CdCuEeSnF8hbwamEsg"/>
+      <operations xmi:id="_rMJ3ANCuEeSnF8hbwamEsg" name="savedCredits" returnType="_rMJ3CdCuEeSnF8hbwamEsg"/>
+      <attributes xmi:id="_rMJ3AdCuEeSnF8hbwamEsg" name="demoMode" type="_rMJ3B9CuEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_rMJ3AtCuEeSnF8hbwamEsg" name="ReelConfiguration">
+      <operations xmi:id="_rMJ3A9CuEeSnF8hbwamEsg" name="getPositionForSymbol" returnType="_rMJ3CdCuEeSnF8hbwamEsg">
+        <parameters xmi:id="_rMJ3BNCuEeSnF8hbwamEsg" name="reel" type="_rMJ3CdCuEeSnF8hbwamEsg"/>
+        <parameters xmi:id="_rMJ3BdCuEeSnF8hbwamEsg" name="sym" type="_rMJ289CuEeSnF8hbwamEsg"/>
+      </operations>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_rMJ3BtCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_rMJ3B9CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_rMJ3CNCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_rMJ3CdCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_rMJ3CtCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_rMJ3C9CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_rMJ3DNCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_rMJ3DdCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMJ3DtCuEeSnF8hbwamEsg" type="_rMJ3B9CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeANCuEeSnF8hbwamEsg" type="_rMJ3CNCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeAdCuEeSnF8hbwamEsg" type="_rMJ3CdCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeAtCuEeSnF8hbwamEsg" type="_rMJ3CtCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeA9CuEeSnF8hbwamEsg" type="_rMJ3DNCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeBNCuEeSnF8hbwamEsg" type="_rMJ3DdCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeBdCuEeSnF8hbwamEsg" type="_rMJ28tCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeBtCuEeSnF8hbwamEsg" type="_rMJ289CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeB9CuEeSnF8hbwamEsg" type="_rMJ29NCuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeCNCuEeSnF8hbwamEsg" type="_rMJ299CuEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_rMKeCdCuEeSnF8hbwamEsg" type="_rMJ3AtCuEeSnF8hbwamEsg"/>
+  </structuralView>
+  <messageViews xsi:type="ram:AspectMessageView" xmi:id="_rMKeCtCuEeSnF8hbwamEsg" name="determineNextOutcome" pointcut="_rMJ29dCuEeSnF8hbwamEsg">
+    <advice xmi:id="_rMKeC9CuEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeDNCuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg" message="_rMKeKNCuEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeDdCuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg" message="_rMKeKdCuEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeDtCuEeSnF8hbwamEsg" covered="_rMKeHdCuEeSnF8hbwamEsg" message="_rMKeKdCuEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:CombinedFragment" xmi:id="_rMKeD9CuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg _rMKeHdCuEeSnF8hbwamEsg _rMKeJdCuEeSnF8hbwamEsg">
+        <operands xmi:id="_rMKeENCuEeSnF8hbwamEsg">
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeEdCuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg" message="_rMKeLNCuEeSnF8hbwamEsg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeEtCuEeSnF8hbwamEsg" covered="_rMKeHdCuEeSnF8hbwamEsg" message="_rMKeLNCuEeSnF8hbwamEsg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeE9CuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg" message="_rMKeL9CuEeSnF8hbwamEsg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeFNCuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg" message="_rMKeL9CuEeSnF8hbwamEsg"/>
+          <fragments xsi:type="ram:CombinedFragment" xmi:id="_rMKeFdCuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg _rMKeJdCuEeSnF8hbwamEsg" interactionOperator="loop">
+            <operands xmi:id="_rMKeFtCuEeSnF8hbwamEsg">
+              <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeF9CuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg" message="_rMKeMNCuEeSnF8hbwamEsg"/>
+              <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeGNCuEeSnF8hbwamEsg" covered="_rMKeJdCuEeSnF8hbwamEsg" message="_rMKeMNCuEeSnF8hbwamEsg"/>
+              <interactionConstraint xsi:type="ram:OpaqueExpression" xmi:id="_rMKeGdCuEeSnF8hbwamEsg" body="&quot;int = 0; i &lt; 5; i++&quot;" language="java"/>
+            </operands>
+          </fragments>
+          <interactionConstraint xsi:type="ram:OpaqueExpression" xmi:id="_rMKeGtCuEeSnF8hbwamEsg" body="&quot;outcome != null&quot;" language="java"/>
+        </operands>
+      </fragments>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeG9CuEeSnF8hbwamEsg" covered="_rMKeHdCuEeSnF8hbwamEsg" message="_rMKeNdCuEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeHNCuEeSnF8hbwamEsg" covered="_rMKeIdCuEeSnF8hbwamEsg" message="_rMKeNdCuEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_rMKeHdCuEeSnF8hbwamEsg" represents="_rMKeN9CuEeSnF8hbwamEsg" coveredBy="_rMKeDtCuEeSnF8hbwamEsg _rMKeEtCuEeSnF8hbwamEsg _rMKeD9CuEeSnF8hbwamEsg _rMKeG9CuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeHtCuEeSnF8hbwamEsg" name="savedCredits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeH9CuEeSnF8hbwamEsg" name="credits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeINCuEeSnF8hbwamEsg" name="null" lowerBound="1" type="_rMJ289CuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <lifelines xmi:id="_rMKeIdCuEeSnF8hbwamEsg" represents="_rMKeONCuEeSnF8hbwamEsg" coveredBy="_rMKeDNCuEeSnF8hbwamEsg _rMKeDdCuEeSnF8hbwamEsg _rMKeEdCuEeSnF8hbwamEsg _rMKeE9CuEeSnF8hbwamEsg _rMKeFNCuEeSnF8hbwamEsg _rMKeF9CuEeSnF8hbwamEsg _rMKeFdCuEeSnF8hbwamEsg _rMKeD9CuEeSnF8hbwamEsg _rMKeHNCuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeItCuEeSnF8hbwamEsg" name="result" lowerBound="1" type="_rMJ28tCuEeSnF8hbwamEsg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeI9CuEeSnF8hbwamEsg" name="outcome" lowerBound="1" type="_rMJ28tCuEeSnF8hbwamEsg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeJNCuEeSnF8hbwamEsg" name="rc" lowerBound="1" type="_rMJ3AtCuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <lifelines xmi:id="_rMKeJdCuEeSnF8hbwamEsg" represents="_rMKeOdCuEeSnF8hbwamEsg" coveredBy="_rMKeGNCuEeSnF8hbwamEsg _rMKeFdCuEeSnF8hbwamEsg _rMKeD9CuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeJtCuEeSnF8hbwamEsg" name="i">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeJ9CuEeSnF8hbwamEsg" name="outcomeItem" lowerBound="1" type="_rMJ289CuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <messages xmi:id="_rMKeKNCuEeSnF8hbwamEsg" sendEvent="_rMKeOtCuEeSnF8hbwamEsg" receiveEvent="_rMKeDNCuEeSnF8hbwamEsg" signature="_rMJ29dCuEeSnF8hbwamEsg"/>
+      <messages xmi:id="_rMKeKdCuEeSnF8hbwamEsg" sendEvent="_rMKeDdCuEeSnF8hbwamEsg" receiveEvent="_rMKeDtCuEeSnF8hbwamEsg" signature="_rMJ2-tCuEeSnF8hbwamEsg">
+        <arguments xmi:id="_rMKeKtCuEeSnF8hbwamEsg" parameter="_rMJ2-9CuEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_rMKeK9CuEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <messages xmi:id="_rMKeLNCuEeSnF8hbwamEsg" sendEvent="_rMKeEdCuEeSnF8hbwamEsg" receiveEvent="_rMKeEtCuEeSnF8hbwamEsg" signature="_rMJ2_NCuEeSnF8hbwamEsg">
+        <arguments xmi:id="_rMKeLdCuEeSnF8hbwamEsg" parameter="_rMJ2_dCuEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_rMKeLtCuEeSnF8hbwamEsg" value="_rMKeINCuEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <messages xmi:id="_rMKeL9CuEeSnF8hbwamEsg" sendEvent="_rMKeE9CuEeSnF8hbwamEsg" receiveEvent="_rMKeFNCuEeSnF8hbwamEsg" signature="_rMJ29tCuEeSnF8hbwamEsg" assignTo="_rMKeJNCuEeSnF8hbwamEsg"/>
+      <messages xmi:id="_rMKeMNCuEeSnF8hbwamEsg" sendEvent="_rMKeF9CuEeSnF8hbwamEsg" receiveEvent="_rMKeGNCuEeSnF8hbwamEsg" signature="_rMJ3A9CuEeSnF8hbwamEsg">
+        <arguments xmi:id="_rMKeMdCuEeSnF8hbwamEsg" parameter="_rMJ3BNCuEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_rMKeMtCuEeSnF8hbwamEsg" value="_rMKeJtCuEeSnF8hbwamEsg"/>
+        </arguments>
+        <arguments xmi:id="_rMKeM9CuEeSnF8hbwamEsg" parameter="_rMJ3BdCuEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_rMKeNNCuEeSnF8hbwamEsg" value="_rMKeJ9CuEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <messages xmi:id="_rMKeNdCuEeSnF8hbwamEsg" sendEvent="_rMKeG9CuEeSnF8hbwamEsg" receiveEvent="_rMKeHNCuEeSnF8hbwamEsg" messageSort="reply">
+        <returns xsi:type="ram:StructuralFeatureValue" xmi:id="_rMKeNtCuEeSnF8hbwamEsg" value="_rMKeI9CuEeSnF8hbwamEsg"/>
+      </messages>
+      <properties xmi:id="_rMKeN9CuEeSnF8hbwamEsg" name="target" lowerBound="1" type="_rMJ299CuEeSnF8hbwamEsg"/>
+      <properties xmi:id="_rMKeONCuEeSnF8hbwamEsg" name="randomReels" lowerBound="1" type="_rMJ29NCuEeSnF8hbwamEsg"/>
+      <properties xmi:id="_rMKeOdCuEeSnF8hbwamEsg" name="rc" lowerBound="1" type="_rMJ3AtCuEeSnF8hbwamEsg"/>
+      <formalGates xmi:id="_rMKeOtCuEeSnF8hbwamEsg" message="_rMKeKNCuEeSnF8hbwamEsg" name="in_spinOfReels"/>
+    </advice>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_rMKeO9CuEeSnF8hbwamEsg" specifies="_rMJ2-NCuEeSnF8hbwamEsg">
+    <specification xmi:id="_rMKePNCuEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:CombinedFragment" xmi:id="_rMKePdCuEeSnF8hbwamEsg" covered="_rMKeRNCuEeSnF8hbwamEsg">
+        <operands xmi:id="_rMKePtCuEeSnF8hbwamEsg">
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeP9CuEeSnF8hbwamEsg" covered="_rMKeRNCuEeSnF8hbwamEsg" message="_rMKeT9CuEeSnF8hbwamEsg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeQNCuEeSnF8hbwamEsg" covered="_rMKeRNCuEeSnF8hbwamEsg" message="_rMKeT9CuEeSnF8hbwamEsg"/>
+          <interactionConstraint xsi:type="ram:OpaqueExpression" xmi:id="_rMKeQdCuEeSnF8hbwamEsg" body="&quot;on&quot;" language="java"/>
+        </operands>
+      </fragments>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeQtCuEeSnF8hbwamEsg" covered="_rMKeRNCuEeSnF8hbwamEsg" message="_rMKeUNCuEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_rMKeQ9CuEeSnF8hbwamEsg" covered="_rMKeRNCuEeSnF8hbwamEsg" message="_rMKeUNCuEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_rMKeRNCuEeSnF8hbwamEsg" represents="_rMKeU9CuEeSnF8hbwamEsg" coveredBy="_rMKeP9CuEeSnF8hbwamEsg _rMKeQNCuEeSnF8hbwamEsg _rMKePdCuEeSnF8hbwamEsg _rMKeQtCuEeSnF8hbwamEsg _rMKeQ9CuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeRdCuEeSnF8hbwamEsg" name="savedCredits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeRtCuEeSnF8hbwamEsg" name="credits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeR9CuEeSnF8hbwamEsg" name="null" lowerBound="1" type="_rMJ289CuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <lifelines xmi:id="_rMKeSNCuEeSnF8hbwamEsg" represents="_rMKeVNCuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeSdCuEeSnF8hbwamEsg" name="result" lowerBound="1" type="_rMJ28tCuEeSnF8hbwamEsg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeStCuEeSnF8hbwamEsg" name="outcome" lowerBound="1" type="_rMJ28tCuEeSnF8hbwamEsg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeS9CuEeSnF8hbwamEsg" name="rc" lowerBound="1" type="_rMJ3AtCuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <lifelines xmi:id="_rMKeTNCuEeSnF8hbwamEsg" represents="_rMKeVdCuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeTdCuEeSnF8hbwamEsg" name="i">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeTtCuEeSnF8hbwamEsg" name="outcomeItem" lowerBound="1" type="_rMJ289CuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <messages xmi:id="_rMKeT9CuEeSnF8hbwamEsg" sendEvent="_rMKeP9CuEeSnF8hbwamEsg" receiveEvent="_rMKeQNCuEeSnF8hbwamEsg" signature="_rMJ2_9CuEeSnF8hbwamEsg" assignTo="_rMKeRdCuEeSnF8hbwamEsg"/>
+      <messages xmi:id="_rMKeUNCuEeSnF8hbwamEsg" sendEvent="_rMKeQtCuEeSnF8hbwamEsg" receiveEvent="_rMKeQ9CuEeSnF8hbwamEsg" signature="_rMJ2_NCuEeSnF8hbwamEsg">
+        <arguments xmi:id="_rMKeUdCuEeSnF8hbwamEsg" parameter="_rMJ2_dCuEeSnF8hbwamEsg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_rMKeUtCuEeSnF8hbwamEsg" value="_rMKeR9CuEeSnF8hbwamEsg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_rMKeU9CuEeSnF8hbwamEsg" name="target" lowerBound="1" type="_rMJ299CuEeSnF8hbwamEsg"/>
+      <properties xmi:id="_rMKeVNCuEeSnF8hbwamEsg" name="randomReels" lowerBound="1" type="_rMJ29NCuEeSnF8hbwamEsg"/>
+      <properties xmi:id="_rMKeVdCuEeSnF8hbwamEsg" name="rc" lowerBound="1" type="_rMJ3AtCuEeSnF8hbwamEsg"/>
+    </specification>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_rMKeVtCuEeSnF8hbwamEsg" affectedBy="_rMKeCtCuEeSnF8hbwamEsg" specifies="_rMJ29dCuEeSnF8hbwamEsg">
+    <specification xmi:id="_rMKeV9CuEeSnF8hbwamEsg">
+      <lifelines xmi:id="_rMKeWNCuEeSnF8hbwamEsg" represents="_rMKeY9CuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeWdCuEeSnF8hbwamEsg" name="savedCredits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeWtCuEeSnF8hbwamEsg" name="credits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeW9CuEeSnF8hbwamEsg" name="null" lowerBound="1" type="_rMJ289CuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <lifelines xmi:id="_rMKeXNCuEeSnF8hbwamEsg" represents="_rMKeZNCuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeXdCuEeSnF8hbwamEsg" name="result" lowerBound="1" type="_rMJ28tCuEeSnF8hbwamEsg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeXtCuEeSnF8hbwamEsg" name="outcome" lowerBound="1" type="_rMJ28tCuEeSnF8hbwamEsg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeX9CuEeSnF8hbwamEsg" name="rc" lowerBound="1" type="_rMJ3AtCuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <lifelines xmi:id="_rMKeYNCuEeSnF8hbwamEsg" represents="_rMKeZdCuEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_rMKeYdCuEeSnF8hbwamEsg" name="i">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Demo.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_rMKeYtCuEeSnF8hbwamEsg" name="outcomeItem" lowerBound="1" type="_rMJ289CuEeSnF8hbwamEsg"/>
+      </lifelines>
+      <properties xmi:id="_rMKeY9CuEeSnF8hbwamEsg" name="target" lowerBound="1" type="_rMJ299CuEeSnF8hbwamEsg"/>
+      <properties xmi:id="_rMKeZNCuEeSnF8hbwamEsg" name="randomReels" lowerBound="1" type="_rMJ29NCuEeSnF8hbwamEsg"/>
+      <properties xmi:id="_rMKeZdCuEeSnF8hbwamEsg" name="rc" lowerBound="1" type="_rMJ3AtCuEeSnF8hbwamEsg"/>
+    </specification>
+  </messageViews>
+  <instantiations xmi:id="_rMKeZtCuEeSnF8hbwamEsg" type="Extends">
+    <externalAspect href="../aspects/Betting.ram#_rL9CoNCuEeSnF8hbwamEsg"/>
+  </instantiations>
+  <instantiations xmi:id="_rMKeZ9CuEeSnF8hbwamEsg">
+    <mappings xmi:id="_rMKeaNCuEeSnF8hbwamEsg" toElement="_rMJ299CuEeSnF8hbwamEsg">
+      <operationMappings xmi:id="_rMKeadCuEeSnF8hbwamEsg" toElement="_rMJ2_tCuEeSnF8hbwamEsg">
+        <fromElement href="../aspects/Singleton.ram#_rLDDs9CuEeSnF8hbwamEsg"/>
+      </operationMappings>
+      <fromElement xsi:type="ram:Class" href="../aspects/Singleton.ram#_rLDDstCuEeSnF8hbwamEsg"/>
+    </mappings>
+    <externalAspect href="../aspects/Singleton.ram#_rLDDsNCuEeSnF8hbwamEsg"/>
+  </instantiations>
+</ram:Aspect>

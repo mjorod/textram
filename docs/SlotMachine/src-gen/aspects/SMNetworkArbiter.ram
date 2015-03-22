@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_1iLsENCtEeSnF8hbwamEsg" name="SMNetworkArbiter">
+  <structuralView xmi:id="_1iLsEdCtEeSnF8hbwamEsg">
+    <classes xsi:type="ram:Class" xmi:id="_1iLsEtCtEeSnF8hbwamEsg" name="Arbiter">
+      <operations xmi:id="_1iLsE9CtEeSnF8hbwamEsg" name="notAllowed" visibility="package" returnType="_1iLsGtCtEeSnF8hbwamEsg"/>
+      <operations xmi:id="_1iLsFNCtEeSnF8hbwamEsg" name="getArbiter" returnType="_1iLsEtCtEeSnF8hbwamEsg"/>
+      <operations xmi:id="_1iLsFdCtEeSnF8hbwamEsg" name="getValue" returnType="_1iLsINCtEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_1iLsFtCtEeSnF8hbwamEsg" name="Command">
+      <operations xmi:id="_1iLsF9CtEeSnF8hbwamEsg" name="execute" returnType="_1iLsGtCtEeSnF8hbwamEsg"/>
+      <operations xmi:id="_1iLsGNCtEeSnF8hbwamEsg" name="getName" returnType="_1iMTItCtEeSnF8hbwamEsg"/>
+      <operations xmi:id="_1iLsGdCtEeSnF8hbwamEsg" name="getValue" returnType="_1iLsINCtEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_1iLsGtCtEeSnF8hbwamEsg" name="Result"/>
+    <classes xsi:type="ram:Class" xmi:id="_1iLsG9CtEeSnF8hbwamEsg" name="NotAllowed" superTypes="_1iLsGtCtEeSnF8hbwamEsg">
+      <operations xmi:id="_1iLsHNCtEeSnF8hbwamEsg" name="create" returnType="_1iLsG9CtEeSnF8hbwamEsg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_1iLsHdCtEeSnF8hbwamEsg" name="StringType"/>
+    <classes xsi:type="ram:Class" xmi:id="_1iLsHtCtEeSnF8hbwamEsg" name="BooleanType"/>
+    <types xsi:type="ram:RVoid" xmi:id="_1iLsH9CtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_1iLsINCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RChar" xmi:id="_1iMTINCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RInt" xmi:id="_1iMTIdCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RString" xmi:id="_1iMTItCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RAny" xmi:id="_1iMTI9CtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_1iMTJNCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_1iMTJdCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTJtCtEeSnF8hbwamEsg" type="_1iLsINCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTJ9CtEeSnF8hbwamEsg" type="_1iMTINCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTKNCtEeSnF8hbwamEsg" type="_1iMTIdCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTKdCtEeSnF8hbwamEsg" type="_1iMTItCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTKtCtEeSnF8hbwamEsg" type="_1iMTJNCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTK9CtEeSnF8hbwamEsg" type="_1iMTJdCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTLNCtEeSnF8hbwamEsg" type="_1iLsEtCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTLdCtEeSnF8hbwamEsg" type="_1iLsFtCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTLtCtEeSnF8hbwamEsg" type="_1iLsGtCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTL9CtEeSnF8hbwamEsg" type="_1iLsG9CtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTMNCtEeSnF8hbwamEsg" type="_1iLsHdCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RSet" xmi:id="_1iMTMdCtEeSnF8hbwamEsg" type="_1iLsHtCtEeSnF8hbwamEsg"/>
+  </structuralView>
+  <messageViews xsi:type="ram:AspectMessageView" xmi:id="_1iMTMtCtEeSnF8hbwamEsg" name="arbitExce" pointcut="_1iLsF9CtEeSnF8hbwamEsg">
+    <advice xmi:id="_1iMTM9CtEeSnF8hbwamEsg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_1iMTNNCtEeSnF8hbwamEsg" covered="_1iMTOdCtEeSnF8hbwamEsg" message="_1iMTP9CtEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_1iMTNdCtEeSnF8hbwamEsg" covered="_1iMTOdCtEeSnF8hbwamEsg" message="_1iMTQNCtEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_1iMTNtCtEeSnF8hbwamEsg" covered="_1iMTOdCtEeSnF8hbwamEsg" message="_1iMTQNCtEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_1iMTN9CtEeSnF8hbwamEsg" covered="_1iMTOdCtEeSnF8hbwamEsg" message="_1iMTQdCtEeSnF8hbwamEsg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_1iMTONCtEeSnF8hbwamEsg" covered="_1iMTPdCtEeSnF8hbwamEsg" message="_1iMTQdCtEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_1iMTOdCtEeSnF8hbwamEsg" represents="_1iMTQtCtEeSnF8hbwamEsg" coveredBy="_1iMTNNCtEeSnF8hbwamEsg _1iMTNdCtEeSnF8hbwamEsg _1iMTNtCtEeSnF8hbwamEsg _1iMTN9CtEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_1iMTOtCtEeSnF8hbwamEsg" name="name">
+          <type xsi:type="ram:RString" href="platform:/resource/SlotMachines/SMNetworkArbiter.xram#//@structuralView/@types.4"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_1iMTO9CtEeSnF8hbwamEsg" name="allowed">
+          <type xsi:type="ram:RBoolean" href="platform:/resource/SlotMachines/SMNetworkArbiter.xram#//@structuralView/@types.1"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_1iMTPNCtEeSnF8hbwamEsg" name="ret" lowerBound="1" type="_1iLsG9CtEeSnF8hbwamEsg"/>
+      </lifelines>
+      <lifelines xmi:id="_1iMTPdCtEeSnF8hbwamEsg" represents="_1iMTQ9CtEeSnF8hbwamEsg" coveredBy="_1iMTONCtEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_1iMTPtCtEeSnF8hbwamEsg" represents="_1iMTRNCtEeSnF8hbwamEsg"/>
+      <messages xmi:id="_1iMTP9CtEeSnF8hbwamEsg" sendEvent="_1iMTRdCtEeSnF8hbwamEsg" receiveEvent="_1iMTNNCtEeSnF8hbwamEsg" signature="_1iLsF9CtEeSnF8hbwamEsg"/>
+      <messages xmi:id="_1iMTQNCtEeSnF8hbwamEsg" sendEvent="_1iMTNdCtEeSnF8hbwamEsg" receiveEvent="_1iMTNtCtEeSnF8hbwamEsg" signature="_1iLsGNCtEeSnF8hbwamEsg" assignTo="_1iMTOtCtEeSnF8hbwamEsg"/>
+      <messages xmi:id="_1iMTQdCtEeSnF8hbwamEsg" sendEvent="_1iMTN9CtEeSnF8hbwamEsg" receiveEvent="_1iMTONCtEeSnF8hbwamEsg" signature="_1iLsFdCtEeSnF8hbwamEsg"/>
+      <properties xmi:id="_1iMTQtCtEeSnF8hbwamEsg" name="com" lowerBound="1" type="_1iLsFtCtEeSnF8hbwamEsg"/>
+      <properties xmi:id="_1iMTQ9CtEeSnF8hbwamEsg" name="arb" lowerBound="1" type="_1iLsEtCtEeSnF8hbwamEsg"/>
+      <properties xmi:id="_1iMTRNCtEeSnF8hbwamEsg" name="na" lowerBound="1" type="_1iLsG9CtEeSnF8hbwamEsg"/>
+      <formalGates xmi:id="_1iMTRdCtEeSnF8hbwamEsg" message="_1iMTP9CtEeSnF8hbwamEsg" name="in_execute"/>
+    </advice>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_1iMTRtCtEeSnF8hbwamEsg" affectedBy="_1iMTMtCtEeSnF8hbwamEsg" specifies="_1iLsF9CtEeSnF8hbwamEsg">
+    <specification xmi:id="_1iMTR9CtEeSnF8hbwamEsg">
+      <lifelines xmi:id="_1iMTSNCtEeSnF8hbwamEsg" represents="_1iMTTtCtEeSnF8hbwamEsg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_1iMTSdCtEeSnF8hbwamEsg" name="name">
+          <type xsi:type="ram:RString" href="platform:/resource/SlotMachines/SMNetworkArbiter.xram#//@structuralView/@types.4"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_1iMTStCtEeSnF8hbwamEsg" name="allowed">
+          <type xsi:type="ram:RBoolean" href="platform:/resource/SlotMachines/SMNetworkArbiter.xram#//@structuralView/@types.1"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_1iMTS9CtEeSnF8hbwamEsg" name="ret" lowerBound="1" type="_1iLsG9CtEeSnF8hbwamEsg"/>
+      </lifelines>
+      <lifelines xmi:id="_1iMTTNCtEeSnF8hbwamEsg" represents="_1iMTT9CtEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_1iMTTdCtEeSnF8hbwamEsg" represents="_1iMTUNCtEeSnF8hbwamEsg"/>
+      <properties xmi:id="_1iMTTtCtEeSnF8hbwamEsg" name="com" lowerBound="1" type="_1iLsFtCtEeSnF8hbwamEsg"/>
+      <properties xmi:id="_1iMTT9CtEeSnF8hbwamEsg" name="arb" lowerBound="1" type="_1iLsEtCtEeSnF8hbwamEsg"/>
+      <properties xmi:id="_1iMTUNCtEeSnF8hbwamEsg" name="na" lowerBound="1" type="_1iLsG9CtEeSnF8hbwamEsg"/>
+    </specification>
+  </messageViews>
+</ram:Aspect>
