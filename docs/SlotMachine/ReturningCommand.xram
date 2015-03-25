@@ -2,9 +2,8 @@ aspect ReturningCommand {
 	
 	structure {
 		class |Command {
-			+ void execute() // + * execute()
+			+ void execute()
 		}
-		
 	}
 	
 }

@@ -12,7 +12,7 @@ aspect ZeroToManyOrdered {
 			+ |Associated get(int index)
 			+ void add(int index, |Associated a)
 		}
-		 
+		  
 		class Sequence {
 			int size
 			~ Sequence create()
@@ -25,8 +25,8 @@ aspect ZeroToManyOrdered {
 		}
 		
 		associations {
-			Data *-> 1 Sequence          { mySet }
-			Sequence o-> 0..* Associated { myAssociated }  
+			Data *-> 1 Sequence            { mySet        }
+			Sequence o-> 0 .. * Associated { myAssociated }  
 		}  
 	}
 	  

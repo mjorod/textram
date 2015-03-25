@@ -4,12 +4,13 @@ aspect NetErrorsArbiter extends SMNetwork, NetworkedError, dependsOn Map, Named,
 		
 		class NetworkCommandExecution {
 			+ NetworkCommandExecution getInstance()
-			+ Arbiter getArbiter()
+			+ void sendMessage(NetworkCommandExecution executor)
 		}
 		
 		class NetErrorsArbiter : NetworkCommandExecution {
 			+ void sendMessage(ErrorResult err)
 			+ NetworkCommandExecution getValue()
+			+ Arbiter getArbiter()
 		}
 		
 		class ErrorResult {
@@ -22,14 +23,10 @@ aspect NetErrorsArbiter extends SMNetwork, NetworkedError, dependsOn Map, Named,
 		class StringClass {}
 		class BooleanClass {}
 		class Arbiter {}
-	}
+	}  
 	
 	instantiations {
-		Map {
-			|Key   -> StringClass
-			|Value -> BooleanClass
-			|Data  -> NetErrorsArbiter 
-		}   
+		
 		
 		Named {
 			|Named -> ErrorResult
@@ -38,30 +35,34 @@ aspect NetErrorsArbiter extends SMNetwork, NetworkedError, dependsOn Map, Named,
 		Singleton {
 			|Singleton <getInstance> -> NetworkCommandExecution <getInstance> // Arbiter < getInstance >
 		}
+		
+		Map { 
+			|Key -> StringClass
+			|Value -> BooleanClass
+			|DataMap  -> NetErrorsArbiter 
+		}
 	}
 	
 	messages {
 		lifelines {
 			ref nce:NetworkCommandExecution { result:Arbiter }
-			ref nea:NetErrorsArbiter { name:StringClass; executor:NetworkCommandExecution } //metaclass
+			ref nea:NetErrorsArbiter { name:StringClass; executor:NetworkCommandExecution }
 			ref res:ErrorResult
 		}
 		
 		aspectMessageView arbitExce {
 			pointcut NetworkCommandExecution.getInstance()
 			advice {
-				nce => nea { result:=getArbiter() } //metaclass
-//				nce => <<  //{ result }
+				nce => nea { result:= getArbiter() }
+
+				return result
 			}
 		}
-		
-		//messageView sendCritical, sendNormal affectedBy arbitExec
 		
 		messageView NetErrorsArbiter.sendMessage(err) {
 			nea => res { name:= getName() }
 			nea => nea { executor := getValue() }
-			//nea => nce { sendMessage() }
-//			nea => <<
+			nea => nce { sendMessage(executor) }
 		}
 	}
 }

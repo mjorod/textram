@@ -1,4 +1,4 @@
-aspect Singleton {
+ aspect Singleton {
 	
 	structure {
 		class |Singleton {
@@ -7,23 +7,24 @@ aspect Singleton {
 		}
 		
 		associations {
-			Singleton -> 0..1 Singleton { instance } 
+			Singleton -> 0 .. 1 Singleton { instance }
 		}
-	}
+	}  
 	
 	messages {
 		lifelines {
-			static ref singleton:Singleton // static Singleton
+			static ref singleton:Singleton
 			ref instance:Singleton 
 		}
 		
-		messageView |Singleton.|getInstance() { //getInstance() : Singleton
+		messageView |Singleton.|getInstance() {
 
 			opt [ "instance == null" ] {
 				singleton => new instance { instance := create() }
 			}
+			 
+			return instance  
 			
-//			instance => << { instance }
 		}
 	}
 }

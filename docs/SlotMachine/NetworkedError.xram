@@ -35,20 +35,18 @@ aspect NetworkedError extends CriticalError, NormalError, SMNetwork, dependsOn S
 		}
 		 
 		aspectMessageView sendCritical {
-			pointcut |ReportingInterface.reportCritical(err) //reportCritical(CriticalError err)
+			pointcut |ReportingInterface.reportCritical(err) 
 			advice {
-				ri => er  { res := create(err)  } // res := create(err)
-				ri => nce { sendMessage(res) } // sendMessage(res)
-//				nce => << 
+				ri => er  { res := create(err)  } 
+				ri => nce { sendMessage(res) } 
 			}
 		}
 		
 		aspectMessageView sendNormal {
-			pointcut reportError(err) // reportError(NormalError err)
+			pointcut reportError(err) 
 			advice {
-				ri => er  { res := create(err) } // res := create(err)
+				ri => er  { res := create(err) } 
 				ri => nce { sendMessage(res) }
-//				ri => <<
 			}
 		}
 	}

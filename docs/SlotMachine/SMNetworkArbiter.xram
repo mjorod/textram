@@ -1,4 +1,4 @@
-aspect SMNetworkArbiter {
+aspect SMNetworkArbiter extends	SMNetwork, dependsOn Map, Named, Singleton {
 	  
 	structure { 
 		class Arbiter {
@@ -10,8 +10,6 @@ aspect SMNetworkArbiter {
 		
 		class Command {
 			+ Result execute()
-			
-			// the following methods have not been defined in the original model
 			+ String getName()
 			+ boolean getValue()
 		}
@@ -25,46 +23,55 @@ aspect SMNetworkArbiter {
 		
 		class StringType {}
 		class BooleanType {}
-	}      
+	}  
 	
-//	instantiations {
-//		Map {
-//			// Key -> String
-//			// Value -> boolean
-//			Key -> StringType
-//			Value -> BooleanType
-//			Data -> Arbiter
-//		}
-//		
-//		Named {
-//			Named -> Command
-//		}
-//		
-//		Singleton {
-//			Singleton < getInstance > -> Arbiter < getArbiter >
-//		}
-//	}
+	/* 
+	 * Incomplete in that the map is not filled in. 
+	 * It should be done at instantiation time or configuration time
+	 * 
+	 */
+	instantiations {
+		Map {
+			|Key     -> StringType
+			|Value   -> BooleanType
+			|DataMap -> Arbiter
+		}
+		Named {
+			|Named   -> Command
+		}
+		Singleton {
+			|Singleton <getInstance> -> Arbiter <getArbiter>
+		}
+		
+	}
  	
 	messages {
 		lifelines {
 			ref com:Command { String name; boolean allowed; ret:NotAllowed }
-			ref arb:Arbiter //singleton
+			ref arb:Arbiter
 			ref na:NotAllowed
 		} 
 		
+		/**
+		 * Independent of actual protocols being used. 
+		 * Only assumes that the commands are named differently according 
+		 * to the protocol being used, 
+		 * such that they can be configured unambiguously.
+		 * 
+		 */
 		aspectMessageView arbitExce {
 			pointcut execute()
 			advice {
 				com => com { name := getName() }
-				com => arb { allowed := getValue() } // allowed := getValue(name)
+				com => arb { allowed := getValue() } 
 				
-//				alt [ "allowed" ] {
-////					com => <<
-//				}
-//				else {
-//					com => new na { ret:=create() }   
-//					com => << //{ ret }
-//				}
+				alt [ "allowed" ] {
+					com =>*
+				}
+				else {
+					com => new na { ret:=create() }   
+					return ret
+				}
 			} 
 		} 
 		

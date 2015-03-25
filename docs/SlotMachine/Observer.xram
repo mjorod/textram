@@ -1,7 +1,7 @@
 aspect Observer {
 	
-	structure {
-		
+	structure {  
+		  
 		class |Subject {
 			+ |Subject create()
 			~ Set<Observer> getObservers()
@@ -14,11 +14,11 @@ aspect Observer {
 		class |Observer {
 			+ void startObserving(|Subject a)
 			+ void stopObserving()
-			+ void |update(|Subject s)
-		}
+			+ void |update(|Subject s) 
+ 		}
 		
 		associations {
-			Observer -> 1 Subject { mySubject }
+			Observer -> 1 Subject { mySubject } 
 		}
 	}
 	
@@ -29,7 +29,7 @@ aspect Observer {
 		}
 		  
 		messageView |Observer.startObserving(a) { //this.mySubject = s
-			observer => subject { addObserver(observer) } // addObserver(observer)
+			observer => subject { addObserver(observer) } 
 		}
 		
 		messageView |Observer.stopObserving() { //this.mySubject = s
@@ -44,7 +44,7 @@ aspect Observer {
 				loop ["Observer o : observers"] { 
 					subject => observer { |update(subject) } //update(subject)
 				}
-			} 
+			}  
 		}		
 	} 
 }

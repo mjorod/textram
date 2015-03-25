@@ -2,8 +2,8 @@ aspect Map {
 	
 	structure {
 		
-		class |Data { 
-			+ |Data create()
+		class |DataMap { 
+			+ |DataMap create()
 			+ void add(|Key key, |Value value)
 			+ void remove(|Key key)
 			+ |Value getValue(|Key key)
@@ -25,14 +25,14 @@ aspect Map {
 		class |Value {}
 		
 		associations {
-			Map o-> 0..* Value { myValue }
-			Data *-> 1 Map { myMap } 
+			Map o-> 0 .. * Value { myValue }
+			DataMap *-> 1 Map { myMap } 
 		}
 	} 
 	
 	messages {
 		lifelines {
-			ref data:Data
+			ref data:DataMap
 			ref key:Key
 			ref val:Value
 			
@@ -41,7 +41,7 @@ aspect Map {
 		}
 		
 		aspectMessageView initializeAssociation {
-			pointcut new |Data.create()
+			pointcut new |DataMap.create()
 			  
 			advice {
 				data => new myMap { myMap := create() }
@@ -50,20 +50,20 @@ aspect Map {
 			} 
 		} 
 		    
-		messageView |Data.add(key, value) { 
+		messageView |DataMap.add(key, value) { 
 			data => myMap { put(key, val) } 
 		}
 		
-		messageView |Data.remove(key) { 
+		messageView |DataMap.remove(key) { 
 			data => myMap { remove(key) }
 		}
 		
-		messageView |Data.getKeys() {
+		messageView |DataMap.getKeys() {
 			data  => myMap { keySet() } // result := keySet()
 //			myMap => <<    //{  result } 
 		}
 		 
-		messageView |Data.getValue(key) { // result := getValues()
+		messageView |DataMap.getValue(key) { // result := getValues()
 			data  => myMap { get(key) } 
 //			myMap => <<    //{  result } 
 		}
@@ -73,6 +73,6 @@ aspect Map {
 ////			myMap => <<    //{  result } 
 //		}
 		
-		messageView |Data.create() affectedBy initializeAssociation
+		messageView |DataMap.create() affectedBy initializeAssociation
 	}
 }

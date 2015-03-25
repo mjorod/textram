@@ -19,8 +19,8 @@ aspect NormalError dependsOn Named, Singleton {
 		class ReportingInterface { 
 			+ void reportError(NormalError err)
 			+ void clearReport()
-		}
-	}
+		} 
+	} 
 	
 	instantiations {
 		Named {
@@ -35,21 +35,21 @@ aspect NormalError dependsOn Named, Singleton {
 	messages {
 		lifelines {
 			ref normalError:NormalError { e:NormalError }
-			ref machine:Machine //singleton Machine
+			ref machine:Machine { ri1:ReportingInterface }
 			ref ri:ReportingInterface
 		}
 		
 		messageView NormalError.create(errorName) {
-			normalError => machine { reportError(e) } //reportError(this)
+			normalError => machine { reportError(e) } 
 		}
 		
 		messageView Machine.reportError(err) {
-			machine => machine { getMyReporingInterface() } // ri := getMyReporingInterface()
+			machine => machine { getMyReporingInterface() } 
 			machine => ri { reportError(normalError) }
 		}
 		
-		messageView ReportingInterface.clearReport() { //JF: first line should be clearError  //MO: I wrote it as it appears in the PDF file.
-			machine => machine { getMyReporingInterface() } // ri := getMyReporingInterface()
+		messageView ReportingInterface.clearReport() { 
+			machine => machine { ri1 := getMyReporingInterface() } 
 			machine => ri      { clearReport() }
 		}
 	}

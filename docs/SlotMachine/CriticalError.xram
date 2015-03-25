@@ -6,8 +6,8 @@ aspect CriticalError extends Betting, dependsOn Named, Blockable, Singleton {
 		
 		class RandomReels {
 			+ ArrayOfInt spinReels()
-			+ void block() // TODO: this method is present on the message view
-			+ void continue( ) 	//TODO:this is from instantiations?w
+			+ void block() 
+			+ void continue( ) 
 		}
 		
 		class CriticalError {
@@ -21,8 +21,8 @@ aspect CriticalError extends Betting, dependsOn Named, Blockable, Singleton {
 			+ void blockMachine(CriticalError e)
 			+ Machine getMachine()
 			+ |ReportingInterface getReportingInterface()
-			+ int currentCredits() //TODO: originally this method only appears in the message views
-			+ void withDrawCredits(int credits) //TODO: originally this method only appears in the message views
+			+ int currentCredits() 
+			+ void withDrawCredits(int credits) 
 			
 		}
 		
@@ -33,9 +33,9 @@ aspect CriticalError extends Betting, dependsOn Named, Blockable, Singleton {
 		
 		class PayTable {
 			+ int payout(Symbol first, Symbol second, Symbol third, Symbol fourth, Symbol fifth)
-			+ void block() //TODO:is this from instantiations?w
-			+ void continue( ) 	//TODO:is this from instantiations?w
-			+ void skip() //TODO: is this from instantiations?w
+			+ void block() 
+			+ void continue( ) 	
+			+ void skip() 
 		}
 		
 		associations {
@@ -62,14 +62,14 @@ aspect CriticalError extends Betting, dependsOn Named, Blockable, Singleton {
 	messages {
 		lifelines {
 			ref target:CriticalError
-			ref machine:Machine {  ri:|ReportingInterface; int c }//singleton
+			ref machine:Machine {  ri:|ReportingInterface; int c }
 			ref myRandom:RandomReels
 			ref myPayTable:PayTable
 			ref myRI:ReportingInterface { err:CriticalError }
 		}
 		
 		messageView CriticalError.create(errorName) {
-			target => machine { blockMachine(target) } //blockMachine(this)
+			target => machine { blockMachine(target) } 
 		}
 		
 		/*

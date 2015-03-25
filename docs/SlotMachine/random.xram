@@ -3,6 +3,6 @@ aspect Random {
 		class RandomGenerator {
 			+ int nextRandom()
 			+ RandomGenerator create(int range)
-		}
+		}  
 	} 
 }

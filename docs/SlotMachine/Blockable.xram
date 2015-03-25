@@ -6,10 +6,10 @@ aspect Blockable {
 		and instead the value given as the parameter to skip is returned.
 	*/
 	structure {
-		
+
 		class |Blockable {
 			boolean blocked
-			boolean skip
+			+ boolean skip()
 			+ void skip (|ReturnType value)
 		   	+ |ReturnType |blockableOperation()
 			+ void continue()
@@ -18,4 +18,4 @@ aspect Blockable {
 		
 		class |ReturnType {}
 	}
-}  
+}

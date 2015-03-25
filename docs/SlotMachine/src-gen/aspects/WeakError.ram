@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="ASCII"?>
-<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_1haQANCtEeSnF8hbwamEsg" name="WeakError">
-  <structuralView xmi:id="_1haQAdCtEeSnF8hbwamEsg">
-    <classes xsi:type="ram:Class" xmi:id="_1haQAtCtEeSnF8hbwamEsg" name="WeakError">
-      <operations xmi:id="_1haQA9CtEeSnF8hbwamEsg" name="create" returnType="_1haQAtCtEeSnF8hbwamEsg">
-        <parameters xmi:id="_1haQBNCtEeSnF8hbwamEsg" name="errorName" type="_1haQCdCtEeSnF8hbwamEsg"/>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_ja0lsNJ8EeSISLQ9NNOmJg" name="WeakError">
+  <structuralView xmi:id="_ja0lsdJ8EeSISLQ9NNOmJg">
+    <classes xsi:type="ram:Class" xmi:id="_ja0lstJ8EeSISLQ9NNOmJg" name="WeakError">
+      <operations xmi:id="_ja0ls9J8EeSISLQ9NNOmJg" name="create" returnType="_ja0lstJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_ja0ltNJ8EeSISLQ9NNOmJg" name="errorName" type="_ja0ludJ8EeSISLQ9NNOmJg"/>
       </operations>
     </classes>
-    <types xsi:type="ram:RVoid" xmi:id="_1haQBdCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RBoolean" xmi:id="_1haQBtCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RChar" xmi:id="_1haQB9CtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RInt" xmi:id="_1haQCNCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RString" xmi:id="_1haQCdCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RAny" xmi:id="_1haQCtCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RDouble" xmi:id="_1haQC9CtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RFloat" xmi:id="_1haQDNCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_1haQDdCtEeSnF8hbwamEsg" type="_1haQBtCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_1haQDtCtEeSnF8hbwamEsg" type="_1haQB9CtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_1haQD9CtEeSnF8hbwamEsg" type="_1haQCNCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_1haQENCtEeSnF8hbwamEsg" type="_1haQCdCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_1ha3ENCtEeSnF8hbwamEsg" type="_1haQC9CtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_1ha3EdCtEeSnF8hbwamEsg" type="_1haQDNCtEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_1ha3EtCtEeSnF8hbwamEsg" type="_1haQAtCtEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RVoid" xmi:id="_ja0ltdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_ja0lttJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RChar" xmi:id="_ja0lt9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RInt" xmi:id="_ja0luNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RString" xmi:id="_ja0ludJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RAny" xmi:id="_ja0lutJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_ja0lu9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_ja0lvNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lvdJ8EeSISLQ9NNOmJg" type="_ja0lttJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lvtJ8EeSISLQ9NNOmJg" type="_ja0lt9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lv9J8EeSISLQ9NNOmJg" type="_ja0luNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lwNJ8EeSISLQ9NNOmJg" type="_ja0ludJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lwdJ8EeSISLQ9NNOmJg" type="_ja0lu9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lwtJ8EeSISLQ9NNOmJg" type="_ja0lvNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lw9J8EeSISLQ9NNOmJg" type="_ja0lstJ8EeSISLQ9NNOmJg"/>
   </structuralView>
-  <messageViews xsi:type="ram:MessageView" xmi:id="_1ha3E9CtEeSnF8hbwamEsg" specifies="_1haQA9CtEeSnF8hbwamEsg">
-    <specification xmi:id="_1ha3FNCtEeSnF8hbwamEsg">
-      <lifelines xmi:id="_1ha3FdCtEeSnF8hbwamEsg" represents="_1ha3FtCtEeSnF8hbwamEsg"/>
-      <properties xmi:id="_1ha3FtCtEeSnF8hbwamEsg" name="target" lowerBound="1" type="_1haQAtCtEeSnF8hbwamEsg"/>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_ja0lxNJ8EeSISLQ9NNOmJg" specifies="_ja0ls9J8EeSISLQ9NNOmJg">
+    <specification xmi:id="_ja0lxdJ8EeSISLQ9NNOmJg">
+      <lifelines xmi:id="_ja0lxtJ8EeSISLQ9NNOmJg" represents="_ja0lx9J8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_ja0lx9J8EeSISLQ9NNOmJg" name="target" lowerBound="1" type="_ja0lstJ8EeSISLQ9NNOmJg"/>
     </specification>
   </messageViews>
-  <instantiations xmi:id="_1ha3F9CtEeSnF8hbwamEsg">
-    <mappings xmi:id="_1ha3GNCtEeSnF8hbwamEsg" toElement="_1haQAtCtEeSnF8hbwamEsg">
-      <fromElement xsi:type="ram:Class" href="../aspects/Named.ram#_1hXzwtCtEeSnF8hbwamEsg"/>
+  <instantiations xmi:id="_ja0lyNJ8EeSISLQ9NNOmJg">
+    <mappings xmi:id="_ja0lydJ8EeSISLQ9NNOmJg" toElement="_ja0lstJ8EeSISLQ9NNOmJg">
+      <fromElement xsi:type="ram:Class" href="../aspects/Named.ram#_jadZUtJ8EeSISLQ9NNOmJg"/>
     </mappings>
-    <externalAspect href="../aspects/Named.ram#_1hXzwNCtEeSnF8hbwamEsg"/>
+    <externalAspect href="../aspects/Named.ram#_jadZUNJ8EeSISLQ9NNOmJg"/>
   </instantiations>
 </ram:Aspect>

@@ -1,121 +1,121 @@
 <?xml version="1.0" encoding="ASCII"?>
-<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_LQjAgNCvEeSnF8hbwamEsg" name="NormalError">
-  <structuralView xmi:id="_LQjAgdCvEeSnF8hbwamEsg">
-    <classes xsi:type="ram:Class" xmi:id="_LQjAgtCvEeSnF8hbwamEsg" name="NormalError">
-      <operations xmi:id="_LQjAg9CvEeSnF8hbwamEsg" name="create" returnType="_LQjAgtCvEeSnF8hbwamEsg">
-        <parameters xmi:id="_LQjAhNCvEeSnF8hbwamEsg" name="errorName" type="_LQjAk9CvEeSnF8hbwamEsg"/>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_jb3HgNJ8EeSISLQ9NNOmJg" name="NormalError">
+  <structuralView xmi:id="_jb3HgdJ8EeSISLQ9NNOmJg">
+    <classes xsi:type="ram:Class" xmi:id="_jb3HgtJ8EeSISLQ9NNOmJg" name="NormalError">
+      <operations xmi:id="_jb3Hg9J8EeSISLQ9NNOmJg" name="create" returnType="_jb3HgtJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jb3HhNJ8EeSISLQ9NNOmJg" name="errorName" type="_jb3Hk9J8EeSISLQ9NNOmJg"/>
       </operations>
     </classes>
-    <classes xsi:type="ram:Class" xmi:id="_LQjAhdCvEeSnF8hbwamEsg" name="Machine">
-      <operations xmi:id="_LQjAhtCvEeSnF8hbwamEsg" name="reportError" returnType="_LQjAj9CvEeSnF8hbwamEsg">
-        <parameters xmi:id="_LQjAh9CvEeSnF8hbwamEsg" name="err" type="_LQjAgtCvEeSnF8hbwamEsg"/>
+    <classes xsi:type="ram:Class" xmi:id="_jb3HhdJ8EeSISLQ9NNOmJg" name="Machine">
+      <operations xmi:id="_jb3HhtJ8EeSISLQ9NNOmJg" name="reportError" returnType="_jb3Hj9J8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jb3Hh9J8EeSISLQ9NNOmJg" name="err" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
       </operations>
-      <operations xmi:id="_LQjAiNCvEeSnF8hbwamEsg" name="clearError" returnType="_LQjAj9CvEeSnF8hbwamEsg"/>
-      <operations xmi:id="_LQjAidCvEeSnF8hbwamEsg" name="getMachine" returnType="_LQjAhdCvEeSnF8hbwamEsg"/>
-      <operations xmi:id="_LQjAitCvEeSnF8hbwamEsg" name="getMyReporingInterface" returnType="_LQjAi9CvEeSnF8hbwamEsg"/>
+      <operations xmi:id="_jb3HiNJ8EeSISLQ9NNOmJg" name="clearError" returnType="_jb3Hj9J8EeSISLQ9NNOmJg"/>
+      <operations xmi:id="_jb3HidJ8EeSISLQ9NNOmJg" name="getMachine" returnType="_jb3HhdJ8EeSISLQ9NNOmJg"/>
+      <operations xmi:id="_jb3HitJ8EeSISLQ9NNOmJg" name="getMyReporingInterface" returnType="_jb3Hi9J8EeSISLQ9NNOmJg"/>
     </classes>
-    <classes xsi:type="ram:Class" xmi:id="_LQjAi9CvEeSnF8hbwamEsg" name="ReportingInterface">
-      <operations xmi:id="_LQjAjNCvEeSnF8hbwamEsg" name="reportError" returnType="_LQjAj9CvEeSnF8hbwamEsg">
-        <parameters xmi:id="_LQjAjdCvEeSnF8hbwamEsg" name="err" type="_LQjAgtCvEeSnF8hbwamEsg"/>
+    <classes xsi:type="ram:Class" xmi:id="_jb3Hi9J8EeSISLQ9NNOmJg" name="ReportingInterface">
+      <operations xmi:id="_jb3HjNJ8EeSISLQ9NNOmJg" name="reportError" returnType="_jb3Hj9J8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jb3HjdJ8EeSISLQ9NNOmJg" name="err" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
       </operations>
-      <operations xmi:id="_LQjAjtCvEeSnF8hbwamEsg" name="clearReport" returnType="_LQjAj9CvEeSnF8hbwamEsg"/>
+      <operations xmi:id="_jb3HjtJ8EeSISLQ9NNOmJg" name="clearReport" returnType="_jb3Hj9J8EeSISLQ9NNOmJg"/>
     </classes>
-    <types xsi:type="ram:RVoid" xmi:id="_LQjAj9CvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RBoolean" xmi:id="_LQjAkNCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RChar" xmi:id="_LQjAkdCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RInt" xmi:id="_LQjAktCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RString" xmi:id="_LQjAk9CvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RAny" xmi:id="_LQjAlNCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RDouble" xmi:id="_LQjAldCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RFloat" xmi:id="_LQjAltCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAl9CvEeSnF8hbwamEsg" type="_LQjAkNCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAmNCvEeSnF8hbwamEsg" type="_LQjAkdCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAmdCvEeSnF8hbwamEsg" type="_LQjAktCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAmtCvEeSnF8hbwamEsg" type="_LQjAk9CvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAm9CvEeSnF8hbwamEsg" type="_LQjAldCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAnNCvEeSnF8hbwamEsg" type="_LQjAltCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAndCvEeSnF8hbwamEsg" type="_LQjAgtCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAntCvEeSnF8hbwamEsg" type="_LQjAhdCvEeSnF8hbwamEsg"/>
-    <types xsi:type="ram:RSet" xmi:id="_LQjAn9CvEeSnF8hbwamEsg" type="_LQjAi9CvEeSnF8hbwamEsg"/>
+    <types xsi:type="ram:RVoid" xmi:id="_jb3Hj9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_jb3HkNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RChar" xmi:id="_jb3HkdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RInt" xmi:id="_jb3HktJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RString" xmi:id="_jb3Hk9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RAny" xmi:id="_jb3HlNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_jb3HldJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_jb3HltJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3Hl9J8EeSISLQ9NNOmJg" type="_jb3HkNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3HmNJ8EeSISLQ9NNOmJg" type="_jb3HkdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3HmdJ8EeSISLQ9NNOmJg" type="_jb3HktJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3HmtJ8EeSISLQ9NNOmJg" type="_jb3Hk9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3Hm9J8EeSISLQ9NNOmJg" type="_jb3HldJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3HnNJ8EeSISLQ9NNOmJg" type="_jb3HltJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3HndJ8EeSISLQ9NNOmJg" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3HntJ8EeSISLQ9NNOmJg" type="_jb3HhdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jb3Hn9J8EeSISLQ9NNOmJg" type="_jb3Hi9J8EeSISLQ9NNOmJg"/>
   </structuralView>
-  <messageViews xsi:type="ram:MessageView" xmi:id="_LQjAoNCvEeSnF8hbwamEsg" specifies="_LQjAg9CvEeSnF8hbwamEsg">
-    <specification xmi:id="_LQjAodCvEeSnF8hbwamEsg">
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAotCvEeSnF8hbwamEsg" covered="_LQjApNCvEeSnF8hbwamEsg" message="_LQjAqdCvEeSnF8hbwamEsg"/>
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAo9CvEeSnF8hbwamEsg" covered="_LQjAptCvEeSnF8hbwamEsg" message="_LQjAqdCvEeSnF8hbwamEsg"/>
-      <lifelines xmi:id="_LQjApNCvEeSnF8hbwamEsg" represents="_LQjArNCvEeSnF8hbwamEsg" coveredBy="_LQjAotCvEeSnF8hbwamEsg">
-        <localProperties xsi:type="ram:Reference" xmi:id="_LQjApdCvEeSnF8hbwamEsg" name="e" lowerBound="1" type="_LQjAgtCvEeSnF8hbwamEsg"/>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_jb3HoNJ8EeSISLQ9NNOmJg" specifies="_jb3Hg9J8EeSISLQ9NNOmJg">
+    <specification xmi:id="_jb3HodJ8EeSISLQ9NNOmJg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3HotJ8EeSISLQ9NNOmJg" covered="_jb3HpNJ8EeSISLQ9NNOmJg" message="_jb3HqdJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3Ho9J8EeSISLQ9NNOmJg" covered="_jb3HptJ8EeSISLQ9NNOmJg" message="_jb3HqdJ8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_jb3HpNJ8EeSISLQ9NNOmJg" represents="_jb3HrNJ8EeSISLQ9NNOmJg" coveredBy="_jb3HotJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_jb3HpdJ8EeSISLQ9NNOmJg" name="e" lowerBound="1" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
       </lifelines>
-      <lifelines xmi:id="_LQjAptCvEeSnF8hbwamEsg" represents="_LQjArdCvEeSnF8hbwamEsg" coveredBy="_LQjAo9CvEeSnF8hbwamEsg">
-        <localProperties xsi:type="ram:Reference" xmi:id="_LQjAp9CvEeSnF8hbwamEsg" name="ri1" lowerBound="1" type="_LQjAi9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_jb3HptJ8EeSISLQ9NNOmJg" represents="_jb3HrdJ8EeSISLQ9NNOmJg" coveredBy="_jb3Ho9J8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_jb3Hp9J8EeSISLQ9NNOmJg" name="ri1" lowerBound="1" type="_jb3Hi9J8EeSISLQ9NNOmJg"/>
       </lifelines>
-      <lifelines xmi:id="_LQjAqNCvEeSnF8hbwamEsg" represents="_LQjArtCvEeSnF8hbwamEsg"/>
-      <messages xmi:id="_LQjAqdCvEeSnF8hbwamEsg" sendEvent="_LQjAotCvEeSnF8hbwamEsg" receiveEvent="_LQjAo9CvEeSnF8hbwamEsg" signature="_LQjAhtCvEeSnF8hbwamEsg">
-        <arguments xmi:id="_LQjAqtCvEeSnF8hbwamEsg" parameter="_LQjAh9CvEeSnF8hbwamEsg">
-          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_LQjAq9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_jb3HqNJ8EeSISLQ9NNOmJg" represents="_jb3HrtJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jb3HqdJ8EeSISLQ9NNOmJg" sendEvent="_jb3HotJ8EeSISLQ9NNOmJg" receiveEvent="_jb3Ho9J8EeSISLQ9NNOmJg" signature="_jb3HhtJ8EeSISLQ9NNOmJg">
+        <arguments xmi:id="_jb3HqtJ8EeSISLQ9NNOmJg" parameter="_jb3Hh9J8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jb3Hq9J8EeSISLQ9NNOmJg"/>
         </arguments>
       </messages>
-      <properties xmi:id="_LQjArNCvEeSnF8hbwamEsg" name="normalError" lowerBound="1" type="_LQjAgtCvEeSnF8hbwamEsg"/>
-      <properties xmi:id="_LQjArdCvEeSnF8hbwamEsg" name="machine" lowerBound="1" type="_LQjAhdCvEeSnF8hbwamEsg"/>
-      <properties xmi:id="_LQjArtCvEeSnF8hbwamEsg" name="ri" lowerBound="1" type="_LQjAi9CvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_jb3HrNJ8EeSISLQ9NNOmJg" name="normalError" lowerBound="1" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jb3HrdJ8EeSISLQ9NNOmJg" name="machine" lowerBound="1" type="_jb3HhdJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jb3HrtJ8EeSISLQ9NNOmJg" name="ri" lowerBound="1" type="_jb3Hi9J8EeSISLQ9NNOmJg"/>
     </specification>
   </messageViews>
-  <messageViews xsi:type="ram:MessageView" xmi:id="_LQjAr9CvEeSnF8hbwamEsg" specifies="_LQjAhtCvEeSnF8hbwamEsg">
-    <specification xmi:id="_LQjAsNCvEeSnF8hbwamEsg">
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAsdCvEeSnF8hbwamEsg" covered="_LQjAt9CvEeSnF8hbwamEsg" message="_LQjAutCvEeSnF8hbwamEsg"/>
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAstCvEeSnF8hbwamEsg" covered="_LQjAt9CvEeSnF8hbwamEsg" message="_LQjAutCvEeSnF8hbwamEsg"/>
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAs9CvEeSnF8hbwamEsg" covered="_LQjAt9CvEeSnF8hbwamEsg" message="_LQjAu9CvEeSnF8hbwamEsg"/>
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAtNCvEeSnF8hbwamEsg" covered="_LQjAudCvEeSnF8hbwamEsg" message="_LQjAu9CvEeSnF8hbwamEsg"/>
-      <lifelines xmi:id="_LQjAtdCvEeSnF8hbwamEsg" represents="_LQjAvtCvEeSnF8hbwamEsg">
-        <localProperties xsi:type="ram:Reference" xmi:id="_LQjAttCvEeSnF8hbwamEsg" name="e" lowerBound="1" type="_LQjAgtCvEeSnF8hbwamEsg"/>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_jb3Hr9J8EeSISLQ9NNOmJg" specifies="_jb3HhtJ8EeSISLQ9NNOmJg">
+    <specification xmi:id="_jb3HsNJ8EeSISLQ9NNOmJg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3HsdJ8EeSISLQ9NNOmJg" covered="_jb3Ht9J8EeSISLQ9NNOmJg" message="_jb3HutJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3HstJ8EeSISLQ9NNOmJg" covered="_jb3Ht9J8EeSISLQ9NNOmJg" message="_jb3HutJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3Hs9J8EeSISLQ9NNOmJg" covered="_jb3Ht9J8EeSISLQ9NNOmJg" message="_jb3Hu9J8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3HtNJ8EeSISLQ9NNOmJg" covered="_jb3HudJ8EeSISLQ9NNOmJg" message="_jb3Hu9J8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_jb3HtdJ8EeSISLQ9NNOmJg" represents="_jb3HvtJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_jb3HttJ8EeSISLQ9NNOmJg" name="e" lowerBound="1" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
       </lifelines>
-      <lifelines xmi:id="_LQjAt9CvEeSnF8hbwamEsg" represents="_LQjAv9CvEeSnF8hbwamEsg" coveredBy="_LQjAsdCvEeSnF8hbwamEsg _LQjAstCvEeSnF8hbwamEsg _LQjAs9CvEeSnF8hbwamEsg">
-        <localProperties xsi:type="ram:Reference" xmi:id="_LQjAuNCvEeSnF8hbwamEsg" name="ri1" lowerBound="1" type="_LQjAi9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_jb3Ht9J8EeSISLQ9NNOmJg" represents="_jb3Hv9J8EeSISLQ9NNOmJg" coveredBy="_jb3HsdJ8EeSISLQ9NNOmJg _jb3HstJ8EeSISLQ9NNOmJg _jb3Hs9J8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_jb3HuNJ8EeSISLQ9NNOmJg" name="ri1" lowerBound="1" type="_jb3Hi9J8EeSISLQ9NNOmJg"/>
       </lifelines>
-      <lifelines xmi:id="_LQjAudCvEeSnF8hbwamEsg" represents="_LQjAwNCvEeSnF8hbwamEsg" coveredBy="_LQjAtNCvEeSnF8hbwamEsg"/>
-      <messages xmi:id="_LQjAutCvEeSnF8hbwamEsg" sendEvent="_LQjAsdCvEeSnF8hbwamEsg" receiveEvent="_LQjAstCvEeSnF8hbwamEsg" signature="_LQjAitCvEeSnF8hbwamEsg"/>
-      <messages xmi:id="_LQjAu9CvEeSnF8hbwamEsg" sendEvent="_LQjAs9CvEeSnF8hbwamEsg" receiveEvent="_LQjAtNCvEeSnF8hbwamEsg" signature="_LQjAhtCvEeSnF8hbwamEsg">
-        <arguments xmi:id="_LQjAvNCvEeSnF8hbwamEsg" parameter="_LQjAh9CvEeSnF8hbwamEsg">
-          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_LQjAvdCvEeSnF8hbwamEsg" value="_LQjAvtCvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_jb3HudJ8EeSISLQ9NNOmJg" represents="_jb3HwNJ8EeSISLQ9NNOmJg" coveredBy="_jb3HtNJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jb3HutJ8EeSISLQ9NNOmJg" sendEvent="_jb3HsdJ8EeSISLQ9NNOmJg" receiveEvent="_jb3HstJ8EeSISLQ9NNOmJg" signature="_jb3HitJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jb3Hu9J8EeSISLQ9NNOmJg" sendEvent="_jb3Hs9J8EeSISLQ9NNOmJg" receiveEvent="_jb3HtNJ8EeSISLQ9NNOmJg" signature="_jb3HhtJ8EeSISLQ9NNOmJg">
+        <arguments xmi:id="_jb3HvNJ8EeSISLQ9NNOmJg" parameter="_jb3Hh9J8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jb3HvdJ8EeSISLQ9NNOmJg" value="_jb3HvtJ8EeSISLQ9NNOmJg"/>
         </arguments>
       </messages>
-      <properties xmi:id="_LQjAvtCvEeSnF8hbwamEsg" name="normalError" lowerBound="1" type="_LQjAgtCvEeSnF8hbwamEsg"/>
-      <properties xmi:id="_LQjAv9CvEeSnF8hbwamEsg" name="machine" lowerBound="1" type="_LQjAhdCvEeSnF8hbwamEsg"/>
-      <properties xmi:id="_LQjAwNCvEeSnF8hbwamEsg" name="ri" lowerBound="1" type="_LQjAi9CvEeSnF8hbwamEsg"/>
+      <properties xmi:id="_jb3HvtJ8EeSISLQ9NNOmJg" name="normalError" lowerBound="1" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jb3Hv9J8EeSISLQ9NNOmJg" name="machine" lowerBound="1" type="_jb3HhdJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jb3HwNJ8EeSISLQ9NNOmJg" name="ri" lowerBound="1" type="_jb3Hi9J8EeSISLQ9NNOmJg"/>
     </specification>
   </messageViews>
-  <messageViews xsi:type="ram:MessageView" xmi:id="_LQjAwdCvEeSnF8hbwamEsg" specifies="_LQjAjtCvEeSnF8hbwamEsg">
-    <specification xmi:id="_LQjAwtCvEeSnF8hbwamEsg">
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAw9CvEeSnF8hbwamEsg" covered="_LQjAydCvEeSnF8hbwamEsg" message="_LQjAzNCvEeSnF8hbwamEsg"/>
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAxNCvEeSnF8hbwamEsg" covered="_LQjAydCvEeSnF8hbwamEsg" message="_LQjAzNCvEeSnF8hbwamEsg"/>
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAxdCvEeSnF8hbwamEsg" covered="_LQjAydCvEeSnF8hbwamEsg" message="_LQjAzdCvEeSnF8hbwamEsg"/>
-      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_LQjAxtCvEeSnF8hbwamEsg" covered="_LQjAy9CvEeSnF8hbwamEsg" message="_LQjAzdCvEeSnF8hbwamEsg"/>
-      <lifelines xmi:id="_LQjAx9CvEeSnF8hbwamEsg" represents="_LQjAztCvEeSnF8hbwamEsg">
-        <localProperties xsi:type="ram:Reference" xmi:id="_LQjAyNCvEeSnF8hbwamEsg" name="e" lowerBound="1" type="_LQjAgtCvEeSnF8hbwamEsg"/>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_jb3HwdJ8EeSISLQ9NNOmJg" specifies="_jb3HjtJ8EeSISLQ9NNOmJg">
+    <specification xmi:id="_jb3HwtJ8EeSISLQ9NNOmJg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3Hw9J8EeSISLQ9NNOmJg" covered="_jb3HydJ8EeSISLQ9NNOmJg" message="_jb3HzNJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3HxNJ8EeSISLQ9NNOmJg" covered="_jb3HydJ8EeSISLQ9NNOmJg" message="_jb3HzNJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3HxdJ8EeSISLQ9NNOmJg" covered="_jb3HydJ8EeSISLQ9NNOmJg" message="_jb3HzdJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jb3HxtJ8EeSISLQ9NNOmJg" covered="_jb3Hy9J8EeSISLQ9NNOmJg" message="_jb3HzdJ8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_jb3Hx9J8EeSISLQ9NNOmJg" represents="_jb3HztJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_jb3HyNJ8EeSISLQ9NNOmJg" name="e" lowerBound="1" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
       </lifelines>
-      <lifelines xmi:id="_LQjAydCvEeSnF8hbwamEsg" represents="_LQjAz9CvEeSnF8hbwamEsg" coveredBy="_LQjAw9CvEeSnF8hbwamEsg _LQjAxNCvEeSnF8hbwamEsg _LQjAxdCvEeSnF8hbwamEsg">
-        <localProperties xsi:type="ram:Reference" xmi:id="_LQjAytCvEeSnF8hbwamEsg" name="ri1" lowerBound="1" type="_LQjAi9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_jb3HydJ8EeSISLQ9NNOmJg" represents="_jb3Hz9J8EeSISLQ9NNOmJg" coveredBy="_jb3Hw9J8EeSISLQ9NNOmJg _jb3HxNJ8EeSISLQ9NNOmJg _jb3HxdJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Reference" xmi:id="_jb3HytJ8EeSISLQ9NNOmJg" name="ri1" lowerBound="1" type="_jb3Hi9J8EeSISLQ9NNOmJg"/>
       </lifelines>
-      <lifelines xmi:id="_LQjAy9CvEeSnF8hbwamEsg" represents="_LQjA0NCvEeSnF8hbwamEsg" coveredBy="_LQjAxtCvEeSnF8hbwamEsg"/>
-      <messages xmi:id="_LQjAzNCvEeSnF8hbwamEsg" sendEvent="_LQjAw9CvEeSnF8hbwamEsg" receiveEvent="_LQjAxNCvEeSnF8hbwamEsg" signature="_LQjAitCvEeSnF8hbwamEsg" assignTo="_LQjAytCvEeSnF8hbwamEsg"/>
-      <messages xmi:id="_LQjAzdCvEeSnF8hbwamEsg" sendEvent="_LQjAxdCvEeSnF8hbwamEsg" receiveEvent="_LQjAxtCvEeSnF8hbwamEsg" signature="_LQjAjtCvEeSnF8hbwamEsg"/>
-      <properties xmi:id="_LQjAztCvEeSnF8hbwamEsg" name="normalError" lowerBound="1" type="_LQjAgtCvEeSnF8hbwamEsg"/>
-      <properties xmi:id="_LQjAz9CvEeSnF8hbwamEsg" name="machine" lowerBound="1" type="_LQjAhdCvEeSnF8hbwamEsg"/>
-      <properties xmi:id="_LQjA0NCvEeSnF8hbwamEsg" name="ri" lowerBound="1" type="_LQjAi9CvEeSnF8hbwamEsg"/>
+      <lifelines xmi:id="_jb3Hy9J8EeSISLQ9NNOmJg" represents="_jb3H0NJ8EeSISLQ9NNOmJg" coveredBy="_jb3HxtJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jb3HzNJ8EeSISLQ9NNOmJg" sendEvent="_jb3Hw9J8EeSISLQ9NNOmJg" receiveEvent="_jb3HxNJ8EeSISLQ9NNOmJg" signature="_jb3HitJ8EeSISLQ9NNOmJg" assignTo="_jb3HytJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jb3HzdJ8EeSISLQ9NNOmJg" sendEvent="_jb3HxdJ8EeSISLQ9NNOmJg" receiveEvent="_jb3HxtJ8EeSISLQ9NNOmJg" signature="_jb3HjtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jb3HztJ8EeSISLQ9NNOmJg" name="normalError" lowerBound="1" type="_jb3HgtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jb3Hz9J8EeSISLQ9NNOmJg" name="machine" lowerBound="1" type="_jb3HhdJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jb3H0NJ8EeSISLQ9NNOmJg" name="ri" lowerBound="1" type="_jb3Hi9J8EeSISLQ9NNOmJg"/>
     </specification>
   </messageViews>
-  <instantiations xmi:id="_LQjnkNCvEeSnF8hbwamEsg">
-    <mappings xmi:id="_LQjnkdCvEeSnF8hbwamEsg" toElement="_LQjAgtCvEeSnF8hbwamEsg">
-      <fromElement xsi:type="ram:Class" href="../aspects/Named.ram#_LQgkQtCvEeSnF8hbwamEsg"/>
+  <instantiations xmi:id="_jb3H0dJ8EeSISLQ9NNOmJg">
+    <mappings xmi:id="_jb3H0tJ8EeSISLQ9NNOmJg" toElement="_jb3HgtJ8EeSISLQ9NNOmJg">
+      <fromElement xsi:type="ram:Class" href="../aspects/Named.ram#_jadZUtJ8EeSISLQ9NNOmJg"/>
     </mappings>
-    <externalAspect href="../aspects/Named.ram#_LQgkQNCvEeSnF8hbwamEsg"/>
+    <externalAspect href="../aspects/Named.ram#_jadZUNJ8EeSISLQ9NNOmJg"/>
   </instantiations>
-  <instantiations xmi:id="_LQjnktCvEeSnF8hbwamEsg">
-    <mappings xmi:id="_LQjnk9CvEeSnF8hbwamEsg" toElement="_LQjAhdCvEeSnF8hbwamEsg">
-      <operationMappings xmi:id="_LQjnlNCvEeSnF8hbwamEsg" toElement="_LQjAidCvEeSnF8hbwamEsg">
-        <fromElement href="../aspects/Singleton.ram#_LPmlU9CvEeSnF8hbwamEsg"/>
+  <instantiations xmi:id="_jb3H09J8EeSISLQ9NNOmJg">
+    <mappings xmi:id="_jb3H1NJ8EeSISLQ9NNOmJg" toElement="_jb3HhdJ8EeSISLQ9NNOmJg">
+      <operationMappings xmi:id="_jb3H1dJ8EeSISLQ9NNOmJg" toElement="_jb3HidJ8EeSISLQ9NNOmJg">
+        <fromElement href="../aspects/Singleton.ram#_ja9Ik9J8EeSISLQ9NNOmJg"/>
       </operationMappings>
-      <fromElement xsi:type="ram:Class" href="../aspects/Singleton.ram#_LPmlUtCvEeSnF8hbwamEsg"/>
+      <fromElement xsi:type="ram:Class" href="../aspects/Singleton.ram#_ja9IktJ8EeSISLQ9NNOmJg"/>
     </mappings>
-    <externalAspect href="../aspects/Singleton.ram#_LPmlUNCvEeSnF8hbwamEsg"/>
+    <externalAspect href="../aspects/Singleton.ram#_ja9IkNJ8EeSISLQ9NNOmJg"/>
   </instantiations>
 </ram:Aspect>

@@ -8,15 +8,4 @@ aspect Named {
 		}
 		
 	}
-		
-//	messages {
-//		lifelines {
-//			ref target:Named
-//		}
-//		
-////		messageView Named.setName(String name) { // setName(name) : void
-////			// this.name = name
-////			target => <<
-////		}
-//	}
 }

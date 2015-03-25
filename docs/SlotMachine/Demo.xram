@@ -2,34 +2,32 @@ aspect Demo extends Betting, dependsOn Singleton {
 	 
 	structure {
 		class ArrayOfInt {}
-		class Symbol {} //TODO: its is par of extends?
+		class Symbol {} 
 		
 		class RandomReels {
 			+ ArrayOfInt spinOfReels()
 			+ ReelConfiguration getMyReelConfiguration()
-		}
-		 
+		}   
+		  
 		class Machine {
 			boolean demoMode 
-			//ArrayOfInt nextOutCome TODO: an attribute can only be a PrimitiveType
-			int savedCredits
 			+ void setDemo(boolean on)
 			+ ArrayOfInt getNextOutCome(ArrayOfInt Symbol)
 			+ void setNextOutCome(Symbol s)
-			+ Machine getMachine() //TODO: getInstance? static?
-			+ int currentCredits() //TODO: originally only appears on messages views
-			+ int savedCredits() //TODO: originally only appears on messages views
-		} 
-		
+			+ Machine getMachine() 
+			+ int currentCredits() 
+			+ int savedCredits() 
+		}               
+		     
 		class ReelConfiguration {
-			+ int getPositionForSymbol(int reel, Symbol sym)
-		}
+			+ int getPositionForSymbol(int reel, Symbol sym) 
+		}    
 	}  
 	
 	instantiations {
 		Singleton {
 			|Singleton <getInstance> -> Machine <getMachine>
-		}
+		}  
 	}  
 	  
 	messages {
@@ -54,30 +52,25 @@ aspect Demo extends Betting, dependsOn Singleton {
 			advice {
 				randomReels => target { outcome := getNextOutCome(result) }
 				alt [ "outcome != null" ] {
-					randomReels => target { setNextOutCome(null) } //setNextOutCome(null)
+					randomReels => target { setNextOutCome(null) } //setNextOutCome(null) 
 
 				randomReels => randomReels { rc := getMyReelConfiguration() }
-				
+				 
 					loop [ "int = 0; i < 5; i++" ] {
 						randomReels => rc { getPositionForSymbol (i, outcomeItem) } // getPositionForSymbol(i, outcome[0])
 					}
    				}
-   				else {
+   				else { 
    					randomReels =>* 
    				}
-   			
-   					//randomReels => << // { result }
+   				
+   				return outcome
+
 	   		 }
 	   	} 
    	  
-//		messageView RandomReels.spinOfReels() affectedBy determineNextOutcome
-//		
-//		/*
-//		 * Returns a reel position that has a symbol
-//		 */
-////		messageView ReelConfiguration.getPositionForSymbol() {
-////			>> => rc { getPositionForSymbol() } // getPositionForSymbol(sym)
-////			rc => <<
-////		}
+		messageView RandomReels.spinOfReels() affectedBy determineNextOutcome
+		
+
 	}
 }

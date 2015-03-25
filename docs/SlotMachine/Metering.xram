@@ -1,24 +1,24 @@
-aspect Metering dependsOn Observer, Named {
+aspect Metering dependsOn Observer, Named { 
 	structure {
 		class |InterceptStateChange {
 			int data
 			+ int getData()
 			//+ * |ModifyData
 			+ void |modifyData(int value) 
-		}
-		
-		class Meter {
+		}  
+		   
+		class Meter { 
 			int value
 			+ Meter create(String name, int initialValue)
 			+ void setValue(int newValue)
 			+ void attachMeter(|InterceptStateChange s)
 			+ void notifyChange(|InterceptStateChange s)
 			~ void updateMeter(|InterceptStateChange s)
-		}
+		} 
 		
 		class StandardMeter : Meter {
-			+ void updateMeter(|InterceptStateChange s) // ~ void updateMeter
-		}
+			+ void updateMeter(|InterceptStateChange s) 
+		} 
 		
 		class AdditiveMeter : Meter {
 			~ void updateMeter(|InterceptStateChange s)
@@ -28,7 +28,7 @@ aspect Metering dependsOn Observer, Named {
 			~ void updateMeter(|InterceptStateChange s)
 		}
 	} 
-	
+	 
 	instantiations {
 		Observer {
 			|Subject < modify > -> |InterceptStateChange < modifyData >
@@ -37,7 +37,7 @@ aspect Metering dependsOn Observer, Named {
 		
 		Named {
 			|Named -> Meter
-		}
+		} 
 	} 
 	
 	messages {
@@ -49,11 +49,11 @@ aspect Metering dependsOn Observer, Named {
 		
 		messageView Meter.notifyChange(s) {
 			target => intercetpStateChange { v:= getData() }
-			target => target { updateMeter(intercetpStateChange) } // updateMeter(v)
+			target => target { updateMeter(intercetpStateChange) } 
 		}
 		
-		messageView StandardMeter.updateMeter(s)  { // updateMeter(n)
-			standardMeter => standardMeter { setValue(n) } //setValue(n)
+		messageView StandardMeter.updateMeter(s)  { 
+			standardMeter => standardMeter { updateMeter(s) }
 		}
 	}
 }

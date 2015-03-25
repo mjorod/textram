@@ -4,41 +4,62 @@ aspect Betting extends Game {
           int credits
           + void withDrawCredits(int amount)
           + void depositCredits (int amount)
-          + void initialize() 
+          + void initialize()
+          + void play()
+          + Reel getReelAtPosition(int index)
+          + void addCredits(int credit)
+        }   
+        
+        class Reel {
+        	+ Symbol getCurrentSymbol()
         }
-  
+          
+        class Symbol {}
+   
         class PayTable {
           + PayTable create(String fileName)
-          //+ int payout(Symbol first, Symbol second, Symbol third, Symbol fifth)
-        }
- 
+          + int payout(Symbol first, Symbol second, Symbol third, Symbol fourth, Symbol fifth)
+        }  
+   
         associations {
-          Machine -> 0..1 PayTable { myPayTable }
-        } 
-      }    
-       
+          Machine -> 0 .. 1 PayTable { myPayTable } 
+        }   
+      }        
+           
       messages {
       	lifelines {
-      		ref target:Machine { String default = "default" }    
+      		ref target:Machine { String default = "default"; int credits; r1:Reel; int index; s1:Symbol; s2:Symbol; s3:Symbol; s4:Symbol; s5:Symbol; int win }    
       		ref myPayTable:PayTable 
+      		ref r:Reel
       	}
       	 
       	aspectMessageView loadPayTable {
       		pointcut Machine.initialize()
       		advice {
       			target =>*  
-      			target => new myPayTable { myPayTable := create(default) } // myPayTable := create("deafult")
-//      			target => <<
-      		}  
+      			target => new myPayTable { myPayTable := create(fileName) } 
+      		}       
+      	}       
+      	 
+      	aspectMessageView playWithMoney {
+      		pointcut Machine.play() 
+      		advice {
+      			opt ["credits >= 5"] {
+      				target => target     { withDrawCredits(credits) }
+      				target =>*
+      				target => target     { r1 := getReelAtPosition(index) }
+      				target => r          { s1 := getCurrentSymbol() }
+      				target => myPayTable { win := payout(s1, s2, s3, s4, s5) }
+      				target => target     { addCredits(win) } 
+      			}  
+      		}
+      		
       	}  
       	
-      	messageView Machine.initialize() affectedBy loadPayTable  	
-      	
-//      	aspectMessageView playWithMoney {
-//      		pointcut play
-//      		
-//      	}
-      	
+      	messageView Machine.initialize() affectedBy loadPayTable
+      	messageView Machine.play() affectedBy playWithMoney  
+      	  	
+		     	
       	
       }
 }

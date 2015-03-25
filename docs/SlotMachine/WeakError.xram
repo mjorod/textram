@@ -8,20 +8,18 @@ aspect WeakError dependsOn Named {
 	instantiations {
 		Named {
 			|Named -> WeakError
-		}
-	}
+		} 
+	} 
 	
-//	messages {
-//		lifelines {
-//			ref target:WeakError
-//		}
-//		
-//		/*
-//		 * Does nothing, exists for regulatory reasons
-//		 */
-////		messageView WeakError.create(String errorName) {
-////			>> => new target { create(errorName) }
-////		}
-//	}
+	messages {
+		lifelines {
+			ref target:WeakError
+		}
+		
+		/*
+		 * Does nothing, exists for regulatory reasons
+		 */
+		messageView WeakError.create(errorName)   
+	}
 	
 }

@@ -3,20 +3,20 @@ aspect Game dependsOn ZeroToManyOrdered, Random {
 		    
 		class ArrayOfInt {}
 		class Symbol {}
-		
+		  
 		class RandomReels {
 			- int spinReel()
 			+ RandomReels create()
 			+ ArrayOfInt spinReels()
-		} 
-		
+		}      
+		    
 		class Machine {
 			+ void initialize()
 			+ void play()
 			+ void addReelAtPosition(int index, Reel a)
 			+ Reel getReelAtPosition(int index)
-		}
-		
+		}         
+		             
 		class Reel {
 			int position
 			+ int getCurrentPosition()
@@ -32,15 +32,15 @@ aspect Game dependsOn ZeroToManyOrdered, Random {
 		class ReelConfiguration {
 			- ReelConfiguration create(String filename)
 			- Symbol getSymbol(int reel, int position)
-		}
+		} 
 		
 		associations { 
 			Machine -> 1 RandomReels     { myRandom }
 			Machine -> ReelConfiguration { myRC }
-		}		
-	}
+		}		   
+	}    
 	
-	instantiations {
+	instantiations { 
 		ZeroToManyOrdered {
 			|Data <add, get> -> Machine <addReelAtPosition, getReelAtPosition>;
 			|Associated -> Reel
@@ -50,7 +50,7 @@ aspect Game dependsOn ZeroToManyOrdered, Random {
 		
 		Random {
 			RandomGenerator <nextRandom> -> RandomReels <spinReels> 
-		}	
+		} 	
 	} 
 		
 	messages {
@@ -68,7 +68,7 @@ aspect Game dependsOn ZeroToManyOrdered, Random {
 			loop ["int i = 0; i < 5; i++"] {
 				target => new newReel { newReel := create() }
 				target => target { addReelAtPosition(i, newReel) }
-				
+				 
 				loop ["int j = 0; j > 60; j++"] {
 					target => myRC   { s:= getSymbol(i, j) }
 					target => newReel{ addSymbolAtPosition(j, s)   } 
@@ -80,13 +80,13 @@ aspect Game dependsOn ZeroToManyOrdered, Random {
 			target => myRandom { result := spinReels() }
 			loop["int i = 0; i < result; i++"] {
 				target => target  { r := getReelAtPosition(i) }
-				target => newReel { setCurrentPosition(intValueFromResult) } // setCurrentPosition(result[i])		
+				target => newReel { setCurrentPosition(intValueFromResult) }
 			}
 		}
 		
-		messageView Reel.getCurrentSymbol() { // result := getCurrentSymbol()
+		messageView Reel.getCurrentSymbol() { 
 			newReel => newReel { symbolResult := getSymbolAtPosition(position) }
-//			newReel => <<      // { r } 
+			return symbolResult
 		}
 	}
 }
