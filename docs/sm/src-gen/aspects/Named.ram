@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_jadZUNJ8EeSISLQ9NNOmJg" name="Named">
+  <structuralView xmi:id="_jadZUdJ8EeSISLQ9NNOmJg">
+    <classes xsi:type="ram:Class" xmi:id="_jadZUtJ8EeSISLQ9NNOmJg" name="Named" partial="true">
+      <operations xmi:id="_jadZU9J8EeSISLQ9NNOmJg" name="getName" returnType="_jadZW9J8EeSISLQ9NNOmJg"/>
+      <operations xmi:id="_jadZVNJ8EeSISLQ9NNOmJg" name="setName" returnType="_jadZV9J8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jadZVdJ8EeSISLQ9NNOmJg" name="name" type="_jadZW9J8EeSISLQ9NNOmJg"/>
+      </operations>
+      <attributes xmi:id="_jadZVtJ8EeSISLQ9NNOmJg" name="name" type="_jadZW9J8EeSISLQ9NNOmJg"/>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_jadZV9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_jadZWNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RChar" xmi:id="_jadZWdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RInt" xmi:id="_jadZWtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RString" xmi:id="_jadZW9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RAny" xmi:id="_jadZXNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_jadZXdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_jadZXtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jadZX9J8EeSISLQ9NNOmJg" type="_jadZWNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jadZYNJ8EeSISLQ9NNOmJg" type="_jadZWdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jadZYdJ8EeSISLQ9NNOmJg" type="_jadZWtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jadZYtJ8EeSISLQ9NNOmJg" type="_jadZW9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jadZY9J8EeSISLQ9NNOmJg" type="_jadZXdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jadZZNJ8EeSISLQ9NNOmJg" type="_jadZXtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jadZZdJ8EeSISLQ9NNOmJg" type="_jadZUtJ8EeSISLQ9NNOmJg"/>
+  </structuralView>
+</ram:Aspect>

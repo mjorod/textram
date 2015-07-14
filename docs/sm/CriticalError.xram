@@ -1,0 +1,105 @@
+aspect CriticalError extends Betting, dependsOn Named, Blockable, Singleton {
+	structure {
+		class ArrayOfInt {}
+		
+		class Symbol {}
+		
+		class RandomReels {
+			+ ArrayOfInt spinReels()
+			+ void block() 
+			+ void continue( ) 
+		}
+		
+		class CriticalError {
+			+ CriticalError create (String errorName)
+		} 
+		 
+		class Machine {
+			+ void withDrawAllCredits()
+			+ void ceasePaying()
+			+ void unblockMachine()
+			+ void blockMachine(CriticalError e)
+			+ Machine getMachine()
+			+ |ReportingInterface getReportingInterface()
+			+ int currentCredits() 
+			+ void withDrawCredits(int credits) 
+			
+		}
+		
+		class |ReportingInterface {
+			+ void clearReport()
+			+ void reportCritical(CriticalError e)
+		}
+		
+		class PayTable {
+			+ int payout(Symbol first, Symbol second, Symbol third, Symbol fourth, Symbol fifth)
+			+ void block() 
+			+ void continue( ) 	
+			+ void skip() 
+		}
+		
+		associations {
+			Machine -> ReportingInterface { myReportingInterface }
+		}
+	}
+	
+	instantiations {
+		Named {
+			|Named -> CriticalError 
+		}
+		
+		Blockable {
+			|Blockable <blockableOperation> -> RandomReels < spinReels >;
+			|ReturnType -> ArrayOfInt; 
+			|Blockable <blockableOperation> -> PayTable < payout >
+		}
+		
+		Singleton {
+			|Singleton <getInstance> -> Machine <getMachine>
+		} 
+	}  
+	
+	messages {
+		lifelines {
+			ref target:CriticalError
+			ref machine:Machine {  ri:|ReportingInterface; int c }
+			ref myRandom:RandomReels
+			ref myPayTable:PayTable
+			ref myRI:ReportingInterface { err:CriticalError }
+		}
+		
+		messageView CriticalError.create(errorName) {
+			target => machine { blockMachine(target) } 
+		}
+		
+		/*
+		 * Does not include user interface lockup screen
+		 */ 
+		messageView Machine.blockMachine(e) {
+			machine => myRandom   { block() }
+			machine => myPayTable { block()  }
+			machine => machine    { ri := getReportingInterface() }
+			machine => myRI       { reportCritical(e) }
+		}
+		
+		messageView Machine.unblockMachine() {
+			machine => myRandom   { continue()  }
+			machine => myPayTable { continue() }
+			machine => machine    { ri := getReportingInterface() }
+			machine => myRI       { clearReport() }
+		}
+		
+		messageView Machine.ceasePaying() {
+			machine => myRandom   { continue() }
+			machine => machine    { withDrawAllCredits() }
+			machine => myPayTable { skip() }
+			machine => machine    { ri := getReportingInterface() }
+			machine => myRI       { clearReport() }
+		}
+		
+		messageView Machine.withDrawAllCredits() {
+			machine => machine { c:= currentCredits() }
+			machine => machine { withDrawCredits(c) }
+		}
+	}
+}

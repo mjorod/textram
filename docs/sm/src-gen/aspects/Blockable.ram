@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_ja4QENJ8EeSISLQ9NNOmJg" name="Blockable">
+  <structuralView xmi:id="_ja4QEdJ8EeSISLQ9NNOmJg">
+    <classes xsi:type="ram:Class" xmi:id="_ja4QEtJ8EeSISLQ9NNOmJg" name="Blockable" partial="true">
+      <operations xmi:id="_ja4QE9J8EeSISLQ9NNOmJg" name="skip" returnType="_ja4QHNJ8EeSISLQ9NNOmJg"/>
+      <operations xmi:id="_ja4QFNJ8EeSISLQ9NNOmJg" name="skip" returnType="_ja4QG9J8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_ja4QFdJ8EeSISLQ9NNOmJg" name="value" type="_ja4QGtJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_ja4QFtJ8EeSISLQ9NNOmJg" name="blockableOperation" returnType="_ja4QGtJ8EeSISLQ9NNOmJg" partial="true"/>
+      <operations xmi:id="_ja4QF9J8EeSISLQ9NNOmJg" name="continue" returnType="_ja4QG9J8EeSISLQ9NNOmJg"/>
+      <operations xmi:id="_ja4QGNJ8EeSISLQ9NNOmJg" name="block" returnType="_ja4QG9J8EeSISLQ9NNOmJg"/>
+      <attributes xmi:id="_ja4QGdJ8EeSISLQ9NNOmJg" name="blocked" type="_ja4QHNJ8EeSISLQ9NNOmJg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_ja4QGtJ8EeSISLQ9NNOmJg" name="ReturnType" partial="true"/>
+    <types xsi:type="ram:RVoid" xmi:id="_ja4QG9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_ja4QHNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RChar" xmi:id="_ja4QHdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RInt" xmi:id="_ja4QHtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RString" xmi:id="_ja4QH9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RAny" xmi:id="_ja4QINJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_ja4QIdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_ja4QItJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja4QI9J8EeSISLQ9NNOmJg" type="_ja4QHNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja4QJNJ8EeSISLQ9NNOmJg" type="_ja4QHdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja4QJdJ8EeSISLQ9NNOmJg" type="_ja4QHtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja4QJtJ8EeSISLQ9NNOmJg" type="_ja4QH9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja4QJ9J8EeSISLQ9NNOmJg" type="_ja4QIdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja4QKNJ8EeSISLQ9NNOmJg" type="_ja4QItJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja4QKdJ8EeSISLQ9NNOmJg" type="_ja4QEtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja4QKtJ8EeSISLQ9NNOmJg" type="_ja4QGtJ8EeSISLQ9NNOmJg"/>
+  </structuralView>
+</ram:Aspect>

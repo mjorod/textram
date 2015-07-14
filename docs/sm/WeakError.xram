@@ -1,0 +1,25 @@
+aspect WeakError dependsOn Named {
+	structure {
+		class WeakError {
+			+ WeakError create(String errorName)
+		}
+	}
+	
+	instantiations {
+		Named {
+			|Named -> WeakError
+		} 
+	} 
+	
+	messages {
+		lifelines {
+			ref target:WeakError
+		}
+		
+		/*
+		 * Does nothing, exists for regulatory reasons
+		 */
+		messageView WeakError.create(errorName)   
+	}
+	
+}

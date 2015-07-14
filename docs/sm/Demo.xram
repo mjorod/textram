@@ -1,0 +1,76 @@
+aspect Demo extends Betting, dependsOn Singleton { 
+	 
+	structure {
+		class ArrayOfInt {}
+		class Symbol {} 
+		
+		class RandomReels {
+			+ ArrayOfInt spinOfReels()
+			+ ReelConfiguration getMyReelConfiguration()
+		}   
+		  
+		class Machine {
+			boolean demoMode 
+			+ void setDemo(boolean on)
+			+ ArrayOfInt getNextOutCome(ArrayOfInt Symbol)
+			+ void setNextOutCome(Symbol s)
+			+ Machine getMachine() 
+			+ int currentCredits() 
+			+ int savedCredits() 
+		}               
+		     
+		class ReelConfiguration {
+			+ int getPositionForSymbol(int reel, Symbol sym) 
+		}    
+	}  
+	
+	instantiations {
+		Singleton {
+			|Singleton <getInstance> -> Machine <getMachine>
+		}  
+	}  
+	  
+	messages {
+		lifelines { 
+			ref target:Machine { int savedCredits; int credits; null:Symbol }
+			ref randomReels:RandomReels { result:ArrayOfInt; outcome:ArrayOfInt; rc:ReelConfiguration }
+			ref rc:ReelConfiguration { int i; outcomeItem:Symbol }
+		}
+		
+		messageView Machine.setDemo(on) {
+			alt [ "on" ] {
+				target => target { savedCredits := currentCredits() }
+			}
+			else {
+				target => target { credits := savedCredits() }
+			}
+			target => target { setNextOutCome(null) } //setNextOutCome(null)
+		} 
+		
+		aspectMessageView determineNextOutcome {
+			pointcut RandomReels.spinOfReels() // result := spinOfReels
+			advice {
+				randomReels => target { outcome := getNextOutCome(result) }
+				alt [ "outcome != null" ] {
+					randomReels => target { setNextOutCome(null) } //setNextOutCome(null) 
+
+				randomReels => randomReels { rc := getMyReelConfiguration() }
+				 
+					loop [ "int = 0; i < 5; i++" ] {
+						randomReels => rc { getPositionForSymbol (i, outcomeItem) } // getPositionForSymbol(i, outcome[0])
+					}
+   				}
+   				else { 
+   					randomReels =>* 
+   				}
+   				
+   				return outcome
+
+	   		 }
+	   	} 
+   	  
+		messageView RandomReels.spinOfReels() affectedBy determineNextOutcome
+		
+
+	}
+}

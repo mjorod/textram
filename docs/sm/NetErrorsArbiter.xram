@@ -1,0 +1,68 @@
+aspect NetErrorsArbiter extends SMNetwork, NetworkedError, dependsOn Map, Named, Singleton {
+	 
+	structure {
+		
+		class NetworkCommandExecution {
+			+ NetworkCommandExecution getInstance()
+			+ void sendMessage(NetworkCommandExecution executor)
+		}
+		
+		class NetErrorsArbiter : NetworkCommandExecution {
+			+ void sendMessage(ErrorResult err)
+			+ NetworkCommandExecution getValue()
+			+ Arbiter getArbiter()
+		}
+		
+		class ErrorResult {
+			// not originally defined
+			+ StringClass getName()
+			+ NetworkCommandExecution getValue()
+			
+		}
+		
+		class StringClass {}
+		class BooleanClass {}
+		class Arbiter {}
+	}  
+	
+	instantiations {
+		
+		
+		Named {
+			|Named -> ErrorResult
+		}
+		
+		Singleton {
+			|Singleton <getInstance> -> NetworkCommandExecution <getInstance> // Arbiter < getInstance >
+		}
+		
+		Map { 
+			|Key -> StringClass
+			|Value -> BooleanClass
+			|DataMap  -> NetErrorsArbiter 
+		}
+	}
+	
+	messages {
+		lifelines {
+			ref nce:NetworkCommandExecution { result:Arbiter }
+			ref nea:NetErrorsArbiter { name:StringClass; executor:NetworkCommandExecution }
+			ref res:ErrorResult
+		}
+		
+		aspectMessageView arbitExce {
+			pointcut NetworkCommandExecution.getInstance()
+			advice {
+				nce => nea { result:= getArbiter() }
+
+				return result
+			}
+		}
+		
+		messageView NetErrorsArbiter.sendMessage(err) {
+			nea => res { name:= getName() }
+			nea => nea { executor := getValue() }
+			nea => nce { sendMessage(executor) }
+		}
+	}
+}

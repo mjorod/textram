@@ -1,0 +1,11 @@
+aspect Named { 
+	structure {
+		
+		class |Named {
+			String name 
+			+ String getName()
+			+ void setName(String name)
+		}
+		
+	}
+}

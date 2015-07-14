@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_jbZ0gNJ8EeSISLQ9NNOmJg" name="Betting">
+  <structuralView xmi:id="_jbZ0gdJ8EeSISLQ9NNOmJg">
+    <classes xsi:type="ram:Class" xmi:id="_jbZ0gtJ8EeSISLQ9NNOmJg" name="Machine">
+      <operations xmi:id="_jbZ0g9J8EeSISLQ9NNOmJg" name="withDrawCredits" returnType="_jbZ0ndJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jbZ0hNJ8EeSISLQ9NNOmJg" name="amount" type="_jbZ0oNJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_jbZ0hdJ8EeSISLQ9NNOmJg" name="depositCredits" returnType="_jbZ0ndJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jbZ0htJ8EeSISLQ9NNOmJg" name="amount" type="_jbZ0oNJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_jbZ0h9J8EeSISLQ9NNOmJg" name="initialize" returnType="_jbZ0ndJ8EeSISLQ9NNOmJg"/>
+      <operations xmi:id="_jbZ0iNJ8EeSISLQ9NNOmJg" name="play" returnType="_jbZ0ndJ8EeSISLQ9NNOmJg"/>
+      <operations xmi:id="_jbZ0idJ8EeSISLQ9NNOmJg" name="getReelAtPosition" returnType="_jbZ0j9J8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jbZ0itJ8EeSISLQ9NNOmJg" name="index" type="_jbZ0oNJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_jbZ0i9J8EeSISLQ9NNOmJg" name="addCredits" returnType="_jbZ0ndJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jbZ0jNJ8EeSISLQ9NNOmJg" name="credit" type="_jbZ0oNJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <associationEnds xmi:id="_jbZ0jdJ8EeSISLQ9NNOmJg" name="myPayTable" referenceType="Composition" assoc="_jbZ0nNJ8EeSISLQ9NNOmJg"/>
+      <attributes xmi:id="_jbZ0jtJ8EeSISLQ9NNOmJg" name="credits" type="_jbZ0oNJ8EeSISLQ9NNOmJg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_jbZ0j9J8EeSISLQ9NNOmJg" name="Reel">
+      <operations xmi:id="_jbZ0kNJ8EeSISLQ9NNOmJg" name="getCurrentSymbol" returnType="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_jbZ0kdJ8EeSISLQ9NNOmJg" name="Symbol"/>
+    <classes xsi:type="ram:Class" xmi:id="_jbZ0ktJ8EeSISLQ9NNOmJg" name="PayTable">
+      <operations xmi:id="_jbZ0k9J8EeSISLQ9NNOmJg" name="create" returnType="_jbZ0ktJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jbZ0lNJ8EeSISLQ9NNOmJg" name="fileName" type="_jbZ0odJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_jbZ0ldJ8EeSISLQ9NNOmJg" name="payout" returnType="_jbZ0oNJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_jbZ0ltJ8EeSISLQ9NNOmJg" name="first" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <parameters xmi:id="_jbZ0l9J8EeSISLQ9NNOmJg" name="second" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <parameters xmi:id="_jbZ0mNJ8EeSISLQ9NNOmJg" name="third" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <parameters xmi:id="_jbZ0mdJ8EeSISLQ9NNOmJg" name="fourth" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <parameters xmi:id="_jbZ0mtJ8EeSISLQ9NNOmJg" name="fifth" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <associationEnds xmi:id="_jbZ0m9J8EeSISLQ9NNOmJg" name="machine" navigable="false" assoc="_jbZ0nNJ8EeSISLQ9NNOmJg"/>
+    </classes>
+    <associations xmi:id="_jbZ0nNJ8EeSISLQ9NNOmJg" name="Machine_PayTable" ends="_jbZ0jdJ8EeSISLQ9NNOmJg _jbZ0m9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RVoid" xmi:id="_jbZ0ndJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_jbZ0ntJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RChar" xmi:id="_jbZ0n9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RInt" xmi:id="_jbZ0oNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RString" xmi:id="_jbZ0odJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RAny" xmi:id="_jbZ0otJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_jbZ0o9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_jbZ0pNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0pdJ8EeSISLQ9NNOmJg" type="_jbZ0ntJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0ptJ8EeSISLQ9NNOmJg" type="_jbZ0n9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0p9J8EeSISLQ9NNOmJg" type="_jbZ0oNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0qNJ8EeSISLQ9NNOmJg" type="_jbZ0odJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0qdJ8EeSISLQ9NNOmJg" type="_jbZ0o9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0qtJ8EeSISLQ9NNOmJg" type="_jbZ0pNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0q9J8EeSISLQ9NNOmJg" type="_jbZ0gtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0rNJ8EeSISLQ9NNOmJg" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0rdJ8EeSISLQ9NNOmJg" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_jbZ0rtJ8EeSISLQ9NNOmJg" type="_jbZ0ktJ8EeSISLQ9NNOmJg"/>
+  </structuralView>
+  <messageViews xsi:type="ram:AspectMessageView" xmi:id="_jbZ0r9J8EeSISLQ9NNOmJg" name="loadPayTable" pointcut="_jbZ0h9J8EeSISLQ9NNOmJg">
+    <advice xmi:id="_jbZ0sNJ8EeSISLQ9NNOmJg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ0sdJ8EeSISLQ9NNOmJg" covered="_jbZ0tdJ8EeSISLQ9NNOmJg" message="_jbZ0wtJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:OriginalBehaviorExecution" xmi:id="_jbZ0stJ8EeSISLQ9NNOmJg" covered="_jbZ0tdJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ0s9J8EeSISLQ9NNOmJg" covered="_jbZ0tdJ8EeSISLQ9NNOmJg" message="_jbZ0w9J8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ0tNJ8EeSISLQ9NNOmJg" covered="_jbZ0wNJ8EeSISLQ9NNOmJg" message="_jbZ0w9J8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_jbZ0tdJ8EeSISLQ9NNOmJg" represents="_jbZ0xtJ8EeSISLQ9NNOmJg" coveredBy="_jbZ0sdJ8EeSISLQ9NNOmJg _jbZ0stJ8EeSISLQ9NNOmJg _jbZ0s9J8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ0ttJ8EeSISLQ9NNOmJg" name="default">
+          <type xsi:type="ram:RString" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.4"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ0t9J8EeSISLQ9NNOmJg" name="credits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ0uNJ8EeSISLQ9NNOmJg" name="r1" lowerBound="1" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ0udJ8EeSISLQ9NNOmJg" name="index">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ0utJ8EeSISLQ9NNOmJg" name="s1" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ0u9J8EeSISLQ9NNOmJg" name="s2" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ0vNJ8EeSISLQ9NNOmJg" name="s3" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ0vdJ8EeSISLQ9NNOmJg" name="s4" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ0vtJ8EeSISLQ9NNOmJg" name="s5" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ0v9J8EeSISLQ9NNOmJg" name="win">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <lifelines xmi:id="_jbZ0wNJ8EeSISLQ9NNOmJg" represents="_jbZ0x9J8EeSISLQ9NNOmJg" coveredBy="_jbZ0tNJ8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_jbZ0wdJ8EeSISLQ9NNOmJg" represents="_jbZ0yNJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jbZ0wtJ8EeSISLQ9NNOmJg" sendEvent="_jbZ0ydJ8EeSISLQ9NNOmJg" receiveEvent="_jbZ0sdJ8EeSISLQ9NNOmJg" signature="_jbZ0h9J8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jbZ0w9J8EeSISLQ9NNOmJg" sendEvent="_jbZ0s9J8EeSISLQ9NNOmJg" receiveEvent="_jbZ0tNJ8EeSISLQ9NNOmJg" signature="_jbZ0k9J8EeSISLQ9NNOmJg" assignTo="_jbZ0jdJ8EeSISLQ9NNOmJg" messageSort="createMessage">
+        <arguments xmi:id="_jbZ0xNJ8EeSISLQ9NNOmJg" parameter="_jbZ0lNJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:ParameterValue" xmi:id="_jbZ0xdJ8EeSISLQ9NNOmJg" parameter="_jbZ0lNJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_jbZ0xtJ8EeSISLQ9NNOmJg" name="target" lowerBound="1" type="_jbZ0gtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ0x9J8EeSISLQ9NNOmJg" name="myPayTable" lowerBound="1" type="_jbZ0ktJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ0yNJ8EeSISLQ9NNOmJg" name="r" lowerBound="1" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+      <formalGates xmi:id="_jbZ0ydJ8EeSISLQ9NNOmJg" message="_jbZ0wtJ8EeSISLQ9NNOmJg" name="in_initialize"/>
+    </advice>
+  </messageViews>
+  <messageViews xsi:type="ram:AspectMessageView" xmi:id="_jbZ0ytJ8EeSISLQ9NNOmJg" name="playWithMoney" pointcut="_jbZ0iNJ8EeSISLQ9NNOmJg">
+    <advice xmi:id="_jbZ0y9J8EeSISLQ9NNOmJg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ0zNJ8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ059J8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:CombinedFragment" xmi:id="_jbZ0zdJ8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg _jbZ05tJ8EeSISLQ9NNOmJg _jbZ05dJ8EeSISLQ9NNOmJg" interactionOperator="opt">
+        <operands xmi:id="_jbZ0ztJ8EeSISLQ9NNOmJg">
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ0z9J8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ06NJ8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ00NJ8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ06NJ8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ00dJ8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ069J8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ00tJ8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ069J8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ009J8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ07tJ8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ01NJ8EeSISLQ9NNOmJg" covered="_jbZ05tJ8EeSISLQ9NNOmJg" message="_jbZ07tJ8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ01dJ8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ079J8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ01tJ8EeSISLQ9NNOmJg" covered="_jbZ05dJ8EeSISLQ9NNOmJg" message="_jbZ079J8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ019J8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ0-tJ8EeSISLQ9NNOmJg"/>
+          <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_jbZ02NJ8EeSISLQ9NNOmJg" covered="_jbZ02tJ8EeSISLQ9NNOmJg" message="_jbZ0-tJ8EeSISLQ9NNOmJg"/>
+          <interactionConstraint xsi:type="ram:OpaqueExpression" xmi:id="_jbZ02dJ8EeSISLQ9NNOmJg" body="&quot;credits >= 5&quot;" language="java"/>
+        </operands>
+      </fragments>
+      <lifelines xmi:id="_jbZ02tJ8EeSISLQ9NNOmJg" represents="_jbZ0_dJ8EeSISLQ9NNOmJg" coveredBy="_jbZ0zNJ8EeSISLQ9NNOmJg _jbZ0z9J8EeSISLQ9NNOmJg _jbZ00NJ8EeSISLQ9NNOmJg _jbZ00dJ8EeSISLQ9NNOmJg _jbZ00tJ8EeSISLQ9NNOmJg _jbZ009J8EeSISLQ9NNOmJg _jbZ01dJ8EeSISLQ9NNOmJg _jbZ019J8EeSISLQ9NNOmJg _jbZ02NJ8EeSISLQ9NNOmJg _jbZ0zdJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ029J8EeSISLQ9NNOmJg" name="default">
+          <type xsi:type="ram:RString" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.4"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ03NJ8EeSISLQ9NNOmJg" name="credits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ03dJ8EeSISLQ9NNOmJg" name="r1" lowerBound="1" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ03tJ8EeSISLQ9NNOmJg" name="index">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ039J8EeSISLQ9NNOmJg" name="s1" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ04NJ8EeSISLQ9NNOmJg" name="s2" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ04dJ8EeSISLQ9NNOmJg" name="s3" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ04tJ8EeSISLQ9NNOmJg" name="s4" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ049J8EeSISLQ9NNOmJg" name="s5" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ05NJ8EeSISLQ9NNOmJg" name="win">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <lifelines xmi:id="_jbZ05dJ8EeSISLQ9NNOmJg" represents="_jbZ0_tJ8EeSISLQ9NNOmJg" coveredBy="_jbZ01tJ8EeSISLQ9NNOmJg _jbZ0zdJ8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_jbZ05tJ8EeSISLQ9NNOmJg" represents="_jbZ0_9J8EeSISLQ9NNOmJg" coveredBy="_jbZ01NJ8EeSISLQ9NNOmJg _jbZ0zdJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jbZ059J8EeSISLQ9NNOmJg" sendEvent="_jbZ1ANJ8EeSISLQ9NNOmJg" receiveEvent="_jbZ0zNJ8EeSISLQ9NNOmJg" signature="_jbZ0iNJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jbZ06NJ8EeSISLQ9NNOmJg" sendEvent="_jbZ0z9J8EeSISLQ9NNOmJg" receiveEvent="_jbZ00NJ8EeSISLQ9NNOmJg" signature="_jbZ0g9J8EeSISLQ9NNOmJg">
+        <arguments xmi:id="_jbZ06dJ8EeSISLQ9NNOmJg" parameter="_jbZ0hNJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jbZ06tJ8EeSISLQ9NNOmJg" value="_jbZ03NJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+      </messages>
+      <messages xmi:id="_jbZ069J8EeSISLQ9NNOmJg" sendEvent="_jbZ00dJ8EeSISLQ9NNOmJg" receiveEvent="_jbZ00tJ8EeSISLQ9NNOmJg" signature="_jbZ0idJ8EeSISLQ9NNOmJg" assignTo="_jbZ03dJ8EeSISLQ9NNOmJg">
+        <arguments xmi:id="_jbZ07NJ8EeSISLQ9NNOmJg" parameter="_jbZ0itJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:ParameterValue" xmi:id="_jbZ07dJ8EeSISLQ9NNOmJg" parameter="_jbZ0itJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+      </messages>
+      <messages xmi:id="_jbZ07tJ8EeSISLQ9NNOmJg" sendEvent="_jbZ009J8EeSISLQ9NNOmJg" receiveEvent="_jbZ01NJ8EeSISLQ9NNOmJg" signature="_jbZ0kNJ8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_jbZ079J8EeSISLQ9NNOmJg" sendEvent="_jbZ01dJ8EeSISLQ9NNOmJg" receiveEvent="_jbZ01tJ8EeSISLQ9NNOmJg" signature="_jbZ0ldJ8EeSISLQ9NNOmJg">
+        <arguments xmi:id="_jbZ08NJ8EeSISLQ9NNOmJg" parameter="_jbZ0ltJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jbZ08dJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+        <arguments xmi:id="_jbZ08tJ8EeSISLQ9NNOmJg" parameter="_jbZ0l9J8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jbZ089J8EeSISLQ9NNOmJg"/>
+        </arguments>
+        <arguments xmi:id="_jbZ09NJ8EeSISLQ9NNOmJg" parameter="_jbZ0mNJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jbZ09dJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+        <arguments xmi:id="_jbZ09tJ8EeSISLQ9NNOmJg" parameter="_jbZ0mdJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jbZ099J8EeSISLQ9NNOmJg"/>
+        </arguments>
+        <arguments xmi:id="_jbZ0-NJ8EeSISLQ9NNOmJg" parameter="_jbZ0mtJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jbZ0-dJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+      </messages>
+      <messages xmi:id="_jbZ0-tJ8EeSISLQ9NNOmJg" sendEvent="_jbZ019J8EeSISLQ9NNOmJg" receiveEvent="_jbZ02NJ8EeSISLQ9NNOmJg" signature="_jbZ0i9J8EeSISLQ9NNOmJg">
+        <arguments xmi:id="_jbZ0-9J8EeSISLQ9NNOmJg" parameter="_jbZ0jNJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_jbZ0_NJ8EeSISLQ9NNOmJg" value="_jbZ05NJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_jbZ0_dJ8EeSISLQ9NNOmJg" name="target" lowerBound="1" type="_jbZ0gtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ0_tJ8EeSISLQ9NNOmJg" name="myPayTable" lowerBound="1" type="_jbZ0ktJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ0_9J8EeSISLQ9NNOmJg" name="r" lowerBound="1" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+      <formalGates xmi:id="_jbZ1ANJ8EeSISLQ9NNOmJg" message="_jbZ059J8EeSISLQ9NNOmJg" name="in_play"/>
+    </advice>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_jbZ1AdJ8EeSISLQ9NNOmJg" affectedBy="_jbZ0r9J8EeSISLQ9NNOmJg" specifies="_jbZ0h9J8EeSISLQ9NNOmJg">
+    <specification xmi:id="_jbZ1AtJ8EeSISLQ9NNOmJg">
+      <lifelines xmi:id="_jbZ1A9J8EeSISLQ9NNOmJg" represents="_jbZ1ENJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ1BNJ8EeSISLQ9NNOmJg" name="default">
+          <type xsi:type="ram:RString" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.4"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ1BdJ8EeSISLQ9NNOmJg" name="credits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1BtJ8EeSISLQ9NNOmJg" name="r1" lowerBound="1" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ1B9J8EeSISLQ9NNOmJg" name="index">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1CNJ8EeSISLQ9NNOmJg" name="s1" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1CdJ8EeSISLQ9NNOmJg" name="s2" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1CtJ8EeSISLQ9NNOmJg" name="s3" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1C9J8EeSISLQ9NNOmJg" name="s4" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1DNJ8EeSISLQ9NNOmJg" name="s5" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ1DdJ8EeSISLQ9NNOmJg" name="win">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <lifelines xmi:id="_jbZ1DtJ8EeSISLQ9NNOmJg" represents="_jbZ1EdJ8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_jbZ1D9J8EeSISLQ9NNOmJg" represents="_jbZ1EtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ1ENJ8EeSISLQ9NNOmJg" name="target" lowerBound="1" type="_jbZ0gtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ1EdJ8EeSISLQ9NNOmJg" name="myPayTable" lowerBound="1" type="_jbZ0ktJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ1EtJ8EeSISLQ9NNOmJg" name="r" lowerBound="1" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+    </specification>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_jbZ1E9J8EeSISLQ9NNOmJg" affectedBy="_jbZ0ytJ8EeSISLQ9NNOmJg" specifies="_jbZ0iNJ8EeSISLQ9NNOmJg">
+    <specification xmi:id="_jbZ1FNJ8EeSISLQ9NNOmJg">
+      <lifelines xmi:id="_jbZ1FdJ8EeSISLQ9NNOmJg" represents="_jbZ1ItJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ1FtJ8EeSISLQ9NNOmJg" name="default">
+          <type xsi:type="ram:RString" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.4"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ1F9J8EeSISLQ9NNOmJg" name="credits">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1GNJ8EeSISLQ9NNOmJg" name="r1" lowerBound="1" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ1GdJ8EeSISLQ9NNOmJg" name="index">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1GtJ8EeSISLQ9NNOmJg" name="s1" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1G9J8EeSISLQ9NNOmJg" name="s2" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1HNJ8EeSISLQ9NNOmJg" name="s3" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1HdJ8EeSISLQ9NNOmJg" name="s4" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Reference" xmi:id="_jbZ1HtJ8EeSISLQ9NNOmJg" name="s5" lowerBound="1" type="_jbZ0kdJ8EeSISLQ9NNOmJg"/>
+        <localProperties xsi:type="ram:Attribute" xmi:id="_jbZ1H9J8EeSISLQ9NNOmJg" name="win">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Betting.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <lifelines xmi:id="_jbZ1INJ8EeSISLQ9NNOmJg" represents="_jbZ1I9J8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_jbZ1IdJ8EeSISLQ9NNOmJg" represents="_jbZ1JNJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ1ItJ8EeSISLQ9NNOmJg" name="target" lowerBound="1" type="_jbZ0gtJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ1I9J8EeSISLQ9NNOmJg" name="myPayTable" lowerBound="1" type="_jbZ0ktJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_jbZ1JNJ8EeSISLQ9NNOmJg" name="r" lowerBound="1" type="_jbZ0j9J8EeSISLQ9NNOmJg"/>
+    </specification>
+  </messageViews>
+  <instantiations xmi:id="_jbZ1JdJ8EeSISLQ9NNOmJg" type="Extends">
+    <externalAspect href="../aspects/Game.ram#_jbR4sNJ8EeSISLQ9NNOmJg"/>
+  </instantiations>
+</ram:Aspect>

@@ -1,0 +1,11 @@
+aspect DemoNetworkResolution {
+	structure {
+		class Result {}
+		
+		class OutOfServiceResult : Result {
+			+ OutOfServiceResult create()
+		}
+		
+	}
+	
+}

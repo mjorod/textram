@@ -1,0 +1,78 @@
+aspect Map {
+	
+	structure {
+		
+		class |DataMap { 
+			+ |DataMap create()
+			+ void add(|Key key, |Value value)
+			+ void remove(|Key key)
+			+ |Value getValue(|Key key)
+			+ Set<Key> getKeys()
+			+ Set<Value> getValues()
+		}
+		 
+		class Map {
+			~ Map create()
+			~ void put(|Key k, |Value v)
+			~ void remove(|Key k)
+			~ |Value get(|Key k)
+			~ Set<Key> keySet()
+			~ Set<Value> getValues()
+			~ void destroy()
+		} 
+		
+		class |Key {}
+		class |Value {}
+		
+		associations {
+			Map o-> 0 .. * Value { myValue }
+			DataMap *-> 1 Map { myMap } 
+		}
+	} 
+	
+	messages {
+		lifelines {
+			ref data:DataMap
+			ref key:Key
+			ref val:Value
+			
+			// associations
+			assoc myMap:myMap { result:Map }
+		}
+		
+		aspectMessageView initializeAssociation {
+			pointcut new |DataMap.create()
+			  
+			advice {
+				data => new myMap { myMap := create() }
+				data =>*
+//				>> => data 
+			} 
+		} 
+		    
+		messageView |DataMap.add(key, value) { 
+			data => myMap { put(key, val) } 
+		}
+		
+		messageView |DataMap.remove(key) { 
+			data => myMap { remove(key) }
+		}
+		
+		messageView |DataMap.getKeys() {
+			data  => myMap { keySet() } // result := keySet()
+//			myMap => <<    //{  result } 
+		}
+		 
+		messageView |DataMap.getValue(key) { // result := getValues()
+			data  => myMap { get(key) } 
+//			myMap => <<    //{  result } 
+		}
+		
+//		messageView |Data.getValues(key) { // result := getValues()
+//			data  => myMap { get(key) } 
+////			myMap => <<    //{  result } 
+//		}
+		
+		messageView |DataMap.create() affectedBy initializeAssociation
+	}
+}

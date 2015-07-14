@@ -1,0 +1,30 @@
+ aspect Singleton {
+	
+	structure {
+		class |Singleton {
+			+ |Singleton |getInstance()
+			- |Singleton create()
+		}
+		
+		associations {
+			Singleton -> 0 .. 1 Singleton { instance }
+		}
+	}  
+	
+	messages {
+		lifelines {
+			static ref singleton:Singleton
+			ref instance:Singleton 
+		}
+		
+		messageView |Singleton.|getInstance() {
+
+			opt [ "instance == null" ] {
+				singleton => new instance { instance := create() }
+			}
+			 
+			return instance  
+			
+		}
+	}
+}

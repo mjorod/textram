@@ -1,0 +1,56 @@
+aspect NormalError dependsOn Named, Singleton {
+	
+	structure {
+		
+		class NormalError {
+			+ NormalError create(String errorName)
+		}
+		
+		class Machine {
+			+ void reportError(NormalError err)
+			/*
+			 * Should be called by user interface
+			 */
+			+ void clearError()
+			+ Machine getMachine()
+			+ ReportingInterface getMyReporingInterface()
+		}
+		
+		class ReportingInterface { 
+			+ void reportError(NormalError err)
+			+ void clearReport()
+		} 
+	} 
+	
+	instantiations {
+		Named {
+			|Named -> NormalError
+		}
+		
+		Singleton {
+			|Singleton <getInstance> -> Machine <getMachine> 
+		}
+	}
+
+	messages {
+		lifelines {
+			ref normalError:NormalError { e:NormalError }
+			ref machine:Machine { ri1:ReportingInterface }
+			ref ri:ReportingInterface
+		}
+		
+		messageView NormalError.create(errorName) {
+			normalError => machine { reportError(e) } 
+		}
+		
+		messageView Machine.reportError(err) {
+			machine => machine { getMyReporingInterface() } 
+			machine => ri { reportError(normalError) }
+		}
+		
+		messageView ReportingInterface.clearReport() { 
+			machine => machine { ri1 := getMyReporingInterface() } 
+			machine => ri      { clearReport() }
+		}
+	}
+}

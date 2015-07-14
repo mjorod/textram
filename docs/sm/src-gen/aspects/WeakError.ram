@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_ja0lsNJ8EeSISLQ9NNOmJg" name="WeakError">
+  <structuralView xmi:id="_ja0lsdJ8EeSISLQ9NNOmJg">
+    <classes xsi:type="ram:Class" xmi:id="_ja0lstJ8EeSISLQ9NNOmJg" name="WeakError">
+      <operations xmi:id="_ja0ls9J8EeSISLQ9NNOmJg" name="create" returnType="_ja0lstJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_ja0ltNJ8EeSISLQ9NNOmJg" name="errorName" type="_ja0ludJ8EeSISLQ9NNOmJg"/>
+      </operations>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_ja0ltdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_ja0lttJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RChar" xmi:id="_ja0lt9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RInt" xmi:id="_ja0luNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RString" xmi:id="_ja0ludJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RAny" xmi:id="_ja0lutJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_ja0lu9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_ja0lvNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lvdJ8EeSISLQ9NNOmJg" type="_ja0lttJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lvtJ8EeSISLQ9NNOmJg" type="_ja0lt9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lv9J8EeSISLQ9NNOmJg" type="_ja0luNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lwNJ8EeSISLQ9NNOmJg" type="_ja0ludJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lwdJ8EeSISLQ9NNOmJg" type="_ja0lu9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lwtJ8EeSISLQ9NNOmJg" type="_ja0lvNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_ja0lw9J8EeSISLQ9NNOmJg" type="_ja0lstJ8EeSISLQ9NNOmJg"/>
+  </structuralView>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_ja0lxNJ8EeSISLQ9NNOmJg" specifies="_ja0ls9J8EeSISLQ9NNOmJg">
+    <specification xmi:id="_ja0lxdJ8EeSISLQ9NNOmJg">
+      <lifelines xmi:id="_ja0lxtJ8EeSISLQ9NNOmJg" represents="_ja0lx9J8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_ja0lx9J8EeSISLQ9NNOmJg" name="target" lowerBound="1" type="_ja0lstJ8EeSISLQ9NNOmJg"/>
+    </specification>
+  </messageViews>
+  <instantiations xmi:id="_ja0lyNJ8EeSISLQ9NNOmJg">
+    <mappings xmi:id="_ja0lydJ8EeSISLQ9NNOmJg" toElement="_ja0lstJ8EeSISLQ9NNOmJg">
+      <fromElement xsi:type="ram:Class" href="../aspects/Named.ram#_jadZUtJ8EeSISLQ9NNOmJg"/>
+    </mappings>
+    <externalAspect href="../aspects/Named.ram#_jadZUNJ8EeSISLQ9NNOmJg"/>
+  </instantiations>
+</ram:Aspect>

@@ -1,0 +1,86 @@
+aspect SlotMachineMetering dependsOn Metering, InterceptReturnsMetering, CriticalError, NormalError, WeakError {
+	structure {
+		 
+		class Machine {
+			int credits
+			+ void play(int i)
+			~ int getCredits()
+			+ void depositCredits(int amount)
+			+ void initialize()
+			+ void initializeSlotMachineMeters()
+			+ void attachMeterToPlay()
+			+ void attachMeterToDepositCredits()
+		}
+		
+		class Symbol {}
+		 
+		class PayTable {
+			+ int payout(Symbol first, Symbol second, Symbol third, Symbol fourth, Symbol fifth)
+		}
+		
+		class InterceptSM {
+			+ void create(String tag, int credit)
+			+ void attachMeterToPayout(Machine m)
+		}
+		
+		class StandardMeter {
+			+ void create(String tag, int credit)
+			+ void attacheMeterToPlay(Machine m)
+		}
+		
+		class CountingMeter {
+			+ void create(String tag, int credit)
+			+ void attachMeterToDepositCredits(Machine m)
+		}
+	}       
+	  
+	instantiations {
+		Metering {
+			|InterceptStateChange <getData, modifyData> -> Machine <getCredits, play>
+			//Meter <attachMeter> -> Machine <attachMeterToPlay>
+		}
+		Metering {
+			|InterceptStateChange <getData, modifyData> -> Machine <credits, depositCredits>
+			//Meter <attachMeter> -> Meter <attachMeterToDepositCredits>
+		}
+		InterceptReturnsMetering {
+			|InterceptReturns <interceptedMethod> -> PayTable <payout>
+			//Meter<attachMeter> -> Meter<attachMeterToPayout>
+			StandardMeter -> InterceptSM
+		}
+	} 
+	
+	messages {
+		
+		lifelines {
+			ref target:Machine
+			ref sm:StandardMeter  { String s = "CurrentCredits"; int c }
+			ref cm:CountingMeter  { String s1 = "NumberOfDeposits"; int c1 }
+			ref cm2:CountingMeter { String s2 = "NumberOfPlays"; int c2 }
+			ref im:InterceptSM    { String s3 = "LastPayout"; int c3 }
+		}
+		
+		aspectMessageView setupMeters {
+			pointcut Machine.initialize()
+			advice {
+				target =>*
+				target => target { initializeSlotMachineMeters() }
+			}
+		}
+		
+		messageView Machine.initializeSlotMachineMeters() {
+			target => new sm { sm := create(s, c) } 
+			target => sm     { attacheMeterToPlay(target) }
+			
+			target => new cm { cm := create(s1, c1) } 
+			target => cm     { attachMeterToDepositCredits(target) }
+			
+			target => new cm2 { cm2 := create(s2, c2) } 
+			target => cm2     { attachMeterToDepositCredits(target) }
+			
+			target => new im { im := create(s3, c3) } 
+			target => im     { attachMeterToPayout(target) }
+		}
+		
+	}
+}

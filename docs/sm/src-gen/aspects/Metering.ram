@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ram:Aspect xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ram="http://cs.mcgill.ca/sel/ram/2.1" xmi:id="_javGINJ8EeSISLQ9NNOmJg" name="Metering">
+  <structuralView xmi:id="_javGIdJ8EeSISLQ9NNOmJg">
+    <classes xsi:type="ram:Class" xmi:id="_javGItJ8EeSISLQ9NNOmJg" name="InterceptStateChange" partial="true">
+      <operations xmi:id="_javGI9J8EeSISLQ9NNOmJg" name="getData" returnType="_javGQNJ8EeSISLQ9NNOmJg"/>
+      <operations xmi:id="_javGJNJ8EeSISLQ9NNOmJg" name="modifyData" returnType="_javGPdJ8EeSISLQ9NNOmJg" partial="true">
+        <parameters xmi:id="_javGJdJ8EeSISLQ9NNOmJg" name="value" type="_javGQNJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <attributes xmi:id="_javGJtJ8EeSISLQ9NNOmJg" name="data" type="_javGQNJ8EeSISLQ9NNOmJg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_javGJ9J8EeSISLQ9NNOmJg" name="Meter">
+      <operations xmi:id="_javGKNJ8EeSISLQ9NNOmJg" name="create" returnType="_javGJ9J8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_javGKdJ8EeSISLQ9NNOmJg" name="name" type="_javGQdJ8EeSISLQ9NNOmJg"/>
+        <parameters xmi:id="_javGKtJ8EeSISLQ9NNOmJg" name="initialValue" type="_javGQNJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_javGK9J8EeSISLQ9NNOmJg" name="setValue" returnType="_javGPdJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_javGLNJ8EeSISLQ9NNOmJg" name="newValue" type="_javGQNJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_javGLdJ8EeSISLQ9NNOmJg" name="attachMeter" returnType="_javGPdJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_javGLtJ8EeSISLQ9NNOmJg" name="s" type="_javGItJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_javGL9J8EeSISLQ9NNOmJg" name="notifyChange" returnType="_javGPdJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_javGMNJ8EeSISLQ9NNOmJg" name="s" type="_javGItJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <operations xmi:id="_javGMdJ8EeSISLQ9NNOmJg" name="updateMeter" visibility="package" returnType="_javGPdJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_javGMtJ8EeSISLQ9NNOmJg" name="s" type="_javGItJ8EeSISLQ9NNOmJg"/>
+      </operations>
+      <attributes xmi:id="_javGM9J8EeSISLQ9NNOmJg" name="value" type="_javGQNJ8EeSISLQ9NNOmJg"/>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_javGNNJ8EeSISLQ9NNOmJg" name="StandardMeter" superTypes="_javGJ9J8EeSISLQ9NNOmJg">
+      <operations xmi:id="_javGNdJ8EeSISLQ9NNOmJg" name="updateMeter" returnType="_javGPdJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_javGNtJ8EeSISLQ9NNOmJg" name="s" type="_javGItJ8EeSISLQ9NNOmJg"/>
+      </operations>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_javGN9J8EeSISLQ9NNOmJg" name="AdditiveMeter" superTypes="_javGJ9J8EeSISLQ9NNOmJg">
+      <operations xmi:id="_javGONJ8EeSISLQ9NNOmJg" name="updateMeter" visibility="package" returnType="_javGPdJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_javGOdJ8EeSISLQ9NNOmJg" name="s" type="_javGItJ8EeSISLQ9NNOmJg"/>
+      </operations>
+    </classes>
+    <classes xsi:type="ram:Class" xmi:id="_javGOtJ8EeSISLQ9NNOmJg" name="CountingMeter" superTypes="_javGJ9J8EeSISLQ9NNOmJg">
+      <operations xmi:id="_javGO9J8EeSISLQ9NNOmJg" name="updateMeter" visibility="package" returnType="_javGPdJ8EeSISLQ9NNOmJg">
+        <parameters xmi:id="_javGPNJ8EeSISLQ9NNOmJg" name="s" type="_javGItJ8EeSISLQ9NNOmJg"/>
+      </operations>
+    </classes>
+    <types xsi:type="ram:RVoid" xmi:id="_javGPdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RBoolean" xmi:id="_javGPtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RChar" xmi:id="_javGP9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RInt" xmi:id="_javGQNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RString" xmi:id="_javGQdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RAny" xmi:id="_javGQtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RDouble" xmi:id="_javGQ9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RFloat" xmi:id="_javGRNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGRdJ8EeSISLQ9NNOmJg" type="_javGPtJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGRtJ8EeSISLQ9NNOmJg" type="_javGP9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGR9J8EeSISLQ9NNOmJg" type="_javGQNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGSNJ8EeSISLQ9NNOmJg" type="_javGQdJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGSdJ8EeSISLQ9NNOmJg" type="_javGQ9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGStJ8EeSISLQ9NNOmJg" type="_javGRNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGS9J8EeSISLQ9NNOmJg" type="_javGItJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGTNJ8EeSISLQ9NNOmJg" type="_javGJ9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGTdJ8EeSISLQ9NNOmJg" type="_javGNNJ8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGTtJ8EeSISLQ9NNOmJg" type="_javGN9J8EeSISLQ9NNOmJg"/>
+    <types xsi:type="ram:RSet" xmi:id="_javGT9J8EeSISLQ9NNOmJg" type="_javGOtJ8EeSISLQ9NNOmJg"/>
+  </structuralView>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_javGUNJ8EeSISLQ9NNOmJg" specifies="_javGL9J8EeSISLQ9NNOmJg">
+    <specification xmi:id="_javGUdJ8EeSISLQ9NNOmJg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_javGUtJ8EeSISLQ9NNOmJg" covered="_javGVtJ8EeSISLQ9NNOmJg" message="_javGW9J8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_javGU9J8EeSISLQ9NNOmJg" covered="_javGWNJ8EeSISLQ9NNOmJg" message="_javGW9J8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_javGVNJ8EeSISLQ9NNOmJg" covered="_javGVtJ8EeSISLQ9NNOmJg" message="_javGXNJ8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_javGVdJ8EeSISLQ9NNOmJg" covered="_javGVtJ8EeSISLQ9NNOmJg" message="_javGXNJ8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_javGVtJ8EeSISLQ9NNOmJg" represents="_javGX9J8EeSISLQ9NNOmJg" coveredBy="_javGUtJ8EeSISLQ9NNOmJg _javGVNJ8EeSISLQ9NNOmJg _javGVdJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_javGV9J8EeSISLQ9NNOmJg" name="v">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Metering.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <lifelines xmi:id="_javGWNJ8EeSISLQ9NNOmJg" represents="_javGYNJ8EeSISLQ9NNOmJg" coveredBy="_javGU9J8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_javGWdJ8EeSISLQ9NNOmJg" represents="_javGYdJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_javGWtJ8EeSISLQ9NNOmJg" name="n">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Metering.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <messages xmi:id="_javGW9J8EeSISLQ9NNOmJg" sendEvent="_javGUtJ8EeSISLQ9NNOmJg" receiveEvent="_javGU9J8EeSISLQ9NNOmJg" signature="_javGI9J8EeSISLQ9NNOmJg"/>
+      <messages xmi:id="_javGXNJ8EeSISLQ9NNOmJg" sendEvent="_javGVNJ8EeSISLQ9NNOmJg" receiveEvent="_javGVdJ8EeSISLQ9NNOmJg" signature="_javGMdJ8EeSISLQ9NNOmJg">
+        <arguments xmi:id="_javGXdJ8EeSISLQ9NNOmJg" parameter="_javGMtJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:StructuralFeatureValue" xmi:id="_javGXtJ8EeSISLQ9NNOmJg" value="_javGYNJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_javGX9J8EeSISLQ9NNOmJg" name="target" lowerBound="1" type="_javGJ9J8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_javGYNJ8EeSISLQ9NNOmJg" name="intercetpStateChange" lowerBound="1" type="_javGItJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_javGYdJ8EeSISLQ9NNOmJg" name="standardMeter" lowerBound="1" type="_javGNNJ8EeSISLQ9NNOmJg"/>
+    </specification>
+  </messageViews>
+  <messageViews xsi:type="ram:MessageView" xmi:id="_javGYtJ8EeSISLQ9NNOmJg" specifies="_javGNdJ8EeSISLQ9NNOmJg">
+    <specification xmi:id="_javGY9J8EeSISLQ9NNOmJg">
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_javGZNJ8EeSISLQ9NNOmJg" covered="_javGadJ8EeSISLQ9NNOmJg" message="_javGa9J8EeSISLQ9NNOmJg"/>
+      <fragments xsi:type="ram:MessageOccurrenceSpecification" xmi:id="_javGZdJ8EeSISLQ9NNOmJg" covered="_javGadJ8EeSISLQ9NNOmJg" message="_javGa9J8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_javGZtJ8EeSISLQ9NNOmJg" represents="_javGbtJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_javGZ9J8EeSISLQ9NNOmJg" name="v">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Metering.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <lifelines xmi:id="_javGaNJ8EeSISLQ9NNOmJg" represents="_javGb9J8EeSISLQ9NNOmJg"/>
+      <lifelines xmi:id="_javGadJ8EeSISLQ9NNOmJg" represents="_javGcNJ8EeSISLQ9NNOmJg" coveredBy="_javGZNJ8EeSISLQ9NNOmJg _javGZdJ8EeSISLQ9NNOmJg">
+        <localProperties xsi:type="ram:Attribute" xmi:id="_javGatJ8EeSISLQ9NNOmJg" name="n">
+          <type xsi:type="ram:RInt" href="platform:/resource/SlotMachines/Metering.xram#//@structuralView/@types.3"/>
+        </localProperties>
+      </lifelines>
+      <messages xmi:id="_javGa9J8EeSISLQ9NNOmJg" sendEvent="_javGZNJ8EeSISLQ9NNOmJg" receiveEvent="_javGZdJ8EeSISLQ9NNOmJg" signature="_javGMdJ8EeSISLQ9NNOmJg">
+        <arguments xmi:id="_javGbNJ8EeSISLQ9NNOmJg" parameter="_javGMtJ8EeSISLQ9NNOmJg">
+          <value xsi:type="ram:ParameterValue" xmi:id="_javGbdJ8EeSISLQ9NNOmJg" parameter="_javGMtJ8EeSISLQ9NNOmJg"/>
+        </arguments>
+      </messages>
+      <properties xmi:id="_javGbtJ8EeSISLQ9NNOmJg" name="target" lowerBound="1" type="_javGJ9J8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_javGb9J8EeSISLQ9NNOmJg" name="intercetpStateChange" lowerBound="1" type="_javGItJ8EeSISLQ9NNOmJg"/>
+      <properties xmi:id="_javGcNJ8EeSISLQ9NNOmJg" name="standardMeter" lowerBound="1" type="_javGNNJ8EeSISLQ9NNOmJg"/>
+    </specification>
+  </messageViews>
+  <instantiations xmi:id="_javGcdJ8EeSISLQ9NNOmJg">
+    <mappings xmi:id="_javGctJ8EeSISLQ9NNOmJg" toElement="_javGItJ8EeSISLQ9NNOmJg">
+      <operationMappings xmi:id="_javGc9J8EeSISLQ9NNOmJg" toElement="_javGJNJ8EeSISLQ9NNOmJg">
+        <fromElement href="../aspects/Observer.ram#_jal8NdJ8EeSISLQ9NNOmJg"/>
+      </operationMappings>
+      <fromElement xsi:type="ram:Class" href="../aspects/Observer.ram#_jal8MtJ8EeSISLQ9NNOmJg"/>
+    </mappings>
+    <mappings xmi:id="_javGdNJ8EeSISLQ9NNOmJg" toElement="_javGJ9J8EeSISLQ9NNOmJg">
+      <operationMappings xmi:id="_javGddJ8EeSISLQ9NNOmJg" toElement="_javGL9J8EeSISLQ9NNOmJg">
+        <parameterMappings xmi:id="_javGdtJ8EeSISLQ9NNOmJg" toElement="_javGMNJ8EeSISLQ9NNOmJg">
+          <fromElement href="../aspects/Observer.ram#_jal8QNJ8EeSISLQ9NNOmJg"/>
+        </parameterMappings>
+        <fromElement href="../aspects/Observer.ram#_jal8P9J8EeSISLQ9NNOmJg"/>
+      </operationMappings>
+      <operationMappings xmi:id="_javGd9J8EeSISLQ9NNOmJg" toElement="_javGLdJ8EeSISLQ9NNOmJg">
+        <parameterMappings xmi:id="_javGeNJ8EeSISLQ9NNOmJg" toElement="_javGLtJ8EeSISLQ9NNOmJg">
+          <fromElement href="../aspects/Observer.ram#_jal8PdJ8EeSISLQ9NNOmJg"/>
+        </parameterMappings>
+        <fromElement href="../aspects/Observer.ram#_jal8PNJ8EeSISLQ9NNOmJg"/>
+      </operationMappings>
+      <fromElement xsi:type="ram:Class" href="../aspects/Observer.ram#_jal8O9J8EeSISLQ9NNOmJg"/>
+    </mappings>
+    <externalAspect href="../aspects/Observer.ram#_jal8MNJ8EeSISLQ9NNOmJg"/>
+  </instantiations>
+  <instantiations xmi:id="_javGedJ8EeSISLQ9NNOmJg">
+    <mappings xmi:id="_javGetJ8EeSISLQ9NNOmJg" toElement="_javGJ9J8EeSISLQ9NNOmJg">
+      <fromElement xsi:type="ram:Class" href="../aspects/Named.ram#_jadZUtJ8EeSISLQ9NNOmJg"/>
+    </mappings>
+    <externalAspect href="../aspects/Named.ram#_jadZUNJ8EeSISLQ9NNOmJg"/>
+  </instantiations>
+</ram:Aspect>
